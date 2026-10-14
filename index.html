@@ -108,6 +108,42 @@ button{color:var(--m3-ink)!important;border-color:var(--m3-line)!important;backg
 .m3-sets{display:flex;flex-direction:column}.m3-set{width:100%;display:grid;grid-template-columns:34px 1fr 1fr 1.1fr;gap:8px;align-items:center;text-align:left;border:1px solid var(--m3-line)!important;border-radius:15px!important;padding:10px 11px;margin:3px 0;background:var(--m3-card)!important}.m3-set.active{border-color:var(--m3-accent)!important;box-shadow:0 0 0 2px rgba(30,101,74,.08)}.m3-set.done{background:#EEF3EE!important}.m3-set-num{width:28px;height:28px;border-radius:50%;background:#EEF1EC;display:grid;place-items:center;font-size:9px;font-weight:900}.m3-set.active .m3-set-num{background:var(--m3-accent);color:#fff}.m3-set small{display:block;color:var(--m3-muted);font-size:7px;letter-spacing:.08em;font-weight:800}.m3-set b{display:block;font-size:12px;margin-top:3px;white-space:nowrap}.m3-input{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}.m3-input>div{background:var(--m3-card);border:1px solid var(--m3-line);border-radius:17px;padding:12px}.m3-input label{font-size:8px;letter-spacing:.1em;color:var(--m3-muted);font-weight:800}.m3-input small{font-size:8px;color:var(--m3-muted);font-weight:800}.m3-step{display:grid;grid-template-columns:34px 1fr 34px;align-items:center;margin:5px 0}.m3-step button{border:0!important;min-height:34px;font-size:18px}.m3-step input{width:100%;border:0!important;background:transparent;text-align:center;font-size:24px;font-weight:800;color:var(--m3-ink);outline:0}.m3-validate{width:100%;margin-top:8px;min-height:56px!important;background:var(--m3-accent)!important;color:#fff!important;border:0!important;border-radius:17px!important;font-weight:900!important}.m3-validate span{float:right}.m3-work-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:10px 0}.m3-work-tools button{min-height:40px!important;border-radius:12px!important;font-size:8px;font-weight:800}.m3-rest{background:var(--m3-ink);color:#fff;border-radius:20px;padding:17px;margin:12px 0}.m3-rest>span{font-size:9px;letter-spacing:.1em;opacity:.6;font-weight:800}.m3-rest strong{display:block;font-size:48px;letter-spacing:-.06em;margin:4px 0 8px}.m3-restbar{height:5px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden}.m3-restbar i{display:block;height:100%;background:#fff}.m3-rest button{border:1px solid rgba(255,255,255,.35)!important;color:#fff!important;width:100%;margin-top:12px;min-height:38px!important;border-radius:12px!important}.m3-next-ex{display:flex;align-items:center;gap:10px;padding:16px 2px}.m3-next-ex span{font-size:8px;letter-spacing:.1em;color:var(--m3-muted);font-weight:800}.m3-next-ex b{font-size:12px;flex:1}.m3-next-ex button{border:0!important;min-height:0;padding:0;font-weight:900}
 .nav{background:rgba(255,253,249,.94)!important;border:1px solid var(--m3-line)!important;border-radius:22px!important;box-shadow:0 12px 35px rgba(23,49,39,.1)!important;padding:7px!important;backdrop-filter:blur(14px);bottom:12px!important;left:50%!important;right:auto!important;width:min(560px,calc(100vw - 24px))!important;transform:translateX(-50%)!important}.nav button{font-size:8px!important;letter-spacing:.04em!important;min-height:44px!important;border:0!important;border-radius:15px!important}.nav button.on{background:var(--m3-ink)!important;color:#fff!important}
 @media(max-width:390px){.m3-hero h1,.m3-page-head h1{font-size:34px}.m3-focus h2{font-size:34px}.m3-set{grid-template-columns:30px 1fr 1fr 1fr;padding:9px 7px}.m3-set b{font-size:10px}.m3-grid strong{font-size:18px}}
+</style>
+<style id="m3k-profil">
+/* Coloris : teintes dérivées de l'accent au lieu des verts fixes */
+.m3-day.planned{background:var(--m3-tint)!important;border-color:color-mix(in srgb,var(--m3-accent) 25%,var(--m3-bg))!important}
+.m3-cycle,.m3-cue,.m3-set.done{background:var(--m3-tint)!important}
+.m3-cyclebar,.m3-progress{background:color-mix(in srgb,var(--m3-accent) 16%,var(--m3-bg))!important}
+.m3-session-ex span,.m3-set-num{background:var(--m3-tint)!important}
+.m3-set.active .m3-set-num{background:var(--m3-accent)!important;color:#fff}
+.m3-set.active{box-shadow:0 0 0 2px color-mix(in srgb,var(--m3-accent) 12%,transparent)!important}
+.nav{background:color-mix(in srgb,var(--m3-card) 94%,transparent)!important}
+body .nav{border:1px solid var(--m3-line)!important}
+/* Profil : sections aérées, listes à filets, pas d'encadrés */
+.m3s-sec{padding:0 2px 28px}
+.m3s-lbl{font-size:10px;font-weight:800;letter-spacing:.14em;color:var(--m3-muted);margin-bottom:12px}
+.m3s-note{font-size:12px;line-height:1.55;color:var(--m3-muted);margin:0 0 12px}
+.m3s-swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+button.m3s-sw{display:flex!important;flex-direction:column;align-items:center;gap:9px;border:0!important;background:transparent!important;min-height:0!important;padding:4px 0!important;font-size:11px!important;font-weight:700!important;color:var(--m3-muted)!important}
+.m3s-sw i{width:36px;height:36px;border-radius:50%;display:block}
+button.m3s-sw.on{color:var(--m3-ink)!important}
+.m3s-sw.on i{outline:2px solid var(--m3-ink);outline-offset:3px}
+.m3s-seg{display:flex;background:var(--m3-tint);border-radius:12px;padding:3px;gap:3px}
+.m3s-seg button{flex:1;min-width:0;min-height:36px!important;border:0!important;border-radius:9px!important;background:transparent!important;font-size:12px!important;font-weight:700!important;color:var(--m3-muted)!important;padding:0 4px!important}
+.m3s-seg button.on{background:var(--m3-card)!important;color:var(--m3-ink)!important;box-shadow:0 1px 3px rgba(0,0,0,.08)!important}
+.m3s-list{border-top:1px solid var(--m3-line)}
+.m3s-row{width:100%;display:flex!important;justify-content:space-between;align-items:center;gap:12px;text-align:left;border:0!important;border-bottom:1px solid var(--m3-line)!important;border-radius:0!important;background:transparent!important;padding:15px 2px!important;min-height:0!important;font-size:14px!important;font-weight:600!important;color:var(--m3-ink)!important;cursor:pointer;box-sizing:border-box;letter-spacing:-.01em}
+.m3s-row>span{display:flex;flex-direction:column;gap:3px}
+.m3s-row small{font-size:11px;font-weight:500;color:var(--m3-muted)}
+.m3s-row>b{color:var(--m3-muted);font-weight:600;font-size:17px;flex:none}
+.m3s-badge{background:var(--m3-accent);color:#fff;font-size:9px;font-weight:800;letter-spacing:.08em;padding:4px 8px;border-radius:99px;flex:none}
+.m3s-row.danger{color:#B4432E!important}
+.m3s-confirm{padding:14px 2px 16px;border-bottom:1px solid var(--m3-line)}
+.m3s-confirm p{margin:0 0 12px;font-size:13px;line-height:1.5}
+.m3s-confirm div{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.m3s-confirm button{min-height:42px!important;border-radius:12px!important;font-size:12px!important;font-weight:700!important}
+.m3s-confirm button.danger{background:#B4432E!important;color:#fff!important;border-color:#B4432E!important}
+.m3s-confirm button.ok{background:var(--m3-ink)!important;color:var(--m3-card)!important;border-color:var(--m3-ink)!important}
 </style></head><body>
 
 <style>
@@ -3534,6 +3570,75 @@ function vProg(){
   p.workouts.forEach(function(w){var sets=w.ex.reduce(function(n,e){return n+e.s.filter(function(s){return !s.warm;}).length;},0);h+='<section class="m3-session-card"><div class="m3-session-top"><span>'+ (w.day!=null?['DIM','LUN','MAR','MER','JEU','VEN','SAM'][w.day]:'LIBRE')+'</span><b>'+w.ex.length+' EXOS · '+sets+' SÉRIES</b></div><h2>'+esc(w.name)+'</h2><div class="m3-session-ex">'+w.ex.slice(0,4).map(function(e){return '<span>'+esc(exDisp(e.name))+'</span>';}).join('')+(w.ex.length>4?'<span>+'+(w.ex.length-4)+' autres</span>':'')+'</div><div class="m3-session-actions"><button data-a="start" data-p="'+esc(w.id)+'">COMMENCER →</button><button data-a="wedit" data-id="'+esc(w.id)+'">ÉDITER</button></div></section>';});
   return h+nav('prog');
 }
+/* ================= PROFIL simplifié + 4 coloris pour le style éditorial ================= */
+function L(fr, en){ return isEN() ? en : fr; }
+EN['PROFIL'] = 'PROFILE';
+var M3_THEMES = {
+  foret:{fr:'Forêt', en:'Forest', bg:'#F5F2EA', ink:'#173127', muted:'#718078', line:'#DDE2DB', card:'#FFFDF9', accent:'#1E654A'},
+  ocean:{fr:'Océan', en:'Ocean', bg:'#F2F4F6', ink:'#172536', muted:'#6B7887', line:'#DCE2E8', card:'#FFFFFF', accent:'#2B5C8A'},
+  terre:{fr:'Terre', en:'Clay', bg:'#F7F1EB', ink:'#35221A', muted:'#85726A', line:'#E6DCD3', card:'#FFFCF9', accent:'#B0532C'},
+  prune:{fr:'Prune', en:'Plum', bg:'#F5F1F4', ink:'#2C1C2B', muted:'#7E6F7C', line:'#E3DAE1', card:'#FFFCFE', accent:'#7A3B6E'}
+};
+function m3Theme(){ return M3_THEMES[S.settings.m3theme] ? S.settings.m3theme : 'foret'; }
+function applyTheme(){
+  var b = document.body.classList; ['calm','csq','round','flat','acc'].forEach(function(c){ b.remove(c); });
+  var t = M3_THEMES[m3Theme()], r = document.documentElement.style, tint = 'color-mix(in srgb,' + t.accent + ' 9%,' + t.bg + ')';
+  var set = function(k, v){ r.setProperty(k, v, 'important'); };
+  set('--m3-bg', t.bg); set('--ground', t.bg); set('--m3-ink', t.ink); set('--ink', t.ink); set('--m3-muted', t.muted); set('--muted', t.muted);
+  set('--m3-line', t.line); set('--line', t.line); set('--track', t.line); set('--m3-card', t.card); set('--paper', t.card);
+  set('--m3-accent', t.accent); set('--acc', t.accent); set('--m3-tint', tint); set('--soft', tint);
+  r.setProperty('color-scheme', 'light');
+  var m = document.querySelector('meta[name="theme-color"]'); if(m) m.setAttribute('content', t.bg);
+}
+/* le sergent et le mode Lisible sont retirés : on les coupe chez ceux qui les avaient activés */
+if(S.settings.hardcore || S.settings.style === 'calm'){ S.settings.hardcore = false; S.settings.style = 'brutal'; save(); }
+document.addEventListener('click', function(ev){
+  var el = ev.target.closest('[data-a="m3theme"]'); if(!el) return;
+  S.settings.m3theme = el.getAttribute('data-t'); save(); render();
+});
+function m3sConfirm(text, action, label){
+  return '<div class="m3s-confirm"><p>' + text + '</p><div><button data-a="noconfirm">' + L('Annuler', 'Cancel') + '</button><button class="danger" data-a="' + action + '">' + label + '</button></div></div>';
+}
+function vSet(){
+  var en = isEN(), cur = m3Theme(), h = restBar();
+  h += '<header class="m3-page-head"><span class="m3-eyebrow">' + L('PROFIL', 'PROFILE') + '</span><h1>' + L('Tes', 'Your') + '<br><em>' + L('réglages.', 'settings.') + '</em></h1></header>';
+  h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('COLORIS', 'COLOR') + '</div><div class="m3s-swatches" role="group">' + Object.keys(M3_THEMES).map(function(k){
+    var t = M3_THEMES[k];
+    return '<button class="m3s-sw' + (k === cur ? ' on' : '') + '" data-a="m3theme" data-t="' + k + '" aria-pressed="' + (k === cur) + '"><i style="background:' + t.accent + '"></i><span>' + (en ? t.en : t.fr) + '</span></button>';
+  }).join('') + '</div></section>';
+  h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('LANGUE', 'LANGUAGE') + '</div><div class="m3s-seg" role="group"><button data-a="lang" data-v="fr" class="' + (en ? '' : 'on') + '" aria-pressed="' + !en + '">Français</button><button data-a="lang" data-v="en" class="' + (en ? 'on' : '') + '" aria-pressed="' + en + '">English</button></div></section>';
+  h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('PALIER DE CHARGE', 'WEIGHT STEP') + '</div><div class="m3s-seg" role="group">' + [1, 1.25, 2, 2.5, 5].map(function(v){
+    return '<button data-a="inc" data-v="' + v + '" class="' + (inc() === v ? 'on' : '') + '" aria-pressed="' + (inc() === v) + '">' + kg(v) + ' kg</button>';
+  }).join('') + '</div></section>';
+  var nw = unreadLog();
+  h += '<section class="m3s-sec"><div class="m3s-list"><button class="m3s-row" data-a="news"><span>' + L('Nouveautés', 'What\'s new') + '<small>' + L('Version ', 'Version ') + CHANGELOG[0].v + ' · ' + esc(clOf(CHANGELOG[0]).t) + '</small></span>' + (nw ? '<span class="m3s-badge">' + L('NOUVEAU', 'NEW') + '</span>' : '<b>›</b>') + '</button></div></section>';
+  var nH = S.history.length, last = S.settings.lastExport, ago = last ? Math.floor((Date.now() - last) / DAYMS) : null, und = undoInfo();
+  var when = !last ? L('aucune sauvegarde pour l\'instant', 'no backup yet') : ago < 1 ? L('aujourd\'hui', 'today') : ago === 1 ? L('hier', 'yesterday') : L('il y a ' + ago + ' jours', ago + ' days ago');
+  h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('SAUVEGARDE', 'BACKUP') + '</div>';
+  h += '<p class="m3s-note">' + L('Tes ' + nH + ' séances sont enregistrées sur ce téléphone. Garde une sauvegarde ailleurs (mail, Drive) pour tout récupérer en cas de besoin.', 'Your ' + nH + ' sessions are stored on this phone. Keep a backup somewhere else (email, Drive) to get everything back if needed.') + '</p>';
+  h += '<div class="m3s-list">';
+  h += '<button class="m3s-row" data-a="export"><span>' + L('Exporter une sauvegarde', 'Export a backup') + '<small>' + L('Dernière : ', 'Last: ') + when + '</small></span>' + (!last || ago >= 30 ? '<span class="m3s-badge">' + L('À FAIRE', 'TO DO') + '</span>' : '<b>›</b>') + '</button>';
+  h += '<label class="m3s-row" for="restorefile"><span>' + L('Restaurer une sauvegarde', 'Restore a backup') + '<small>' + L('Remplace les données actuelles, annulable', 'Replaces current data, can be undone') + '</small></span><b>›</b></label><input type="file" id="restorefile" hidden>';
+  if(ui.restore) h += m3sConfirm(L('Remplacer tes ' + nH + ' séances par les ' + ui.restore.history.length + ' du fichier ? Une copie de tes données actuelles est gardée.', 'Replace your ' + nH + ' sessions with the ' + ui.restore.history.length + ' in the file? A copy of your current data is kept.'), 'restoreok', L('Remplacer', 'Replace')).replace('data-a="noconfirm"', 'data-a="restorecancel"');
+  if(und) h += '<button class="m3s-row" data-a="restoreundo"><span>' + (und.kind === 'strong' ? L('Annuler le dernier import', 'Undo the last import') : L('Annuler la dernière restauration', 'Undo the last restore')) + '<small>' + fmtDate(und.at) + '</small></span><b>↺</b></button>';
+  h += '<button class="m3s-row" data-a="exportcsv"><span>' + L('Tableau Excel de mes séances', 'My sessions as an Excel sheet') + '</span><b>›</b></button>';
+  h += '<label class="m3s-row" for="strongfile"><span>' + L('Importer depuis une autre appli', 'Import from another app') + '<small>' + L('Fichier CSV, par exemple un export Strong', 'CSV file, for example a Strong export') + '</small></span><b>›</b></label><input type="file" id="strongfile" accept=".csv,text/csv,text/comma-separated-values,text/plain" hidden>';
+  h += '</div>';
+  h += strongBox();
+  if(ui.importErr) h += '<p class="m3s-note" style="margin-top:10px;word-break:break-word">' + L('Import impossible', 'Import failed') + ' : ' + esc(ui.importErr.name) + ' · ' + esc(ui.importErr.msg) + '</p>';
+  h += '</section>';
+  if(S.programs.some(function(p){ return p.demo; }) || S.history.some(function(x){ return x.demo; })){
+    var nd = S.history.filter(function(x){ return x.demo; }).length;
+    h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('DÉMO', 'DEMO') + '</div><p class="m3s-note">' + L('Le programme « Démo 4 jours » et ses ' + nd + ' séances d\'exemple montrent l\'appli remplie. Supprime-les avant de t\'en servir pour de vrai.', 'The “4-day demo” program and its ' + nd + ' sample sessions show the app filled in. Delete them before using it for real.') + '</p><div class="m3s-list">';
+    h += ui.confirm === 'demo' ? m3sConfirm(L('Supprimer le programme démo et ses séances ?', 'Delete the demo program and its sessions?'), 'deldemo', L('Supprimer', 'Delete')) : '<button class="m3s-row" data-a="askdemo"><span>' + L('Supprimer les données de démo', 'Delete the demo data') + '</span><b>›</b></button>';
+    h += '</div></section>';
+  }
+  h += '<section class="m3s-sec"><div class="m3s-list">';
+  h += ui.confirm === 'reset' ? m3sConfirm(L('Effacer tout ton historique ? Tes programmes sont gardés. Exporte une sauvegarde avant si tu veux pouvoir revenir en arrière.', 'Erase your whole history? Your programs are kept. Export a backup first if you want to be able to go back.'), 'reset', L('Tout effacer', 'Erase all')) : '<button class="m3s-row danger" data-a="askreset"><span>' + L('Effacer toutes les données', 'Erase all data') + '</span></button>';
+  h += '</div></section>';
+  return h + nav('set');
+}
+
 render();
 })();
 </script>
