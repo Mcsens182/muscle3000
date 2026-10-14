@@ -3756,6 +3756,17 @@ var M3W = [
   {k:'split', t:'Répartition', d:'Ce que tu entraînes le plus sur 30 jours : haut, bas du corps, muscles.'}
 ];
 var M3W_SIZES = [['s', 'PETIT', '1 carré'], ['m', 'LARGE', '2 carrés'], ['l', 'GRAND', '4 carrés']];
+/* English names of the widgets and sizes */
+var M3W_EN = {lastvol:['Last session volume','Total weight lifted last time, compared with the time before.'], weekvol:['Weekly volume','What you lifted this week, and over the last 8 weeks.'],
+  total:['Number of sessions','All your sessions since day one, this month and this week.'], streak:['Weeks in a row','Your current streak without an empty week, and your record.'],
+  week:['Your week','Sessions done out of sessions planned, day by day.'], month:['Your month','Sessions, volume, time and records for the current month.'],
+  sets:['Weekly sets','Your work sets this week and over the last 8.'], lastsess:['Last session','Name, date, duration, and the exercise details in large.'],
+  prs:['Records','Your records over the last 30 days.'], top:['Biggest gains','The exercises that progressed most over 6 weeks.'],
+  time:['Training time','Your total time under the bar, average duration and longest session.'], tonnage:['Total lifted','Everything you have lifted since day one, turned into a real object.'],
+  split:['Split','What you train most over 30 days: upper, lower body, muscles.']};
+var M3W_SIZES_EN = {s:['SMALL','1 square'], m:['WIDE','2 squares'], l:['LARGE','4 squares']};
+function m3wT(d){ return isEN() && M3W_EN[d.k] ? M3W_EN[d.k][0] : d.t; }
+function m3wD(d){ return isEN() && M3W_EN[d.k] ? M3W_EN[d.k][1] : d.d; }
 
 function m3wList(){
   if(!Array.isArray(S.settings.widgets)) S.settings.widgets = M3W_DEFAULT.map(function(w){ return {k:w.k, z:w.z}; });
@@ -3763,7 +3774,7 @@ function m3wList(){
 }
 function m3wDef(k){ return M3W.filter(function(x){ return x.k === k; })[0] || null; }
 function m3wSets(h){ var n = 0; h.exercises.forEach(function(e){ e.sets.forEach(function(s){ if(!s.warm) n++; }); }); return n; }
-function m3wHours(sec){ var hh = sec / 3600; return (hh < 10 ? Math.round(hh * 10) / 10 : Math.round(hh)).toString().replace('.', ',') + ' h'; }
+function m3wHours(sec){ var hh = sec / 3600; return kg(hh < 10 ? Math.round(hh * 10) / 10 : Math.round(hh)) + ' h'; }
 
 /* everything the widgets need, computed once per render */
 function m3wCtx(st){
@@ -3789,78 +3800,78 @@ function m3wRows(rows){
 
 /* one widget: label, main figure, line under it, and extra content for wide / large */
 function m3wBody(k, z, c){
-  var st = c.st, H = c.H, last = c.last, big = z === 'l', none = '<div class="m3w-none">Après ta première séance.</div>';
+  var st = c.st, H = c.H, last = c.last, big = z === 'l', none = '<div class="m3w-none">' + L('Après ta première séance.', 'After your first session.') + '</div>';
   if(k === 'lastvol'){
-    if(!last) return {l:'VOLUME', m:'—', s:'dernière séance', x:none};
+    if(!last) return {l:'VOLUME', m:'—', s:L('dernière séance', 'last session'), x:none};
     var v = sessVol(last), prev = null;
     for(var i = H.length - 2; i >= 0; i--){ if(last.pid && H[i].pid === last.pid){ prev = H[i]; break; } }
     var dl = prev && sessVol(prev) ? Math.round((v - sessVol(prev)) / sessVol(prev) * 100) : null;
-    var sub = z === 's' ? 'dernière séance' : esc(last.name) + (dl != null ? ' · ' + (dl >= 0 ? '+' : '') + dl + ' %' : '');
+    var sub = z === 's' ? L('dernière séance', 'last session') : esc(trText(last.name)) + (dl != null ? ' · ' + (dl >= 0 ? '+' : '') + dl + ' %' : '');
     var vols = H.slice(-8).map(sessVol);
-    return {l:'VOLUME', m:fmtT(v), s:sub, x:m3wBars(vols) + (big ? '<div class="m3w-foot">Tes ' + vols.length + ' dernières séances</div>' : '')};
+    return {l:'VOLUME', m:fmtT(v), s:sub, x:m3wBars(vols) + (big ? '<div class="m3w-foot">' + L('Tes ' + vols.length + ' dernières séances', 'Your last ' + vols.length + ' sessions') + '</div>' : '')};
   }
   if(k === 'weekvol'){
     var vw = st.weeks.map(function(w){ return w.vol; }), avg = vw.reduce(function(a, b){ return a + b; }, 0) / 8;
-    return {l:'VOLUME SEMAINE', m:fmtT(st.weeks[7].vol), s:'cette semaine', x:m3wBars(vw) + (big ? '<div class="m3w-foot">Moyenne : ' + fmtT(avg) + ' par semaine</div>' : '')};
+    return {l:L('VOLUME SEMAINE', 'WEEKLY VOLUME'), m:fmtT(st.weeks[7].vol), s:L('cette semaine', 'this week'), x:m3wBars(vw) + (big ? '<div class="m3w-foot">' + L('Moyenne : ' + fmtT(avg) + ' par semaine', 'Average: ' + fmtT(avg) + ' per week') + '</div>' : '')};
   }
   if(k === 'total'){
     var perW = H.length && H[0].date ? H.length / Math.max(1, (Date.now() - H[0].date) / WEEKMS) : 0;
-    var rows = [['Ce mois-ci', c.month.length], ['Cette semaine', st.thisN], ['Par semaine', perW ? (Math.round(perW * 10) / 10).toString().replace('.', ',') : '—']];
-    return {l:'SÉANCES', m:String(st.total), s:'depuis le début', x:big ? m3wBars(st.weeks.map(function(w){ return w.n; })) + m3wRows(rows) : m3wRows(rows)};
+    var rows = [[L('Ce mois-ci', 'This month'), c.month.length], [L('Cette semaine', 'This week'), st.thisN], [L('Par semaine', 'Per week'), perW ? kg(Math.round(perW * 10) / 10) : '—']];
+    return {l:L('SÉANCES', 'SESSIONS'), m:String(st.total), s:L('depuis le début', 'since day one'), x:big ? m3wBars(st.weeks.map(function(w){ return w.n; })) + m3wRows(rows) : m3wRows(rows)};
   }
   if(k === 'streak'){
     var cells = '<div class="m3w-weeks">' + st.weeks.map(function(w){ return '<i class="' + (w.n ? 'on' : '') + '"></i>'; }).join('') + '</div>';
-    return {l:'SÉRIE', m:String(st.streak), s:'semaine' + (st.streak > 1 ? 's' : '') + ' d’affilée', x:cells + '<div class="m3w-foot">Record : ' + c.bestStreak + ' semaine' + (c.bestStreak > 1 ? 's' : '') + (big ? ' · 8 dernières semaines' : '') + '</div>'};
+    return {l:L('SÉRIE', 'STREAK'), m:String(st.streak), s:L('semaine' + (st.streak > 1 ? 's' : '') + ' d’affilée', 'week' + (st.streak > 1 ? 's' : '') + ' in a row'), x:cells + '<div class="m3w-foot">' + L('Record : ' + c.bestStreak + ' semaine' + (c.bestStreak > 1 ? 's' : '') + (big ? ' · 8 dernières semaines' : ''), 'Record: ' + c.bestStreak + ' week' + (c.bestStreak > 1 ? 's' : '') + (big ? ' · last 8 weeks' : '')) + '</div>'};
   }
   if(k === 'week'){
     var ws = weekStartOf(Date.now()), today = dayKey(Date.now()), done = {};
     H.forEach(function(h){ if(h.date >= ws) done[dayKey(h.date)] = h.name; });
-    var dn = ['L', 'M', 'M', 'J', 'V', 'S', 'D'], strip = '<div class="m3w-days">';
+    var dn = isEN() ? ['M', 'T', 'W', 'T', 'F', 'S', 'S'] : ['L', 'M', 'M', 'J', 'V', 'S', 'D'], strip = '<div class="m3w-days">';
     for(var d = 0; d < 7; d++){
       var dk = dayKey(ws + d * DAYMS + 12 * 3600e3), plan = workouts().filter(function(w){ return w.day === (d + 1) % 7; })[0];
       strip += '<div class="' + (done[dk] ? 'done ' : plan ? 'plan ' : '') + (dk === today ? 'now' : '') + '"><span>' + dn[d] + '</span><i></i>' + (big ? '<small>' + esc(done[dk] ? shortName(done[dk]) : plan ? shortName(plan.name) : '') + '</small>' : '') + '</div>';
     }
-    return {l:'CETTE SEMAINE', m:st.thisN + ' / ' + st.planned, s:'séances faites', x:strip + '</div>'};
+    return {l:L('CETTE SEMAINE', 'THIS WEEK'), m:st.thisN + ' / ' + st.planned, s:L('séances faites', 'sessions done'), x:strip + '</div>'};
   }
   if(k === 'month'){
     var mv = 0, mt = 0, mp = 0; c.month.forEach(function(h){ mv += sessVol(h); mt += h.dur || 0; mp += (h.prs || []).length; });
-    var mn = ['JANVIER', 'FÉVRIER', 'MARS', 'AVRIL', 'MAI', 'JUIN', 'JUILLET', 'AOÛT', 'SEPTEMBRE', 'OCTOBRE', 'NOVEMBRE', 'DÉCEMBRE'][new Date().getMonth()];
-    return {l:mn, m:String(c.month.length), s:'séance' + (c.month.length > 1 ? 's' : '') + ' ce mois-ci', x:m3wRows([['Volume', fmtT(mv)], ['Temps', m3wHours(mt)], ['Records', mp]])};
+    var mn = (isEN() ? ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'] : ['JANVIER', 'FÉVRIER', 'MARS', 'AVRIL', 'MAI', 'JUIN', 'JUILLET', 'AOÛT', 'SEPTEMBRE', 'OCTOBRE', 'NOVEMBRE', 'DÉCEMBRE'])[new Date().getMonth()];
+    return {l:mn, m:String(c.month.length), s:L('séance' + (c.month.length > 1 ? 's' : '') + ' ce mois-ci', 'session' + (c.month.length > 1 ? 's' : '') + ' this month'), x:m3wRows([['Volume', fmtT(mv)], [L('Temps', 'Time'), m3wHours(mt)], ['Records', mp]])};
   }
   if(k === 'sets'){
-    return {l:'SÉRIES', m:String(c.wsets[7]), s:'séries cette semaine', x:m3wBars(c.wsets) + (big ? '<div class="m3w-foot">Séries de travail, 8 dernières semaines</div>' : '')};
+    return {l:L('SÉRIES', 'SETS'), m:String(c.wsets[7]), s:L('séries cette semaine', 'sets this week'), x:m3wBars(c.wsets) + (big ? '<div class="m3w-foot">' + L('Séries de travail, 8 dernières semaines', 'Work sets, last 8 weeks') + '</div>' : '')};
   }
   if(k === 'lastsess'){
-    if(!last) return {l:'DERNIÈRE SÉANCE', m:'—', s:'', x:none};
+    if(!last) return {l:L('DERNIÈRE SÉANCE', 'LAST SESSION'), m:'—', s:'', x:none};
     var lx = big ? m3wRows(last.exercises.slice(0, 6).map(function(e){ var w = e.sets.filter(function(s){ return !s.warm; }), t = w.reduce(function(b, s){ return !b || (s.w || 0) > (b.w || 0) ? s : b; }, null); return [esc(exDisp(e.name)), t ? kg(t.w) + ' × ' + t.r : '—']; }))
-      : m3wRows([['Volume', fmtT(sessVol(last))], ['Séries', m3wSets(last)], ['Durée', mmss(last.dur)]]);
-    return {l:'DERNIÈRE SÉANCE', m:esc(last.name), sm:true, s:fmtDate(last.date) + (z === 's' ? '' : ' · ' + mmss(last.dur)), x:lx};
+      : m3wRows([['Volume', fmtT(sessVol(last))], [L('Séries', 'Sets'), m3wSets(last)], [L('Durée', 'Duration'), mmss(last.dur)]]);
+    return {l:L('DERNIÈRE SÉANCE', 'LAST SESSION'), m:esc(trText(last.name)), sm:true, s:fmtDate(last.date) + (z === 's' ? '' : ' · ' + mmss(last.dur)), x:lx};
   }
   if(k === 'prs'){
     var names = [];
     for(var j = H.length - 1; j >= 0 && names.length < (big ? 6 : 3); j--) (H[j].prs || []).forEach(function(n){ if(names.length < (big ? 6 : 3) && names.indexOf(n) < 0) names.push(n); });
-    return {l:'RECORDS', m:String(st.prs30), s:'sur 30 jours', x:names.length ? m3wRows(names.map(function(n){ var b = bestFor(n); return [esc(exDisp(n)), b.w != null ? kg(b.w) + ' × ' + b.r : '—']; })) : none};
+    return {l:'RECORDS', m:String(st.prs30), s:L('sur 30 jours', 'last 30 days'), x:names.length ? m3wRows(names.map(function(n){ var b = bestFor(n); return [esc(exDisp(n)), b.w != null ? kg(b.w) + ' × ' + b.r : '—']; })) : none};
   }
   if(k === 'top'){
     var t0 = st.top[0];
-    if(!t0) return {l:'PROGRESSION', m:'—', s:'6 semaines', x:'<div class="m3w-none">Fais un exercice au moins 2 fois pour voir ta progression.</div>'};
-    return {l:'PROGRESSION', m:'+' + Math.round(t0.g * 100) + ' %', s:esc(exDisp(t0.n)), x:m3wRows(st.top.map(function(t){ return [esc(exDisp(t.n)), '+' + Math.round(t.g * 100) + ' %']; })) + (big ? '<div class="m3w-foot">1RM estimé, sur 6 semaines</div>' : '')};
+    if(!t0) return {l:L('PROGRESSION', 'PROGRESS'), m:'—', s:L('6 semaines', '6 weeks'), x:'<div class="m3w-none">' + L('Fais un exercice au moins 2 fois pour voir ta progression.', 'Do an exercise at least twice to see your progress.') + '</div>'};
+    return {l:L('PROGRESSION', 'PROGRESS'), m:'+' + Math.round(t0.g * 100) + ' %', s:esc(exDisp(t0.n)), x:m3wRows(st.top.map(function(t){ return [esc(exDisp(t.n)), '+' + Math.round(t.g * 100) + ' %']; })) + (big ? '<div class="m3w-foot">' + L('1RM estimé, sur 6 semaines', 'Estimated 1RM, over 6 weeks') + '</div>' : '')};
   }
   if(k === 'time'){
     var avgD = H.length ? c.dur / H.length : 0, mt2 = 0; c.month.forEach(function(h){ mt2 += h.dur || 0; });
-    return {l:'TEMPS', m:m3wHours(c.dur), s:'d’entraînement', x:m3wRows([['Durée moyenne', H.length ? mmss(avgD) : '—'], ['Ce mois-ci', m3wHours(mt2)], ['Plus longue', H.length ? mmss(c.maxDur) : '—']])};
+    return {l:L('TEMPS', 'TIME'), m:m3wHours(c.dur), s:L('d’entraînement', 'of training'), x:m3wRows([[L('Durée moyenne', 'Average'), H.length ? mmss(avgD) : '—'], [L('Ce mois-ci', 'This month'), m3wHours(mt2)], [L('Plus longue', 'Longest'), H.length ? mmss(c.maxDur) : '—']])};
   }
   if(k === 'tonnage'){
     var f = null; try{ f = funFact(st.tonnage); }catch(e){}
     var mv2 = 0; c.month.forEach(function(h){ mv2 += sessVol(h); });
     var fx = f ? '<div class="m3w-fun"><b>≈ ' + esc(f.count) + '</b><span>' + esc(f.name) + '</span></div>' : none;
-    return {l:'TOTAL SOULEVÉ', m:fmtT(st.tonnage), s:'depuis le début', x:big ? fx + m3wRows([['Ce mois-ci', fmtT(mv2)], ['Cette semaine', fmtT(st.weeks[7].vol)]]) : fx};
+    return {l:L('TOTAL SOULEVÉ', 'TOTAL LIFTED'), m:fmtT(st.tonnage), s:L('depuis le début', 'since day one'), x:big ? fx + m3wRows([[L('Ce mois-ci', 'This month'), fmtT(mv2)], [L('Cette semaine', 'This week'), fmtT(st.weeks[7].vol)]]) : fx};
   }
   if(k === 'split'){
     var sd = splitData(big ? 'muscle' : 'zone');
-    if(!sd.total) return {l:'RÉPARTITION', m:'—', s:'30 jours', x:none};
+    if(!sd.total) return {l:L('RÉPARTITION', 'SPLIT'), m:'—', s:L('30 jours', '30 days'), x:none};
     var lead = sd.rows[0];
-    return {l:'RÉPARTITION', m:Math.round(lead.n / sd.total * 100) + ' %', s:esc(lead.k), x:'<div class="m3w-split">' + sd.rows.slice(0, big ? 5 : 3).map(function(r){ var p = Math.round(r.n / sd.total * 100); return '<div><span>' + esc(r.k) + '</span><i><em style="width:' + p + '%"></em></i><b>' + p + ' %</b></div>'; }).join('') + '</div>'};
+    return {l:L('RÉPARTITION', 'SPLIT'), m:Math.round(lead.n / sd.total * 100) + ' %', s:esc(trText(lead.k)), x:'<div class="m3w-split">' + sd.rows.slice(0, big ? 5 : 3).map(function(r){ var p = Math.round(r.n / sd.total * 100); return '<div><span>' + esc(trText(r.k)) + '</span><i><em style="width:' + p + '%"></em></i><b>' + p + ' %</b></div>'; }).join('') + '</div>'};
   }
   return null;
 }
@@ -3871,26 +3882,26 @@ function m3wTile(w, i, c, preview){
   var cls = 'm3w z-' + w.z;
   if(preview) return '<div class="' + cls + '">' + inner + '</div>';
   var def = m3wDef(w.k);
-  return '<button class="' + cls + '" data-a="wgopen" data-i="' + i + '" aria-label="' + esc((def ? def.t : 'Widget') + ' : toucher pour modifier') + '">' + inner + '</button>';
+  return '<button class="' + cls + '" data-a="wgopen" data-i="' + i + '" aria-label="' + esc((def ? m3wT(def) : 'Widget') + L(' : toucher pour modifier', ': tap to edit')) + '">' + inner + '</button>';
 }
 function m3wSection(st){
   var c = m3wCtx(st), list = m3wList(), h = '';
   list.forEach(function(w, i){ h += m3wTile(w, i, c, false); });
-  return '<section class="m3-block m3-widgets"><div class="m3-section-head"><span>TES WIDGETS</span><button data-a="wgadd">+ AJOUTER</button></div>' +
-    (h ? '<div class="m3wg">' + h + '</div>' : '<button class="m3w-empty" data-a="wgadd">Ajoute tes premiers widgets : volume, séances, records, progression…</button>') + '</section>';
+  return '<section class="m3-block m3-widgets"><div class="m3-section-head"><span>' + L('TES WIDGETS', 'YOUR WIDGETS') + '</span><button data-a="wgadd">' + L('+ AJOUTER', '+ ADD') + '</button></div>' +
+    (h ? '<div class="m3wg">' + h + '</div>' : '<button class="m3w-empty" data-a="wgadd">' + L('Ajoute tes premiers widgets : volume, séances, records, progression…', 'Add your first widgets: volume, sessions, records, progress…') + '</button>') + '</section>';
 }
 
 /* the sheet to add or edit a widget: preview, size, info, position */
 function vWidgetSheet(){
   var w = ui.wSheet, edit = w.i >= 0, c = m3wCtx(computeStats()), n = m3wList().length;
-  var h = '<div class="pane m3-wsheet" role="dialog" aria-label="' + (edit ? 'Modifier le widget' : 'Ajouter un widget') + '"><div class="m3-ws-grip"></div>';
-  h += '<div class="m3-ws-top"><div class="m3-ws-head"><div><span class="m3-eyebrow">WIDGET</span><h2>' + (edit ? 'Modifier' : 'Ajouter') + '</h2></div><button data-a="closesheet" aria-label="Fermer">✕</button></div>';
-  h += w.k ? '<div class="m3wg m3wg-prev">' + m3wTile({k:w.k, z:w.z}, 0, c, true) + '</div>' : '<div class="m3-ws-hint">Choisis l\'information à afficher, puis sa taille.</div>';
-  h += '<div class="m3-ws-sizes" role="radiogroup" aria-label="Taille">' + M3W_SIZES.map(function(s){ return '<button role="radio" aria-checked="' + (w.z === s[0]) + '" class="' + (w.z === s[0] ? 'on' : '') + '" data-a="wgsize" data-z="' + s[0] + '"><i class="ic-' + s[0] + '"></i><b>' + s[1] + '</b><small>' + s[2] + '</small></button>'; }).join('') + '</div></div>';
-  h += '<span class="m3-ws-h">INFORMATION À AFFICHER</span><div class="m3-ws-list">' + M3W.map(function(d){ var on = d.k === w.k; return '<button class="' + (on ? 'on' : '') + '" data-a="wgpick" data-k="' + d.k + '" aria-pressed="' + on + '"><span><b>' + esc(d.t) + '</b><small>' + esc(d.d) + '</small></span><em>' + (on ? '✓' : '') + '</em></button>'; }).join('') + '</div>';
-  if(edit && n > 1) h += '<span class="m3-ws-h">POSITION · ' + (w.i + 1) + ' SUR ' + n + '</span><div class="m3-ws-move"><button data-a="wgmove" data-d="-1"' + (w.i === 0 ? ' disabled' : '') + '>← AVANT</button><button data-a="wgmove" data-d="1"' + (w.i === n - 1 ? ' disabled' : '') + '>APRÈS →</button></div>';
-  h += '<button class="m3-ws-save" data-a="wgsave"' + (w.k ? '' : ' disabled') + '>' + (edit ? 'ENREGISTRER' : 'AJOUTER LE WIDGET') + '</button>';
-  if(edit) h += '<button class="m3-ws-del" data-a="wgdel">RETIRER CE WIDGET</button>';
+  var h = '<div class="pane m3-wsheet" role="dialog" aria-label="' + (edit ? L('Modifier le widget', 'Edit widget') : L('Ajouter un widget', 'Add a widget')) + '"><div class="m3-ws-grip"></div>';
+  h += '<div class="m3-ws-top"><div class="m3-ws-head"><div><span class="m3-eyebrow">WIDGET</span><h2>' + (edit ? L('Modifier', 'Edit') : L('Ajouter', 'Add')) + '</h2></div><button data-a="closesheet" aria-label="' + L('Fermer', 'Close') + '">✕</button></div>';
+  h += w.k ? '<div class="m3wg m3wg-prev">' + m3wTile({k:w.k, z:w.z}, 0, c, true) + '</div>' : '<div class="m3-ws-hint">' + L('Choisis l\'information à afficher, puis sa taille.', 'Pick the info to show, then its size.') + '</div>';
+  h += '<div class="m3-ws-sizes" role="radiogroup" aria-label="' + L('Taille', 'Size') + '">' + M3W_SIZES.map(function(s){ if(isEN()) s = [s[0], M3W_SIZES_EN[s[0]][0], M3W_SIZES_EN[s[0]][1]]; return '<button role="radio" aria-checked="' + (w.z === s[0]) + '" class="' + (w.z === s[0] ? 'on' : '') + '" data-a="wgsize" data-z="' + s[0] + '"><i class="ic-' + s[0] + '"></i><b>' + s[1] + '</b><small>' + s[2] + '</small></button>'; }).join('') + '</div></div>';
+  h += '<span class="m3-ws-h">' + L('INFORMATION À AFFICHER', 'INFO TO SHOW') + '</span><div class="m3-ws-list">' + M3W.map(function(d){ var on = d.k === w.k; return '<button class="' + (on ? 'on' : '') + '" data-a="wgpick" data-k="' + d.k + '" aria-pressed="' + on + '"><span><b>' + esc(m3wT(d)) + '</b><small>' + esc(m3wD(d)) + '</small></span><em>' + (on ? '✓' : '') + '</em></button>'; }).join('') + '</div>';
+  if(edit && n > 1) h += '<span class="m3-ws-h">POSITION · ' + (w.i + 1) + L(' SUR ', ' OF ') + n + '</span><div class="m3-ws-move"><button data-a="wgmove" data-d="-1"' + (w.i === 0 ? ' disabled' : '') + '>' + L('← AVANT', '← BEFORE') + '</button><button data-a="wgmove" data-d="1"' + (w.i === n - 1 ? ' disabled' : '') + '>' + L('APRÈS →', 'AFTER →') + '</button></div>';
+  h += '<button class="m3-ws-save" data-a="wgsave"' + (w.k ? '' : ' disabled') + '>' + (edit ? L('ENREGISTRER', 'SAVE') : L('AJOUTER LE WIDGET', 'ADD WIDGET')) + '</button>';
+  if(edit) h += '<button class="m3-ws-del" data-a="wgdel">' + L('RETIRER CE WIDGET', 'REMOVE THIS WIDGET') + '</button>';
   return h + '</div>';
 }
 /* re-render the sheet without losing where the person had scrolled */
