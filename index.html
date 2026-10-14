@@ -195,6 +195,27 @@ body nav.nav button.on{background:var(--m3-ink)!important;color:var(--m3-card,#f
 body nav.nav .badge{position:relative;top:-1px}
 html.nav-away body nav.nav{pointer-events:none}
 #app{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 84px)!important}
+/* journal calendar */
+.m3c{background:var(--m3-card);border:1px solid var(--m3-line);border-radius:24px;padding:16px 14px 14px;margin-bottom:22px}
+.m3c-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.m3c-head>div{text-align:center}.m3c-head b{display:block;font-size:22px;letter-spacing:-.04em;font-weight:800;margin-top:2px}
+.m3c-head button{width:38px;min-height:38px!important;border-radius:50%!important;border:1px solid var(--m3-line)!important;font-size:20px;line-height:1;padding:0!important}.m3c-head button[disabled]{opacity:.3}
+.m3c-prog{margin-bottom:14px}.m3c-prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}.m3c-prog-top span{font-size:9px;font-weight:800;letter-spacing:.12em;color:var(--m3-muted)}.m3c-prog-top b{font-size:13px;font-weight:800}
+.m3c-bar{position:relative;height:10px;border-radius:99px;background:color-mix(in srgb,var(--m3-accent) 13%,var(--m3-bg))}.m3c-bar i{display:block;height:100%;border-radius:99px;background:var(--m3-accent);transition:width .5s ease-out;min-width:10px}
+.m3c-bar em{position:absolute;top:-3px;bottom:-3px;width:2px;margin-left:-1px;background:var(--m3-ink);border-radius:2px;opacity:.55}
+.m3c-prog small{display:block;font-size:11px;color:var(--m3-muted);margin-top:7px;font-weight:600}
+.m3c-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.m3c-wd{text-align:center;font-size:9px;font-weight:800;color:var(--m3-muted);padding-bottom:4px}
+.m3c-d{aspect-ratio:1;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:1px;border-radius:12px!important;min-height:0!important;padding:0!important;border:1px solid transparent!important;font-weight:400!important;min-width:0;overflow:hidden}
+.m3c-d b{font-size:12px;font-weight:700}.m3c-d small{font-size:6.5px;font-weight:800;letter-spacing:.02em;max-width:92%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.8}
+.m3c-d.out{visibility:hidden}
+.m3c-d.done{background:var(--m3-accent)!important;color:#fff!important}.m3c-d.done.pr{box-shadow:inset 0 0 0 2px var(--m3-ink)}
+.m3c-d.plan{border:1.5px dashed color-mix(in srgb,var(--m3-accent) 55%,transparent)!important;color:var(--m3-accent)}
+.m3c-d.miss{background:color-mix(in srgb,var(--m3-muted) 10%,transparent)}.m3c-d.miss b{color:var(--m3-muted);text-decoration:line-through;text-decoration-thickness:1px}
+.m3c-d.now:not(.done){border:2px solid var(--m3-ink)!important}.m3c-d.now.done{outline:2px solid var(--m3-ink);outline-offset:1px}
+button.m3c-d:active{transform:scale(.92)}
+.m3c-legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:10px;color:var(--m3-muted);font-weight:600}.m3c-legend span{display:flex;align-items:center;gap:5px}.m3c-legend i{width:10px;height:10px;border-radius:3px;display:block}
+.lg-done{background:var(--m3-accent)}.lg-pr{background:var(--m3-accent);box-shadow:inset 0 0 0 2px var(--m3-ink)}.lg-plan{border:1.5px dashed var(--m3-accent)}.lg-miss{background:color-mix(in srgb,var(--m3-muted) 22%,transparent)}
+.m3c-sum{display:grid;grid-template-columns:repeat(3,1fr);margin-top:14px;padding-top:12px;border-top:1px solid var(--m3-line)}.m3c-sum div{text-align:center}.m3c-sum b{display:block;font-size:18px;letter-spacing:-.04em}.m3c-sum small{font-size:8px;font-weight:800;letter-spacing:.1em;color:var(--m3-muted)}
 /* widget sheet */
 .sheet .pane.m3-wsheet{background:var(--m3-bg)!important;border-top:0!important;border-radius:26px 26px 0 0!important;padding:8px 18px calc(env(safe-area-inset-bottom,0px) + 20px)!important;gap:10px!important;color:var(--m3-ink)}
 .sheet .pane>.row:first-child>div[style*="height:5px"]{background:var(--m3-line,#ccc)!important;border-radius:99px;width:40px!important}
@@ -2003,9 +2024,10 @@ function vHist(){
    the shape button) stay out on purpose: they are meant to be found. */
 var CHANGELOG = [
   {v:'1.12', d:'15.10.26', t:'Widgets, fiches et fenêtres',
-   summary:['Sur Aujourd\'hui, touche un exercice de la prochaine séance pour ouvrir sa fiche : historique, records et façon de faire.','Les carrés de l\'accueil deviennent des widgets : choisis ce qu\'ils affichent, en petit, en large ou en grand.','Les fenêtres qui s\'ouvrent par le bas se ferment en les glissant vers le bas.','Un Profil plus simple, et 4 coloris au choix : Forêt, Océan, Terre et Prune.','La barre du bas flotte au-dessus du contenu.'],
+   summary:['Sur Aujourd\'hui, touche un exercice de la prochaine séance pour ouvrir sa fiche : historique, records et façon de faire.','Les carrés de l\'accueil deviennent des widgets : choisis ce qu\'ils affichent, en petit, en large ou en grand.','Les fenêtres qui s\'ouvrent par le bas se ferment en les glissant vers le bas.','Un Profil plus simple, et 4 coloris au choix : Forêt, Océan, Terre et Prune.','La barre du bas flotte au-dessus du contenu.','Le Journal a son calendrier du mois, avec une barre de progression vers ton objectif.'],
    sections:[
     {t:'Les fiches depuis l\'accueil', items:['Tous les exercices de la prochaine séance sont listés, et chacun ouvre sa fiche d\'un tap.','La fiche montre le mouvement, tes notes, tes records et tes dernières séances sur cet exercice.']},
+    {t:'Le calendrier du journal', items:['En haut du Journal, le mois en cours : séances faites en couleur, séances prévues en pointillés, jours manqués barrés.','Touche un jour coloré pour revoir la séance. Les flèches passent d\'un mois à l\'autre.','La barre de progression compte tes séances face à l\'objectif du mois (tes jours d\'entraînement prévus), avec un repère qui montre où tu devrais en être aujourd\'hui.']},
     {t:'Une barre qui flotte', items:['La barre du bas se détache des bords de l\'écran : une pilule légèrement transparente, posée au-dessus du contenu.','Quand tu fais défiler vers le bas, elle s\'estompe peu à peu ; elle revient dès que tu remontes, et elle est toujours là en haut et en bas de la page.']},
     {t:'Profil et coloris', items:['Le Profil est réorganisé : coloris, langue, palier de charge, nouveautés et sauvegarde, sans encadrés.','Quatre coloris : Forêt, Océan, Terre et Prune. Tout l\'appli suit, widgets compris.']},
     {t:'Des fenêtres qui se glissent', items:['Une séance du journal, une fiche ou un widget s\'ouvre dans une fenêtre par le bas : attrape-la par le haut et descends-la du doigt pour la fermer.','Plus bas dans la fenêtre, le geste marche aussi une fois remonté tout en haut.']},
@@ -3439,6 +3461,7 @@ document.addEventListener('click', function(ev){
     case 'closesheet': ui.sheet = null; ui.picker = null; ui.daySheet = null; ui.ficheFrom = null; ui.newsDay = null; ui.storyId = null; ui.storyFrom = null; ui.wSheet = null; break;
     /* home widgets: open, add, pick an info, pick a size, move, remove, save */
     case 'wgopen': var wgi = +el.getAttribute('data-i'), wgw = m3wList()[wgi]; if(wgw) ui.wSheet = {i:wgi, k:wgw.k, z:wgw.z}; break;
+    case 'jcal': ui.calOff = Math.min(1, (ui.calOff || 0) + d); break;
     case 'wgadd': ui.wSheet = {i:-1, k:null, z:'s'}; break;
     case 'wgpick': if(ui.wSheet){ ui.wSheet.k = el.getAttribute('data-k'); } m3wRerender(); return;
     case 'wgsize': if(ui.wSheet) ui.wSheet.z = el.getAttribute('data-z'); m3wRerender(); return;
@@ -3644,6 +3667,7 @@ function vEx(){
 
 function vHist(){
   var h=restBar()+'<header class="m3-page-head"><span class="m3-eyebrow">'+L('JOURNAL','LOG')+'</span><h1>'+L('Ce que tu as','What you have')+'<br><em>'+L('accompli.','achieved.')+'</em></h1></header>';
+  h+=m3jCal();
   if(!S.history.length) return h+'<div class="m3-empty">'+L('Aucune séance pour le moment. Termine ta première séance et ton journal commencera ici.','No sessions yet. Finish your first session and your log will start here.')+'</div>'+nav('hist');
   var names={}; S.history.forEach(function(s){s.exercises.forEach(function(e){names[e.name]=1;});});
   h+='<section class="m3-stats-strip"><div><b>'+S.history.length+'</b><small>'+L('SÉANCES','SESSIONS')+'</small></div><div><b>'+fmtT(S.history.reduce(function(a,x){return a+sessVol(x);},0))+'</b><small>VOLUME</small></div><div><b>'+S.history.reduce(function(a,x){return a+(x.prs||[]).length;},0)+'</b><small>RECORDS</small></div></section>';
@@ -3921,6 +3945,43 @@ function m3wRerender(){ var p = document.querySelector('.sheet .pane'), t = p ? 
   }
   window.addEventListener('scroll', function(){ if(!raf) raf = requestAnimationFrame(apply); }, {passive:true});
 })();
+
+/* ================= JOURNAL: month calendar + progress toward the month's planned sessions ================= */
+function m3jCal(){
+  var off = ui.calOff || 0, now = new Date(), base = new Date(now.getFullYear(), now.getMonth() + off, 1);
+  var y = base.getFullYear(), m = base.getMonth(), nDays = new Date(y, m + 1, 0).getDate(), today = dayKey(Date.now());
+  var MN = L(['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'], ['January','February','March','April','May','June','July','August','September','October','November','December'])[m];
+  var done = {}, vol = 0, prs = 0, n = 0, m0 = base.getTime(), m1 = new Date(y, m + 1, 1).getTime();
+  S.history.forEach(function(h){ if(h.date >= m0 && h.date < m1){ var k = dayKey(h.date); (done[k] = done[k] || []).push(h); vol += sessVol(h); prs += (h.prs || []).length; n++; } });
+  var plannedDays = {}; workouts().forEach(function(w){ if(w.day != null) plannedDays[w.day] = w; });
+  var goal = 0, goalToDate = 0;
+  for(var d = 1; d <= nDays; d++){ var dt = new Date(y, m, d); if(plannedDays[dt.getDay()]){ goal++; if(dayKey(dt.getTime()) <= today) goalToDate++; } }
+  var cells = '', lead = (base.getDay() + 6) % 7;
+  for(var i = 0; i < lead; i++) cells += '<span class="m3c-d out"></span>';
+  for(d = 1; d <= nDays; d++){
+    var t = new Date(y, m, d), k = dayKey(t.getTime()), s = done[k], pl = plannedDays[t.getDay()], cls = 'm3c-d';
+    if(s) cls += ' done' + (s.some(function(x){ return (x.prs || []).length; }) ? ' pr' : '');
+    else if(pl && k > today) cls += ' plan';
+    else if(pl && k < today) cls += ' miss';
+    if(k === today) cls += ' now';
+    cells += s ? '<button class="' + cls + '" data-a="day" data-k="' + k + '" aria-label="' + esc(fmtDate(k) + ' · ' + s.map(function(x){ return x.name; }).join(' + ')) + '"><b>' + d + '</b><small>' + esc(shortName(s[0].name)) + '</small></button>'
+      : '<span class="' + cls + '"><b>' + d + '</b>' + (pl && k >= today ? '<small>' + esc(shortName(pl.name)) + '</small>' : '') + '</span>';
+  }
+  var pct = goal ? Math.min(100, Math.round(n / goal * 100)) : 0, pace = goal ? Math.round(goalToDate / goal * 100) : 0;
+  var note = !goal ? L('Place tes séances sur des jours dans Programme pour avoir un objectif.', 'Put your sessions on days in Program to get a goal.')
+    : n >= goal ? L('Objectif du mois atteint. Bravo.', 'Monthly goal reached. Well done.')
+    : n >= goalToDate ? L('Tu es dans les temps.', 'You are on track.')
+    : L('Encore ' + (goalToDate - n) + ' séance' + (goalToDate - n > 1 ? 's' : '') + ' pour revenir dans le rythme.', (goalToDate - n) + ' more session' + (goalToDate - n > 1 ? 's' : '') + ' to get back on pace.');
+  if(off > 0) note = L('Mois à venir.', 'Upcoming month.');
+  var h = '<section class="m3c">';
+  h += '<div class="m3c-head"><button data-a="jcal" data-d="-1" aria-label="' + L('Mois précédent', 'Previous month') + '">‹</button><div><span class="m3-eyebrow">' + y + '</span><b>' + MN + '</b></div><button data-a="jcal" data-d="1" aria-label="' + L('Mois suivant', 'Next month') + '"' + (off >= 1 ? ' disabled' : '') + '>›</button></div>';
+  h += '<div class="m3c-prog"><div class="m3c-prog-top"><span>' + L('OBJECTIF DU MOIS', 'MONTHLY GOAL') + '</span><b>' + n + (goal ? ' / ' + goal : '') + ' ' + L('séance' + (n > 1 ? 's' : ''), 'session' + (n > 1 ? 's' : '')) + '</b></div>';
+  h += '<div class="m3c-bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + goal + '" aria-valuenow="' + n + '"><i style="width:' + pct + '%"></i>' + (goal && off === 0 && pace < 100 ? '<em style="left:' + pace + '%" title="' + L('Où tu devrais en être aujourd\'hui', 'Where you should be today') + '"></em>' : '') + '</div><small>' + note + '</small></div>';
+  h += '<div class="m3c-grid">' + L(['L','M','M','J','V','S','D'], ['M','T','W','T','F','S','S']).map(function(x){ return '<span class="m3c-wd">' + x + '</span>'; }).join('') + cells + '</div>';
+  h += '<div class="m3c-legend"><span><i class="lg-done"></i>' + L('Faite', 'Done') + '</span><span><i class="lg-pr"></i>' + L('Record', 'Record') + '</span><span><i class="lg-plan"></i>' + L('Prévue', 'Planned') + '</span><span><i class="lg-miss"></i>' + L('Manquée', 'Missed') + '</span></div>';
+  h += '<div class="m3c-sum"><div><b>' + n + '</b><small>' + L('SÉANCES', 'SESSIONS') + '</small></div><div><b>' + fmtT(vol) + '</b><small>' + L('VOLUME', 'VOLUME') + '</small></div><div><b>' + prs + '</b><small>' + L('RECORDS', 'RECORDS') + '</small></div></div>';
+  return h + '</section>';
+}
 
 /* sheets (journal, fiche, widgets…): grab the top and pull down to close, like a native sheet.
    From the top strip it always works; lower in the sheet, only once its content is scrolled to the top. */
