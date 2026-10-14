@@ -27,6 +27,8 @@
   --mono:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif !important;
 }
 html,body{background:var(--ground)!important;color:var(--ink)!important}
+/* iOS : bloque l'effet élastique quand on arrive en haut ou en bas, la barre du bas reste en place */
+html,body{overscroll-behavior:none!important}
 body{font-family:var(--mono)!important;font-size:14px!important;letter-spacing:-.01em}
 #app{max-width:560px!important;padding:0 18px 92px!important;gap:14px!important}
 button,input,textarea{font-family:var(--mono)!important}
