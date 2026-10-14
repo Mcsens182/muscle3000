@@ -189,11 +189,12 @@ button.m3w:active{transform:scale(.97)}
 /* sheets open above the bottom navigation, so their last buttons stay reachable */
 .sheet{z-index:40!important}
 /* bottom navigation: a floating pill, detached from the screen edges (Instagram-like) */
-body nav.nav{bottom:calc(env(safe-area-inset-bottom,0px) + 12px)!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;width:min(420px,calc(100vw - 32px))!important;margin:0!important;padding:5px!important;gap:2px!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;border:1px solid color-mix(in srgb,var(--m3-line) 80%,transparent)!important;border-radius:999px!important;background:color-mix(in srgb,var(--m3-card) 80%,transparent)!important;-webkit-backdrop-filter:saturate(180%) blur(20px)!important;backdrop-filter:saturate(180%) blur(20px)!important;box-shadow:0 12px 32px rgba(0,0,0,.13),0 2px 8px rgba(0,0,0,.06)!important;box-sizing:border-box!important}
+body nav.nav{bottom:max(8px,calc(env(safe-area-inset-bottom,0px) - 10px))!important;left:50%!important;right:auto!important;transform:translateX(-50%) translateY(var(--navy,0px))!important;opacity:var(--navo,1)!important;transition:opacity .18s linear,transform .18s ease-out!important;will-change:opacity,transform;width:min(420px,calc(100vw - 32px))!important;margin:0!important;padding:5px!important;gap:2px!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;border:1px solid color-mix(in srgb,var(--m3-line) 80%,transparent)!important;border-radius:999px!important;background:color-mix(in srgb,var(--m3-card) 80%,transparent)!important;-webkit-backdrop-filter:saturate(180%) blur(20px)!important;backdrop-filter:saturate(180%) blur(20px)!important;box-shadow:0 12px 32px rgba(0,0,0,.13),0 2px 8px rgba(0,0,0,.06)!important;box-sizing:border-box!important}
 body nav.nav button{min-height:46px!important;border:0!important;border-radius:999px!important;font-size:8px!important;letter-spacing:.04em!important;padding:0 2px!important;transition:background .2s,color .2s}
 body nav.nav button.on{background:var(--m3-ink)!important;color:var(--m3-card,#fff)!important}
 body nav.nav .badge{position:relative;top:-1px}
-#app{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 100px)!important}
+html.nav-away body nav.nav{pointer-events:none}
+#app{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 84px)!important}
 /* widget sheet */
 .sheet .pane.m3-wsheet{background:var(--m3-bg)!important;border-top:0!important;border-radius:26px 26px 0 0!important;padding:8px 18px calc(env(safe-area-inset-bottom,0px) + 20px)!important;gap:10px!important;color:var(--m3-ink)}
 .sheet .pane>.row:first-child>div[style*="height:5px"]{background:var(--m3-line,#ccc)!important;border-radius:99px;width:40px!important}
@@ -2005,7 +2006,7 @@ var CHANGELOG = [
    summary:['Sur Aujourd\'hui, touche un exercice de la prochaine séance pour ouvrir sa fiche : historique, records et façon de faire.','Les carrés de l\'accueil deviennent des widgets : choisis ce qu\'ils affichent, en petit, en large ou en grand.','Les fenêtres qui s\'ouvrent par le bas se ferment en les glissant vers le bas.','Un Profil plus simple, et 4 coloris au choix : Forêt, Océan, Terre et Prune.','La barre du bas flotte au-dessus du contenu.'],
    sections:[
     {t:'Les fiches depuis l\'accueil', items:['Tous les exercices de la prochaine séance sont listés, et chacun ouvre sa fiche d\'un tap.','La fiche montre le mouvement, tes notes, tes records et tes dernières séances sur cet exercice.']},
-    {t:'Une barre qui flotte', items:['La barre du bas se détache des bords de l\'écran : une pilule légèrement transparente, posée au-dessus du contenu.']},
+    {t:'Une barre qui flotte', items:['La barre du bas se détache des bords de l\'écran : une pilule légèrement transparente, posée au-dessus du contenu.','Quand tu fais défiler vers le bas, elle s\'estompe peu à peu ; elle revient dès que tu remontes, et elle est toujours là en haut et en bas de la page.']},
     {t:'Profil et coloris', items:['Le Profil est réorganisé : coloris, langue, palier de charge, nouveautés et sauvegarde, sans encadrés.','Quatre coloris : Forêt, Océan, Terre et Prune. Tout l\'appli suit, widgets compris.']},
     {t:'Des fenêtres qui se glissent', items:['Une séance du journal, une fiche ou un widget s\'ouvre dans une fenêtre par le bas : attrape-la par le haut et descends-la du doigt pour la fermer.','Plus bas dans la fenêtre, le geste marche aussi une fois remonté tout en haut.']},
     {t:'Tes widgets', items:['Touche un widget pour changer l\'information qu\'il affiche ou sa taille.','Trois tailles : petit (1 carré), large (2 carrés côte à côte) et grand (4 carrés). En large et en grand, le widget en montre plus : graphique sur 8 semaines, détail, liste.','Treize infos au choix : volume de la dernière séance ou de la semaine, nombre de séances, semaines d\'affilée, ta semaine jour par jour, ton mois, séries, dernière séance, records, progressions, temps d\'entraînement, total soulevé et répartition.','« + Ajouter » pour en mettre d\'autres, « Avant / Après » pour les déplacer, et « Retirer ce widget » pour l\'enlever.','Ta disposition reste sur ton téléphone et fait partie de ta sauvegarde.']}
@@ -3894,6 +3895,21 @@ function vWidgetSheet(){
 }
 /* re-render the sheet without losing where the person had scrolled */
 function m3wRerender(){ var p = document.querySelector('.sheet .pane'), t = p ? p.scrollTop : 0; render(); var q = document.querySelector('.sheet .pane'); if(q) q.scrollTop = t; }
+
+/* bottom bar: fades and sinks gradually while scrolling down, comes back as soon as you scroll up,
+   and is always fully there at the top and at the very bottom of the page */
+(function(){
+  var lastY = window.scrollY || 0, hide = 0, raf = 0, root = document.documentElement;
+  function apply(){
+    raf = 0;
+    var y = window.scrollY || 0, dy = y - lastY, end = window.innerHeight + y >= root.scrollHeight - 6; lastY = y;
+    if(y <= 24 || end) hide = 0; else hide = Math.max(0, Math.min(1, hide + dy / 110));
+    root.style.setProperty('--navo', (1 - hide).toFixed(3));
+    root.style.setProperty('--navy', (hide * 22).toFixed(1) + 'px');
+    root.classList.toggle('nav-away', hide > 0.6);
+  }
+  window.addEventListener('scroll', function(){ if(!raf) raf = requestAnimationFrame(apply); }, {passive:true});
+})();
 
 /* sheets (journal, fiche, widgets…): grab the top and pull down to close, like a native sheet.
    From the top strip it always works; lower in the sheet, only once its content is scrolled to the top. */
