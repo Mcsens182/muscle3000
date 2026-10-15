@@ -2,7 +2,7 @@
    Page : réseau d'abord (les mises à jour arrivent dès qu'il y a du réseau), cache en secours hors-ligne.
    Polices et bibliothèques externes : cache d'abord.
    Les données d'entraînement ne passent jamais par ici : elles restent dans le stockage du téléphone. */
-const VERSION = 'm3000-v21';
+const VERSION = 'm3000-v22';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png', 'icons/favicon-32.png'];
 

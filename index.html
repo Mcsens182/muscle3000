@@ -1139,6 +1139,37 @@ html.hud body .m4-ex{border-radius:var(--h-r)!important}
 html.hud body .m4-ovex.cur{box-shadow:0 0 22px var(--h-soft)}
 html.hud body .m4-finish{border-radius:var(--h-r)!important;border-color:var(--m3-accent)!important;color:var(--m3-accent)!important}
 </style>
+<style id="m5-coach">
+/* onglet Coach : en relief, point quand un message attend */
+body nav.nav.m4-nav button.m5-coachtab,body nav.nav.m4-nav button.m5-coachtab.on{overflow:visible;background:transparent!important;box-shadow:none!important;color:inherit}
+.m5-coachbub{position:relative;display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:23px;background:var(--m3-accent);color:var(--m3-card);transform:translateY(-7px);box-shadow:0 4px 12px color-mix(in srgb,var(--m3-ink) 22%,transparent);transition:transform .15s}
+html.hud .m5-coachbub{background:var(--h-fill);color:var(--h-on);border-radius:var(--h-r);box-shadow:0 0 14px var(--h-glow)}
+body nav.nav.m4-nav button.m5-coachtab svg{stroke-width:2!important}
+body nav.nav.m4-nav button.m5-coachtab.on .m5-coachbub{outline:2px solid var(--m3-accent);outline-offset:3px}
+html.hud body nav.nav.m4-nav button.m5-coachtab.on .m5-coachbub{outline-color:var(--h-fill)}
+.m5-dot{position:absolute;top:-2px;right:-2px;width:12px;height:12px;border-radius:6px;background:#E2551B;border:2px solid var(--m3-card)}
+/* Programme : sous-onglets */
+.m5-phead{padding-bottom:14px!important}
+.m5-seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;margin:0 0 18px;border-radius:14px;background:color-mix(in srgb,var(--m3-ink) 7%,transparent)}
+.m5-seg button{min-height:42px!important;border:0!important;border-radius:10px!important;background:transparent!important;color:var(--m3-muted)!important;font-size:14px!important;font-weight:700!important;padding:0!important}
+.m5-seg button.on{background:var(--m3-card)!important;color:var(--m3-ink)!important;font-weight:800!important;box-shadow:0 1px 3px color-mix(in srgb,var(--m3-ink) 15%,transparent)}
+html.hud .m5-seg,html.hud .m5-seg button{border-radius:var(--h-r)!important}
+.m5-glo{display:flex;flex-direction:column;gap:12px}
+/* Coach */
+.m5-chead{display:flex;align-items:center;gap:12px;padding:26px 2px 16px;border-bottom:1px solid var(--m3-line)}
+.m5-chead>span:last-child{display:flex;flex-direction:column;gap:2px}.m5-chead b{font-size:18px;font-weight:800}.m5-chead small{font-size:12px;color:var(--m3-muted);font-weight:600}
+.m5-ava{width:46px;height:46px;border-radius:23px;background:var(--m3-accent);color:var(--m3-card);display:flex;align-items:center;justify-content:center;font-weight:800;flex:none}
+html.hud .m5-ava{background:var(--h-fill);color:var(--h-on);border-radius:var(--h-r)}
+.m5-chat{display:flex;flex-direction:column;gap:10px;padding:18px 0}
+.m5-day{align-self:center;font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--m3-muted)}
+.m5-bub{margin:0;align-self:flex-start;max-width:84%;background:var(--m3-card);border:1px solid var(--m3-line);border-radius:18px 18px 18px 6px;padding:11px 14px;font-size:15px;line-height:1.4}
+.m5-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:6px;opacity:.5}
+.m5-choices span{display:flex;align-items:center;min-height:44px;padding:8px 12px;border:1.5px dashed var(--m3-ink);border-radius:12px;font-size:13px;font-weight:700}
+.m5-prem{display:flex;flex-direction:column;gap:8px;padding:18px;border-radius:18px;background:var(--m3-ink);color:var(--m3-card);margin-bottom:24px}
+.m5-prem .m3-eyebrow{color:inherit;opacity:.7}.m5-prem b{font-size:19px;line-height:1.25}.m5-prem p{margin:0;font-size:14px;line-height:1.45;opacity:.85}
+html.hud .m5-prem,html.hud .m5-choices span,html.hud .m5-bub{border-radius:var(--h-r)}
+</style>
+
 
 <div id="app"></div>
 <div id="sheet"></div>
@@ -2630,7 +2661,7 @@ function vHist(){
    the shape button) stay out on purpose: they are meant to be found. */
 var CHANGELOG = [
   {v:'1.15', d:'15.10.26', t:'Séance guidée, journal modifiable et nouveau look',
-   summary:['En séance, une série à la fois : charge et reps en très gros, un pavé numérique maison, un énorme bouton Valider et le repos en plein écran.','Une erreur ? Corrige la série que tu viens de valider pendant le repos, ou n\'importe quelle série en touchant sa barre.','Le Journal devient modifiable : corrige, supprime ou ajoute une séance oubliée. Les records se recalculent.','Pompes, tractions, dips et gainage sont gérés au poids du corps ou en durée, avec leurs propres records.','Les vrais supersets, l\'échauffement automatique, le calcul des disques et le remplacement d\'un exercice quand la machine est prise.','En fin de séance modifiée, trois choix clairs : écraser le modèle, créer un nouveau workout ou juste enregistrer.','Un nouveau style au choix, HUD, 4 coloris, des widgets sur l\'accueil, une bibliothèque de 11 programmes et un premier lancement guidé.'],
+   summary:['En séance, une série à la fois : charge et reps en très gros, un pavé numérique maison, un énorme bouton Valider et le repos en plein écran.','Une erreur ? Corrige la série que tu viens de valider pendant le repos, ou n\'importe quelle série en touchant sa barre.','Le Journal devient modifiable : corrige, supprime ou ajoute une séance oubliée. Les records se recalculent.','Pompes, tractions, dips et gainage sont gérés au poids du corps ou en durée, avec leurs propres records.','Les vrais supersets, l\'échauffement automatique, le calcul des disques et le remplacement d\'un exercice quand la machine est prise.','En fin de séance modifiée, trois choix clairs : écraser le modèle, créer un nouveau workout ou juste enregistrer.','Un nouveau style au choix, HUD, 4 coloris, des widgets sur l\'accueil, une bibliothèque de 11 programmes et un premier lancement guidé.','Un onglet Coach avec ton bilan de la semaine, et la bibliothèque d\'exercices rangée dans Programme.'],
    sections:[
     {t:'Une série à la fois', items:['L\'écran de séance montre seulement la série en cours : la charge et les reps proposées en grand, des boutons + et − larges, et Valider en bas.','Touche le chiffre pour ouvrir un pavé numérique géant : plus de clavier du téléphone qui cache l\'écran. Laisse le doigt appuyé sur + ou − pour faire défiler la valeur.','La charge et les reps calculées par la double progression sont en grisé : Valider sans rien toucher les enregistre. « La dernière fois » recopie ta perf précédente.','Une note par exercice s\'écrit directement sous les chiffres, d\'un tap.','L\'heure de fin prévue s\'affiche en haut, calculée avec tes temps de repos.','« Toutes les séries » ouvre la vue en liste ; l\'appli retient ton choix.']},
     {t:'Le repos', items:['Après Valider, le repos prend tout l\'écran : un grand chrono, ±15 s, et la série qui suit avec sa charge. À zéro, un petit son, puis la série suivante s\'ouvre seule.','En vue liste, le repos s\'affiche en grand sous la série, et un bandeau le rappelle en haut quand il sort de l\'écran.','Dans Profil › Notifications, « Fin de repos » te prévient quand tu es sur une autre appli ou écran verrouillé.','Un seul réglage « Repos entre séries » par exercice, et le repos avant l\'exercice suivant sous la dernière série.']},
@@ -2642,6 +2673,8 @@ var CHANGELOG = [
     {t:'Remplacer un exercice', items:['Machine prise ? « ⇄ » à côté du nom de l\'exercice propose d\'abord des exercices du même groupe musculaire.','Ta note et les séries qui restent passent sur le nouvel exercice. Les séries déjà faites restent sur l\'ancien.']},
     {t:'La fin de séance', items:['Si ta séance a changé, trois choix : écraser le modèle, créer un nouveau workout avec ces modifications (rangé où tu veux), ou juste enregistrer la séance.','La liste des changements s\'affiche avant de choisir : exercices ajoutés, retirés, remplacés, séries en plus ou en moins, ordre.','Une séance restée ouverte depuis plusieurs heures ? À l\'ouverture, l\'appli propose de la terminer à l\'heure de ta dernière série.']},
     {t:'Programmes', items:['L\'onglet Programme ouvre directement la bibliothèque : tes programmes, puis les 11 prêts à l\'emploi, de 2 à 6 jours, du débutant au confirmé. Zero To Hero devient Ascension.','Touche un programme pour voir ses séances, puis une séance pour voir chaque exercice, ses séries, ses cibles et ses repos. Le crayon la modifie.','La séance libre se lance depuis Aujourd\'hui, sous la prochaine séance.','En démarrant une séance, tu vois d\'abord toutes les séries à faire. La série en grand s\'ouvre quand tu lances le premier exercice.','La barre du bas passe en icônes.','Une nouvelle installation pose quatre questions (objectif, niveau, jours, matériel) et propose le programme qui colle. Ce parcours ne s\'affiche qu\'une fois.','La durée annoncée d\'une séance s\'appuie sur tes vraies séances, ou sur tes temps de repos.']},
+    {t:'Le Coach', items:['Un nouvel onglet Coach au centre de la barre, légèrement en relief, à la place d\'Exercices. Un petit point apparaît quand il a un message pour toi.','Chaque semaine, il fait ton bilan : séances faites par rapport à ton programme, et il repère un exercice qui stagne depuis trois séances.','Le coach premium arrive bientôt : réponses à choix, diagnostic des plateaux et séances ajustées d\'un tap.']},
+    {t:'Exercices dans Programme', items:['L\'onglet Programme a trois sous-onglets : Programmes, Séances et Exercices.','Séances liste toutes tes séances, programme par programme. Exercices reprend l\'ancien onglet : recherche, groupes musculaires, fiches et création d\'un exercice.']},
     {t:'Accueil, fiches et style', items:['Les carrés de l\'accueil sont des widgets : 13 infos au choix, en petit, large ou grand. Appui long pour les déplacer.','Touche un exercice de la prochaine séance pour ouvrir sa fiche : mouvement, notes, courbe de progression, records et dernières séances.','Profil › Style : Édito (clair) ou HUD (néon, sur fond noir ou blanc), avec 4 coloris.','Le Journal a son calendrier du mois et une barre de progression vers ton objectif.','Les fenêtres qui s\'ouvrent par le bas se ferment en les glissant vers le bas. La barre du bas flotte au-dessus du contenu.']},
     {t:'Sauvegarde et corrections', items:['En fin de séance, l\'appli te propose d\'envoyer ta sauvegarde toutes les 10 séances (réglable dans Profil › Sauvegarde).','L\'éditeur de séance s\'ouvre de nouveau correctement.']}
    ],
@@ -3855,7 +3888,8 @@ function render(){
   else if(ui.screen === 'hist') html = vHist();
   else if(ui.screen === 'set') html = vSet();
   else if(ui.screen === 'prog') html = vProg();
-  else if(ui.screen === 'glo') html = vGlo();
+  else if(ui.screen === 'glo'){ ui.screen = 'prog'; ui.progTab = 'ex'; html = vProg(); }
+  else if(ui.screen === 'coach') html = vCoach();
   else if(ui.screen === 'news') html = vNews();
   else if(ui.screen === 'done') html = vDone();
   else html = vHome();
@@ -5833,12 +5867,14 @@ var M4_ICONS = {
   prog:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4V3h6v1"/><path d="M8.5 10h7M8.5 13.5h7M8.5 17h4"/></svg>',
   glo:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 12h10"/><rect x="3.5" y="8" width="3.5" height="8" rx="1"/><rect x="17" y="8" width="3.5" height="8" rx="1"/><path d="M2 10.5v3M22 10.5v3"/></svg>',
   hist:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M4 9.5h16M8.5 3v4M15.5 3v4"/><path d="m9 14.5 2 2 4-4"/></svg>',
+  coach:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10H11l-4.5 4v-4H4z"/><path d="M9 10.5h.01M12 10.5h.01M15 10.5h.01"/></svg>',
   set:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4.5 20.5c1.2-3.8 4.1-5.5 7.5-5.5s6.3 1.7 7.5 5.5"/></svg>'
 };
 function nav(on){
-  var tabs = [['home', L('Aujourd\'hui', 'Today')], ['prog', L('Programme', 'Program')], ['glo', L('Exercices', 'Exercises')], ['hist', L('Journal', 'Log')], ['set', L('Profil', 'Profile')]];
+  var tabs = [['home', L('Aujourd\'hui', 'Today')], ['prog', L('Programme', 'Program')], ['coach', L('Coach', 'Coach')], ['hist', L('Journal', 'Log')], ['set', L('Profil', 'Profile')]];
   return '<nav class="nav m4-nav" aria-label="Navigation">' + tabs.map(function(t){
     var badge = t[0] === 'set' && unreadLog();
+    if(t[0] === 'coach'){ var cu = m5CoachUnread(); return '<button class="m5-coachtab' + (on === 'coach' ? ' on' : '') + '" data-a="scr" data-s="coach" aria-label="' + t[1] + (cu ? L(', nouveau message', ', new message') : '') + '"' + (on === 'coach' ? ' aria-current="page"' : '') + '><span class="m5-coachbub">' + M4_ICONS.coach + (cu ? '<i class="m5-dot" aria-hidden="true"></i>' : '') + '</span></button>'; }
     return '<button class="' + (on === t[0] ? 'on' : '') + '" data-a="scr" data-s="' + t[0] + '" aria-label="' + t[1] + (badge ? L(', nouveauté à lire', ', something new to read') : '') + '"' + (on === t[0] ? ' aria-current="page"' : '') + '>' + M4_ICONS[t[0]] + (badge ? '<span class="badge" aria-hidden="true">1</span>' : '') + '</button>';
   }).join('') + '</nav>';
 }
@@ -5932,7 +5968,7 @@ function vProg(){
     if(ui.pvW && !w) ui.pvW = null;
     return h + (w ? m4WkView(p, w) : m4ProgView(p)) + nav('prog');
   }
-  return h + m4ProgList() + nav('prog');
+  return h + m5ProgRoot() + nav('prog');
 }
 
 /* ---------- Aujourd'hui : la séance libre sous la prochaine séance ---------- */
@@ -6006,6 +6042,89 @@ document.addEventListener('click', function(ev){
     case 'wback': if(ui.pvW && ui.edWk === ui.pvW){ ui.edWk = null; ui.edProg = null; ui.confirm = null; window.scrollTo(0, 0); return stop(); } return;
     case 'pback': if(ui.pvP){ ui.edProg = null; ui.confirm = null; window.scrollTo(0, 0); return stop(); } return;
   }
+}, true);
+
+
+/* ================= 1.15 (suite) : ONGLET COACH, EXERCICES DANS PROGRAMME =================
+   La barre du bas : Aujourd'hui · Programme · Coach · Journal · Profil.
+   Programme a trois sous-onglets : Programmes · Séances · Exercices (l'ancien onglet Exercices).
+   Le Coach : un bilan de la semaine calculé sur le téléphone, en attendant le coach premium. */
+function m5ProgRoot(){
+  var t = ui.progTab || 'prog', tabs = [['prog', L('Programmes', 'Programs')], ['ses', L('Séances', 'Sessions')], ['ex', L('Exercices', 'Exercises')]];
+  var h = '<header class="m3-page-head m5-phead"><span class="m3-eyebrow">' + L('BIBLIOTHÈQUE', 'LIBRARY') + '</span><h1>' + L('Programme', 'Program') + '</h1></header>';
+  h += '<div class="m5-seg" role="tablist" aria-label="' + L('Bibliothèque', 'Library') + '">' + tabs.map(function(x){
+    return '<button role="tab" class="' + (t === x[0] ? 'on' : '') + '" aria-selected="' + (t === x[0]) + '" data-a="ptab" data-t="' + x[0] + '">' + x[1] + '</button>';
+  }).join('') + '</div>';
+  if(t === 'ses') return h + m5Seances();
+  if(t === 'ex') return h + m5GloBody();
+  return h + m4ProgList().replace(/^<header class="m3-page-head">[\s\S]*?<\/header>/, '');
+}
+function m5Seances(){
+  var h = '', any = false;
+  realProgs().concat([freeProg()]).forEach(function(p){
+    var ws = p.workouts.filter(function(w){ return w.ex.length; }); if(!ws.length) return; any = true;
+    h += '<div class="m3-section-head"><span>' + esc(p.free ? L('SÉANCES LIBRES', 'FREE SESSIONS') : trText(p.name).toUpperCase()) + '</span><b>' + ws.length + '</b></div><div class="m3s-list">';
+    ws.forEach(function(w){ h += '<button class="m3s-row" data-a="pvsw" data-p="' + esc(p.id) + '" data-id="' + esc(w.id) + '"><span>' + esc(trText(w.name)) + '<small>' + m4WkMeta(w) + '</small></span><b>›</b></button>'; });
+    h += '</div>';
+  });
+  return any ? h : '<div class="m3-empty">' + L('Aucune séance pour l\'instant. Ajoute un programme depuis l\'onglet Programmes.', 'No sessions yet. Add a program from the Programs tab.') + '</div>';
+}
+function m5GloBody(){
+  var g = vGlo(), i = g.indexOf('<label class="lbl" for="glo-q"'), j = g.lastIndexOf('<nav');
+  return '<div class="m5-glo">' + (i >= 0 ? g.slice(i, j > i ? j : g.length) : '') + '</div>';
+}
+
+/* ---------- Coach : bilan de la semaine ---------- */
+function m5WeekStart(){ var d = new Date(); d.setHours(0,0,0,0); var k = (d.getDay() + 6) % 7; d.setDate(d.getDate() - k); return d.getTime(); }
+function m5Week(){ var w0 = m5WeekStart(); return S.history.filter(function(x){ return new Date(x.date).getTime() >= w0; }); }
+function m5Top(rec, name){
+  var e = rec.exercises.filter(function(x){ return fold(x.name) === fold(name); })[0]; if(!e) return null;
+  var best = null;
+  e.sets.forEach(function(st){ if(st.warm || st.w == null || st.r == null) return; if(!best || st.w > best.w || (st.w === best.w && st.r > best.r)) best = {w:st.w, r:st.r}; });
+  return best;
+}
+function m5Plateau(){
+  var hist = S.history.slice().sort(function(a, b){ return new Date(b.date) - new Date(a.date); }), seen = {};
+  for(var i = 0; i < hist.length && i < 12; i++){
+    var ex = hist[i].exercises;
+    for(var k = 0; k < ex.length; k++){
+      var n = ex[k].name; if(seen[fold(n)]) continue; seen[fold(n)] = 1;
+      if(exType(n) !== 'w') continue;
+      var tops = [];
+      for(var j = i; j < hist.length && tops.length < 3; j++){ var t = m5Top(hist[j], n); if(t) tops.push(t); }
+      if(tops.length === 3 && tops[0].w === tops[2].w && tops[1].w === tops[0].w && tops[0].r <= tops[2].r) return {n:n, w:tops[0].w, r:tops[0].r};
+    }
+  }
+  return null;
+}
+function m5CoachMsgs(){
+  var wk = m5Week(), ap = activeProg(), goal = ap ? ap.workouts.filter(function(w){ return w.ex.length; }).length : 0, m = [];
+  if(!S.history.length) return [L('Salut. Fais ta première séance, je te fais ton premier bilan juste après.', 'Hi. Do your first session and I\'ll give you your first review right after.')];
+  if(!wk.length) m.push(L('Pas encore de séance cette semaine. La prochaine t\'attend sur Aujourd\'hui.', 'No session yet this week. The next one is waiting on Today.'));
+  else m.push(plural(wk.length, L('séance', 'session')) + (goal ? L(' sur ', ' out of ') + goal + L(' cette semaine.', ' this week.') : L(' cette semaine.', ' this week.')) + (goal && wk.length >= goal ? L(' Propre.', ' Clean.') : ''));
+  var pl = m5Plateau();
+  if(pl) m.push(exDisp(pl.n) + L(' ne bouge plus depuis 3 séances, à ', ' hasn\'t moved in 3 sessions, at ') + fmtS(pl.n, pl.w, pl.r) + L('. J\'ai une idée pour le relancer.', '. I have an idea to get it going again.'));
+  return m;
+}
+function m5CoachKey(){ return m5WeekStart() + ':' + m5CoachMsgs().join('|').length; }
+function m5CoachUnread(){ try{ return S.history.length > 0 && (S.settings.coachSeen || '') !== m5CoachKey(); }catch(e){ return false; } }
+function vCoach(){
+  if(m5CoachUnread()){ S.settings.coachSeen = m5CoachKey(); save(); }
+  var h = restBar();
+  h += '<header class="m5-chead"><span class="m5-ava" aria-hidden="true">?</span><span><b>' + L('Ton coach', 'Your coach') + '</b><small>' + L('Bilan de la semaine', 'Weekly review') + '</small></span></header>';
+  h += '<div class="m5-chat"><div class="m5-day">' + L('CETTE SEMAINE', 'THIS WEEK') + '</div>';
+  m5CoachMsgs().forEach(function(t){ h += '<p class="m5-bub">' + esc(t) + '</p>'; });
+  h += '<div class="m5-choices" aria-hidden="true"><span><b>A</b> · ' + L('Je veux savoir', 'Tell me') + '</span><span><b>B</b> · ' + L('Montre le plan', 'Show the plan') + '</span><span><b>C</b> · ' + L('Ajuste ma séance', 'Adjust my session') + '</span><span><b>D</b> · ' + L('Plus tard', 'Later') + '</span></div></div>';
+  h += '<section class="m5-prem"><span class="m3-eyebrow">' + L('COACH PREMIUM · BIENTÔT', 'PREMIUM COACH · SOON') + '</span><b>' + L('Réponds-lui et laisse-le ajuster tes séances.', 'Answer him and let him adjust your sessions.') + '</b><p>' + L('Conversation à choix, diagnostic des plateaux, conseils technique et séances mises à jour d\'un tap.', 'Choice-based chat, plateau diagnosis, technique tips and sessions updated in one tap.') + '</p></section>';
+  return h + nav('coach');
+}
+document.addEventListener('click', function(ev){
+  var el = ev.target.closest && ev.target.closest('[data-a]'); if(!el) return;
+  var a = el.getAttribute('data-a');
+  var stop = function(){ ev.stopPropagation(); ev.preventDefault(); render(); };
+  if(a === 'ptab'){ ui.progTab = el.getAttribute('data-t'); ui.pvP = null; ui.pvW = null; window.scrollTo(0, 0); return stop(); }
+  if(a === 'pvsw'){ ui.pvP = el.getAttribute('data-p'); ui.pvW = el.getAttribute('data-id'); ui.confirm = null; window.scrollTo(0, 0); return stop(); }
+  if(a === 'scr' && el.getAttribute('data-s') === 'glo'){ ui.screen = 'prog'; ui.progTab = 'ex'; ui.pvP = null; ui.pvW = null; window.scrollTo(0, 0); return stop(); }
 }, true);
 
 if(!S.settings.exType) S.settings.exType = {};
