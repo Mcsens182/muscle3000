@@ -729,6 +729,149 @@ html.hud body .m3f-kpi b,html.hud body .m3f-stats b{font-family:'Space Mono',ui-
 html.hud body button.m3-lastchip{border-radius:6px!important}
 html.hud body .sheet .pane.m3f{border-radius:14px 14px 0 0!important}
 </style>
+<style id="m3k-v114">
+/* ===== 1.14 : parcours d'ouverture, bibliothèque, séance une série à la fois ===== */
+.onb{min-height:100vh;min-height:100dvh;box-sizing:border-box;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 34px) 4px calc(env(safe-area-inset-bottom,0px) + 22px);color:var(--m3-ink)}
+.onb-brand{display:flex;align-items:center;gap:10px}
+.onb-logo{width:40px;height:40px;border-radius:12px;background:var(--m3-ink);color:var(--m3-bg);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.onb-hero{margin-top:auto;display:flex;flex-direction:column;gap:16px}
+.onb-hero h1,.onb-q{margin:0;font-size:44px;line-height:.98;letter-spacing:-.055em;font-weight:800}
+.onb-q{font-size:33px;margin:8px 0 22px}
+.onb-hero h1 em,.onb-q em{font-style:normal;color:var(--m3-accent)}
+.onb-hero p{margin:0;font-size:15px;line-height:1.5;font-weight:600;color:var(--m3-muted)}
+.onb-chips{display:flex;flex-wrap:wrap;gap:7px}.onb-chips span{font-size:11px;font-weight:700;padding:7px 11px;border-radius:99px;background:var(--m3-tint)}
+.onb-foot{margin-top:auto;padding-top:28px;display:flex;flex-direction:column;gap:10px}
+button.onb-next,button.onb-pick{display:flex!important;justify-content:space-between;align-items:center;width:100%;min-height:58px!important;padding:0 22px!important;border-radius:18px!important;border:0!important;background:var(--m3-ink)!important;color:var(--m3-card)!important;font-size:15px!important;font-weight:800!important;letter-spacing:.02em}
+button.onb-alt{min-height:50px!important;border-radius:18px!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important;font-size:14px!important;font-weight:700!important}
+button.onb-link{border:0!important;background:transparent!important;color:var(--m3-accent)!important;font-weight:800!important;min-height:46px!important}
+.onb-small{margin:2px 0 0;text-align:center;font-size:12px;font-weight:600;color:var(--m3-muted)}
+.onb-top{display:flex;align-items:center;gap:14px;margin-bottom:30px}
+button.onb-back{width:40px;min-height:40px!important;padding:0!important;border-radius:50%!important;border:1px solid var(--m3-line)!important;background:transparent!important;font-weight:800!important;flex:none}
+.onb-bars{flex:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.onb-bars span{height:5px;border-radius:99px;background:color-mix(in srgb,var(--m3-accent) 16%,var(--m3-bg))}.onb-bars span.on{background:var(--m3-accent)}
+.onb-n{font-size:11px;font-weight:800;color:var(--m3-muted)}
+.onb-eye{display:block}
+.onb-list{display:flex;flex-direction:column;gap:9px}
+button.onb-opt{display:flex!important;align-items:center;gap:14px;text-align:left;min-height:76px!important;padding:14px 16px!important;border-radius:18px!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important}
+button.onb-opt.on{border:2px solid var(--m3-accent)!important;background:var(--m3-tint)!important}
+.onb-opt-t{flex:1;display:flex;flex-direction:column;gap:3px}.onb-opt-t b{font-size:16px}.onb-opt-t small{font-size:12px;font-weight:600;color:var(--m3-muted)}
+.onb-radio{width:22px;height:22px;flex:none;border-radius:50%;border:2px solid var(--m3-line);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:12px;font-weight:800}
+.onb-opt.on .onb-radio{background:var(--m3-accent);border-color:var(--m3-accent);color:var(--m3-card)}
+.onb-lv{width:46px;height:46px;flex:none;border-radius:14px;background:var(--m3-tint);display:flex;align-items:flex-end;justify-content:center;gap:3px;padding-bottom:12px;box-sizing:border-box}
+.onb-opt.on .onb-lv{background:var(--m3-card)}
+.onb-lv i{width:6px;border-radius:2px;background:var(--m3-line)}.onb-lv i:nth-child(1){height:8px}.onb-lv i:nth-child(2){height:14px}.onb-lv i:nth-child(3){height:20px}.onb-lv i.on{background:var(--m3-accent)}
+.onb-tip{margin:16px 0 0;padding:14px 16px;border-radius:16px;background:var(--m3-tint);font-size:12px;line-height:1.5;font-weight:600}
+.onb-tip2{margin:12px 0 0;font-size:12px;line-height:1.5;font-weight:600;color:var(--m3-muted)}
+.onb-nums{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+.onb-nums button{min-height:74px!important;border-radius:16px!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important;font-size:26px!important;font-weight:800!important}
+.onb-nums button.on{background:var(--m3-accent)!important;border-color:var(--m3-accent)!important;color:var(--m3-card)!important}
+.onb-days{margin-top:12px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.onb-days button{min-height:54px!important;padding:0!important;border-radius:14px!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important;font-size:11px!important;font-weight:800!important;color:var(--m3-muted)!important}
+.onb-days button.on{border:2px solid var(--m3-accent)!important;background:var(--m3-tint)!important;color:var(--m3-ink)!important}
+.onb-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+button.onb-gear{display:flex!important;flex-direction:column;align-items:flex-start;gap:9px;text-align:left;min-height:132px!important;padding:16px!important;border-radius:18px!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important}
+button.onb-gear.on{border:2px solid var(--m3-accent)!important;background:var(--m3-tint)!important}.onb-gear.on svg{color:var(--m3-accent)}
+.onb-gear b{font-size:15px}.onb-gear small{font-size:11px;font-weight:600;color:var(--m3-muted);line-height:1.4}
+.onb-reco{background:var(--m3-ink);color:var(--m3-card);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.onb-reco-top{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:800;letter-spacing:.14em;opacity:.85}
+.onb-reco-top em{font-style:normal;letter-spacing:0;font-size:11px;font-weight:700;padding:5px 10px;border-radius:99px;background:color-mix(in srgb,var(--m3-card) 14%,transparent)}
+.onb-reco h2{margin:0;font-size:36px;line-height:1;letter-spacing:-.05em;font-weight:800}
+.onb-reco-meta{margin:-6px 0 0;font-size:12px;font-weight:600;opacity:.8}
+.onb-week{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.onb-week div{background:color-mix(in srgb,var(--m3-card) 9%,transparent);border-radius:14px;padding:10px;min-width:0}
+.onb-week span{display:block;font-size:9px;font-weight:800;letter-spacing:.1em;opacity:.75}
+.onb-week b{display:block;font-size:13px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.onb-week small{display:block;font-size:10px;margin-top:3px;opacity:.78;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.onb-reco-d{margin:0;font-size:12px;line-height:1.5;font-weight:600;opacity:.9}
+.onb-reco button.onb-pick{background:var(--m3-card)!important;color:var(--m3-ink)!important}
+.lib-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+button.lib-card{display:flex!important;flex-direction:column;align-items:stretch;gap:7px;text-align:left;padding:14px 16px!important;min-height:0!important;border-radius:18px!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important}
+button.lib-card.on{border:2px solid var(--m3-accent)!important}
+.lib-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.lib-top b{font-size:17px;letter-spacing:-.02em}.lib-top em{font-style:normal;font-size:11px;font-weight:800;color:var(--m3-accent);white-space:nowrap}
+.lib-d{font-size:12px;line-height:1.45;font-weight:600;color:var(--m3-muted)}
+.lib-tags{display:flex;gap:5px;flex-wrap:wrap}.lib-tags i{font-style:normal;font-size:10px;font-weight:800;padding:4px 8px;border-radius:99px;background:var(--m3-tint)}
+
+/* séance une série à la fois */
+.fx-head{display:flex;justify-content:space-between;align-items:center;padding-top:16px;font-size:13px;font-weight:800}
+.fx-head button{border:0!important;background:transparent!important;padding:0!important;min-height:40px!important;font-size:13px!important;font-weight:800!important}
+.fx-head span{color:var(--m3-muted)}.fx-head b{font-variant-numeric:tabular-nums}
+.m3-progress.fx-prog{margin:8px 0 0!important}
+.fx-title{margin-top:24px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.fx-title h1{margin:6px 0 0;font-size:30px;line-height:1;letter-spacing:-.05em;font-weight:800}
+button.fx-info{flex:none;width:40px;min-height:40px!important;padding:0!important;border-radius:50%!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important;font-weight:800!important}
+.fx-dots{display:flex;gap:6px;margin-top:14px}.fx-dots i{flex:1;height:8px;border-radius:99px;background:color-mix(in srgb,var(--m3-accent) 16%,var(--m3-bg))}.fx-dots i.warm{flex:.5}.fx-dots i.done{background:var(--m3-accent)}.fx-dots i.now{background:var(--m3-ink)}
+.fx-over{margin-top:12px;align-self:flex-start;font-size:12px;font-weight:700;color:var(--m3-accent)}
+.fx-card{margin-top:18px;background:var(--m3-card);border:1px solid var(--m3-line);border-radius:28px;padding:18px 16px;display:flex;flex-direction:column;gap:14px}
+.fx-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+button.fx-pm{width:58px;min-height:58px!important;height:58px;flex:none;padding:0!important;border-radius:50%!important;border:1px solid var(--m3-line)!important;background:var(--m3-bg)!important;font-size:26px!important;font-weight:700!important}
+.fx-val{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center}
+.fx-val span{font-size:10px;font-weight:800;letter-spacing:.14em;color:var(--m3-muted)}
+.fx-val input{width:100%!important;border:0!important;background:transparent!important;text-align:center;font-size:72px!important;line-height:1;padding:0!important;font-weight:800!important;letter-spacing:-.06em;font-variant-numeric:tabular-nums;color:var(--m3-ink)!important;min-height:0!important}
+.fx-val input::placeholder{color:var(--m3-ink);opacity:.35}
+.fx-val small{font-size:12px;font-weight:700;color:var(--m3-muted)}.fx-val small.hint{color:var(--m3-accent);font-weight:800}
+.fx-sep{height:1px;background:var(--m3-line)}
+button.fx-last{margin-top:12px;align-self:center;display:block!important;margin-left:auto;margin-right:auto;min-height:40px!important;padding:0 16px!important;border-radius:99px!important;border:1px dashed color-mix(in srgb,var(--m3-accent) 45%,var(--m3-line))!important;background:transparent!important;font-size:12px!important;font-weight:700!important}
+.fx-cue{margin:12px 0 0;text-align:center;font-size:12px;line-height:1.45;font-weight:600;color:var(--m3-muted)}
+button.fx-validate{width:100%;margin-top:20px;min-height:92px!important;border-radius:28px!important;border:0!important;background:var(--m3-accent)!important;color:var(--m3-card)!important;font-size:22px!important;font-weight:800!important;letter-spacing:.04em;display:flex!important;align-items:center;justify-content:center;gap:12px}
+button.fx-validate:active{transform:scale(.985)}
+button.fx-foot{width:100%;margin-top:10px;display:flex!important;flex-direction:column;align-items:center;gap:5px;border:0!important;background:transparent!important;min-height:52px!important;font-size:11px!important;font-weight:700!important;color:var(--m3-muted)!important}
+.fx-foot i{width:36px;height:4px;border-radius:99px;background:var(--m3-line)}
+.fx-end{margin-top:40px;display:flex;flex-direction:column}
+.fx-end h1{margin:8px 0;font-size:34px;line-height:1;letter-spacing:-.05em;font-weight:800}.fx-end p{margin:0;font-size:14px;font-weight:700;color:var(--m3-muted);font-variant-numeric:tabular-nums}
+button.fx-alt{margin-top:10px;min-height:48px!important;border-radius:16px!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important;font-size:13px!important;font-weight:700!important}
+.fx-confirm{margin-top:14px}
+/* repos plein écran */
+.fx-rest{position:fixed;inset:0;z-index:45;background:var(--m3-ink);color:var(--m3-card);display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 24px) 22px calc(env(safe-area-inset-bottom,0px) + 22px);box-sizing:border-box;overflow:auto}
+.fx-rest-done{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:16px;background:color-mix(in srgb,var(--m3-card) 9%,transparent);font-size:13px;font-weight:700;max-width:480px;width:100%;margin:0 auto;box-sizing:border-box}
+.fx-rest-done i{width:26px;height:26px;flex:none;border-radius:50%;background:var(--m3-accent);color:var(--m3-card);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:13px;font-weight:800}
+.fx-ring{position:relative;width:min(300px,72vw);aspect-ratio:1;margin:30px auto 0}
+.fx-ring svg{position:absolute;inset:0;width:100%;height:100%}
+.fx-ring-bg{fill:none;stroke:color-mix(in srgb,var(--m3-card) 12%,transparent);stroke-width:12}
+.fx-ring-fg{fill:none;stroke:var(--m3-accent);stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset .25s linear}
+.fx-ring>div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.fx-ring strong{font-size:min(96px,22vw);line-height:.9;letter-spacing:-.06em;font-weight:800;font-variant-numeric:tabular-nums}
+.fx-ring small{margin-top:8px;font-size:12px;font-weight:700;opacity:.7}
+.fx-rest-adj{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:28px auto 0;max-width:480px;width:100%}
+.fx-rest-adj button{min-height:56px!important;border-radius:18px!important;border:1px solid color-mix(in srgb,var(--m3-card) 28%,transparent)!important;background:transparent!important;color:var(--m3-card)!important;font-size:17px!important;font-weight:800!important}
+.fx-rest-next{margin:auto auto 0;max-width:480px;width:100%;box-sizing:border-box;padding:16px;border-radius:20px;background:var(--m3-card);color:var(--m3-ink);display:flex;align-items:center;gap:14px}
+.fx-rest-next>div{flex:1;min-width:0}.fx-rest-next span{display:block;font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--m3-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fx-rest-next b{display:block;font-size:22px;font-weight:800;letter-spacing:-.04em;margin-top:2px}
+.fx-rest-next button{flex:none;min-height:52px!important;padding:0 18px!important;border-radius:16px!important;border:0!important;background:var(--m3-ink)!important;color:var(--m3-card)!important;font-size:13px!important;font-weight:800!important;letter-spacing:.04em}
+.fx-rest-tip{margin:12px 0 0;text-align:center;font-size:11px;font-weight:600;opacity:.65}
+button.fx-switch{width:100%;margin-top:10px;min-height:42px!important;border-radius:14px!important;border:1px dashed var(--m3-line)!important;background:transparent!important;font-size:12px!important;font-weight:800!important;color:var(--m3-accent)!important}
+
+/* HUD */
+html.hud body .onb-hero h1,html.hud body .onb-q,html.hud body .onb-reco h2,html.hud body .fx-title h1,html.hud body .fx-end h1{font-family:'Anton',Impact,'Arial Narrow',sans-serif!important;font-weight:400!important;text-transform:uppercase;letter-spacing:.01em!important}
+html.hud body .onb-hero h1 em,html.hud body .onb-q em{text-shadow:0 0 18px var(--h-glow)}
+html.hud.neg body .onb-hero h1 em,html.hud.neg body .onb-q em{text-shadow:none;color:var(--m3-ink);background:linear-gradient(transparent 62%,var(--h-fill) 62%,var(--h-fill) 92%,transparent 92%)}
+html.hud body button.onb-next,html.hud body button.onb-pick{background:var(--h-fill)!important;color:var(--h-on)!important;border-radius:var(--h-r)!important;box-shadow:0 0 22px var(--h-soft)}
+html.hud body .onb-reco{background:linear-gradient(160deg,color-mix(in srgb,var(--m3-accent) 10%,var(--m3-card)),var(--m3-card) 60%);color:var(--m3-ink);border:1px solid var(--m3-accent);border-radius:var(--h-r);box-shadow:0 0 30px var(--h-soft)}
+html.hud.neg body .onb-reco{background:var(--m3-card);border:2px solid var(--m3-ink);box-shadow:5px 5px 0 var(--h-fill)}
+html.hud body .onb-reco button.onb-pick{background:var(--h-fill)!important;color:var(--h-on)!important}
+html.hud body .onb-week div{background:var(--h-soft)}
+html.hud body .onb-logo{background:var(--h-fill);color:var(--h-on);border-radius:6px}
+html.hud body button.onb-opt,html.hud body button.onb-gear,html.hud body .onb-nums button,html.hud body .onb-days button,html.hud body button.lib-card,html.hud body .fx-card,html.hud body button.fx-pm{border-radius:var(--h-r)!important}
+html.hud body .onb-nums button.on,html.hud body .onb-opt.on .onb-radio{background:var(--h-fill)!important;border-color:var(--h-fill)!important;color:var(--h-on)!important}
+html.hud body .onb-bars span.on,html.hud body .fx-dots i.done{background:var(--h-fill);box-shadow:0 0 8px var(--h-glow)}
+html.hud body .fx-dots i{border-radius:2px}
+html.hud body .fx-val input,html.hud body .fx-ring strong{font-family:'Space Mono',ui-monospace,Menlo,monospace!important;font-weight:700!important;letter-spacing:-.05em!important}
+html.hud body .fx-val input{font-size:60px!important;background:transparent!important;border:0!important;box-shadow:none!important}
+html.hud body .fx-card{border-color:var(--m3-accent)!important;box-shadow:0 0 30px var(--h-soft);background:linear-gradient(160deg,color-mix(in srgb,var(--m3-accent) 8%,var(--m3-card)),var(--m3-card) 60%)!important}
+html.hud.neg body .fx-card{border:2px solid var(--m3-ink)!important;box-shadow:5px 5px 0 var(--h-fill);background:var(--m3-card)!important}
+html.hud body button.fx-validate{background:var(--h-fill)!important;color:var(--h-on)!important;border-radius:var(--h-r)!important;font-family:'Anton',Impact,sans-serif!important;font-weight:400!important;font-size:32px!important;letter-spacing:.06em;box-shadow:0 0 30px var(--h-soft)!important}
+html.hud.neg body button.fx-validate{border:2px solid var(--m3-ink)!important;box-shadow:4px 4px 0 var(--m3-ink)!important}
+html.hud body .fx-rest{background:var(--m3-bg);color:var(--m3-ink);background-image:linear-gradient(color-mix(in srgb,var(--m3-accent) 5%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--m3-accent) 5%,transparent) 1px,transparent 1px);background-size:28px 28px}
+html.hud body .fx-rest-done{background:transparent;border:1px solid var(--m3-line);border-radius:var(--h-r);font-family:'Space Mono',ui-monospace,monospace}
+html.hud body .fx-rest-done i{background:var(--h-fill);color:var(--h-on)}
+html.hud body .fx-ring-bg{stroke:var(--h-soft)}html.hud body .fx-ring-fg{stroke:var(--h-fill);filter:drop-shadow(0 0 6px var(--h-glow))}
+html.hud.neg body .fx-ring-fg{filter:none}
+html.hud body .fx-ring strong{color:var(--m3-accent);text-shadow:0 0 30px var(--h-glow)}
+html.hud.neg body .fx-ring strong{text-shadow:none}
+html.hud body .fx-rest-adj button{border-color:var(--m3-line)!important;color:var(--m3-ink)!important;border-radius:var(--h-r)!important;font-family:'Space Mono',ui-monospace,monospace!important}
+html.hud body .fx-rest-next{background:var(--m3-card);border:1px solid var(--m3-accent);border-radius:var(--h-r);box-shadow:0 0 28px var(--h-soft)}
+html.hud.neg body .fx-rest-next{border:2px solid var(--m3-ink);box-shadow:5px 5px 0 var(--h-fill)}
+html.hud body .fx-rest-next b{font-family:'Anton',Impact,sans-serif;font-weight:400;letter-spacing:.01em;font-size:26px}
+html.hud body .fx-rest-next button{background:var(--h-fill)!important;color:var(--h-on)!important;border-radius:var(--h-r)!important}
+</style>
 <style id="m3k-hud">
 /* ===== mode HUD : même appli que l'Édito, habillage néon sur fond noir =====
    Activé par la classe hud sur <html> (Profil › Style). Les couleurs viennent des
@@ -918,8 +1061,12 @@ var DAYS = ['D','L','M','M','J','V','S'];
 var KEY = 'brutalhud.v1';
 
 /* ---------- state ---------- */
+var M3_FRESH = !load();
 var S = load() || {v:1, settings:{theme:'acid', inc:2.5}, history:[], active:null};
-if(!S.programs){ S.programs = [{id:'zth', name:'Zero To Hero', workouts:JSON.parse(JSON.stringify(SEED))}]; S.settings.activeProg = 'zth'; save(); }
+if(!S.programs){ S.programs = [{id:'zth', libId:'ascension', name:'Ascension', workouts:JSON.parse(JSON.stringify(SEED))}]; S.settings.activeProg = 'zth'; save(); }
+/* 1.14 : Zero To Hero s'appelle Ascension ; le parcours d'ouverture n'est montré qu'aux nouvelles installations */
+S.programs.forEach(function(p){ if(p.id === 'zth'){ if(p.name === 'Zero To Hero') p.name = 'Ascension'; p.libId = 'ascension'; } });
+if(M3_FRESH){ S.settings.onboarded = false; S.demoSeeded = true; } else if(S.settings.onboarded == null) S.settings.onboarded = true;
 /* séances libres: saved séances that belong to no programme and no day (never the active programme) */
 function freeProg(){ var f = progById('libres'); if(!f){ f = {id:'libres', name:'Séances libres', free:true, workouts:[]}; S.programs.push(f); } return f; }
 freeProg();
@@ -975,7 +1122,7 @@ if(!S.demoSeeded){ seedDemo(); S.demoSeeded = true; }
 save();
 
 /* demo programme + 4 weeks of simulated history (tagged demo, removable in Réglages).
-   Exercise names never overlap Zero To Hero, so demo numbers never feed its ghost or progression. */
+   Exercise names never overlap Ascension (ex-Zero To Hero), so demo numbers never feed its ghost or progression. */
 function seedDemo(){
   var D = [
     {id:'demo-push', name:'Push', day:1, ex:[
@@ -1200,6 +1347,7 @@ function validate(){
   var lastOfEx = selIndex(ex) == null;
   var restSec = s.rest || (s.warm ? 60 : ex.rest);
   S.active.rest = {start:Date.now(), total:restSec, ex:S.active.idx, set:j, label: lastOfEx ? 'EXERCICE SUIVANT' : ''};
+  if(lastOfEx && exView() === 'focus' && S.active.idx < S.active.exercises.length - 1){ S.active.idx++; ui.gapEdit = null; }
   unlockAudio(); save(); render();
   /* the sergeant comments on roughly one set in three, so it stays a surprise */
   if(S.settings.hardcore && Math.random() < .35) { var HS = isEN() ? HARD_SET_EN : HARD_SET; toast(HS[Math.floor(Math.random() * HS.length)]); }
@@ -2280,6 +2428,14 @@ function vHist(){
    anything added then removed the same day is left out. Hidden extras (double tap on a coloris,
    the shape button) stay out on purpose: they are meant to be found. */
 var CHANGELOG = [
+  {v:'1.14', d:'15.10.26', t:'Une série à la fois et 11 programmes',
+   summary:['En séance, une série à la fois : charge et reps en très gros, un énorme bouton Valider, le repos en plein écran.','À zéro, la série suivante s\'ouvre seule, et après la dernière série on passe directement à l\'exercice suivant.','Une bibliothèque de 11 programmes, dans Programme. Zero To Hero s\'appelle maintenant Ascension.','Les nouveaux utilisateurs choisissent leur programme en une minute au premier lancement.'],
+   sections:[
+    {t:'Une série à la fois', items:['L\'écran de séance montre seulement la série en cours : la charge et les reps proposées en grand, des boutons + et − larges, et Valider en bas.','Touche le chiffre pour le taper au clavier, ou « La dernière fois » pour reprendre ta perf.','« Toutes les séries » en bas ouvre l\'ancienne vue en liste ; « Revenir à une série à la fois » ramène la nouvelle. L\'appli retient ton choix.']},
+    {t:'Le repos plein écran', items:['Après Valider, le repos prend tout l\'écran : un grand chrono, ±15 s, et la série qui suit avec sa charge.','À zéro, un petit son, puis la série suivante s\'affiche toute seule. « Passer » arrête le repos plus tôt.']},
+    {t:'La bibliothèque', items:['Programme › Bibliothèque de programmes : 11 programmes, de 2 à 6 jours, du débutant au confirmé, en salle, avec une barre ou des haltères à la maison.','Touche un programme pour l\'ajouter et l\'activer. Tes autres programmes et ton historique restent.','Zero To Hero devient Ascension. Ses séances et ton historique ne changent pas.']},
+    {t:'Le premier lancement', items:['Une nouvelle installation pose quatre questions (objectif, niveau, jours, matériel) et propose le programme qui colle, avec deux alternatives.','Ce parcours ne s\'affiche qu\'une fois, au tout premier lancement. Il ne réapparaît jamais ensuite.']}
+   ]},
   {v:'1.13', d:'15.10.26', t:'Charge proposée, fiche et programme',
    summary:['En séance, la charge et les reps proposées s\'affichent en grisé : valide directement, ou touche la perf de la dernière séance pour la reprendre.','Un seul réglage de repos entre les séries, au lieu d\'une puce sous chaque série.','La fiche exercice est refaite, avec une courbe de progression : charge max et 1RM estimé.','La page Programme est allégée : la prochaine séance en grand, les autres en lignes.','La semaine du cycle se compte depuis le début de ton programme.','L\'appli te propose une sauvegarde en fin de séance, toutes les 10 séances par défaut.'],
    sections:[
@@ -2313,7 +2469,7 @@ var CHANGELOG = [
   {v:'1.9', d:'13.10.26', t:'Le lancement',
    summary:['Muscle 3000 est né : tes programmes, des séances guidées et la double progression qui calcule tes charges.','Des stats qui motivent et une carte à partager en fin de séance.','Un mot chaque matin, taillé sur ton historique.','Ton historique se feuillette séance par séance.','Chaque exercice montre son mouvement en deux images.'],
    sections:[
-    {t:'Les bases', items:['Le programme Zero To Hero prêt à l\'emploi.','La double progression calcule ta charge à chaque série, avec ton fantôme de la dernière fois.','Le chrono de repos en grand, le swipe entre exercices, les échauffements et une note par exercice.','4 coloris : Acid, Blaze, Ice et Nuit.']},
+    {t:'Les bases', items:['Le programme Ascension prêt à l\'emploi.','La double progression calcule ta charge à chaque série, avec ton fantôme de la dernière fois.','Le chrono de repos en grand, le swipe entre exercices, les échauffements et une note par exercice.','4 coloris : Acid, Blaze, Ice et Nuit.']},
     {t:'Tes programmes', items:['Crée tes programmes et tes séances, avec un jour pour chacune.','Reps, échauffements et temps de repos se règlent série par série.','Les variantes (squat ou deadlift…) partagent la même note.','Environ 150 exercices classés par muscle, avec une recherche qui trouve pendant que tu tapes. Un exercice manque ? Crée-le en deux secondes.']},
     {t:'Des séances qui s\'adaptent', items:['Tu modifies ta séance en cours de route ? À la fin, mets à jour la séance d\'origine, ou garde-la comme nouvelle séance dans un programme ou dans tes séances libres.','Les séances libres vivent hors programme et sans jour : lance-les depuis « Autre séance » sur l\'accueil.','Improvise avec « + Séance vide » : ajoute tes exercices en route, et décide à la fin si tu la gardes.','Dans une séance libre, glisse vers l\'exercice suivant après le dernier pour en ajouter un nouveau.','Tu peux retirer un exercice pendant la séance.']},
     {t:'Des stats qui motivent', items:['Touche une stat de l\'accueil pour changer de vue : régularité, fréquence, volume, séances ou séries par semaine, progressions sur 6 semaines, 3 mois ou depuis le début, totaux du mois ou de l\'année. Ton choix est gardé.','Sur l\'accueil : ta série de semaines, ton volume semaine par semaine et tes plus grosses progressions.','Trois camemberts (zones, muscles, intensité) : touche le centre pour passer de l\'un à l\'autre.','Un calendrier des 12 dernières semaines pour ne pas casser la chaîne.']},
@@ -2337,7 +2493,7 @@ CHANGELOG[0].en = {t:'Readable, import and English',
 CHANGELOG[1].en = {t:'The launch',
   summary:['Muscle 3000 is born: your programs, guided sessions and double progression that works out your weights.','Stats that motivate and a card to share at the end of a session.','A message every morning, tailored to your history.','Browse your history session by session.','Every exercise shows its movement in two pictures.'],
   sections:[
-    {t:'The basics', items:['The Zero To Hero program, ready to go.','Double progression works out your weight for every set, with your ghost from last time.','A big rest timer, swipe between exercises, warm-ups and a note per exercise.','4 colorways: Acid, Blaze, Ice and Night.']},
+    {t:'The basics', items:['The Ascension program, ready to go.','Double progression works out your weight for every set, with your ghost from last time.','A big rest timer, swipe between exercises, warm-ups and a note per exercise.','4 colorways: Acid, Blaze, Ice and Night.']},
     {t:'Your programs', items:['Create your programs and sessions, with a day for each.','Reps, warm-ups and rest times can be set for each set.','Variants (squat or deadlift…) share the same note.','About 150 exercises sorted by muscle, with a search that finds as you type. Missing one? Create it in two seconds.']},
     {t:'Sessions that adapt', items:['Changed your session along the way? At the end, update the original session, or keep it as a new session in a program or in your free sessions.','Free sessions live outside programs, with no fixed day: start them from “Another session” on Home.','Improvise with “+ Empty session”: add exercises as you go, and decide at the end whether to keep it.','In a free session, swipe past the last exercise to add a new one.','You can remove an exercise during the session.']},
     {t:'Stats that motivate', items:['Tap a stat on Home to switch view: consistency, frequency, weekly volume, sessions or sets, progress over 6 weeks, 3 months or all time, totals for the month or the year. Your choice is remembered.','On Home: your weekly streak, your volume week by week and your biggest gains.','Three pie charts (zones, muscles, intensity): tap the center to move from one to the next.','A 12-week calendar so you never break the chain.']},
@@ -3478,9 +3634,11 @@ var EQUIV_EN = ['6-bottle water pack|6-bottle water packs','full checked suitcas
 function render(){
   applyTheme();
   var app = document.getElementById('app'), html;
+  if(!S.settings.onboarded){ document.documentElement.lang = isEN() ? 'en' : 'fr'; app.innerHTML = vOnb(); document.getElementById('sheet').innerHTML = ''; return; }
   if((ui.screen === 'ex' || ui.screen === 'ov') && !S.active) ui.screen = 'home';
   if(ui.screen === 'ex' && S.active && !S.active.exercises.length) ui.screen = 'ov';
-  if(ui.screen === 'ex') html = vEx();
+  if(ui.screen === 'ex') html = exView() === 'focus' ? vFocus() : vEx();
+  else if(ui.screen === 'lib') html = vLib();
   else if(ui.screen === 'ov') html = vOv();
   else if(ui.screen === 'hist') html = vHist();
   else if(ui.screen === 'set') html = vSet();
@@ -3978,6 +4136,7 @@ function vEx(){
   var a=S.active, ex=cur(), i=a.idx, n=a.exercises.length, sj=selIndex(ex), ri=restInfo(), next=a.exercises[i+1];
   var doneSets=0, totalSets=0; a.exercises.forEach(function(e){e.sets.forEach(function(s){if(!s.warm){totalSets++;if(s.done)doneSets++;}});});
   var h='<header class="m3-work-head"><button data-a="scr" data-s="ov">← '+esc(trText(a.name))+'</button><span>'+('0'+(i+1)).slice(-2)+' / '+('0'+n).slice(-2)+'</span><b id="clock">'+mmss((Date.now()-a.start)/1000)+'</b></header>';
+  h+='<button class="fx-switch" data-a="exview" data-v="focus">'+L('Revenir à une série à la fois','Back to one set at a time')+'</button>';
   h+='<div class="m3-progress"><i style="width:'+Math.round(doneSets/Math.max(1,totalSets)*100)+'%"></i></div>';
   h+='<div class="m3-focus"><span class="m3-eyebrow">'+L('EXERCICE ','EXERCISE ')+('0'+(i+1)).slice(-2)+'</span><h2>'+esc(exDisp(ex.name))+'</h2><button class="m3-link" data-a="fiche" data-n="'+esc(ex.name)+'">'+L('VOIR LA FICHE','SEE THE INFO')+' →</button></div>';
   if(ex.cue) h+='<div class="m3-cue">'+esc(trText(ex.cue))+'</div>';
@@ -4036,7 +4195,7 @@ function vProg(){
     });
     h+='</div>';
   }
-  h+='<div class="m3s-list m3p-tools"><button class="m3s-row" data-a="pedit" data-id="'+p.id+'"><span>'+L('Modifier le programme','Edit the program')+'<small>'+L('Séances, jours, exercices','Sessions, days, exercises')+'</small></span><b>›</b></button><button class="m3s-row" data-a="startempty"><span>'+L('Séance libre','Free session')+'<small>'+L('Ajoute les exercices au fur et à mesure','Add exercises as you go')+'</small></span><b>›</b></button></div>';
+  h+='<div class="m3s-list m3p-tools"><button class="m3s-row" data-a="pedit" data-id="'+p.id+'"><span>'+L('Modifier le programme','Edit the program')+'<small>'+L('Séances, jours, exercices','Sessions, days, exercises')+'</small></span><b>›</b></button><button class="m3s-row" data-a="scr" data-s="lib"><span>'+L('Bibliothèque de programmes','Program library')+'<small>'+L('11 programmes prêts à l\'emploi','11 ready-made programs')+'</small></span><b>›</b></button><button class="m3s-row" data-a="startempty"><span>'+L('Séance libre','Free session')+'<small>'+L('Ajoute les exercices au fur et à mesure','Add exercises as you go')+'</small></span><b>›</b></button></div>';
   return h+nav('prog');
 }
 /* ================= PROFIL simplifié + 4 coloris pour le style éditorial ================= */
@@ -4693,6 +4852,317 @@ function m3Ding(){
   });
   document.addEventListener('touchcancel', function(){ if(drag && drag.on) snapBack(drag); drag = null; });
 })();
+/* ================= 1.14 : BIBLIOTHÈQUE DE PROGRAMMES =================
+   Onze programmes prêts à l'emploi. Structures reprises de programmes connus, noms propres à Muscle 3000.
+   X(nom, séries, bas, haut, repos, consigne) décrit un exercice ; R(...) des fourchettes série par série. */
+function PX(n, sets, lo, hi, rest, cue){ var r = []; for(var i = 0; i < sets; i++) r.push([lo, hi]); return {name:n, r:r, rest:rest, cue:cue || ''}; }
+function PR(n, ranges, rest, cue){ return {name:n, r:ranges, rest:rest, cue:cue || ''}; }
+var AMRAP = 'Dernière série : le plus de reps possible, propres';
+var PROGLIB = [
+  {id:'ascension', name:'Ascension', en:'Ascension', days:3, lv:['inter','conf'], goal:['both','force','muscle'], gear:['gym'],
+   d:['Haut A, bas, haut B. Force sur les gros mouvements, double progression sur le reste.', 'Upper A, lower, upper B. Strength on the big lifts, double progression on the rest.'], seed:true},
+  {id:'5x5', name:'Fondations 5×5', en:'Foundations 5×5', days:3, lv:['deb'], goal:['force','both'], gear:['gym','bar'],
+   d:['Deux séances A et B en alternance, 5 séries de 5 sur les cinq gros mouvements.', 'Two sessions, A and B, alternating: 5 sets of 5 on the five big lifts.'],
+   w:[
+    {name:'A', day:1, ex:[PX('Squat',5,5,5,180,'5 séries de 5 réussies : +2,5 kg la prochaine fois'), PX('Développé couché',5,5,5,180), PX('Rowing barre',5,5,5,150)]},
+    {name:'B', day:3, ex:[PX('Squat',5,5,5,180,'5 séries de 5 réussies : +2,5 kg la prochaine fois'), PX('Développé militaire',5,5,5,180), PX('Deadlift',1,5,5,180,'Une seule série lourde après l\'échauffement')]},
+    {name:'A bis', day:5, ex:[PX('Squat',5,5,5,180,'5 séries de 5 réussies : +2,5 kg la prochaine fois'), PX('Développé couché',5,5,5,180), PX('Rowing barre',5,5,5,150)]}
+   ]},
+  {id:'premiers', name:'Premiers Pas', en:'First Steps', days:3, lv:['deb'], goal:['fit','muscle','both'], gear:['gym'],
+   d:['Corps complet A et B, fourchettes de 8 à 10 reps : la façon la plus douce de commencer.', 'Full body A and B, 8–10 rep ranges: the gentlest way to start.'],
+   w:[
+    {name:'Corps complet A', day:1, ex:[PX('Squat',3,6,8,150), PX('Développé militaire',3,8,10,120), PX('Rowing barre',3,8,10,120), PX('Extension triceps poulie',2,8,10,75), PX('Leg curl assis',2,8,10,75), PX('Crunch',2,10,12,60)]},
+    {name:'Corps complet B', day:3, ex:[PX('Deadlift',3,5,6,150), PX('Développé couché',3,8,10,120), PX('Tirage vertical',3,8,10,120), PX('Curl barre',2,8,10,75), PX('Leg extension',2,8,10,75), PX('Mollets debout',2,10,12,60)]},
+    {name:'Corps complet A bis', day:5, ex:[PX('Squat',3,6,8,150), PX('Développé militaire',3,8,10,120), PX('Rowing barre',3,8,10,120), PX('Extension triceps poulie',2,8,10,75), PX('Leg curl assis',2,8,10,75), PX('Crunch',2,10,12,60)]}
+   ]},
+  {id:'echelons', name:'Échelons', en:'Tiers', days:4, lv:['deb','inter'], goal:['force','both'], gear:['gym','bar'],
+   d:['Chaque séance : un gros mouvement lourd, deux mouvements de volume, un d\'isolation.', 'Each session: one heavy lift, two volume lifts, one isolation.'],
+   w:[
+    {name:'Squat', day:1, ex:[PX('Squat',3,5,5,180,AMRAP), PX('Développé couché prise serrée',3,10,10,120), PX('Rowing barre',3,10,10,120), PX('Presse à cuisses',3,15,25,75,'Dernière série au-delà de 15 si possible')]},
+    {name:'Couché', day:2, ex:[PX('Développé couché',3,5,5,180,AMRAP), PX('Front squat',3,10,10,120), PX('Tirage vertical',3,10,10,120), PX('Extension triceps poulie',3,15,25,60)]},
+    {name:'Soulevé', day:4, ex:[PX('Deadlift',5,3,3,180,AMRAP), PX('Développé militaire',3,10,10,120), PX('Tirage vertical',3,10,10,120), PX('Leg curl',3,15,25,60)]},
+    {name:'Militaire', day:5, ex:[PX('Développé militaire',3,5,5,180,AMRAP), PX('Romanian deadlift',3,10,10,120), PX('Rowing haltère',3,10,10,90), PX('Curl marteau',3,15,25,60)]}
+   ]},
+  {id:'phul', name:'Puissance & Volume', en:'Power & Volume', days:4, lv:['inter','conf'], goal:['both','force','muscle'], gear:['gym'],
+   d:['Haut et bas en force en début de semaine, haut et bas en volume ensuite.', 'Upper and lower for strength early in the week, then upper and lower for volume.'],
+   w:[
+    {name:'Haut force', day:1, ex:[PX('Développé couché',4,3,5,180), PX('Rowing barre',4,3,5,150), PX('Développé incliné haltères',3,6,10,120), PX('Tirage vertical',3,6,10,120), PX('Développé militaire',3,5,8,120), PX('Curl barre',3,6,10,75), PX('Barre au front',3,8,12,75)]},
+    {name:'Bas force', day:2, ex:[PX('Squat',4,3,5,180), PX('Deadlift',4,3,5,180), PX('Fentes bulgares',3,6,10,90), PX('Leg curl',3,6,10,75), PX('Mollets debout',4,6,10,60)]},
+    {name:'Haut volume', day:4, ex:[PX('Développé incliné',4,8,12,120), PX('Rowing poulie basse',4,8,12,90), PX('Écarté haltères',3,8,12,75), PX('Rowing haltère',3,8,12,75), PX('Élévations latérales',3,8,12,60), PX('Curl haltères',3,8,12,60), PX('Extension triceps poulie',3,10,15,60)]},
+    {name:'Bas volume', day:5, ex:[PX('Fentes',3,8,12,90), PX('Presse à cuisses',4,8,12,120), PX('Leg extension',3,8,12,75), PX('Leg curl',3,8,12,75), PX('Mollets debout',3,8,12,60), PX('Mollets assis',3,8,12,60)]}
+   ]},
+  {id:'ppl', name:'Push Pull Legs', en:'Push Pull Legs', days:6, lv:['inter','conf'], goal:['muscle','both'], gear:['gym'],
+   d:['Poussée, tirage, jambes, deux fois par semaine. Beaucoup de volume pour prendre du muscle.', 'Push, pull, legs, twice a week. Plenty of volume to build muscle.'],
+   w:[
+    {name:'Pull A', day:1, ex:[PX('Deadlift',1,5,8,180,AMRAP), PX('Tirage vertical',3,8,12,90), PX('Rowing poulie basse',3,8,12,90), PX('Face pull',5,15,20,60), PX('Curl marteau',4,8,12,60), PX('Curl haltères',4,8,12,60)]},
+    {name:'Push A', day:2, ex:[PX('Développé couché',5,5,5,150,AMRAP), PX('Développé militaire',3,8,12,90), PX('Développé incliné haltères',3,8,12,90), PX('Extension triceps poulie',3,8,12,60), PX('Extension nuque haltère',3,8,12,60), PX('Élévations latérales',6,15,20,45)]},
+    {name:'Jambes', day:3, ex:[PX('Squat',3,5,5,180,AMRAP), PX('Romanian deadlift',3,8,12,120), PX('Presse à cuisses',3,8,12,120), PX('Leg curl',3,8,12,75), PX('Mollets debout',5,8,12,60)]},
+    {name:'Pull B', day:4, ex:[PX('Rowing barre',5,5,5,150,AMRAP), PX('Tirage vertical',3,8,12,90), PX('Rowing poulie basse',3,8,12,90), PX('Face pull',5,15,20,60), PX('Curl marteau',4,8,12,60), PX('Curl haltères',4,8,12,60)]},
+    {name:'Push B', day:5, ex:[PX('Développé militaire',5,5,5,150,AMRAP), PX('Développé couché',3,8,12,90), PX('Développé incliné haltères',3,8,12,90), PX('Extension triceps poulie',3,8,12,60), PX('Extension nuque haltère',3,8,12,60), PX('Élévations latérales',6,15,20,45)]},
+    {name:'Jambes bis', day:6, ex:[PX('Squat',3,5,5,180,AMRAP), PX('Romanian deadlift',3,8,12,120), PX('Presse à cuisses',3,8,12,120), PX('Leg curl',3,8,12,75), PX('Mollets debout',5,8,12,60)]}
+   ]},
+  {id:'531', name:'Cycles 5/3/1', en:'5/3/1 Cycles', days:4, lv:['conf'], goal:['force','both'], gear:['gym','bar'],
+   d:['Cycles de 4 semaines en pourcentages de ton max, puis 5 séries de 10 plus légères.', '4-week cycles in percentages of your max, then 5 lighter sets of 10.'],
+   w:[
+    {name:'Militaire', day:1, ex:[PR('Développé militaire',[[5,5],[5,5],[5,8],[10,10],[10,10],[10,10],[10,10],[10,10]],150,'Sem. 1 : 65/75/85 % · sem. 2 : 70/80/90 % · sem. 3 : 75/85/95 % · sem. 4 : léger. Puis 5×10 à 50–60 %'), PX('Tractions',5,8,10,90)]},
+    {name:'Soulevé', day:2, ex:[PR('Deadlift',[[5,5],[5,5],[5,8],[10,10],[10,10],[10,10],[10,10],[10,10]],180,'Sem. 1 : 65/75/85 % · sem. 2 : 70/80/90 % · sem. 3 : 75/85/95 % · sem. 4 : léger. Puis 5×10 à 50–60 %'), PX('Relevé de jambes suspendu',5,10,15,60)]},
+    {name:'Couché', day:4, ex:[PR('Développé couché',[[5,5],[5,5],[5,8],[10,10],[10,10],[10,10],[10,10],[10,10]],150,'Sem. 1 : 65/75/85 % · sem. 2 : 70/80/90 % · sem. 3 : 75/85/95 % · sem. 4 : léger. Puis 5×10 à 50–60 %'), PX('Rowing haltère',5,10,10,75)]},
+    {name:'Squat', day:5, ex:[PR('Squat',[[5,5],[5,5],[5,8],[10,10],[10,10],[10,10],[10,10],[10,10]],180,'Sem. 1 : 65/75/85 % · sem. 2 : 70/80/90 % · sem. 3 : 75/85/95 % · sem. 4 : léger. Puis 5×10 à 50–60 %'), PX('Leg curl',5,10,10,60)]}
+   ]},
+  {id:'express', name:'Express 2 jours', en:'Express 2 days', days:2, lv:['deb','inter','conf'], goal:['fit','both','muscle'], gear:['gym','time'],
+   d:['Haut et bas, 45 minutes, l\'essentiel pour garder le niveau quand l\'agenda déborde.', 'Upper and lower, 45 minutes: the essentials when the calendar is full.'],
+   w:[
+    {name:'Haut', day:1, ex:[PX('Développé couché',3,6,8,150), PX('Rowing barre',3,6,8,120), PX('Développé haltères assis',2,8,10,90), PX('Tirage vertical',2,8,10,90), PX('Curl marteau',2,10,12,45,'En superset avec l\'extension triceps'), PX('Extension triceps corde',2,10,12,45,'En superset avec le curl marteau')]},
+    {name:'Bas', day:4, ex:[PX('Squat',3,6,8,150), PX('Romanian deadlift',3,8,10,120), PX('Fentes bulgares',2,8,10,90), PX('Mollets debout',2,10,12,60), PX('Ab wheel',2,8,12,60)]}
+   ]},
+  {id:'maison', name:'Haltères Maison', en:'Home Dumbbells', days:3, lv:['deb','inter'], goal:['muscle','fit','both'], gear:['home'],
+   d:['Corps complet avec une paire d\'haltères et un banc. Rien d\'autre à acheter.', 'Full body with a pair of dumbbells and a bench. Nothing else to buy.'],
+   w:[
+    {name:'Maison A', day:1, ex:[PX('Goblet squat',3,10,15,90), PX('Développé couché haltères',3,8,12,90), PX('Rowing haltère',3,8,12,75), PX('Élévations latérales',3,12,15,60), PX('Curl haltères',2,10,12,60)]},
+    {name:'Maison B', day:3, ex:[PX('Fentes bulgares',3,8,12,90), PX('Développé haltères assis',3,8,12,90), PX('Pullover haltère',3,10,12,75), PX('Romanian deadlift',3,10,12,90,'Avec les haltères'), PX('Extension nuque haltère',2,10,12,60)]},
+    {name:'Maison C', day:5, ex:[PX('Step-up',3,10,12,90), PX('Développé incliné haltères',3,8,12,90), PX('Rowing haltère',3,10,12,75), PX('Glute bridge',3,12,15,60), PX('Curl marteau',2,10,12,60), PX('Pompes',2,8,20,60,'Le plus possible, en gardant le gainage')]}
+   ]},
+  {id:'basducorps', name:'Bas du corps prioritaire', en:'Lower body first', days:4, lv:['deb','inter','conf'], goal:['muscle','fit','both'], gear:['gym'],
+   d:['Deux séances jambes et fessiers, deux séances haut du corps plus légères.', 'Two leg and glute sessions, two lighter upper-body sessions.'],
+   w:[
+    {name:'Jambes A', day:1, ex:[PX('Hip thrust',4,6,10,120), PX('Squat',3,6,10,150), PX('Romanian deadlift',3,8,12,120), PX('Leg extension',3,12,15,60), PX('Abduction machine',3,15,20,45)]},
+    {name:'Haut A', day:2, ex:[PX('Développé haltères assis',3,8,12,90), PX('Tirage vertical',3,8,12,90), PX('Développé incliné haltères',3,8,12,90), PX('Rowing poulie basse',3,10,12,75), PX('Élévations latérales',3,12,15,45)]},
+    {name:'Jambes B', day:4, ex:[PX('Fentes bulgares',3,8,12,90), PX('Presse à cuisses',3,10,12,120), PX('Leg curl assis',3,10,12,75), PX('Kickback fessiers poulie',3,12,15,45), PX('Mollets debout',3,10,15,60)]},
+    {name:'Haut B', day:5, ex:[PX('Développé couché',3,6,10,120), PX('Rowing haltère',3,8,12,75), PX('Face pull',3,12,15,45), PX('Curl haltères',2,10,12,45), PX('Extension triceps corde',2,10,12,45)]}
+   ]},
+  {id:'arnold', name:'Arnold', en:'Arnold', days:6, lv:['conf'], goal:['muscle'], gear:['gym'],
+   d:['Poitrine et dos, épaules et bras, jambes, deux fois par semaine. Exigeant.', 'Chest and back, shoulders and arms, legs, twice a week. Demanding.'],
+   w:[
+    {name:'Poitrine & dos', day:1, ex:[PX('Développé couché',5,6,12,120), PX('Développé incliné',5,6,12,120), PX('Écarté haltères',4,10,12,60,'En superset avec le pullover'), PX('Tractions',5,6,12,90), PX('Rowing barre',5,6,12,90), PX('Soulevé de terre jambes tendues',4,10,12,90), PX('Crunch',4,20,25,45)]},
+    {name:'Épaules & bras', day:2, ex:[PX('Développé haltères assis',5,8,12,90), PX('Élévations latérales',4,10,15,45), PX('Oiseau',4,12,12,45), PX('Curl barre',5,6,12,60), PX('Curl incliné haltères',4,10,12,60), PX('Développé couché prise serrée',5,6,12,90), PX('Barre au front',4,10,12,60), PX('Curl poignets',4,12,20,45)]},
+    {name:'Jambes', day:3, ex:[PX('Squat',5,8,12,150), PX('Deadlift',4,8,12,150), PX('Good morning',3,8,12,90), PX('Leg extension',4,8,12,60,'En superset avec le leg curl'), PX('Leg curl',4,8,12,60,'En superset avec le leg extension'), PX('Mollets debout',5,12,20,45), PX('Crunch poulie',4,20,25,45)]},
+    {name:'Poitrine & dos bis', day:4, ex:[PX('Développé couché',5,6,12,120), PX('Développé incliné',5,6,12,120), PX('Écarté haltères',4,10,12,60,'En superset avec le pullover'), PX('Tractions',5,6,12,90), PX('Rowing barre',5,6,12,90), PX('Soulevé de terre jambes tendues',4,10,12,90), PX('Crunch',4,20,25,45)]},
+    {name:'Épaules & bras bis', day:5, ex:[PX('Développé haltères assis',5,8,12,90), PX('Élévations latérales',4,10,15,45), PX('Oiseau',4,12,12,45), PX('Curl barre',5,6,12,60), PX('Curl incliné haltères',4,10,12,60), PX('Développé couché prise serrée',5,6,12,90), PX('Barre au front',4,10,12,60), PX('Curl poignets',4,12,20,45)]},
+    {name:'Jambes bis', day:6, ex:[PX('Squat',5,8,12,150), PX('Deadlift',4,8,12,150), PX('Good morning',3,8,12,90), PX('Leg extension',4,8,12,60,'En superset avec le leg curl'), PX('Leg curl',4,8,12,60,'En superset avec le leg extension'), PX('Mollets debout',5,12,20,45), PX('Crunch poulie',4,20,25,45)]}
+   ]}
+];
+var PROG_EN = {'A bis':'A again', 'Corps complet A':'Full body A', 'Corps complet B':'Full body B', 'Corps complet A bis':'Full body A again', 'Couché':'Bench', 'Soulevé':'Deadlift', 'Militaire':'Overhead',
+  'Haut force':'Upper power', 'Bas force':'Lower power', 'Haut volume':'Upper volume', 'Bas volume':'Lower volume', 'Jambes':'Legs', 'Jambes bis':'Legs again', 'Haut':'Upper', 'Bas':'Lower',
+  'Maison A':'Home A', 'Maison B':'Home B', 'Maison C':'Home C', 'Jambes A':'Legs A', 'Jambes B':'Legs B', 'Haut A':'Upper A', 'Haut B':'Upper B',
+  'Poitrine & dos':'Chest & back', 'Épaules & bras':'Shoulders & arms', 'Poitrine & dos bis':'Chest & back again', 'Épaules & bras bis':'Shoulders & arms again'};
+PROGLIB.forEach(function(p){ EN[p.name] = p.en; });
+for(var pk in PROG_EN) if(!EN[pk]) EN[pk] = PROG_EN[pk];
+function libById(id){ return PROGLIB.filter(function(p){ return p.id === id; })[0] || null; }
+function libWorkouts(lp){ return lp.seed ? SEED : lp.w; }
+var LV_TXT = {deb:['Débutant','Beginner'], inter:['Bases acquises','Some experience'], conf:['Confirmé','Advanced']};
+var GOAL_TXT = {force:['Force','Strength'], muscle:['Muscle','Muscle'], both:['Force et muscle','Strength & muscle'], fit:['Remise en forme','Getting fit']};
+var GEAR_TXT = {gym:['Salle','Gym'], bar:['Barre et rack','Barbell & rack'], home:['Maison','Home'], time:['Peu de temps','Short on time']};
+function libTags(lp){ return [L(LV_TXT[lp.lv[0]][0], LV_TXT[lp.lv[0]][1]), L(GOAL_TXT[lp.goal[0]][0], GOAL_TXT[lp.goal[0]][1]), L(GEAR_TXT[lp.gear[0]][0], GEAR_TXT[lp.gear[0]][1])]; }
+function libMeta(lp){ var ws = libWorkouts(lp); var n = 0; ws.forEach(function(w){ n += w.ex.length; }); return lp.days + L(' jours · ', ' days · ') + ws.length + L(' séances', ' sessions'); }
+
+/* installe un programme de la bibliothèque (ou réactive celui déjà installé) et le rend actif */
+function libInstall(id, days){
+  var lp = libById(id); if(!lp) return null;
+  var p = S.programs.filter(function(x){ return x.libId === id || (id === 'ascension' && x.id === 'zth'); })[0];
+  if(!p){
+    var src = JSON.parse(JSON.stringify(libWorkouts(lp)));
+    p = {id:id === 'ascension' ? 'zth' : 'lib' + uid(), libId:id, name:lp.name, workouts:src.map(function(w){
+      return {id:uid(), name:w.name, day:w.day, ex:w.ex.map(function(e){ var o = {name:e.name, r:e.r, rest:e.rest, cue:e.cue || ''}; if(e.v) o.v = e.v; normEx(o); return o; })};
+    })};
+    if(days && days.length === p.workouts.length){ var ds = days.slice().sort(function(a, b){ return ((a + 6) % 7) - ((b + 6) % 7); }); p.workouts.forEach(function(w, i){ w.day = ds[i]; }); }
+    S.programs.push(p);
+  }
+  S.settings.activeProg = p.id; S.settings.cycleStart = S.settings.cycleStart || {}; S.settings.cycleStart[p.id] = Date.now();
+  return p;
+}
+/* recommandation : jours, niveau, objectif et matériel, chacun pèse dans le score */
+function libRank(a){
+  return PROGLIB.map(function(lp){
+    var s = 0;
+    if(a.gear === 'home') s += lp.gear.indexOf('home') >= 0 ? 20 : -20;
+    else if(lp.gear.indexOf('home') >= 0) s -= 20;
+    if(a.gear === 'bar') s += lp.gear.indexOf('bar') >= 0 ? 4 : -6;
+    if(a.gear === 'time') s += lp.gear.indexOf('time') >= 0 ? 6 : (lp.days <= 3 ? 0 : -4);
+    s += lp.days === a.days ? 6 : Math.abs(lp.days - a.days) === 1 ? 2 : -3;
+    s += lp.lv.indexOf(a.level) >= 0 ? 4 : -4;
+    s += lp.goal[0] === a.goal ? 4 : lp.goal.indexOf(a.goal) >= 0 ? 2 : 0;
+    if(lp.id === 'ascension' && a.level !== 'deb') s += 1;
+    return {lp:lp, s:s};
+  }).sort(function(x, y){ return y.s - x.s; }).map(function(x){ return x.lp; });
+}
+
+/* ================= 1.14 : PARCOURS D'OUVERTURE (une seule fois) =================
+   Affiché au tout premier lancement uniquement : S.settings.onboarded passe à true dès qu'un programme
+   est choisi ou qu'on passe par l'import, et ne revient jamais. */
+var DAYS_FR = ['DIM','LUN','MAR','MER','JEU','VEN','SAM'], DAYS_EN = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+var ONB_DAYS = {2:[1,4], 3:[1,3,5], 4:[1,2,4,5], 5:[1,2,3,5,6], 6:[1,2,3,4,5,6]};
+function onbState(){ if(!ui.onb) ui.onb = {step:0, goal:'both', level:'inter', days:3, dayset:[1,3,5], gear:'gym'}; return ui.onb; }
+function onbHead(o, back){
+  var bars = ''; for(var i = 1; i <= 4; i++) bars += '<span class="' + (i <= o.step ? 'on' : '') + '"></span>';
+  return '<div class="onb-top"><button class="onb-back" data-a="onbback" aria-label="' + L('Retour', 'Back') + '">←</button><div class="onb-bars">' + bars + '</div><span class="onb-n">' + o.step + ' / 4</span></div>';
+}
+function onbOpt(k, v, title, sub, extra){
+  var on = onbState()[k] === v;
+  return '<button class="onb-opt' + (on ? ' on' : '') + '" data-a="onbset" data-k="' + k + '" data-v="' + v + '" aria-pressed="' + on + '">' + (extra || '') + '<span class="onb-opt-t"><b>' + title + '</b><small>' + sub + '</small></span>' + (extra ? '' : '<i class="onb-radio" aria-hidden="true">' + (on ? '✓' : '') + '</i>') + '</button>';
+}
+function onbNext(label){ return '<button class="onb-next" data-a="onbnext">' + (label || L('CONTINUER', 'CONTINUE')) + ' <span aria-hidden="true">→</span></button>'; }
+function vOnb(){
+  var o = onbState(), h = '<div class="onb">';
+  if(o.step === 0){
+    h += '<div class="onb-brand"><span class="onb-logo">M3</span><span class="m3-eyebrow">MUSCLE 3000</span></div>';
+    h += '<div class="onb-hero"><h1>' + L('Ton programme,', 'Your program,') + '<br><em>' + L('en une minute.', 'in one minute.') + '</em></h1><p>' + L('Quatre questions sur toi et ta salle. On te propose le programme qui colle, et tu peux le changer quand tu veux.', 'Four questions about you and your gym. We suggest the program that fits, and you can change it any time.') + '</p>';
+    h += '<div class="onb-chips"><span>' + L('11 programmes', '11 programs') + '</span><span>' + L('Charges calculées pour toi', 'Weights worked out for you') + '</span><span>' + L('Hors ligne', 'Works offline') + '</span></div></div>';
+    h += '<div class="onb-foot">' + onbNext(L('C\'EST PARTI', 'LET\'S GO')) + '<button class="onb-alt" data-a="onbimport">' + L('J\'ai déjà un historique : l\'importer', 'I already have a history: import it') + '</button><p class="onb-small">' + L('Tes données restent sur ton téléphone.', 'Your data stays on your phone.') + '</p></div>';
+  } else if(o.step === 1){
+    h += onbHead(o) + '<span class="m3-eyebrow onb-eye">' + L('TON OBJECTIF', 'YOUR GOAL') + '</span><h1 class="onb-q">' + L('Tu t\'entraînes surtout pour…', 'You mostly train to…') + '</h1><div class="onb-list">';
+    h += onbOpt('goal', 'force', L('Être plus fort', 'Get stronger'), L('Soulever plus lourd sur les gros mouvements', 'Lift heavier on the big lifts'));
+    h += onbOpt('goal', 'muscle', L('Prendre du muscle', 'Build muscle'), L('Du volume et une silhouette plus marquée', 'More size and definition'));
+    h += onbOpt('goal', 'both', L('Les deux', 'Both'), L('Force sur les gros mouvements, volume sur le reste', 'Strength on the big lifts, volume on the rest'));
+    h += onbOpt('goal', 'fit', L('Me remettre en forme', 'Get back in shape'), L('Reprendre une habitude, sans se blesser', 'Build the habit again, without getting hurt'));
+    h += '</div><div class="onb-foot">' + onbNext() + '</div>';
+  } else if(o.step === 2){
+    var lvl = function(n){ return '<span class="onb-lv" aria-hidden="true"><i class="on"></i><i class="' + (n > 1 ? 'on' : '') + '"></i><i class="' + (n > 2 ? 'on' : '') + '"></i></span>'; };
+    h += onbHead(o) + '<span class="m3-eyebrow onb-eye">' + L('TON NIVEAU', 'YOUR LEVEL') + '</span><h1 class="onb-q">' + L('Tu soulèves depuis combien de temps ?', 'How long have you been lifting?') + '</h1><div class="onb-list">';
+    h += onbOpt('level', 'deb', L('Je débute', 'I\'m starting out'), L('Moins de 6 mois, ou une longue pause', 'Under 6 months, or a long break'), lvl(1));
+    h += onbOpt('level', 'inter', L('J\'ai les bases', 'I know the basics'), L('6 mois à 2 ans, je connais les gros mouvements', '6 months to 2 years, I know the big lifts'), lvl(2));
+    h += onbOpt('level', 'conf', L('Je suis confirmé', 'I\'m experienced'), L('Plus de 2 ans, je progresse plus lentement', 'Over 2 years, progress is slower'), lvl(3));
+    h += '</div><p class="onb-tip">' + L('Si tu as un historique dans une autre appli, importe-le ensuite depuis le Profil : l\'appli reprendra tes charges là où tu en es.', 'If you have a history in another app, import it from Profile afterwards: the app picks up your weights where you left off.') + '</p><div class="onb-foot">' + onbNext() + '</div>';
+  } else if(o.step === 3){
+    h += onbHead(o) + '<span class="m3-eyebrow onb-eye">' + L('TA SEMAINE', 'YOUR WEEK') + '</span><h1 class="onb-q">' + L('Combien de séances par semaine ?', 'How many sessions a week?') + '</h1><div class="onb-nums">';
+    [2, 3, 4, 5, 6].forEach(function(n){ h += '<button class="' + (o.days === n ? 'on' : '') + '" data-a="onbdays" data-v="' + n + '" aria-pressed="' + (o.days === n) + '">' + n + '</button>'; });
+    h += '</div><p class="onb-tip2">' + ({2:L('2 séances : le minimum efficace pour garder le niveau.', '2 sessions: the minimum that keeps you going.'), 3:L('3 séances, c\'est le bon rythme pour progresser sans y passer ta vie.', '3 sessions is the sweet spot to progress without living at the gym.'), 4:L('4 séances : assez de temps pour séparer haut et bas du corps.', '4 sessions: room to split upper and lower body.'), 5:L('5 séances : il faudra bien dormir et bien manger.', '5 sessions: sleep and food will matter.'), 6:L('6 séances : pour ceux qui ont déjà l\'habitude.', '6 sessions: for people who already have the habit.')})[o.days] + '</p>';
+    h += '<span class="m3-eyebrow onb-eye" style="margin-top:26px">' + L('QUELS JOURS ?', 'WHICH DAYS?') + '</span><div class="onb-days">';
+    [1, 2, 3, 4, 5, 6, 0].forEach(function(d){ var on = o.dayset.indexOf(d) >= 0; h += '<button class="' + (on ? 'on' : '') + '" data-a="onbday" data-v="' + d + '" aria-pressed="' + on + '">' + (isEN() ? DAYS_EN : DAYS_FR)[d] + '</button>'; });
+    h += '</div><p class="onb-tip2">' + (o.dayset.length === o.days ? L('L\'accueil te rappellera la séance du jour.', 'Home will remind you of each day\'s session.') : L('Choisis ' + o.days + ' jours (' + o.dayset.length + ' pour l\'instant).', 'Pick ' + o.days + ' days (' + o.dayset.length + ' so far).')) + '</p><div class="onb-foot">' + onbNext() + '</div>';
+  } else if(o.step === 4){
+    var ico = {gym:'<path d="M4 17h26M8 11v12M12 9v16M22 9v16M26 11v12"/>', bar:'<path d="M6 30V6M28 30V6M6 12h22M3 12h3M28 12h3"/>', home:'<path d="M10 17h14M6 12v10M10 10v14M24 10v14M28 12v10"/>', time:'<circle cx="17" cy="17" r="12"/><path d="M17 11v6l4 3"/>'};
+    var g = function(k, t, s){ var on = o.gear === k; return '<button class="onb-gear' + (on ? ' on' : '') + '" data-a="onbset" data-k="gear" data-v="' + k + '" aria-pressed="' + on + '"><svg width="34" height="34" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ico[k] + '</svg><b>' + t + '</b><small>' + s + '</small></button>'; };
+    h += onbHead(o) + '<span class="m3-eyebrow onb-eye">' + L('TON MATÉRIEL', 'YOUR EQUIPMENT') + '</span><h1 class="onb-q">' + L('Tu t\'entraînes où ?', 'Where do you train?') + '</h1><div class="onb-grid">';
+    h += g('gym', L('Salle complète', 'Full gym'), L('Barres, machines, poulies', 'Barbells, machines, cables')) + g('bar', L('Barre et rack', 'Barbell & rack'), L('Un garage, une salle simple', 'A garage or basic gym')) + g('home', L('Haltères à la maison', 'Dumbbells at home'), L('Haltères, un banc', 'Dumbbells and a bench')) + g('time', L('Peu de temps', 'Short on time'), L('Séances courtes, l\'essentiel', 'Short sessions, the essentials'));
+    h += '</div><div class="onb-foot">' + onbNext(L('VOIR MON PROGRAMME', 'SEE MY PROGRAM')) + '</div>';
+  } else if(o.step === 5){
+    var rk = libRank(o), best = rk[0], ws = libWorkouts(best);
+    h += '<span class="m3-eyebrow onb-eye" style="margin-top:4px">' + L('FAIT POUR TOI', 'MADE FOR YOU') + '</span><h1 class="onb-q">' + L('Ton programme', 'Your program') + '<br><em>' + L('est prêt.', 'is ready.') + '</em></h1>';
+    var days = o.dayset.length === ws.length ? o.dayset.slice().sort(function(a, b){ return ((a + 6) % 7) - ((b + 6) % 7); }) : ws.map(function(w){ return w.day; });
+    h += '<section class="onb-reco"><div class="onb-reco-top"><span>' + L('RECOMMANDÉ', 'RECOMMENDED') + '</span><em>' + libTags(best)[1] + '</em></div><h2>' + esc(trText(best.name)) + '</h2><p class="onb-reco-meta">' + libMeta(best) + '</p>';
+    h += '<div class="onb-week">' + ws.slice(0, 6).map(function(w, i){ return '<div><span>' + (isEN() ? DAYS_EN : DAYS_FR)[days[i]] + '</span><b>' + esc(trText(w.name)) + '</b><small>' + esc(exDisp(w.ex[0].name)) + '</small></div>'; }).join('') + '</div>';
+    h += '<p class="onb-reco-d">' + L(best.d[0], best.d[1]) + '</p><button class="onb-pick" data-a="onbpick" data-id="' + best.id + '">' + L('CHOISIR ', 'CHOOSE ') + esc(trText(best.name)).toUpperCase() + ' <span aria-hidden="true">→</span></button></section>';
+    h += '<span class="m3-eyebrow onb-eye" style="margin-top:22px">' + L('AUSSI POUR TOI', 'ALSO FOR YOU') + '</span><div class="m3s-list">';
+    rk.slice(1, 3).forEach(function(lp){ h += '<button class="m3s-row" data-a="onbpick" data-id="' + lp.id + '"><span>' + esc(trText(lp.name)) + '<small>' + libMeta(lp) + ' · ' + libTags(lp)[1] + '</small></span><b>›</b></button>'; });
+    h += '</div><button class="onb-alt onb-link" data-a="onblib">' + L('Voir les 11 programmes', 'See all 11 programs') + '</button><button class="onb-alt onb-link" data-a="onbback">← ' + L('Modifier mes réponses', 'Change my answers') + '</button>';
+  } else {
+    h += '<div class="onb-top"><button class="onb-back" data-a="onbback" aria-label="' + L('Retour', 'Back') + '">←</button><span class="m3-eyebrow">' + L('BIBLIOTHÈQUE', 'LIBRARY') + '</span></div>' + vLibList('onbpick');
+  }
+  return h + '</div>';
+}
+function vLibList(action){
+  var h = '<h1 class="onb-q">' + L('11 programmes,', '11 programs,') + '<br><em>' + L('tous différents.', 'all different.') + '</em></h1><div class="lib-list">';
+  PROGLIB.forEach(function(lp){
+    var t = libTags(lp), act = activeProg() && (activeProg().libId === lp.id || (lp.id === 'ascension' && activeProg().id === 'zth'));
+    h += '<button class="lib-card' + (act ? ' on' : '') + '" data-a="' + action + '" data-id="' + lp.id + '"><span class="lib-top"><b>' + esc(trText(lp.name)) + '</b><em>' + (act ? L('ACTIF', 'ACTIVE') : lp.days + L(' j', ' d')) + '</em></span><span class="lib-d">' + L(lp.d[0], lp.d[1]) + '</span><span class="lib-tags"><i>' + t[0] + '</i><i>' + t[1] + '</i><i>' + t[2] + '</i></span></button>';
+  });
+  return h + '</div>';
+}
+/* bibliothèque accessible ensuite depuis la page Programme */
+function vLib(){
+  var h = restBar() + '<header class="m3-page-head"><span class="m3-eyebrow">' + L('BIBLIOTHÈQUE', 'LIBRARY') + '</span></header>';
+  h += '<p class="m3s-note" style="margin-top:-8px">' + L('Touche un programme pour l\'ajouter et l\'activer. Tes programmes actuels et ton historique sont gardés.', 'Tap a program to add and activate it. Your current programs and history are kept.') + '</p>';
+  return h + vLibList('libadd') + nav('prog');
+}
+function onbFinish(){ S.settings.onboarded = true; ui.onb = null; ui.welcome = null; ui.screen = 'home'; save(); window.scrollTo(0, 0); render(); }
+document.addEventListener('click', function(ev){
+  var el = ev.target.closest('[data-a]'); if(!el) return;
+  var a = el.getAttribute('data-a'); if(!/^onb|^libadd$/.test(a)) return;
+  var o = onbState();
+  if(a === 'onbset'){ o[el.getAttribute('data-k')] = el.getAttribute('data-v'); }
+  else if(a === 'onbdays'){ o.days = +el.getAttribute('data-v'); o.dayset = ONB_DAYS[o.days].slice(); }
+  else if(a === 'onbday'){ var d = +el.getAttribute('data-v'), i = o.dayset.indexOf(d); if(i >= 0) o.dayset.splice(i, 1); else o.dayset.push(d); }
+  else if(a === 'onbnext'){ o.step = Math.min(5, o.step + 1); window.scrollTo(0, 0); }
+  else if(a === 'onbback'){ o.step = o.step === 6 ? 5 : Math.max(0, o.step - 1); window.scrollTo(0, 0); }
+  else if(a === 'onblib'){ o.step = 6; window.scrollTo(0, 0); }
+  else if(a === 'onbimport'){ S.settings.onboarded = true; ui.onb = null; ui.welcome = null; ui.screen = 'set'; save(); render(); toast(L('Importe ton fichier dans Sauvegarde', 'Import your file under Backup')); return; }
+  else if(a === 'onbpick'){
+    var id = el.getAttribute('data-id'), lp = libById(id);
+    var p = libInstall(id, o.dayset.length === libWorkouts(lp).length ? o.dayset : null);
+    if(id !== 'ascension' && !S.history.some(function(x){ return !x.demo; })) S.programs = S.programs.filter(function(x){ return x.id !== 'zth'; });
+    onbFinish(); toast(L('Programme ', 'Program ') + trText(p.name) + L(' prêt', ' ready')); return;
+  }
+  else if(a === 'libadd'){ var p2 = libInstall(el.getAttribute('data-id')); save(); ui.screen = 'prog'; window.scrollTo(0, 0); render(); toast(trText(p2.name) + L(' est ton programme actif', ' is now your active program')); return; }
+  render();
+});
+
+/* ================= 1.14 : SÉANCE « UNE SÉRIE À LA FOIS » =================
+   Vue par défaut en séance : la série en cours en très gros, un énorme bouton Valider, le repos en plein écran.
+   La liste complète (l'ancienne vue) reste accessible d'un tap ; le choix est gardé dans S.settings.exView. */
+function exView(){ return S.settings.exView === 'list' ? 'list' : 'focus'; }
+function fxSetLabel(ex, j){
+  var s = ex.sets[j]; if(!s) return '';
+  if(s.warm){ var w = 0, wn = 0; ex.sets.forEach(function(x, i){ if(x.warm){ wn++; if(i <= j) w++; } }); return L('ÉCHAUFFEMENT ', 'WARM-UP ') + w + ' / ' + wn; }
+  var k = workIndex(ex, j) + 1, n = ex.sets.filter(function(x){ return !x.warm; }).length;
+  return L('SÉRIE ', 'SET ') + k + L(' SUR ', ' OF ') + n + ' · ' + L('CIBLE ', 'TARGET ') + s.lo + (s.hi !== s.lo ? '–' + s.hi : '');
+}
+function fxLast(ex, j){
+  var pl = pastEntries(ex.name)[0], s = ex.sets[j]; if(!pl || !s) return null;
+  if(s.warm) return pl.all.filter(function(x){ return x.warm; })[ex.sets.slice(0, j).filter(function(x){ return x.warm; }).length] || null;
+  return pl.sets[workIndex(ex, j)] || null;
+}
+function fxDots(ex, sj){
+  return '<div class="fx-dots" aria-hidden="true">' + ex.sets.map(function(s, j){ return '<i class="' + (s.done ? 'done' : j === sj ? 'now' : '') + (s.warm ? ' warm' : '') + '"></i>'; }).join('') + '</div>';
+}
+function fxHead(a, i, n){
+  var doneSets = 0, totalSets = 0; a.exercises.forEach(function(e){ e.sets.forEach(function(s){ if(!s.warm){ totalSets++; if(s.done) doneSets++; } }); });
+  return '<header class="fx-head"><button data-a="scr" data-s="ov">← ' + esc(trText(a.name)) + '</button><span>' + L('EXO ', 'EX ') + (i + 1) + ' / ' + n + '</span><b id="clock">● ' + mmss((Date.now() - a.start) / 1000) + '</b></header><div class="m3-progress fx-prog"><i style="width:' + Math.round(doneSets / Math.max(1, totalSets) * 100) + '%"></i></div>';
+}
+function fxNextTxt(a, ex, sj){
+  var nxt = sj != null ? null : a.exercises[a.idx + 1];
+  for(var j = (sj == null ? ex.sets.length : sj + 1); j < ex.sets.length; j++) if(!ex.sets[j].done) return fxSetLabel(ex, j).split(' · ')[0].toLowerCase();
+  var ne = a.exercises[a.idx + 1]; return ne ? exDisp(ne.name) : L('fin de séance', 'end of session');
+}
+function vFocus(){
+  var a = S.active, ex = cur(), i = a.idx, n = a.exercises.length, sj = selIndex(ex), ri = restInfo();
+  var h = fxHead(a, i, n);
+  /* repos en plein écran tant qu'il n'est pas fini ; à zéro, render() repasse ici et la série suivante s'affiche */
+  if(ri && !ri.over){
+    var rex = a.exercises[ri.r.ex] || ex, rs = rex.sets[ri.r.set], nj = selIndex(ex), ns = nj != null ? ex.sets[nj] : null;
+    var nw = ns ? (ns.w != null ? ns.w : ns.sw) : null, circ = 854.5;
+    h += '<section class="fx-rest" id="rest-band"><div class="fx-rest-done"><i aria-hidden="true">✓</i><span>' + (rs ? fxSetLabel(rex, ri.r.set).split(' · ')[0] + L(' validée · ', ' logged · ') + '<b>' + kg(rs.w) + ' kg × ' + rs.r + '</b>' : L('Série validée', 'Set logged')) + '</span></div>';
+    h += '<div class="fx-ring"><svg viewBox="0 0 300 300" aria-hidden="true"><circle cx="150" cy="150" r="136" class="fx-ring-bg"/><circle cx="150" cy="150" r="136" class="fx-ring-fg" id="t-ring" stroke-dasharray="' + circ + '" stroke-dashoffset="' + (circ * ri.pct / 100).toFixed(1) + '" transform="rotate(-90 150 150)"/></svg><div><strong id="t-big">' + mmss(ri.left) + '</strong><small>' + L('sur ', 'of ') + mmss(ri.r.total) + '</small></div></div>';
+    h += '<div class="fx-rest-adj"><button data-a="tadj" data-d="-15">−15 s</button><button data-a="tadj" data-d="15">+15 s</button></div>';
+    h += '<div class="fx-rest-next"><div><span>' + L('ENSUITE · ', 'NEXT · ') + (ns ? fxSetLabel(ex, nj).split(' · ')[0] + (a.idx !== ri.r.ex ? ' · ' + esc(exDisp(ex.name)).toUpperCase() : '') : L('FIN DE L\'EXERCICE', 'END OF EXERCISE')) + '</span><b>' + (ns ? (nw != null ? kg(nw) + ' kg × ' : '') + ns.lo + (ns.hi !== ns.lo ? '–' + ns.hi : '') : esc(fxNextTxt(a, ex, null))) + '</b></div><button data-a="skip">' + L('PASSER', 'SKIP') + ' →</button></div>';
+    h += '<p class="fx-rest-tip">' + L('À zéro : un petit son, puis la série suivante s\'ouvre seule.', 'At zero: a short sound, then the next set opens by itself.') + '</p></section>';
+    return h;
+  }
+  if(sj == null){
+    var ne = a.exercises[i + 1];
+    h += '<section class="fx-end"><span class="m3-eyebrow">' + L('EXERCICE TERMINÉ', 'EXERCISE DONE') + '</span><h1>' + esc(exDisp(ex.name)) + '</h1><p>' + ex.sets.filter(function(s){ return s.done && !s.warm; }).map(function(s){ return kg(s.w) + '×' + s.r; }).join(' · ') + '</p>';
+    h += ne ? '<button class="fx-validate" data-a="nav" data-d="1">' + esc(exDisp(ne.name)).toUpperCase() + ' <span aria-hidden="true">→</span></button>' : (freeSession() ? '<button class="fx-validate" data-a="nav" data-d="1">' + L('AJOUTER UN EXERCICE', 'ADD AN EXERCISE') + '</button>' : '<button class="fx-validate" data-a="askfinish">' + L('TERMINER LA SÉANCE', 'FINISH SESSION') + ' <span aria-hidden="true">✓</span></button>');
+    h += '<button class="fx-alt" data-a="addset">' + L('+ Une série de plus', '+ One more set') + '</button></section>';
+    if(ui.confirm === 'finish') h += '<div class="m3s-list fx-confirm">' + m3sConfirm(L('Terminer et enregistrer la séance ?', 'Finish and save the session?'), 'finish', L('Terminer', 'Finish')) + '</div>';
+    return h + fxFoot(a, ex, sj);
+  }
+  var s = ex.sets[sj], last = fxLast(ex, sj), wv = s.w != null ? s.w : s.sw, rv = s.r != null ? s.r : s.sr;
+  var hint = s.w == null && s.sw != null && s.trend ? ({'▲':L('+' + kg(inc()) + ' kg proposé', '+' + kg(inc()) + ' kg suggested'), '+1':L('+1 rep proposée', '+1 rep suggested'), '▼':L('charge allégée', 'lighter weight'), '=':L('même charge', 'same weight')})[s.trend] || '' : (s.w == null && s.sw != null ? L('proposé', 'suggested') : '');
+  h += '<div class="fx-title"><div><span class="m3-eyebrow fx-eye">' + fxSetLabel(ex, sj) + '</span><h1>' + esc(exDisp(ex.name)) + '</h1></div><button class="fx-info" data-a="fiche" data-n="' + esc(ex.name) + '" aria-label="' + L('Ouvrir la fiche', 'Open the info') + '">i</button></div>';
+  h += fxDots(ex, sj);
+  if(ri && ri.over) h += '<div class="fx-over">' + L('Repos terminé · ', 'Rest done · ') + '<b id="t-over">+' + mmss(-ri.left) + '</b></div>';
+  h += '<section class="fx-card">';
+  h += '<div class="fx-row"><button class="fx-pm" data-a="w" data-d="-1" aria-label="' + L('Moins ', 'Minus ') + kg(inc()) + ' kg">−</button><label class="fx-val"><span>' + L('CHARGE', 'WEIGHT') + '</span><input id="in-w" data-f="w" inputmode="decimal" value="' + (s.w != null ? kg(s.w) : '') + '" placeholder="' + (s.sw != null ? kg(s.sw) : '—') + '" class="' + (s.w == null ? 'sug' : '') + '"><small class="' + (hint ? 'hint' : '') + '">' + (hint || 'kg') + '</small></label><button class="fx-pm" data-a="w" data-d="1" aria-label="' + L('Plus ', 'Plus ') + kg(inc()) + ' kg">+</button></div>';
+  h += '<div class="fx-sep"></div>';
+  h += '<div class="fx-row"><button class="fx-pm" data-a="r" data-d="-1" aria-label="' + L('Une rep de moins', 'One rep less') + '">−</button><label class="fx-val"><span>' + L('RÉPÉTITIONS', 'REPS') + '</span><input id="in-r" data-f="r" inputmode="numeric" value="' + (s.r != null ? s.r : '') + '" placeholder="' + (s.sr != null ? s.sr : '—') + '" class="' + (s.r == null ? 'sug' : '') + '"><small>reps</small></label><button class="fx-pm" data-a="r" data-d="1" aria-label="' + L('Une rep de plus', 'One rep more') + '">+</button></div>';
+  h += '</section>';
+  if(last) h += '<button class="fx-last" data-a="uselast">' + L('La dernière fois : ', 'Last time: ') + '<b>' + kg(last.w) + ' × ' + last.r + '</b> · ' + L('reprendre', 'reuse') + '</button>';
+  if(ex.cue) h += '<p class="fx-cue">' + esc(trText(ex.cue)) + '</p>';
+  h += '<button class="fx-validate" data-a="validate">' + L('VALIDER', 'LOG SET') + ' <span aria-hidden="true">✓</span></button>';
+  return h + fxFoot(a, ex, sj);
+}
+function fxFoot(a, ex, sj){
+  return '<button class="fx-foot" data-a="exview" data-v="list"><i aria-hidden="true"></i>' + L('Ensuite : ', 'Next: ') + esc(fxNextTxt(a, ex, sj)) + ' · ' + L('toutes les séries', 'all sets') + '</button>';
+}
+document.addEventListener('click', function(ev){
+  var el = ev.target.closest('[data-a="exview"]'); if(!el) return;
+  S.settings.exView = el.getAttribute('data-v') === 'list' ? 'list' : 'focus'; save(); window.scrollTo(0, 0); render();
+});
+/* l'anneau du repos suit le temps, sans tout redessiner */
+setInterval(function(){
+  var r = document.getElementById('t-ring'); if(!r) return;
+  var ri = restInfo(); if(ri) r.setAttribute('stroke-dashoffset', (854.5 * ri.pct / 100).toFixed(1));
+}, 250);
+
 render();
 })();
 </script>
