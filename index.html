@@ -1246,6 +1246,15 @@ body .fl-row.next .fl-ck{border-color:var(--m3-accent)!important}
 body .fl-row.done .fl-ck{background:var(--m3-accent)!important;border-color:var(--m3-accent)!important;color:var(--m3-card)!important}
 .fl-sep{display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;font-size:12px;font-weight:700;color:var(--m3-muted);font-variant-numeric:tabular-nums}
 .fl-sep:before,.fl-sep:after{content:"";flex:1;height:1px;background:var(--m3-line)}
+.fl-sep-btn{width:100%;min-height:32px;background:none;border:0;font:inherit;font-size:12px;font-weight:700;color:var(--m3-muted);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.fl-sep-btn:active{color:var(--m3-accent)}
+.fl-ex button.fl-sep-btn{border:0!important;background:none!important;border-radius:0!important;min-height:32px!important;padding:0 8px 0 12px!important;color:var(--m3-muted)!important}
+.fl-ex .fl-sep-ed button.ok{border-color:var(--m3-accent)!important;color:var(--m3-accent)!important}
+.fl-sep-ed{justify-content:center;padding:4px 8px;min-height:44px}
+.fl-sep-ed:before,.fl-sep-ed:after{display:none}
+.fl-sep-ed button{min-width:52px;min-height:36px;border:1px solid var(--m3-line);border-radius:999px;background:none;color:inherit;font:inherit;font-weight:800;cursor:pointer}
+.fl-sep-ed button.ok{border-color:var(--m3-accent);color:var(--m3-accent)}
+.fl-sep-ed b{min-width:56px;text-align:center;font-size:15px;color:var(--m3-accent)}
 .fl-sep.live{color:var(--m3-accent);font-weight:800}
 .fl-sep.live:before,.fl-sep.live:after{display:none}
 .fl-sep.live .fl-tr{flex:1;height:2px;border-radius:1px;background:var(--m3-line);overflow:hidden;order:2}
@@ -1353,45 +1362,59 @@ function curTheme(){ return themeOf(S.settings.theme, S.settings.inkAlt); }
 var TOP = 'Top set puis −10 % du poids à chaque série';
 var SEED = [
   {id:'A', name:'Upper A', day:1, ex:[
-    {name:'Développé incliné', r:[[4,6],[6,8],[8,10]], rest:150, cue:TOP},
+    {name:'Développé incliné barre', r:[[4,6],[6,8],[8,10]], rest:150, cue:TOP},
     {name:'Tractions lestées', r:[[4,6],[6,8],[8,10]], rest:120, cue:TOP},
-    {name:'Élévations frontales', r:[[10,15],[10,15],[10,15]], rest:90, cue:'Pic de contraction 2" en haut'},
+    {name:'Élévations frontales haltères', r:[[10,15],[10,15],[10,15]], rest:90, cue:'Pic de contraction 2" en haut'},
     {name:'Curl incliné haltères', r:[[8,12],[8,12],[8,12]], rest:90, cue:''},
-    {name:'Élévations latérales', r:[[15,20],[10,15],[8,10,'Triche into upright row']], rest:60, cue:'Raptor set : dernière série en dégressive mécanique'}
+    {name:'Élévations latérales haltères', r:[[15,20],[10,15],[8,10,'Triche into upright row']], rest:60, cue:'Raptor set : dernière série en dégressive mécanique'}
   ]},
   {id:'L', name:'Lower', day:3, ex:[
-    {name:'High bar squat', v:['High bar squat','Deadlift'], r:[[6,10],[6,10],[6,10]], rest:120, cue:''},
-    {name:'Romanian deadlift', v:['Romanian deadlift','Fentes'], r:[[10,15],[10,15],[10,15]], rest:90, cue:''},
-    {name:'Leg curl', r:[[8,12],[8,12],[8,12]], rest:30, cue:'Superset avec leg extension, 30" entre chaque exercice'},
-    {name:'Leg extension', r:[[8,12],[8,12],[8,12]], rest:30, cue:'Superset avec leg curl, 30" entre chaque exercice'},
-    {name:'Extensions mollets', r:[[12,15],[8,12],[6,10,'Puis dégressive AMRAP']], rest:60, cue:'Tempo 1-2-2-1'},
-    {name:'Upright row penché', r:[[15,20],[10,15],[6,10,'Puis dégressive AMRAP']], rest:60, cue:'Augmenter le poids à chaque série'}
+    {name:'Squat barre high bar', v:['Squat barre high bar','Deadlift barre'], r:[[6,10],[6,10],[6,10]], rest:120, cue:''},
+    {name:'Romanian deadlift barre', v:['Romanian deadlift barre','Fentes haltères'], r:[[10,15],[10,15],[10,15]], rest:90, cue:''},
+    {name:'Leg curl machine', r:[[8,12],[8,12],[8,12]], rest:30, cue:'Superset avec leg extension, 30" entre chaque exercice'},
+    {name:'Leg extension machine', r:[[8,12],[8,12],[8,12]], rest:30, cue:'Superset avec leg curl, 30" entre chaque exercice'},
+    {name:'Extensions mollets machine', r:[[12,15],[8,12],[6,10,'Puis dégressive AMRAP']], rest:60, cue:'Tempo 1-2-2-1'},
+    {name:'Upright row penché haltères', r:[[15,20],[10,15],[6,10,'Puis dégressive AMRAP']], rest:60, cue:'Augmenter le poids à chaque série'}
   ]},
   {id:'B', name:'Upper B', day:5, ex:[
-    {name:'Overhead press', r:[[4,6],[6,8],[8,10]], rest:150, cue:TOP},
-    {name:'Développé couché', r:[[4,6],[6,8],[8,10]], rest:120, cue:TOP},
+    {name:'Overhead press barre', r:[[4,6],[6,8],[8,10]], rest:150, cue:TOP},
+    {name:'Développé couché barre', r:[[4,6],[6,8],[8,10]], rest:120, cue:TOP},
     {name:'Tractions neutres', r:[[8,12],[8,12],[8,12]], rest:90, cue:'Focus bras : tirer avec les bras, pas avec le dos'},
-    {name:'Oiseau assis prise neutre', r:[[10,15],[10,15],[10,15]], rest:60, cue:'Coudes perpendiculaires au corps'},
-    {name:'Upright row', r:[[12,15],[8,12],[6,10,'Puis dégressive AMRAP']], rest:60, cue:'Augmenter le poids à chaque série'}
+    {name:'Oiseau assis haltères prise neutre', r:[[10,15],[10,15],[10,15]], rest:60, cue:'Coudes perpendiculaires au corps'},
+    {name:'Upright row barre', r:[[12,15],[8,12],[6,10,'Puis dégressive AMRAP']], rest:60, cue:'Augmenter le poids à chaque série'}
   ]}
 ];
 /* exercise library: '*' marks a heavy compound lift (defaults 6-10 reps, 2:00 rest) */
 var GROUPS = ['Pectoraux','Dos','Épaules','Biceps','Triceps','Avant-bras','Quadriceps','Ischios & fessiers','Mollets','Abdos','Cardio','Autre'];
 var LIBSRC = {
-  'Pectoraux':'*Développé couché|*Développé incliné|*Développé décliné|*Développé couché haltères|*Développé incliné haltères|*Développé machine|*Développé incliné machine|*Dips|*Pompes|*Pompes lestées|Écarté haltères|Écarté incliné haltères|Écarté poulie vis-à-vis|Écarté poulie basse|Pec deck|Pullover haltère',
-  'Dos':'*Tractions|*Tractions lestées|*Tractions neutres|*Tractions supination|*Rowing barre|*Rowing Yates|*Rowing haltère|*Rowing T-bar|*Rowing chest supported|Rowing poulie basse|Rowing machine|Tirage vertical|Tirage vertical prise serrée|Tirage vertical prise neutre|Tirage vertical unilatéral|Pullover poulie|*Deadlift|*Rack pull|Shrug barre|Shrug haltères|Extensions lombaires|Good morning',
-  'Épaules':'*Overhead press|*Développé militaire|*Développé haltères assis|*Développé Arnold|*Développé épaules machine|*Push press|Élévations latérales|Élévations latérales poulie|Élévations latérales machine|Élévations frontales|Oiseau|Oiseau assis prise neutre|Reverse pec deck|Face pull|Upright row|Upright row penché|Y-raise',
-  'Biceps':'Curl barre|Curl barre EZ|Curl haltères|Curl incliné haltères|Curl marteau|Curl pupitre|Curl poulie|Curl concentré|Curl araignée|Curl Bayesian',
-  'Triceps':'*Développé couché prise serrée|*Dips banc|Extension triceps poulie|Extension triceps corde|Barre au front|Extension nuque haltère|Extension nuque poulie|Kickback triceps',
-  'Avant-bras':'Curl poignets|Curl poignets inversé|Farmer walk|Dead hang',
-  'Quadriceps':'*High bar squat|*Low bar squat|*Squat|*Front squat|*Hack squat|*Presse à cuisses|*Goblet squat|*Belt squat|*Fentes|*Fentes bulgares|*Fentes marchées|Leg extension|Sissy squat|Step-up',
-  'Ischios & fessiers':'*Romanian deadlift|*Soulevé de terre jambes tendues|*Sumo deadlift|*Hip thrust|Leg curl|Leg curl assis|Leg curl allongé|Nordic curl|Glute bridge|Abduction machine|Kickback fessiers poulie',
-  'Mollets':'Extensions mollets|Mollets debout|Mollets assis|Mollets à la presse',
-  'Abdos':'Crunch|Crunch poulie|Relevé de jambes suspendu|Relevé de genoux|Gainage|Gainage latéral|Ab wheel|Russian twist|Pallof press|Dragon flag',
+  'Pectoraux':'*Développé couché barre|*Développé incliné barre|*Développé décliné barre|*Développé couché haltères|*Développé incliné haltères|*Développé couché machine|*Développé incliné machine|*Dips|*Pompes|*Pompes lestées|Écarté haltères|Écarté incliné haltères|Écarté poulie vis-à-vis|Écarté poulie basse|Pec deck|Pullover haltère',
+  'Dos':'*Tractions|*Tractions lestées|*Tractions neutres|*Tractions supination|*Rowing barre|*Rowing Yates barre|*Rowing haltère|*Rowing T-bar|*Rowing chest supported machine|Rowing poulie basse|Rowing machine|Tirage vertical poulie|Tirage vertical poulie prise serrée|Tirage vertical poulie prise neutre|Tirage vertical poulie unilatéral|Pullover poulie|*Deadlift barre|*Rack pull barre|Shrug barre|Shrug haltères|Extensions lombaires|Good morning barre',
+  'Épaules':'*Overhead press barre|*Développé militaire barre|*Développé haltères assis|*Développé Arnold haltères|*Développé épaules machine|*Push press barre|Élévations latérales haltères|Élévations latérales poulie|Élévations latérales machine|Élévations frontales haltères|Oiseau haltères|Oiseau assis haltères prise neutre|Reverse pec deck|Face pull poulie|Upright row barre|Upright row penché haltères|Y-raise haltères',
+  'Biceps':'Curl barre|Curl barre EZ|Curl haltères|Curl incliné haltères|Curl marteau haltères|Curl pupitre barre EZ|Curl poulie|Curl concentré haltère|Curl araignée haltères|Curl Bayesian poulie',
+  'Triceps':'*Développé couché prise serrée barre|*Dips banc|Extension triceps poulie|Extension triceps poulie corde|Barre au front|Extension nuque haltère|Extension nuque poulie|Kickback triceps haltère',
+  'Avant-bras':'Curl poignets barre|Curl poignets inversé barre|Farmer walk haltères|Dead hang',
+  'Quadriceps':'*Squat barre high bar|*Squat barre low bar|*Squat barre|*Front squat barre|*Hack squat machine|*Presse à cuisses|*Goblet squat haltère|*Belt squat machine|*Fentes haltères|*Fentes bulgares haltères|*Fentes marchées haltères|Leg extension machine|Sissy squat|Step-up haltères',
+  'Ischios & fessiers':'*Romanian deadlift barre|*Soulevé de terre jambes tendues barre|*Sumo deadlift barre|*Hip thrust barre|Leg curl machine|Leg curl assis machine|Leg curl allongé machine|Nordic curl|Glute bridge|Abduction machine|Kickback fessiers poulie',
+  'Mollets':'Extensions mollets machine|Mollets debout machine|Mollets assis machine|Mollets à la presse',
+  'Abdos':'Crunch|Crunch poulie|Relevé de jambes suspendu|Relevé de genoux|Gainage|Gainage latéral|Ab wheel|Russian twist|Pallof press poulie|Dragon flag',
   'Cardio':'Vélo|Rameur|Tapis de course|Corde à sauter|Sled push|Assault bike'
 };
 var LIB = [];
 Object.keys(LIBSRC).forEach(function(g){ LIBSRC[g].split('|').forEach(function(n){ var c = n.charAt(0) === '*'; LIB.push({n:c ? n.slice(1) : n, g:g, c:c}); }); });
+/* 1.15 : le matériel est dans le nom (barre, haltères, machine, poulie). Anciens noms → nouveaux */
+var EQREN = {"Développé couché": "Développé couché barre", "Développé incliné": "Développé incliné barre", "Développé décliné": "Développé décliné barre", "Développé machine": "Développé couché machine", "Rowing Yates": "Rowing Yates barre", "Rowing chest supported": "Rowing chest supported machine", "Tirage vertical": "Tirage vertical poulie", "Tirage vertical prise serrée": "Tirage vertical poulie prise serrée", "Tirage vertical prise neutre": "Tirage vertical poulie prise neutre", "Tirage vertical unilatéral": "Tirage vertical poulie unilatéral", "Deadlift": "Deadlift barre", "Rack pull": "Rack pull barre", "Good morning": "Good morning barre", "Overhead press": "Overhead press barre", "Développé militaire": "Développé militaire barre", "Développé Arnold": "Développé Arnold haltères", "Push press": "Push press barre", "Élévations latérales": "Élévations latérales haltères", "Élévations frontales": "Élévations frontales haltères", "Oiseau": "Oiseau haltères", "Oiseau assis prise neutre": "Oiseau assis haltères prise neutre", "Face pull": "Face pull poulie", "Upright row": "Upright row barre", "Y-raise": "Y-raise haltères", "Curl marteau": "Curl marteau haltères", "Curl pupitre": "Curl pupitre barre EZ", "Curl concentré": "Curl concentré haltère", "Curl araignée": "Curl araignée haltères", "Curl Bayesian": "Curl Bayesian poulie", "Développé couché prise serrée": "Développé couché prise serrée barre", "Extension triceps corde": "Extension triceps poulie corde", "Kickback triceps": "Kickback triceps haltère", "Curl poignets": "Curl poignets barre", "Curl poignets inversé": "Curl poignets inversé barre", "Farmer walk": "Farmer walk haltères", "High bar squat": "Squat barre high bar", "Low bar squat": "Squat barre low bar", "Squat": "Squat barre", "Front squat": "Front squat barre", "Hack squat": "Hack squat machine", "Goblet squat": "Goblet squat haltère", "Belt squat": "Belt squat machine", "Fentes": "Fentes haltères", "Fentes bulgares": "Fentes bulgares haltères", "Fentes marchées": "Fentes marchées haltères", "Leg extension": "Leg extension machine", "Step-up": "Step-up haltères", "Romanian deadlift": "Romanian deadlift barre", "Soulevé de terre jambes tendues": "Soulevé de terre jambes tendues barre", "Sumo deadlift": "Sumo deadlift barre", "Hip thrust": "Hip thrust barre", "Leg curl": "Leg curl machine", "Leg curl assis": "Leg curl assis machine", "Leg curl allongé": "Leg curl allongé machine", "Extensions mollets": "Extensions mollets machine", "Mollets debout": "Mollets debout machine", "Mollets assis": "Mollets assis machine", "Pallof press": "Pallof press poulie", "Upright row penché": "Upright row penché haltères"};
+var EQ_LBL = {barre:['BARRE','BARBELL'], halt:['HALTÈRES','DUMBBELL'], machine:['MACHINE','MACHINE'], poulie:['POULIE','CABLE'], pdc:['POIDS DU CORPS','BODYWEIGHT']};
+var EQ_ORDER = ['barre','halt','machine','poulie','pdc'];
+function eqOf(n){
+  var f = fold(n);
+  if(/poulie|face pull/.test(f)) return 'poulie';
+  if(/machine|presse|pec deck|smith|abduction|hack squat|belt squat/.test(f)) return 'machine';
+  if(/halter/.test(f)) return 'halt';
+  if(/barre|t bar/.test(f)) return 'barre';
+  if(/traction|dips|pompe|nordic|glute bridge|sissy|crunch|releve|gainage|russian|dragon|dead hang|lombaire|ab wheel/.test(f)) return 'pdc';
+  return '';
+}
+function eqLbl(k){ return k && EQ_LBL[k] ? L(EQ_LBL[k][0], EQ_LBL[k][1]) : ''; }
 var DAYS = ['D','L','M','M','J','V','S'];
 var KEY = 'brutalhud.v1';
 
@@ -1465,29 +1488,29 @@ function seedDemo(){
       ['Développé incliné machine', 0, [[8,10],[8,10],[8,10]], 120, 60, 5],
       ['Dips', 0, [[8,12],[8,12],[8,12]], 90, 10, 2.5],
       ['Élévations latérales poulie', 0, [[12,15],[12,15],[12,15],[12,15]], 60, 7.5, 1.25],
-      ['Extension triceps corde', 0, [[10,15],[10,15],[10,15]], 60, 25, 2.5]]},
+      ['Extension triceps poulie corde', 0, [[10,15],[10,15],[10,15]], 60, 25, 2.5]]},
     {id:'demo-pull', name:'Pull', day:2, ex:[
-      ['Sumo deadlift', 2, [[4,6],[4,6],[4,6]], 180, 140, 5],
+      ['Sumo deadlift barre', 2, [[4,6],[4,6],[4,6]], 180, 140, 5],
       ['Tractions', 0, [[6,10],[6,10],[6,10]], 120, 0, 2.5],
       ['Rowing haltère', 0, [[8,12],[8,12],[8,12]], 90, 34, 2],
-      ['Face pull', 0, [[12,15],[12,15],[12,15]], 60, 20, 2.5],
-      ['Curl marteau', 0, [[10,12],[10,12],[10,12]], 60, 14, 2]]},
+      ['Face pull poulie', 0, [[12,15],[12,15],[12,15]], 60, 20, 2.5],
+      ['Curl marteau haltères', 0, [[10,12],[10,12],[10,12]], 60, 14, 2]]},
     {id:'demo-legs', name:'Legs', day:4, ex:[
-      ['Low bar squat', 2, [[5,8],[5,8],[5,8]], 180, 110, 2.5],
-      ['Soulevé de terre jambes tendues', 0, [[8,10],[8,10],[8,10]], 150, 90, 2.5],
+      ['Squat barre low bar', 2, [[5,8],[5,8],[5,8]], 180, 110, 2.5],
+      ['Soulevé de terre jambes tendues barre', 0, [[8,10],[8,10],[8,10]], 150, 90, 2.5],
       ['Presse à cuisses', 0, [[10,12],[10,12],[10,12]], 120, 180, 10],
-      ['Leg curl assis', 0, [[10,12],[10,12],[10,12]], 60, 45, 2.5],
-      ['Mollets debout', 0, [[12,15],[12,15],[12,15],[12,15]], 60, 70, 5]]},
+      ['Leg curl assis machine', 0, [[10,12],[10,12],[10,12]], 60, 45, 2.5],
+      ['Mollets debout machine', 0, [[12,15],[12,15],[12,15],[12,15]], 60, 70, 5]]},
     {id:'demo-upper', name:'Upper', day:6, ex:[
-      ['Développé militaire', 1, [[5,8],[5,8],[5,8]], 150, 50, 2.5],
+      ['Développé militaire barre', 1, [[5,8],[5,8],[5,8]], 150, 50, 2.5],
       ['Rowing barre', 0, [[6,10],[6,10],[6,10]], 120, 70, 2.5],
       ['Développé incliné haltères', 0, [[8,10],[8,10],[8,10]], 120, 28, 2],
-      ['Tirage vertical', 0, [[10,12],[10,12],[10,12]], 90, 60, 5],
+      ['Tirage vertical poulie', 0, [[10,12],[10,12],[10,12]], 90, 60, 5],
       ['Curl barre EZ', 0, [[10,12],[10,12],[10,12]], 60, 30, 2.5]]}
   ];
   var seed = 7; function rnd(){ seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
   function rd(x, st){ return Math.round(x / st) * st; }
-  var NOTES = {'Sumo deadlift':'Pieds un peu plus larges, ça passe mieux','Low bar squat':'Ceinture à partir de la 2e série','Développé couché haltères':'Coudes à 45°, pas plus','Tractions':'Amplitude complète, menton au-dessus'};
+  var NOTES = {'Sumo deadlift barre':'Pieds un peu plus larges, ça passe mieux','Squat barre low bar':'Ceinture à partir de la 2e série','Développé couché haltères':'Coudes à 45°, pas plus','Tractions':'Amplitude complète, menton au-dessus'};
   S.programs.push({id:'demo4j', name:'Démo 4 jours', demo:true, workouts:D.map(function(w){
     return {id:w.id, name:w.name, day:w.day, ex:w.ex.map(function(e){
       var s = [];
@@ -1538,12 +1561,12 @@ function library(){
   allEx(function(e){ add(e.name, 'Autre', false, true); (e.v || []).forEach(function(v){ add(v, 'Autre', false, true); }); });
   return out;
 }
-function libFind(n){ var k = fold(n), L = library(); for(var i=0;i<L.length;i++) if(fold(L[i].n) === k) return L[i]; return null; }
+function libFind(n){ var k = fold(n), L = library(); for(var i=0;i<L.length;i++) if(fold(L[i].n) === k) return L[i]; for(var o in EQREN) if(fold(o) === k) return libFind(EQREN[o]); return null; }
 function libSearch(q, group){
   var words = fold(q).split(' ').filter(Boolean);
   var res = library().filter(function(e){
     if(group && e.g !== group) return false;
-    var hay = fold(e.n + ' ' + e.g + (isEN() ? ' ' + exDisp(e.n) + ' ' + (GRN[e.g] || '') : ''));
+    var hay = fold(e.n + ' ' + e.g + ' ' + eqLbl(eqOf(e.n)) + (isEN() ? ' ' + exDisp(e.n) + ' ' + (GRN[e.g] || '') : ''));
     return words.every(function(w){ return hay.indexOf(w) >= 0; });
   });
   var f = fold(q);
@@ -2567,36 +2590,36 @@ function undoInfo(){ try{ var u = JSON.parse(localStorage.getItem(UNDO_KEY) || '
    (never replaces). Séances already present are skipped, and a copy of the data before the import is kept for undo. */
 var STRONG_POS = ['date','wname','dur','ex','order','weight','reps','dist','secs','note','wnote','rpe'];
 var STRONG_DICT = {
-  'bench press':'Développé couché','bench press|dumbbell':'Développé couché haltères','bench press|smith':'Développé machine','bench press|machine':'Développé machine',
-  'incline bench press':'Développé incliné','incline bench press|dumbbell':'Développé incliné haltères','incline bench press|machine':'Développé incliné machine',
-  'decline bench press':'Développé décliné','close grip bench press':'Développé couché prise serrée',
-  'chest press':'Développé machine','incline chest press':'Développé incliné machine',
+  'bench press':'Développé couché barre','bench press|dumbbell':'Développé couché haltères','bench press|smith':'Développé couché machine','bench press|machine':'Développé couché machine',
+  'incline bench press':'Développé incliné barre','incline bench press|dumbbell':'Développé incliné haltères','incline bench press|machine':'Développé incliné machine',
+  'decline bench press':'Développé décliné barre','close grip bench press':'Développé couché prise serrée barre',
+  'chest press':'Développé couché machine','incline chest press':'Développé incliné machine',
   'chest dip':'Dips','dips':'Dips','dip':'Dips','triceps dip':'Dips','bench dip':'Dips banc','push up':'Pompes','pushup':'Pompes',
   'chest fly':'Écarté haltères','chest fly|machine':'Pec deck','chest fly|cable':'Écarté poulie vis-à-vis','incline chest fly':'Écarté incliné haltères',
   'cable crossover':'Écarté poulie vis-à-vis','pec deck':'Pec deck','butterfly':'Pec deck','pullover':'Pullover haltère','pullover|cable':'Pullover poulie','straight arm pulldown':'Pullover poulie',
   'pull up':'Tractions','pull up|weighted':'Tractions lestées','weighted pull up':'Tractions lestées','chin up':'Tractions supination','neutral grip pull up':'Tractions neutres',
-  'bent over row':'Rowing barre','bent over row|dumbbell':'Rowing haltère','pendlay row':'Rowing barre','yates row':'Rowing Yates',
+  'bent over row':'Rowing barre','bent over row|dumbbell':'Rowing haltère','pendlay row':'Rowing barre','yates row':'Rowing Yates barre',
   'bent over one arm row':'Rowing haltère','one arm row':'Rowing haltère','dumbbell row':'Rowing haltère','t bar row':'Rowing T-bar',
-  'seated row':'Rowing poulie basse','seated cable row':'Rowing poulie basse','seated row|machine':'Rowing machine','chest supported row':'Rowing chest supported',
-  'lat pulldown':'Tirage vertical','lat pulldown close grip':'Tirage vertical prise serrée','close grip lat pulldown':'Tirage vertical prise serrée','lat pulldown single arm':'Tirage vertical unilatéral',
-  'deadlift':'Deadlift','rack pull':'Rack pull','shrug':'Shrug barre','shrug|dumbbell':'Shrug haltères',
-  'back extension':'Extensions lombaires','hyperextension':'Extensions lombaires','good morning':'Good morning',
-  'overhead press':'Overhead press','overhead press|dumbbell':'Développé haltères assis','military press':'Développé militaire','strict military press':'Développé militaire',
+  'seated row':'Rowing poulie basse','seated cable row':'Rowing poulie basse','seated row|machine':'Rowing machine','chest supported row':'Rowing chest supported machine',
+  'lat pulldown':'Tirage vertical poulie','lat pulldown close grip':'Tirage vertical poulie prise serrée','close grip lat pulldown':'Tirage vertical poulie prise serrée','lat pulldown single arm':'Tirage vertical poulie unilatéral',
+  'deadlift':'Deadlift barre','rack pull':'Rack pull barre','shrug':'Shrug barre','shrug|dumbbell':'Shrug haltères',
+  'back extension':'Extensions lombaires','hyperextension':'Extensions lombaires','good morning':'Good morning barre',
+  'overhead press':'Overhead press barre','overhead press|dumbbell':'Développé haltères assis','military press':'Développé militaire barre','strict military press':'Développé militaire barre',
   'shoulder press':'Développé haltères assis','shoulder press|machine':'Développé épaules machine','seated overhead press':'Développé haltères assis',
-  'arnold press':'Développé Arnold','push press':'Push press',
-  'lateral raise':'Élévations latérales','lateral raise|cable':'Élévations latérales poulie','lateral raise|machine':'Élévations latérales machine','front raise':'Élévations frontales',
-  'reverse fly':'Oiseau','reverse fly|machine':'Reverse pec deck','face pull':'Face pull','upright row':'Upright row',
+  'arnold press':'Développé Arnold haltères','push press':'Push press barre',
+  'lateral raise':'Élévations latérales haltères','lateral raise|cable':'Élévations latérales poulie','lateral raise|machine':'Élévations latérales machine','front raise':'Élévations frontales haltères',
+  'reverse fly':'Oiseau haltères','reverse fly|machine':'Reverse pec deck','face pull':'Face pull poulie','upright row':'Upright row barre',
   'bicep curl':'Curl haltères','bicep curl|barbell':'Curl barre','bicep curl|ez':'Curl barre EZ','bicep curl|cable':'Curl poulie','barbell curl':'Curl barre','ez bar curl':'Curl barre EZ',
-  'incline curl':'Curl incliné haltères','hammer curl':'Curl marteau','preacher curl':'Curl pupitre','cable curl':'Curl poulie','concentration curl':'Curl concentré','spider curl':'Curl araignée',
-  'triceps pushdown':'Extension triceps poulie','triceps pushdown|rope':'Extension triceps corde','skullcrusher':'Barre au front','skull crusher':'Barre au front',
-  'triceps extension':'Extension nuque haltère','triceps extension|cable':'Extension nuque poulie','overhead triceps extension':'Extension nuque haltère','triceps kickback':'Kickback triceps','kickback':'Kickback triceps',
-  'wrist curl':'Curl poignets','reverse wrist curl':'Curl poignets inversé','farmers walk':'Farmer walk','dead hang':'Dead hang',
-  'squat':'Squat','front squat':'Front squat','hack squat':'Hack squat','leg press':'Presse à cuisses','goblet squat':'Goblet squat','belt squat':'Belt squat',
-  'lunge':'Fentes','walking lunge':'Fentes marchées','bulgarian split squat':'Fentes bulgares','leg extension':'Leg extension','step up':'Step-up','sissy squat':'Sissy squat',
-  'romanian deadlift':'Romanian deadlift','stiff leg deadlift':'Soulevé de terre jambes tendues','straight leg deadlift':'Soulevé de terre jambes tendues','sumo deadlift':'Sumo deadlift',
-  'hip thrust':'Hip thrust','lying leg curl':'Leg curl allongé','seated leg curl':'Leg curl assis','leg curl':'Leg curl','glute bridge':'Glute bridge',
+  'incline curl':'Curl incliné haltères','hammer curl':'Curl marteau haltères','preacher curl':'Curl pupitre barre EZ','cable curl':'Curl poulie','concentration curl':'Curl concentré haltère','spider curl':'Curl araignée haltères',
+  'triceps pushdown':'Extension triceps poulie','triceps pushdown|rope':'Extension triceps poulie corde','skullcrusher':'Barre au front','skull crusher':'Barre au front',
+  'triceps extension':'Extension nuque haltère','triceps extension|cable':'Extension nuque poulie','overhead triceps extension':'Extension nuque haltère','triceps kickback':'Kickback triceps haltère','kickback':'Kickback triceps haltère',
+  'wrist curl':'Curl poignets barre','reverse wrist curl':'Curl poignets inversé barre','farmers walk':'Farmer walk haltères','dead hang':'Dead hang',
+  'squat':'Squat barre','front squat':'Front squat barre','hack squat':'Hack squat machine','leg press':'Presse à cuisses','goblet squat':'Goblet squat haltère','belt squat':'Belt squat machine',
+  'lunge':'Fentes haltères','walking lunge':'Fentes marchées haltères','bulgarian split squat':'Fentes bulgares haltères','leg extension':'Leg extension machine','step up':'Step-up haltères','sissy squat':'Sissy squat',
+  'romanian deadlift':'Romanian deadlift barre','stiff leg deadlift':'Soulevé de terre jambes tendues barre','straight leg deadlift':'Soulevé de terre jambes tendues barre','sumo deadlift':'Sumo deadlift barre',
+  'hip thrust':'Hip thrust barre','lying leg curl':'Leg curl allongé machine','seated leg curl':'Leg curl assis machine','leg curl':'Leg curl machine','glute bridge':'Glute bridge',
   'hip abductor':'Abduction machine','glute kickback':'Kickback fessiers poulie','nordic hamstring curl':'Nordic curl',
-  'standing calf raise':'Mollets debout','seated calf raise':'Mollets assis','calf press on leg press':'Mollets à la presse','calf press':'Mollets à la presse','calf raise':'Extensions mollets',
+  'standing calf raise':'Mollets debout machine','seated calf raise':'Mollets assis machine','calf press on leg press':'Mollets à la presse','calf press':'Mollets à la presse','calf raise':'Extensions mollets machine',
   'crunch':'Crunch','cable crunch':'Crunch poulie','hanging leg raise':'Relevé de jambes suspendu','hanging knee raise':'Relevé de genoux','knee raise':'Relevé de genoux',
   'plank':'Gainage','side plank':'Gainage latéral','ab wheel':'Ab wheel','russian twist':'Russian twist',
   'cycling':'Vélo','bike':'Vélo','rowing':'Rameur','rowing|machine':'Rameur','running':'Tapis de course','treadmill':'Tapis de course','jump rope':'Corde à sauter'
@@ -2624,6 +2647,7 @@ function strongGuess0(src){
   if(eq === 'dumbbell' && libFind(base + ' haltères')) return libFind(base + ' haltères').n;
   if(eq === 'machine' && libFind(base + ' machine')) return libFind(base + ' machine').n;
   if(eq === 'cable' && libFind(base + ' poulie')) return libFind(base + ' poulie').n;
+  if(eq === 'barbell' && libFind(base + ' barre')) return libFind(base + ' barre').n;
   hit = libFind(base); if(hit) return hit.n;
   return '';
 }
@@ -2825,8 +2849,22 @@ function vHist(){
    anything added then removed the same day is left out. Hidden extras (double tap on a coloris,
    the shape button) stay out on purpose: they are meant to be found. */
 var CHANGELOG = [
+  {v:'1.16', d:'15.10.26', t:'Le matériel dans le nom, le repos d\'un tap',
+   summary:['Chaque exercice dit avec quoi il se fait : barre, haltères, machine ou poulie. Plus de « Développé couché » tout court.','En séance, touche le temps de repos entre deux séries pour le changer.'],
+   sections:[
+    {t:'Le matériel', items:['Les exercices qui existent en plusieurs versions portent le matériel dans leur nom : Développé couché barre, Développé couché haltères, Développé couché machine…','Ton historique, tes programmes et tes records suivent le nouveau nom tout seuls.','Dans Exercices, une étiquette indique le matériel, et un filtre Matériel permet de n\'afficher que la barre, les haltères, les machines, les poulies ou le poids du corps.']},
+    {t:'Le repos', items:['Dans la liste de la séance, touche le repos entre deux séries : −15 s, +15 s, OK.','Le repos avant l\'exercice suivant se règle de la même façon, sous la dernière série.']},
+    {t:'Séance', items:['Le mode « une série à la fois » est retiré : la séance s\'affiche toujours en liste.']}
+   ],
+   en:{t:'Equipment in the name, rest in one tap',
+   summary:['Every exercise says what it uses: barbell, dumbbells, machine or cable.','During a session, tap the rest time between two sets to change it.'],
+   sections:[
+    {t:'Equipment', items:['Exercises that come in several versions carry the equipment in their name.','Your log, programs and records follow the new name on their own.','In Exercises, a tag shows the equipment and an Equipment filter narrows the list.']},
+    {t:'Rest', items:['In the session list, tap the rest between two sets: −15 s, +15 s, OK.','The rest before the next exercise works the same way, under the last set.']},
+    {t:'Session', items:['One set at a time is gone: the session always shows as a list.']}
+   ]}},
   {v:'1.15', d:'15.10.26', t:'Séance guidée, journal modifiable et nouveau look',
-   summary:['En séance, toute la séance en liste avec l\'exercice en cours ouvert. Après chaque série, le repos prend tout l\'écran et se réduit en pilule en haut. Le mode une série à la fois reste au choix.','Glisse un exercice pour changer l\'ordre, supprime-le ou remplace-le depuis son menu ⋯, et transforme une série en échauffement d\'un tap sur son numéro.','Une erreur ? Corrige la série que tu viens de valider pendant le repos, ou n\'importe quelle série en touchant sa barre.','Le Journal devient modifiable : corrige, supprime ou ajoute une séance oubliée. Les records se recalculent.','Pompes, tractions, dips et gainage sont gérés au poids du corps ou en durée, avec leurs propres records.','Les vrais supersets, l\'échauffement automatique, le calcul des disques et le remplacement d\'un exercice quand la machine est prise.','En fin de séance modifiée, trois choix clairs : écraser le modèle, créer un nouveau workout ou juste enregistrer.','Un nouveau style au choix, HUD, 4 coloris, des widgets sur l\'accueil, une bibliothèque de 11 programmes et un premier lancement guidé.','Un onglet Coach avec ton bilan de la semaine, et la bibliothèque d\'exercices rangée dans Programme.'],
+   summary:['En séance, toute la séance en liste avec l\'exercice en cours ouvert. Après chaque série, le repos prend tout l\'écran et se réduit en pilule en haut.','Glisse un exercice pour changer l\'ordre, supprime-le ou remplace-le depuis son menu ⋯, et transforme une série en échauffement d\'un tap sur son numéro.','Une erreur ? Corrige la série que tu viens de valider pendant le repos, ou n\'importe quelle série en touchant sa barre.','Le Journal devient modifiable : corrige, supprime ou ajoute une séance oubliée. Les records se recalculent.','Pompes, tractions, dips et gainage sont gérés au poids du corps ou en durée, avec leurs propres records.','Les vrais supersets, l\'échauffement automatique, le calcul des disques et le remplacement d\'un exercice quand la machine est prise.','En fin de séance modifiée, trois choix clairs : écraser le modèle, créer un nouveau workout ou juste enregistrer.','Un nouveau style au choix, HUD, 4 coloris, des widgets sur l\'accueil, une bibliothèque de 11 programmes et un premier lancement guidé.','Un onglet Coach avec ton bilan de la semaine, et la bibliothèque d\'exercices rangée dans Programme.'],
    sections:[
     {t:'La séance en liste', items:['La séance s\'affiche en entier : l\'exercice en cours est ouvert avec ses séries, les autres sont repliés. Touche un exercice pour l\'ouvrir : l\'autre se replie en douceur.','Le bouton Valider reste en bas de l\'écran, avec la série et la charge à faire. Le rond au bout de chaque ligne valide aussi la série.','Après une série, le repos prend tout l\'écran avec la suite de la séance en bas. « Réduire » le range dans une pilule en haut de l\'écran ; touche-la pour le rouvrir. Entre deux séries, le temps qui reste défile aussi dans la liste.','Touche le numéro d\'une série pour la passer en échauffement (W), touche-le encore pour revenir en arrière.','Le nom de l\'exercice ouvert ou l\'icône i affichent sa fiche. Le menu ⋯ remplace l\'exercice (ta note et tes séries suivent, pour cette séance) ou le supprime, avec « Annuler » pendant quelques secondes.','Attrape la poignée à gauche d\'un exercice et fais-le glisser pour changer l\'ordre de la séance.','« Ajouter un exercice » en bas de la liste. Le mode une série à la fois se choisit sous Terminer la séance.']},
     {t:'Une série à la fois', items:['L\'écran de séance montre seulement la série en cours : la charge et les reps proposées en grand, des boutons + et − larges, et Valider en bas.','Touche le chiffre pour ouvrir un pavé numérique géant : plus de clavier du téléphone qui cache l\'écran. Laisse le doigt appuyé sur + ou − pour faire défiler la valeur.','La charge et les reps calculées par la double progression sont en grisé : Valider sans rien toucher les enregistre. « La dernière fois » recopie ta perf précédente.','Une note par exercice s\'écrit directement sous les chiffres, d\'un tap.','L\'heure de fin prévue s\'affiche en haut, calculée avec tes temps de repos.','« Toutes les séries » ramène à la séance en liste ; l\'appli retient ton choix.']},
@@ -2845,7 +2883,7 @@ var CHANGELOG = [
     {t:'Sauvegarde et corrections', items:['En fin de séance, l\'appli te propose d\'envoyer ta sauvegarde toutes les 10 séances (réglable dans Profil › Sauvegarde).','L\'éditeur de séance s\'ouvre de nouveau correctement.']}
    ],
    en:{t:'Guided sessions, an editable log and a new look',
-   summary:['During a session, the whole session in a list with the current exercise open. After each set, the rest fills the screen and minimises into a pill at the top. One set at a time stays available.','Drag an exercise to reorder it, remove or replace it from its ⋯ menu, and turn a set into a warm-up by tapping its number.','A mistake? Fix the set you just logged during the rest, or any set by tapping its bar.','Your log is now editable: fix, delete or add a missed session. Records are recalculated.','Push-ups, pull-ups, dips and planks work as bodyweight or timed exercises, with their own records.','Real supersets, automatic warm-ups, a plate calculator, and swapping an exercise when the machine is taken.','After a changed session, three clear choices: overwrite the template, create a new workout or just save.','A new HUD style, 4 colorways, Home widgets, a library of 11 programs and a guided first launch.'],
+   summary:['During a session, the whole session in a list with the current exercise open. After each set, the rest fills the screen and minimises into a pill at the top.','Drag an exercise to reorder it, remove or replace it from its ⋯ menu, and turn a set into a warm-up by tapping its number.','A mistake? Fix the set you just logged during the rest, or any set by tapping its bar.','Your log is now editable: fix, delete or add a missed session. Records are recalculated.','Push-ups, pull-ups, dips and planks work as bodyweight or timed exercises, with their own records.','Real supersets, automatic warm-ups, a plate calculator, and swapping an exercise when the machine is taken.','After a changed session, three clear choices: overwrite the template, create a new workout or just save.','A new HUD style, 4 colorways, Home widgets, a library of 11 programs and a guided first launch.'],
    sections:[
     {t:'The session list', items:['The whole session on one screen: the current exercise is open with its sets, the others are folded. Tap an exercise to open it: the other one folds away smoothly.','The Log button stays at the bottom of the screen with the set and weight to do. The circle at the end of each row logs that set too.','After a set, the rest fills the screen with the rest of the session at the bottom. “Minimise” tucks it into a pill at the top; tap it to open it again. Between sets, the time left also counts down in the list.','Tap a set number to make it a warm-up (W), tap again to undo.','The open exercise name or the i icon shows its info sheet. The ⋯ menu replaces the exercise (your note and sets follow, for this session) or removes it, with “Undo” for a few seconds.','Grab the handle on the left of an exercise and drag it to reorder the session.','“Add an exercise” at the bottom of the list. One set at a time is chosen under Finish the session.']},
     {t:'One set at a time', items:['The session screen shows only the current set: suggested weight and reps in big type, wide + and − buttons, and Log at the bottom.','Tap a number to open a giant keypad: no more phone keyboard covering the screen. Hold + or − to scroll the value.','Double progression suggestions are greyed out: Log without touching anything saves them. “Last time” copies your previous performance.','One note per exercise, typed right under the numbers.','The expected end time shows at the top, based on your rest times.','“All sets” goes back to the session list; the app remembers your choice.']},
@@ -3499,7 +3537,7 @@ function vFiche(name){
   var lf = libFind(name);
   var h = '<div class="pane m3f" role="dialog" aria-label="' + esc(L('Fiche ', 'Info ') + exDisp(name)) + '"><div class="m3f-grab"></div>';
   if(ui.ficheFrom) h += '<button class="m3f-back" data-a="ficheback">← ' + esc(S.history.filter(function(x){ return dayKey(x.date) === ui.ficheFrom; }).map(function(x){ return trText(x.name); }).join(' + ')) + ' · ' + fmtDate(ui.ficheFrom) + '</button>';
-  h += '<header class="m3f-head"><div><span class="m3-eyebrow">' + L('FICHE', 'INFO') + (lf ? ' · ' + esc(trText(lf.g)).toUpperCase() : '') + (lf && lf.own ? ' · PERSO' : '') + '</span><h2>' + esc(exDisp(name)) + '</h2></div><button class="m3f-x" data-a="closesheet" aria-label="' + L('Fermer', 'Close') + '">✕</button></header>';
+  h += '<header class="m3f-head"><div><span class="m3-eyebrow">' + L('FICHE', 'INFO') + (lf ? ' · ' + esc(trText(lf.g)).toUpperCase() : '') + (eqOf(name) ? ' · ' + eqLbl(eqOf(name)) : '') + (lf && lf.own ? ' · PERSO' : '') + '</span><h2>' + esc(exDisp(name)) + '</h2></div><button class="m3f-x" data-a="closesheet" aria-label="' + L('Fermer', 'Close') + '">✕</button></header>';
   try{ h += '<div class="m3f-move">' + moveFrames(name) + '</div>'; }catch(e){}
   if(cueEx && cueEx.cue) h += '<p class="m3f-cue">' + esc(trText(cueEx.cue)) + '</p>';
   h += '<section class="m3f-sec"><div class="m3s-lbl">' + L('PROGRESSION', 'PROGRESS') + '</div>' + m3fChart(past, name) + '</section>';
@@ -3541,7 +3579,7 @@ function exItems(list, action){
   var h = '', lastG = null;
   list.forEach(function(e){
     if(e.g !== lastG){ h += '<div class="lbl" style="padding:10px 0 4px">' + esc(e.g).toUpperCase() + '</div>'; lastG = e.g; }
-    h += '<button class="box exrow" data-a="' + action + '" data-n="' + esc(e.n) + '" style="flex-direction:row;justify-content:space-between;align-items:center;border-bottom-width:0;min-height:48px"><span style="font-weight:700;font-size:14px">' + esc(e.n) + '</span><span class="row" style="gap:4px">' + (e.own ? '<span class="chip">PERSO</span>' : '') + (e.c ? '<span class="chip">POLY</span>' : '') + '</span></button>';
+    h += '<button class="box exrow" data-a="' + action + '" data-n="' + esc(e.n) + '" style="flex-direction:row;justify-content:space-between;align-items:center;border-bottom-width:0;min-height:48px"><span style="font-weight:700;font-size:14px">' + esc(e.n) + '</span><span class="row" style="gap:4px">' + (eqOf(e.n) ? '<span class="chip">' + eqLbl(eqOf(e.n)) + '</span>' : '') + (e.own ? '<span class="chip">PERSO</span>' : '') + (e.c ? '<span class="chip">POLY</span>' : '') + '</span></button>';
   });
   return h ? h + '<div style="border-top:3px solid var(--ink)"></div>' : '';
 }
@@ -3568,6 +3606,7 @@ function vPicker(){
 }
 function gloResults(){
   var res = libSearch(ui.gloQ || '', ui.gloG || null), h = '';
+  if(ui.gloE) res = res.filter(function(e){ return eqOf(e.n) === ui.gloE; });
   if((ui.gloQ || '').trim() && !res.length) h += '<div class="empty">Aucun exercice ne correspond. Crée-le ci-dessous.</div>';
   return h + exItems(res, 'fiche');
 }
@@ -3575,6 +3614,7 @@ function vGlo(){
   var h = restBar() + '<div class="top"><span>EXERCICES</span><span class="chip">' + library().length + '</span></div>';
   h += '<label class="lbl" for="glo-q" style="position:absolute;width:1px;height:1px;overflow:hidden">Rechercher un exercice</label><input class="field" id="glo-q" data-q="glo" value="' + esc(ui.gloQ || '') + '" placeholder="Cherche un exercice…" autocomplete="off" autocapitalize="off" style="font-size:16px;min-height:52px">';
   h += '<div class="row" style="flex-wrap:wrap;gap:6px"><button class="chip' + (!ui.gloG ? ' on' : '') + '" data-a="glog" data-g="">TOUS</button>' + GROUPS.map(function(g){ return '<button class="chip' + (ui.gloG === g ? ' on' : '') + '" data-a="glog" data-g="' + esc(g) + '">' + esc(g).toUpperCase() + '</button>'; }).join('') + '</div>';
+  h += '<div class="row" style="flex-wrap:wrap;gap:6px"><span class="lbl" style="align-self:center">' + L('MATÉRIEL', 'EQUIPMENT') + '</span><button class="chip' + (!ui.gloE ? ' on' : '') + '" data-a="gloe" data-e="">' + L('TOUT', 'ALL') + '</button>' + EQ_ORDER.map(function(k){ return '<button class="chip' + (ui.gloE === k ? ' on' : '') + '" data-a="gloe" data-e="' + k + '">' + eqLbl(k) + '</button>'; }).join('') + '</div>';
   h += '<div id="glo-res" style="display:flex;flex-direction:column">' + gloResults() + '</div>';
   h += '<div class="box" style="display:flex;flex-direction:column;gap:8px"><span class="lbl">CRÉER UN EXERCICE</span><label class="lbl" for="gc-name" style="position:absolute;width:1px;height:1px;overflow:hidden">Nom</label><input class="field" id="gc-name" value="' + esc(cap(ui.gloQ || '')) + '" placeholder="Nom de l\'exercice" autocomplete="off"><label class="lbl" for="cg-g" style="position:absolute;width:1px;height:1px;overflow:hidden">Groupe musculaire</label><select class="field" id="cg-g">' + groupOptions(ui.gloG || 'Autre') + '</select><button class="solid" data-a="glocreate">+ CRÉER</button></div>';
   return h + nav('glo');
@@ -3685,28 +3725,28 @@ function vProgEditor(){
    and finally swaps exercise names and counts inside longer text. */
 function isEN(){ return S.settings.lang === 'en'; }
 var EXN = {
-  'Développé couché':'Bench press','Développé incliné':'Incline bench press','Développé décliné':'Decline bench press',
-  'Développé couché haltères':'Dumbbell bench press','Développé incliné haltères':'Incline dumbbell press','Développé machine':'Machine chest press',
+  'Développé couché barre':'Bench press','Développé incliné barre':'Incline bench press','Développé décliné barre':'Decline bench press',
+  'Développé couché haltères':'Dumbbell bench press','Développé incliné haltères':'Incline dumbbell press','Développé couché machine':'Machine chest press',
   'Développé incliné machine':'Incline machine press','Pompes':'Push-ups','Pompes lestées':'Weighted push-ups','Écarté haltères':'Dumbbell fly',
   'Écarté incliné haltères':'Incline dumbbell fly','Écarté poulie vis-à-vis':'Cable crossover','Écarté poulie basse':'Low cable fly','Pullover haltère':'Dumbbell pullover',
   'Tractions':'Pull-ups','Tractions lestées':'Weighted pull-ups','Tractions neutres':'Neutral-grip pull-ups','Tractions supination':'Chin-ups',
   'Rowing barre':'Barbell row','Rowing haltère':'Dumbbell row','Rowing poulie basse':'Seated cable row','Rowing machine':'Machine row',
-  'Tirage vertical':'Lat pulldown','Tirage vertical prise serrée':'Close-grip lat pulldown','Tirage vertical prise neutre':'Neutral-grip lat pulldown',
-  'Tirage vertical unilatéral':'Single-arm lat pulldown','Pullover poulie':'Cable pullover','Shrug barre':'Barbell shrug','Shrug haltères':'Dumbbell shrug',
-  'Extensions lombaires':'Back extensions','Développé militaire':'Military press','Développé haltères assis':'Seated dumbbell press','Développé Arnold':'Arnold press',
-  'Développé épaules machine':'Machine shoulder press','Élévations latérales':'Lateral raises','Élévations latérales poulie':'Cable lateral raises',
-  'Élévations latérales machine':'Machine lateral raises','Élévations frontales':'Front raises','Oiseau':'Rear delt fly','Oiseau assis prise neutre':'Seated neutral-grip rear delt fly',
-  'Upright row penché':'Bent-over upright row','Curl barre':'Barbell curl','Curl barre EZ':'EZ-bar curl','Curl haltères':'Dumbbell curl','Curl incliné haltères':'Incline dumbbell curl',
-  'Curl marteau':'Hammer curl','Curl pupitre':'Preacher curl','Curl poulie':'Cable curl','Curl concentré':'Concentration curl','Curl araignée':'Spider curl',
-  'Développé couché prise serrée':'Close-grip bench press','Dips banc':'Bench dips','Extension triceps poulie':'Triceps pushdown','Extension triceps corde':'Rope pushdown',
-  'Barre au front':'Skull crushers','Extension nuque haltère':'Overhead dumbbell extension','Extension nuque poulie':'Overhead cable extension','Kickback triceps':'Triceps kickback',
-  'Curl poignets':'Wrist curl','Curl poignets inversé':'Reverse wrist curl','Farmer walk':'Farmer\'s walk','Presse à cuisses':'Leg press','Fentes':'Lunges',
-  'Fentes bulgares':'Bulgarian split squats','Fentes marchées':'Walking lunges','Soulevé de terre jambes tendues':'Stiff-leg deadlift','Leg curl assis':'Seated leg curl',
-  'Leg curl allongé':'Lying leg curl','Abduction machine':'Hip abduction machine','Kickback fessiers poulie':'Cable glute kickback','Extensions mollets':'Calf raises',
-  'Mollets debout':'Standing calf raises','Mollets assis':'Seated calf raises','Mollets à la presse':'Leg press calf raises','Crunch poulie':'Cable crunch',
+  'Tirage vertical poulie':'Lat pulldown','Tirage vertical poulie prise serrée':'Close-grip lat pulldown','Tirage vertical poulie prise neutre':'Neutral-grip lat pulldown',
+  'Tirage vertical poulie unilatéral':'Single-arm lat pulldown','Pullover poulie':'Cable pullover','Shrug barre':'Barbell shrug','Shrug haltères':'Dumbbell shrug',
+  'Extensions lombaires':'Back extensions','Développé militaire barre':'Military press','Développé haltères assis':'Seated dumbbell press','Développé Arnold haltères':'Arnold press',
+  'Développé épaules machine':'Machine shoulder press','Élévations latérales haltères':'Lateral raises','Élévations latérales poulie':'Cable lateral raises',
+  'Élévations latérales machine':'Machine lateral raises','Élévations frontales haltères':'Front raises','Oiseau haltères':'Rear delt fly','Oiseau assis haltères prise neutre':'Seated neutral-grip rear delt fly',
+  'Upright row penché haltères':'Bent-over upright row','Curl barre':'Barbell curl','Curl barre EZ':'EZ-bar curl','Curl haltères':'Dumbbell curl','Curl incliné haltères':'Incline dumbbell curl',
+  'Curl marteau haltères':'Hammer curl','Curl pupitre barre EZ':'Preacher curl','Curl poulie':'Cable curl','Curl concentré haltère':'Concentration curl','Curl araignée haltères':'Spider curl',
+  'Développé couché prise serrée barre':'Close-grip bench press','Dips banc':'Bench dips','Extension triceps poulie':'Triceps pushdown','Extension triceps poulie corde':'Rope pushdown',
+  'Barre au front':'Skull crushers','Extension nuque haltère':'Overhead dumbbell extension','Extension nuque poulie':'Overhead cable extension','Kickback triceps haltère':'Triceps kickback',
+  'Curl poignets barre':'Wrist curl','Curl poignets inversé barre':'Reverse wrist curl','Farmer walk haltères':'Farmer\'s walk','Presse à cuisses':'Leg press','Fentes haltères':'Lunges',
+  'Fentes bulgares haltères':'Bulgarian split squats','Fentes marchées haltères':'Walking lunges','Soulevé de terre jambes tendues barre':'Stiff-leg deadlift','Leg curl assis machine':'Seated leg curl',
+  'Leg curl allongé machine':'Lying leg curl','Abduction machine':'Hip abduction machine','Kickback fessiers poulie':'Cable glute kickback','Extensions mollets machine':'Calf raises',
+  'Mollets debout machine':'Standing calf raises','Mollets assis machine':'Seated calf raises','Mollets à la presse':'Leg press calf raises','Crunch poulie':'Cable crunch',
   'Relevé de jambes suspendu':'Hanging leg raises','Relevé de genoux':'Knee raises','Gainage':'Plank','Gainage latéral':'Side plank','Vélo':'Bike','Rameur':'Rower',
-  'Tapis de course':'Treadmill','Corde à sauter':'Jump rope','Dips lestés':'Weighted dips','Curl Bayesian':'Bayesian curl',
-  'Rowing chest supported':'Chest-supported row','Rowing T-bar':'T-bar row','Rowing Yates':'Yates row'
+  'Tapis de course':'Treadmill','Corde à sauter':'Jump rope','Dips lestés':'Weighted dips','Curl Bayesian poulie':'Bayesian curl',
+  'Rowing chest supported machine':'Chest-supported row','Rowing T-bar':'T-bar row','Rowing Yates barre':'Yates row'
 };
 var GRN = {'Pectoraux':'Chest','Dos':'Back','Épaules':'Shoulders','Avant-bras':'Forearms','Quadriceps':'Quads','Ischios & fessiers':'Hamstrings & glutes',
   'Mollets':'Calves','Abdos':'Abs','Autre':'Other','Autres':'Others','Haut du corps':'Upper body','Bas du corps':'Lower body','Tronc':'Core',
@@ -4236,6 +4276,7 @@ document.addEventListener('click', function(ev){
       if(!cn){ toast('Tape d\'abord le nom de l\'exercice'); return; }
       addPicked(cn); return;
     case 'glog': ui.gloG = el.getAttribute('data-g') || null; break;
+    case 'gloe': ui.gloE = el.getAttribute('data-e') || null; break;
     case 'glocreate':
       var gn = (document.getElementById('gc-name').value || '').trim();
       if(!gn){ toast('Donne un nom à l\'exercice'); return; }
@@ -5300,84 +5341,84 @@ var PROGLIB = [
   {id:'5x5', name:'Fondations 5×5', en:'Foundations 5×5', days:3, lv:['deb'], goal:['force','both'], gear:['gym','bar'],
    d:['Deux séances A et B en alternance, 5 séries de 5 sur les cinq gros mouvements.', 'Two sessions, A and B, alternating: 5 sets of 5 on the five big lifts.'],
    w:[
-    {name:'A', day:1, ex:[PX('Squat',5,5,5,180,'5 séries de 5 réussies : +2,5 kg la prochaine fois'), PX('Développé couché',5,5,5,180), PX('Rowing barre',5,5,5,150)]},
-    {name:'B', day:3, ex:[PX('Squat',5,5,5,180,'5 séries de 5 réussies : +2,5 kg la prochaine fois'), PX('Développé militaire',5,5,5,180), PX('Deadlift',1,5,5,180,'Une seule série lourde après l\'échauffement')]},
-    {name:'A bis', day:5, ex:[PX('Squat',5,5,5,180,'5 séries de 5 réussies : +2,5 kg la prochaine fois'), PX('Développé couché',5,5,5,180), PX('Rowing barre',5,5,5,150)]}
+    {name:'A', day:1, ex:[PX('Squat barre',5,5,5,180,'5 séries de 5 réussies : +2,5 kg la prochaine fois'), PX('Développé couché barre',5,5,5,180), PX('Rowing barre',5,5,5,150)]},
+    {name:'B', day:3, ex:[PX('Squat barre',5,5,5,180,'5 séries de 5 réussies : +2,5 kg la prochaine fois'), PX('Développé militaire barre',5,5,5,180), PX('Deadlift barre',1,5,5,180,'Une seule série lourde après l\'échauffement')]},
+    {name:'A bis', day:5, ex:[PX('Squat barre',5,5,5,180,'5 séries de 5 réussies : +2,5 kg la prochaine fois'), PX('Développé couché barre',5,5,5,180), PX('Rowing barre',5,5,5,150)]}
    ]},
   {id:'premiers', name:'Premiers Pas', en:'First Steps', days:3, lv:['deb'], goal:['fit','muscle','both'], gear:['gym'],
    d:['Corps complet A et B, fourchettes de 8 à 10 reps : la façon la plus douce de commencer.', 'Full body A and B, 8–10 rep ranges: the gentlest way to start.'],
    w:[
-    {name:'Corps complet A', day:1, ex:[PX('Squat',3,6,8,150), PX('Développé militaire',3,8,10,120), PX('Rowing barre',3,8,10,120), PX('Extension triceps poulie',2,8,10,75), PX('Leg curl assis',2,8,10,75), PX('Crunch',2,10,12,60)]},
-    {name:'Corps complet B', day:3, ex:[PX('Deadlift',3,5,6,150), PX('Développé couché',3,8,10,120), PX('Tirage vertical',3,8,10,120), PX('Curl barre',2,8,10,75), PX('Leg extension',2,8,10,75), PX('Mollets debout',2,10,12,60)]},
-    {name:'Corps complet A bis', day:5, ex:[PX('Squat',3,6,8,150), PX('Développé militaire',3,8,10,120), PX('Rowing barre',3,8,10,120), PX('Extension triceps poulie',2,8,10,75), PX('Leg curl assis',2,8,10,75), PX('Crunch',2,10,12,60)]}
+    {name:'Corps complet A', day:1, ex:[PX('Squat barre',3,6,8,150), PX('Développé militaire barre',3,8,10,120), PX('Rowing barre',3,8,10,120), PX('Extension triceps poulie',2,8,10,75), PX('Leg curl assis machine',2,8,10,75), PX('Crunch',2,10,12,60)]},
+    {name:'Corps complet B', day:3, ex:[PX('Deadlift barre',3,5,6,150), PX('Développé couché barre',3,8,10,120), PX('Tirage vertical poulie',3,8,10,120), PX('Curl barre',2,8,10,75), PX('Leg extension machine',2,8,10,75), PX('Mollets debout machine',2,10,12,60)]},
+    {name:'Corps complet A bis', day:5, ex:[PX('Squat barre',3,6,8,150), PX('Développé militaire barre',3,8,10,120), PX('Rowing barre',3,8,10,120), PX('Extension triceps poulie',2,8,10,75), PX('Leg curl assis machine',2,8,10,75), PX('Crunch',2,10,12,60)]}
    ]},
   {id:'echelons', name:'Échelons', en:'Tiers', days:4, lv:['deb','inter'], goal:['force','both'], gear:['gym','bar'],
    d:['Chaque séance : un gros mouvement lourd, deux mouvements de volume, un d\'isolation.', 'Each session: one heavy lift, two volume lifts, one isolation.'],
    w:[
-    {name:'Squat', day:1, ex:[PX('Squat',3,5,5,180,AMRAP), PX('Développé couché prise serrée',3,10,10,120), PX('Rowing barre',3,10,10,120), PX('Presse à cuisses',3,15,25,75,'Dernière série au-delà de 15 si possible')]},
-    {name:'Couché', day:2, ex:[PX('Développé couché',3,5,5,180,AMRAP), PX('Front squat',3,10,10,120), PX('Tirage vertical',3,10,10,120), PX('Extension triceps poulie',3,15,25,60)]},
-    {name:'Soulevé', day:4, ex:[PX('Deadlift',5,3,3,180,AMRAP), PX('Développé militaire',3,10,10,120), PX('Tirage vertical',3,10,10,120), PX('Leg curl',3,15,25,60)]},
-    {name:'Militaire', day:5, ex:[PX('Développé militaire',3,5,5,180,AMRAP), PX('Romanian deadlift',3,10,10,120), PX('Rowing haltère',3,10,10,90), PX('Curl marteau',3,15,25,60)]}
+    {name:'Squat barre', day:1, ex:[PX('Squat barre',3,5,5,180,AMRAP), PX('Développé couché prise serrée barre',3,10,10,120), PX('Rowing barre',3,10,10,120), PX('Presse à cuisses',3,15,25,75,'Dernière série au-delà de 15 si possible')]},
+    {name:'Couché', day:2, ex:[PX('Développé couché barre',3,5,5,180,AMRAP), PX('Front squat barre',3,10,10,120), PX('Tirage vertical poulie',3,10,10,120), PX('Extension triceps poulie',3,15,25,60)]},
+    {name:'Soulevé', day:4, ex:[PX('Deadlift barre',5,3,3,180,AMRAP), PX('Développé militaire barre',3,10,10,120), PX('Tirage vertical poulie',3,10,10,120), PX('Leg curl machine',3,15,25,60)]},
+    {name:'Militaire', day:5, ex:[PX('Développé militaire barre',3,5,5,180,AMRAP), PX('Romanian deadlift barre',3,10,10,120), PX('Rowing haltère',3,10,10,90), PX('Curl marteau haltères',3,15,25,60)]}
    ]},
   {id:'phul', name:'Puissance & Volume', en:'Power & Volume', days:4, lv:['inter','conf'], goal:['both','force','muscle'], gear:['gym'],
    d:['Haut et bas en force en début de semaine, haut et bas en volume ensuite.', 'Upper and lower for strength early in the week, then upper and lower for volume.'],
    w:[
-    {name:'Haut force', day:1, ex:[PX('Développé couché',4,3,5,180), PX('Rowing barre',4,3,5,150), PX('Développé incliné haltères',3,6,10,120), PX('Tirage vertical',3,6,10,120), PX('Développé militaire',3,5,8,120), PX('Curl barre',3,6,10,75), PX('Barre au front',3,8,12,75)]},
-    {name:'Bas force', day:2, ex:[PX('Squat',4,3,5,180), PX('Deadlift',4,3,5,180), PX('Fentes bulgares',3,6,10,90), PX('Leg curl',3,6,10,75), PX('Mollets debout',4,6,10,60)]},
-    {name:'Haut volume', day:4, ex:[PX('Développé incliné',4,8,12,120), PX('Rowing poulie basse',4,8,12,90), PX('Écarté haltères',3,8,12,75), PX('Rowing haltère',3,8,12,75), PX('Élévations latérales',3,8,12,60), PX('Curl haltères',3,8,12,60), PX('Extension triceps poulie',3,10,15,60)]},
-    {name:'Bas volume', day:5, ex:[PX('Fentes',3,8,12,90), PX('Presse à cuisses',4,8,12,120), PX('Leg extension',3,8,12,75), PX('Leg curl',3,8,12,75), PX('Mollets debout',3,8,12,60), PX('Mollets assis',3,8,12,60)]}
+    {name:'Haut force', day:1, ex:[PX('Développé couché barre',4,3,5,180), PX('Rowing barre',4,3,5,150), PX('Développé incliné haltères',3,6,10,120), PX('Tirage vertical poulie',3,6,10,120), PX('Développé militaire barre',3,5,8,120), PX('Curl barre',3,6,10,75), PX('Barre au front',3,8,12,75)]},
+    {name:'Bas force', day:2, ex:[PX('Squat barre',4,3,5,180), PX('Deadlift barre',4,3,5,180), PX('Fentes bulgares haltères',3,6,10,90), PX('Leg curl machine',3,6,10,75), PX('Mollets debout machine',4,6,10,60)]},
+    {name:'Haut volume', day:4, ex:[PX('Développé incliné barre',4,8,12,120), PX('Rowing poulie basse',4,8,12,90), PX('Écarté haltères',3,8,12,75), PX('Rowing haltère',3,8,12,75), PX('Élévations latérales haltères',3,8,12,60), PX('Curl haltères',3,8,12,60), PX('Extension triceps poulie',3,10,15,60)]},
+    {name:'Bas volume', day:5, ex:[PX('Fentes haltères',3,8,12,90), PX('Presse à cuisses',4,8,12,120), PX('Leg extension machine',3,8,12,75), PX('Leg curl machine',3,8,12,75), PX('Mollets debout machine',3,8,12,60), PX('Mollets assis machine',3,8,12,60)]}
    ]},
   {id:'ppl', name:'Push Pull Legs', en:'Push Pull Legs', days:6, lv:['inter','conf'], goal:['muscle','both'], gear:['gym'],
    d:['Poussée, tirage, jambes, deux fois par semaine. Beaucoup de volume pour prendre du muscle.', 'Push, pull, legs, twice a week. Plenty of volume to build muscle.'],
    w:[
-    {name:'Pull A', day:1, ex:[PX('Deadlift',1,5,8,180,AMRAP), PX('Tirage vertical',3,8,12,90), PX('Rowing poulie basse',3,8,12,90), PX('Face pull',5,15,20,60), PX('Curl marteau',4,8,12,60), PX('Curl haltères',4,8,12,60)]},
-    {name:'Push A', day:2, ex:[PX('Développé couché',5,5,5,150,AMRAP), PX('Développé militaire',3,8,12,90), PX('Développé incliné haltères',3,8,12,90), PX('Extension triceps poulie',3,8,12,60), PX('Extension nuque haltère',3,8,12,60), PX('Élévations latérales',6,15,20,45)]},
-    {name:'Jambes', day:3, ex:[PX('Squat',3,5,5,180,AMRAP), PX('Romanian deadlift',3,8,12,120), PX('Presse à cuisses',3,8,12,120), PX('Leg curl',3,8,12,75), PX('Mollets debout',5,8,12,60)]},
-    {name:'Pull B', day:4, ex:[PX('Rowing barre',5,5,5,150,AMRAP), PX('Tirage vertical',3,8,12,90), PX('Rowing poulie basse',3,8,12,90), PX('Face pull',5,15,20,60), PX('Curl marteau',4,8,12,60), PX('Curl haltères',4,8,12,60)]},
-    {name:'Push B', day:5, ex:[PX('Développé militaire',5,5,5,150,AMRAP), PX('Développé couché',3,8,12,90), PX('Développé incliné haltères',3,8,12,90), PX('Extension triceps poulie',3,8,12,60), PX('Extension nuque haltère',3,8,12,60), PX('Élévations latérales',6,15,20,45)]},
-    {name:'Jambes bis', day:6, ex:[PX('Squat',3,5,5,180,AMRAP), PX('Romanian deadlift',3,8,12,120), PX('Presse à cuisses',3,8,12,120), PX('Leg curl',3,8,12,75), PX('Mollets debout',5,8,12,60)]}
+    {name:'Pull A', day:1, ex:[PX('Deadlift barre',1,5,8,180,AMRAP), PX('Tirage vertical poulie',3,8,12,90), PX('Rowing poulie basse',3,8,12,90), PX('Face pull poulie',5,15,20,60), PX('Curl marteau haltères',4,8,12,60), PX('Curl haltères',4,8,12,60)]},
+    {name:'Push A', day:2, ex:[PX('Développé couché barre',5,5,5,150,AMRAP), PX('Développé militaire barre',3,8,12,90), PX('Développé incliné haltères',3,8,12,90), PX('Extension triceps poulie',3,8,12,60), PX('Extension nuque haltère',3,8,12,60), PX('Élévations latérales haltères',6,15,20,45)]},
+    {name:'Jambes', day:3, ex:[PX('Squat barre',3,5,5,180,AMRAP), PX('Romanian deadlift barre',3,8,12,120), PX('Presse à cuisses',3,8,12,120), PX('Leg curl machine',3,8,12,75), PX('Mollets debout machine',5,8,12,60)]},
+    {name:'Pull B', day:4, ex:[PX('Rowing barre',5,5,5,150,AMRAP), PX('Tirage vertical poulie',3,8,12,90), PX('Rowing poulie basse',3,8,12,90), PX('Face pull poulie',5,15,20,60), PX('Curl marteau haltères',4,8,12,60), PX('Curl haltères',4,8,12,60)]},
+    {name:'Push B', day:5, ex:[PX('Développé militaire barre',5,5,5,150,AMRAP), PX('Développé couché barre',3,8,12,90), PX('Développé incliné haltères',3,8,12,90), PX('Extension triceps poulie',3,8,12,60), PX('Extension nuque haltère',3,8,12,60), PX('Élévations latérales haltères',6,15,20,45)]},
+    {name:'Jambes bis', day:6, ex:[PX('Squat barre',3,5,5,180,AMRAP), PX('Romanian deadlift barre',3,8,12,120), PX('Presse à cuisses',3,8,12,120), PX('Leg curl machine',3,8,12,75), PX('Mollets debout machine',5,8,12,60)]}
    ]},
   {id:'531', name:'Cycles 5/3/1', en:'5/3/1 Cycles', days:4, lv:['conf'], goal:['force','both'], gear:['gym','bar'],
    d:['Cycles de 4 semaines en pourcentages de ton max, puis 5 séries de 10 plus légères.', '4-week cycles in percentages of your max, then 5 lighter sets of 10.'],
    w:[
-    {name:'Militaire', day:1, ex:[PR('Développé militaire',[[5,5],[5,5],[5,8],[10,10],[10,10],[10,10],[10,10],[10,10]],150,'Sem. 1 : 65/75/85 % · sem. 2 : 70/80/90 % · sem. 3 : 75/85/95 % · sem. 4 : léger. Puis 5×10 à 50–60 %'), PX('Tractions',5,8,10,90)]},
-    {name:'Soulevé', day:2, ex:[PR('Deadlift',[[5,5],[5,5],[5,8],[10,10],[10,10],[10,10],[10,10],[10,10]],180,'Sem. 1 : 65/75/85 % · sem. 2 : 70/80/90 % · sem. 3 : 75/85/95 % · sem. 4 : léger. Puis 5×10 à 50–60 %'), PX('Relevé de jambes suspendu',5,10,15,60)]},
-    {name:'Couché', day:4, ex:[PR('Développé couché',[[5,5],[5,5],[5,8],[10,10],[10,10],[10,10],[10,10],[10,10]],150,'Sem. 1 : 65/75/85 % · sem. 2 : 70/80/90 % · sem. 3 : 75/85/95 % · sem. 4 : léger. Puis 5×10 à 50–60 %'), PX('Rowing haltère',5,10,10,75)]},
-    {name:'Squat', day:5, ex:[PR('Squat',[[5,5],[5,5],[5,8],[10,10],[10,10],[10,10],[10,10],[10,10]],180,'Sem. 1 : 65/75/85 % · sem. 2 : 70/80/90 % · sem. 3 : 75/85/95 % · sem. 4 : léger. Puis 5×10 à 50–60 %'), PX('Leg curl',5,10,10,60)]}
+    {name:'Militaire', day:1, ex:[PR('Développé militaire barre',[[5,5],[5,5],[5,8],[10,10],[10,10],[10,10],[10,10],[10,10]],150,'Sem. 1 : 65/75/85 % · sem. 2 : 70/80/90 % · sem. 3 : 75/85/95 % · sem. 4 : léger. Puis 5×10 à 50–60 %'), PX('Tractions',5,8,10,90)]},
+    {name:'Soulevé', day:2, ex:[PR('Deadlift barre',[[5,5],[5,5],[5,8],[10,10],[10,10],[10,10],[10,10],[10,10]],180,'Sem. 1 : 65/75/85 % · sem. 2 : 70/80/90 % · sem. 3 : 75/85/95 % · sem. 4 : léger. Puis 5×10 à 50–60 %'), PX('Relevé de jambes suspendu',5,10,15,60)]},
+    {name:'Couché', day:4, ex:[PR('Développé couché barre',[[5,5],[5,5],[5,8],[10,10],[10,10],[10,10],[10,10],[10,10]],150,'Sem. 1 : 65/75/85 % · sem. 2 : 70/80/90 % · sem. 3 : 75/85/95 % · sem. 4 : léger. Puis 5×10 à 50–60 %'), PX('Rowing haltère',5,10,10,75)]},
+    {name:'Squat barre', day:5, ex:[PR('Squat barre',[[5,5],[5,5],[5,8],[10,10],[10,10],[10,10],[10,10],[10,10]],180,'Sem. 1 : 65/75/85 % · sem. 2 : 70/80/90 % · sem. 3 : 75/85/95 % · sem. 4 : léger. Puis 5×10 à 50–60 %'), PX('Leg curl machine',5,10,10,60)]}
    ]},
   {id:'express', name:'Express 2 jours', en:'Express 2 days', days:2, lv:['deb','inter','conf'], goal:['fit','both','muscle'], gear:['gym','time'],
    d:['Haut et bas, 45 minutes, l\'essentiel pour garder le niveau quand l\'agenda déborde.', 'Upper and lower, 45 minutes: the essentials when the calendar is full.'],
    w:[
-    {name:'Haut', day:1, ex:[PX('Développé couché',3,6,8,150), PX('Rowing barre',3,6,8,120), PX('Développé haltères assis',2,8,10,90), PX('Tirage vertical',2,8,10,90), PX('Curl marteau',2,10,12,45,'En superset avec l\'extension triceps'), PX('Extension triceps corde',2,10,12,45,'En superset avec le curl marteau')]},
-    {name:'Bas', day:4, ex:[PX('Squat',3,6,8,150), PX('Romanian deadlift',3,8,10,120), PX('Fentes bulgares',2,8,10,90), PX('Mollets debout',2,10,12,60), PX('Ab wheel',2,8,12,60)]}
+    {name:'Haut', day:1, ex:[PX('Développé couché barre',3,6,8,150), PX('Rowing barre',3,6,8,120), PX('Développé haltères assis',2,8,10,90), PX('Tirage vertical poulie',2,8,10,90), PX('Curl marteau haltères',2,10,12,45,'En superset avec l\'extension triceps'), PX('Extension triceps poulie corde',2,10,12,45,'En superset avec le curl marteau')]},
+    {name:'Bas', day:4, ex:[PX('Squat barre',3,6,8,150), PX('Romanian deadlift barre',3,8,10,120), PX('Fentes bulgares haltères',2,8,10,90), PX('Mollets debout machine',2,10,12,60), PX('Ab wheel',2,8,12,60)]}
    ]},
   {id:'maison', name:'Haltères Maison', en:'Home Dumbbells', days:3, lv:['deb','inter'], goal:['muscle','fit','both'], gear:['home'],
    d:['Corps complet avec une paire d\'haltères et un banc. Rien d\'autre à acheter.', 'Full body with a pair of dumbbells and a bench. Nothing else to buy.'],
    w:[
-    {name:'Maison A', day:1, ex:[PX('Goblet squat',3,10,15,90), PX('Développé couché haltères',3,8,12,90), PX('Rowing haltère',3,8,12,75), PX('Élévations latérales',3,12,15,60), PX('Curl haltères',2,10,12,60)]},
-    {name:'Maison B', day:3, ex:[PX('Fentes bulgares',3,8,12,90), PX('Développé haltères assis',3,8,12,90), PX('Pullover haltère',3,10,12,75), PX('Romanian deadlift',3,10,12,90,'Avec les haltères'), PX('Extension nuque haltère',2,10,12,60)]},
-    {name:'Maison C', day:5, ex:[PX('Step-up',3,10,12,90), PX('Développé incliné haltères',3,8,12,90), PX('Rowing haltère',3,10,12,75), PX('Glute bridge',3,12,15,60), PX('Curl marteau',2,10,12,60), PX('Pompes',2,8,20,60,'Le plus possible, en gardant le gainage')]}
+    {name:'Maison A', day:1, ex:[PX('Goblet squat haltère',3,10,15,90), PX('Développé couché haltères',3,8,12,90), PX('Rowing haltère',3,8,12,75), PX('Élévations latérales haltères',3,12,15,60), PX('Curl haltères',2,10,12,60)]},
+    {name:'Maison B', day:3, ex:[PX('Fentes bulgares haltères',3,8,12,90), PX('Développé haltères assis',3,8,12,90), PX('Pullover haltère',3,10,12,75), PX('Romanian deadlift barre',3,10,12,90,'Avec les haltères'), PX('Extension nuque haltère',2,10,12,60)]},
+    {name:'Maison C', day:5, ex:[PX('Step-up haltères',3,10,12,90), PX('Développé incliné haltères',3,8,12,90), PX('Rowing haltère',3,10,12,75), PX('Glute bridge',3,12,15,60), PX('Curl marteau haltères',2,10,12,60), PX('Pompes',2,8,20,60,'Le plus possible, en gardant le gainage')]}
    ]},
   {id:'basducorps', name:'Bas du corps prioritaire', en:'Lower body first', days:4, lv:['deb','inter','conf'], goal:['muscle','fit','both'], gear:['gym'],
    d:['Deux séances jambes et fessiers, deux séances haut du corps plus légères.', 'Two leg and glute sessions, two lighter upper-body sessions.'],
    w:[
-    {name:'Jambes A', day:1, ex:[PX('Hip thrust',4,6,10,120), PX('Squat',3,6,10,150), PX('Romanian deadlift',3,8,12,120), PX('Leg extension',3,12,15,60), PX('Abduction machine',3,15,20,45)]},
-    {name:'Haut A', day:2, ex:[PX('Développé haltères assis',3,8,12,90), PX('Tirage vertical',3,8,12,90), PX('Développé incliné haltères',3,8,12,90), PX('Rowing poulie basse',3,10,12,75), PX('Élévations latérales',3,12,15,45)]},
-    {name:'Jambes B', day:4, ex:[PX('Fentes bulgares',3,8,12,90), PX('Presse à cuisses',3,10,12,120), PX('Leg curl assis',3,10,12,75), PX('Kickback fessiers poulie',3,12,15,45), PX('Mollets debout',3,10,15,60)]},
-    {name:'Haut B', day:5, ex:[PX('Développé couché',3,6,10,120), PX('Rowing haltère',3,8,12,75), PX('Face pull',3,12,15,45), PX('Curl haltères',2,10,12,45), PX('Extension triceps corde',2,10,12,45)]}
+    {name:'Jambes A', day:1, ex:[PX('Hip thrust barre',4,6,10,120), PX('Squat barre',3,6,10,150), PX('Romanian deadlift barre',3,8,12,120), PX('Leg extension machine',3,12,15,60), PX('Abduction machine',3,15,20,45)]},
+    {name:'Haut A', day:2, ex:[PX('Développé haltères assis',3,8,12,90), PX('Tirage vertical poulie',3,8,12,90), PX('Développé incliné haltères',3,8,12,90), PX('Rowing poulie basse',3,10,12,75), PX('Élévations latérales haltères',3,12,15,45)]},
+    {name:'Jambes B', day:4, ex:[PX('Fentes bulgares haltères',3,8,12,90), PX('Presse à cuisses',3,10,12,120), PX('Leg curl assis machine',3,10,12,75), PX('Kickback fessiers poulie',3,12,15,45), PX('Mollets debout machine',3,10,15,60)]},
+    {name:'Haut B', day:5, ex:[PX('Développé couché barre',3,6,10,120), PX('Rowing haltère',3,8,12,75), PX('Face pull poulie',3,12,15,45), PX('Curl haltères',2,10,12,45), PX('Extension triceps poulie corde',2,10,12,45)]}
    ]},
   {id:'arnold', name:'Arnold', en:'Arnold', days:6, lv:['conf'], goal:['muscle'], gear:['gym'],
    d:['Poitrine et dos, épaules et bras, jambes, deux fois par semaine. Exigeant.', 'Chest and back, shoulders and arms, legs, twice a week. Demanding.'],
    w:[
-    {name:'Poitrine & dos', day:1, ex:[PX('Développé couché',5,6,12,120), PX('Développé incliné',5,6,12,120), PX('Écarté haltères',4,10,12,60,'En superset avec le pullover'), PX('Tractions',5,6,12,90), PX('Rowing barre',5,6,12,90), PX('Soulevé de terre jambes tendues',4,10,12,90), PX('Crunch',4,20,25,45)]},
-    {name:'Épaules & bras', day:2, ex:[PX('Développé haltères assis',5,8,12,90), PX('Élévations latérales',4,10,15,45), PX('Oiseau',4,12,12,45), PX('Curl barre',5,6,12,60), PX('Curl incliné haltères',4,10,12,60), PX('Développé couché prise serrée',5,6,12,90), PX('Barre au front',4,10,12,60), PX('Curl poignets',4,12,20,45)]},
-    {name:'Jambes', day:3, ex:[PX('Squat',5,8,12,150), PX('Deadlift',4,8,12,150), PX('Good morning',3,8,12,90), PX('Leg extension',4,8,12,60,'En superset avec le leg curl'), PX('Leg curl',4,8,12,60,'En superset avec le leg extension'), PX('Mollets debout',5,12,20,45), PX('Crunch poulie',4,20,25,45)]},
-    {name:'Poitrine & dos bis', day:4, ex:[PX('Développé couché',5,6,12,120), PX('Développé incliné',5,6,12,120), PX('Écarté haltères',4,10,12,60,'En superset avec le pullover'), PX('Tractions',5,6,12,90), PX('Rowing barre',5,6,12,90), PX('Soulevé de terre jambes tendues',4,10,12,90), PX('Crunch',4,20,25,45)]},
-    {name:'Épaules & bras bis', day:5, ex:[PX('Développé haltères assis',5,8,12,90), PX('Élévations latérales',4,10,15,45), PX('Oiseau',4,12,12,45), PX('Curl barre',5,6,12,60), PX('Curl incliné haltères',4,10,12,60), PX('Développé couché prise serrée',5,6,12,90), PX('Barre au front',4,10,12,60), PX('Curl poignets',4,12,20,45)]},
-    {name:'Jambes bis', day:6, ex:[PX('Squat',5,8,12,150), PX('Deadlift',4,8,12,150), PX('Good morning',3,8,12,90), PX('Leg extension',4,8,12,60,'En superset avec le leg curl'), PX('Leg curl',4,8,12,60,'En superset avec le leg extension'), PX('Mollets debout',5,12,20,45), PX('Crunch poulie',4,20,25,45)]}
+    {name:'Poitrine & dos', day:1, ex:[PX('Développé couché barre',5,6,12,120), PX('Développé incliné barre',5,6,12,120), PX('Écarté haltères',4,10,12,60,'En superset avec le pullover'), PX('Tractions',5,6,12,90), PX('Rowing barre',5,6,12,90), PX('Soulevé de terre jambes tendues barre',4,10,12,90), PX('Crunch',4,20,25,45)]},
+    {name:'Épaules & bras', day:2, ex:[PX('Développé haltères assis',5,8,12,90), PX('Élévations latérales haltères',4,10,15,45), PX('Oiseau haltères',4,12,12,45), PX('Curl barre',5,6,12,60), PX('Curl incliné haltères',4,10,12,60), PX('Développé couché prise serrée barre',5,6,12,90), PX('Barre au front',4,10,12,60), PX('Curl poignets barre',4,12,20,45)]},
+    {name:'Jambes', day:3, ex:[PX('Squat barre',5,8,12,150), PX('Deadlift barre',4,8,12,150), PX('Good morning barre',3,8,12,90), PX('Leg extension machine',4,8,12,60,'En superset avec le leg curl'), PX('Leg curl machine',4,8,12,60,'En superset avec le leg extension'), PX('Mollets debout machine',5,12,20,45), PX('Crunch poulie',4,20,25,45)]},
+    {name:'Poitrine & dos bis', day:4, ex:[PX('Développé couché barre',5,6,12,120), PX('Développé incliné barre',5,6,12,120), PX('Écarté haltères',4,10,12,60,'En superset avec le pullover'), PX('Tractions',5,6,12,90), PX('Rowing barre',5,6,12,90), PX('Soulevé de terre jambes tendues barre',4,10,12,90), PX('Crunch',4,20,25,45)]},
+    {name:'Épaules & bras bis', day:5, ex:[PX('Développé haltères assis',5,8,12,90), PX('Élévations latérales haltères',4,10,15,45), PX('Oiseau haltères',4,12,12,45), PX('Curl barre',5,6,12,60), PX('Curl incliné haltères',4,10,12,60), PX('Développé couché prise serrée barre',5,6,12,90), PX('Barre au front',4,10,12,60), PX('Curl poignets barre',4,12,20,45)]},
+    {name:'Jambes bis', day:6, ex:[PX('Squat barre',5,8,12,150), PX('Deadlift barre',4,8,12,150), PX('Good morning barre',3,8,12,90), PX('Leg extension machine',4,8,12,60,'En superset avec le leg curl'), PX('Leg curl machine',4,8,12,60,'En superset avec le leg extension'), PX('Mollets debout machine',5,12,20,45), PX('Crunch poulie',4,20,25,45)]}
    ]}
 ];
-var PROG_EN = {'A bis':'A again', 'Corps complet A':'Full body A', 'Corps complet B':'Full body B', 'Corps complet A bis':'Full body A again', 'Couché':'Bench', 'Soulevé':'Deadlift', 'Militaire':'Overhead',
+var PROG_EN = {'A bis':'A again', 'Corps complet A':'Full body A', 'Corps complet B':'Full body B', 'Corps complet A bis':'Full body A again', 'Couché':'Bench', 'Soulevé':'Deadlift barre', 'Militaire':'Overhead',
   'Haut force':'Upper power', 'Bas force':'Lower power', 'Haut volume':'Upper volume', 'Bas volume':'Lower volume', 'Jambes':'Legs', 'Jambes bis':'Legs again', 'Haut':'Upper', 'Bas':'Lower',
   'Maison A':'Home A', 'Maison B':'Home B', 'Maison C':'Home C', 'Jambes A':'Legs A', 'Jambes B':'Legs B', 'Haut A':'Upper A', 'Haut B':'Upper B',
   'Poitrine & dos':'Chest & back', 'Épaules & bras':'Shoulders & arms', 'Poitrine & dos bis':'Chest & back again', 'Épaules & bras bis':'Shoulders & arms again'};
@@ -6352,7 +6393,8 @@ if(!S.settings.exType) S.settings.exType = {};
    L'écran de séance par défaut : toute la séance en liste, l'exercice en cours ouvert.
    Après une série validée, le repos s'ouvre en plein écran ; « Réduire » le range en pilule en haut,
    un tap sur la pilule le rouvre. Le mode « une série à la fois » reste disponible (S.settings.exUI). */
-function exView(){ var v = S.settings.exUI; return v === 'focus' || v === 'list' ? v : 'flow'; }
+/* 1.15 : le mode « une série à la fois » est retiré, la séance s'affiche toujours en liste */
+function exView(){ return 'flow'; }
 var FL_ICO = {
   grip:'<svg width="14" height="20" viewBox="0 0 14 20" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="1.8"/><circle cx="10" cy="4" r="1.8"/><circle cx="4" cy="10" r="1.8"/><circle cx="10" cy="10" r="1.8"/><circle cx="4" cy="16" r="1.8"/><circle cx="10" cy="16" r="1.8"/></svg>',
   info:'<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg>',
@@ -6375,7 +6417,7 @@ function flRows(e, i, open, ri){
     if(j > 0){
       var p = e.sets[j - 1], live = ri && !ri.over && ri.r.ex === i && ri.r.set === j - 1;
       if(live) h += '<div class="fl-sep live"><span id="fl-sep-t">' + mmss(ri.left) + '</span>' + L(' en cours', ' left') + '<span class="fl-tr"><i id="fl-sep-b" style="width:' + Math.min(100, ri.pct) + '%"></i></span></div>';
-      else h += '<div class="fl-sep">' + restLbl(p.rest || (p.warm ? 60 : e.rest) || 90) + '</div>';
+      else h += flRestSep(e, i, j - 1);
     }
     var cls = 'fl-row' + (s.done ? ' done' : isNext ? ' next' : ' later');
     h += '<div class="' + cls + '">';
@@ -6397,7 +6439,16 @@ function flRows(e, i, open, ri){
     }
     h += '</div>';
   });
+  /* repos après la dernière série, avant l'exercice suivant */
+  if(open && e.sets.length && i < a.exercises.length - 1 && !e.ss) h += flRestSep(e, i, e.sets.length - 1, true);
   return h;
+}
+/* 1.15 : le repos entre deux séries se modifie d'un tap, directement dans la liste */
+function flRestVal(e, j){ var p = e.sets[j]; return (p && p.rest) || (p && p.warm ? 60 : e.rest) || 90; }
+function flRestSep(e, i, j, last){
+  var v = flRestVal(e, j), fr = ui.flRest, tail = last ? L(' avant l\'exo suivant', ' before the next exercise') : '';
+  if(fr && fr.i === i && fr.j === j) return '<div class="fl-sep fl-sep-ed" role="group" aria-label="' + L('Repos après ', 'Rest after ') + flSetName(e, j) + '"><button data-a="flrestadj" data-i="' + i + '" data-j="' + j + '" data-d="-15" aria-label="' + L('Retirer 15 secondes', 'Remove 15 seconds') + '">−15</button><b class="tnum">' + restLbl(v) + '</b><button data-a="flrestadj" data-i="' + i + '" data-j="' + j + '" data-d="15" aria-label="' + L('Ajouter 15 secondes', 'Add 15 seconds') + '">+15</button><button class="ok" data-a="flrestok">OK</button></div>';
+  return '<button class="fl-sep fl-sep-btn" data-a="flrest" data-i="' + i + '" data-j="' + j + '" aria-label="' + L('Modifier le repos : ', 'Edit rest: ') + restLbl(v) + '">⏱ ' + restLbl(v) + tail + '</button>';
 }
 function flCard(e, i, ri){
   var a = S.active, open = i === a.idx, c = flCount(e), all = e.sets.length && e.sets.every(function(s){ return s.done; });
@@ -6455,7 +6506,7 @@ function vFlow(){
   if(ui.confirm === 'finish') h += m3sConfirm(L('Terminer et enregistrer la séance ?', 'Finish and save the session?'), 'finish', L('Terminer', 'Finish'));
   else if(ui.confirm === 'abandon') h += m3sConfirm(L('Abandonner la séance ? Rien ne sera enregistré.', 'Abandon the session? Nothing will be saved.'), 'abandon', L('Abandonner', 'Abandon'));
   else h += '<button class="m4-finish" data-a="askfinish">' + L('TERMINER LA SÉANCE', 'FINISH THE SESSION') + ' ✓</button><button class="m4-abandon" data-a="askabandon">' + L('Abandonner la séance', 'Abandon the session') + '</button>';
-  h += '<button class="fl-mode" data-a="exview" data-v="focus">' + L('Passer en mode une série à la fois', 'Switch to one set at a time') + '</button></div></div>';
+  h += '</div></div>';
   /* bouton principal, toujours à portée de pouce */
   var ex = cur(), sj = ex ? selIndex(ex) : null;
   if(ex && sj != null){
@@ -6572,6 +6623,14 @@ document.addEventListener('click', function(ev){
       ui.picker = {ctx:'replace'}; ui.pickQ = ''; ui.sheet = null; render(); return;
     case 'flrm': stop(); ui.flMenu = null; flRemove(i); render(); return;
     case 'flundo': stop(); flUndoRm(); render(); return;
+    case 'flrest': stop(); ui.flRest = {i:i, j:j}; render(); return;
+    case 'flrestok': stop(); ui.flRest = null; render(); return;
+    case 'flrestadj':
+      stop();
+      var re = S.active.exercises[i], rs = re && re.sets[j]; if(!rs) return;
+      rs.rest = Math.max(15, Math.min(600, flRestVal(re, j) + (+el.getAttribute('data-d') || 0)));
+      if(j === re.sets.length - 1) re.rest = rs.rest;
+      ui.flRest = {i:i, j:j}; save(); render(); return;
   }
 }, true);
 
@@ -6624,6 +6683,8 @@ setInterval(function(){
 }, 250);
 
 ssMigrate();
+/* 1.15 : renomme une seule fois les exercices dans les programmes, la séance en cours et l'historique */
+try{ if(!S.settings.eqNames){ Object.keys(EQREN).forEach(function(o){ renameEx(o, EQREN[o]); }); S.settings.eqNames = 1; save(); } }catch(e){}
 
 render();
 })();
