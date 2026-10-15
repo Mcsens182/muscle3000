@@ -971,6 +971,112 @@ html.hud.neg body .m3-band-bar i,html.hud.neg body .m3-pin-bar i,html.hud.neg bo
 html.hud.neg body .m3s-switch i{background:#fff}
 html.hud.neg body .m3s-row.danger{color:#C62A1E!important}
 </style>
+<style id="m3k-v115">
+/* ===== 1.15 : corriger, journal, supersets, poids du corps, pavé ===== */
+.fx-tbtns{display:flex;gap:8px;flex:none}
+.fx-dots{align-items:center}
+.fx-dots button{flex:1;height:22px;min-height:22px!important;padding:0!important;border:0!important;border-radius:99px!important;background:linear-gradient(var(--m3-accent),var(--m3-accent)) center/100% 8px no-repeat!important;cursor:pointer}
+.fx-dots button.warm{flex:.5}
+.fx-dots i.redo{background:var(--m3-ink);opacity:.5}
+html.hud body .fx-dots button{border-radius:2px!important;background:linear-gradient(var(--h-fill),var(--h-fill)) center/100% 8px no-repeat!important}
+button.fx-rest-done{border:0!important;color:inherit!important;text-align:left;min-height:0!important;cursor:pointer}
+button.fx-rest-done span{flex:1}
+button.fx-rest-done em{font-style:normal;font-size:11px;font-weight:800;letter-spacing:.06em;padding:6px 10px;border-radius:99px;background:color-mix(in srgb,var(--m3-card) 14%,transparent)}
+html.hud body button.fx-rest-done em{background:var(--h-soft)}
+.fx-fix{max-width:480px;width:100%;margin:0 auto;box-sizing:border-box;padding:14px;border-radius:20px;background:var(--m3-card);color:var(--m3-ink);display:flex;flex-direction:column;gap:10px}
+.fx-fix>span{font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--m3-muted)}
+.fx-fix-row{display:flex;align-items:center;gap:10px}
+.fx-fix-row>div{flex:1;display:flex;flex-direction:column;align-items:center}
+.fx-fix-row small{font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--m3-muted)}
+.fx-fix-row b{font-size:30px;font-weight:800;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.fx-fix-row button{width:52px;min-height:52px!important;flex:none;padding:0!important;border-radius:50%!important;border:1px solid var(--m3-line)!important;background:var(--m3-bg)!important;color:var(--m3-ink)!important;font-size:24px!important}
+button.fx-fix-ok{min-height:50px!important;border:0!important;border-radius:16px!important;background:var(--m3-ink)!important;color:var(--m3-card)!important;font-weight:800!important}
+html.hud body .fx-fix{border:1px solid var(--m3-accent);border-radius:var(--h-r)}
+html.hud body button.fx-fix-ok{background:var(--h-fill)!important;color:var(--h-on)!important}
+.fx-plates{margin:10px 0 0;text-align:center;font-size:12px;font-weight:800;color:var(--m3-accent);font-variant-numeric:tabular-nums}
+input.fx-note{display:block;width:100%!important;box-sizing:border-box;margin-top:10px;min-height:40px!important;border:0!important;border-bottom:1px dashed var(--m3-line)!important;border-radius:0!important;background:transparent!important;text-align:center;font-size:13px!important;font-weight:600!important;color:var(--m3-ink)!important;padding:8px 4px!important;box-shadow:none!important}
+input.fx-note::placeholder{color:var(--m3-muted);opacity:.85}
+input.fx-note:focus{outline:none;border-bottom-color:var(--m3-accent)!important}
+input.m3-note{text-align:left;margin:0 0 10px}
+button.fx-warm{width:100%;color:var(--m3-accent)!important}
+.fx-val input[readonly]{cursor:pointer}
+.m3-links{display:flex;gap:14px;flex-wrap:wrap}
+.m3-work-tools{grid-template-columns:repeat(5,1fr)!important}
+
+/* pavé numérique */
+.m3pad{display:flex;flex-direction:column;gap:12px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 16px)!important}
+.m3pad-top,.m3-addpast .m3pad-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.m3pad-val{display:flex;align-items:baseline;justify-content:center;gap:8px;padding:6px 0}
+.m3pad-val b{font-size:68px;line-height:1;font-weight:800;letter-spacing:-.06em;font-variant-numeric:tabular-nums;color:var(--m3-ink)}
+.m3pad-val.sug b{opacity:.35}
+.m3pad-val small{font-size:14px;font-weight:700;color:var(--m3-muted)}
+.m3pad-plates{margin:-6px 0 0;text-align:center;font-size:12px;font-weight:800;color:var(--m3-accent)}
+.m3pad-keys{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.m3pad-keys button{min-height:60px!important;border-radius:16px!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important;color:var(--m3-ink)!important;font-size:26px!important;font-weight:700!important}
+.m3pad-keys button:active{background:var(--m3-tint)!important}
+button.m3pad-ok{min-height:62px!important;border:0!important;border-radius:18px!important;background:var(--m3-accent)!important;color:var(--m3-card)!important;font-size:18px!important;font-weight:800!important;letter-spacing:.04em}
+html.hud body .m3pad-keys button{border-radius:var(--h-r)!important;font-family:'Space Mono',ui-monospace,monospace!important}
+html.hud body button.m3pad-ok{background:var(--h-fill)!important;color:var(--h-on)!important;border-radius:var(--h-r)!important}
+html.hud body .m3pad-val b{font-family:'Space Mono',ui-monospace,monospace;color:var(--m3-accent)}
+
+/* séance restée ouverte, séance oubliée */
+.m3-stale,.m3-addpast{display:flex;flex-direction:column;gap:10px}
+.m3-stale h2,.m3-addpast h2{margin:0;font-size:30px;line-height:1.05;letter-spacing:-.05em;font-weight:800}
+.m3-stale .m3s-note,.m3-addpast .m3s-note{margin:0}
+button.m3-ghost{width:100%;min-height:50px!important;border-radius:16px!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important;color:var(--m3-ink)!important;font-weight:700!important}
+button.m3-ghost.danger{border-style:dashed!important;color:#B4483A!important}
+.sheet .pane button.m3-primary{background:var(--m3-ink)!important;color:var(--m3-card)!important;border:0!important;min-height:56px!important;border-radius:16px!important;font-weight:800!important;display:flex!important;justify-content:space-between;align-items:center;padding:0 20px!important}
+html.hud body .sheet .pane button.m3-primary{background:var(--h-fill)!important;color:var(--h-on)!important}
+.box.exrow.inv{background:var(--m3-ink)!important;color:var(--m3-card)!important;border-color:var(--m3-ink)!important}
+.box.exrow.inv .lbl{color:var(--m3-card)!important;opacity:.7}
+button.m3-addpast-btn{width:100%;margin:-6px 0 22px;min-height:46px!important;border-radius:14px!important;border:1px dashed var(--m3-line)!important;background:transparent!important;color:var(--m3-accent)!important;font-size:13px!important;font-weight:800!important}
+
+/* journal : records et édition */
+.m3-record>span small{display:block;margin-top:2px;font-size:11px;font-weight:600;color:var(--m3-muted)}
+input.m3-recq{width:100%;box-sizing:border-box;margin:0 0 8px}
+button.m3-more{width:100%;margin-top:8px;min-height:44px!important;border-radius:14px!important;border:1px solid var(--m3-line)!important;background:transparent!important;font-size:12px!important;font-weight:800!important;color:var(--m3-accent)!important}
+.m3he-tools{display:flex;gap:8px}
+.m3he-tools button{flex:1;min-height:40px!important;border-radius:12px!important;font-size:12px!important}
+.m3he-confirm .m3s-confirm{margin:0}
+.m3he{display:flex;flex-direction:column;gap:10px;padding:14px;border:1px solid var(--m3-accent);border-radius:20px;background:var(--m3-card)}
+.m3he-top{display:flex;justify-content:space-between;align-items:center}
+button.m3he-done{min-height:40px!important;padding:0 18px!important;border:0!important;border-radius:12px!important;background:var(--m3-ink)!important;color:var(--m3-card)!important}
+.m3he-f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.m3he-f small,.m3he-lbl small{font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--m3-muted)}
+.m3he-f .field{width:100%;box-sizing:border-box;min-height:44px}
+.m3he-two{display:grid;grid-template-columns:1.4fr 1fr;gap:8px}
+.m3he-ex{display:flex;flex-direction:column;gap:6px;padding-top:10px;border-top:1px solid var(--m3-line)}
+.m3he-exh{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.m3he-exh b{font-size:15px}
+.m3he-exh button{min-height:32px!important;padding:0 10px!important;border-radius:10px!important;font-size:11px!important;color:#B4483A!important}
+.m3he-row{display:grid;grid-template-columns:40px minmax(0,1fr) minmax(0,1fr) 40px;gap:6px;align-items:center}
+.m3he-row .field{min-height:42px;padding:8px!important;text-align:center;font-weight:700;width:100%;box-sizing:border-box;font-size:16px}
+.m3he-lbl{text-align:center}
+button.m3he-tag,button.m3he-x{min-height:42px!important;padding:0!important;border-radius:12px!important;font-size:13px!important}
+button.m3he-tag.warm{border-style:dashed!important;color:var(--m3-muted)!important}
+button.m3he-add{min-height:38px!important;border-radius:12px!important;border:1px dashed var(--m3-line)!important;background:transparent!important;font-size:12px!important;color:var(--m3-accent)!important}
+button.m3he-add.big{min-height:46px!important}
+
+/* fiche : type d'exercice, interrupteurs */
+.m3-seg{display:flex;gap:4px;padding:4px;border-radius:14px;background:var(--m3-tint);margin-bottom:8px}
+.m3-seg button{flex:1;min-height:40px!important;padding:0 6px!important;border:0!important;border-radius:11px!important;background:transparent!important;font-size:12px!important;font-weight:700!important;color:var(--m3-muted)!important}
+.m3-seg button.on{background:var(--m3-card)!important;color:var(--m3-ink)!important;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+html.hud body .m3-seg{border-radius:var(--h-r)}
+html.hud body .m3-seg button.on{background:var(--h-fill)!important;color:var(--h-on)!important}
+.m3-sw{width:44px;height:26px;flex:none;border-radius:99px;background:var(--m3-line);position:relative;transition:background .2s}
+.m3-sw i{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.m3-sw.on{background:var(--m3-accent)}
+.m3-sw.on i{transform:translateX(18px)}
+html.hud body .m3-sw.on{background:var(--h-fill)}
+
+/* fin de séance : trois choix */
+.m3-changes{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700;line-height:1.45}
+button.m3-opt{display:flex!important;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:14px 16px!important;min-height:0!important;border-radius:16px!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important;color:var(--m3-ink)!important}
+button.m3-opt b{font-size:15px;font-weight:800}
+button.m3-opt small{font-size:12px;font-weight:500;line-height:1.45;color:var(--m3-muted)}
+button.m3-opt:first-of-type{border:2px solid var(--m3-ink)!important}
+html.hud body button.m3-opt{border-radius:var(--h-r)!important}
+</style>
 
 <div id="app"></div>
 <div id="sheet"></div>
@@ -1277,6 +1383,12 @@ function suggest(name, k, set){
   var past = pastEntries(name);
   var g = past[0] && past[0].sets[k];
   if(!g || g.w == null) return null;
+  var xt = exType(name);
+  if(xt !== 'w'){
+    var st = xt === 'time' ? 5 : 1, w0 = g.w || 0;
+    if(set.special || g.r < set.lo) return {w:w0, r:set.lo, trend:'='};
+    return {w:w0, r:g.r + st, trend:'+1'};
+  }
   if(set.special) return {w:g.w, r:set.lo, trend:'='};
   if(g.r >= set.hi) return {w:g.w + inc(), r:set.lo, trend:'▲'};
   if(g.r < set.lo){
@@ -1286,7 +1398,7 @@ function suggest(name, k, set){
   }
   return {w:g.w, r:g.r + 1, trend:'+1'};
 }
-function ghost(name, k){ var p = pastEntries(name); var g = p[0] && p[0].sets[k]; return g ? kg(g.w) + '×' + g.r : '—'; }
+function ghost(name, k){ var p = pastEntries(name); var g = p[0] && p[0].sets[k]; return g ? fmtS(name, g.w, g.r) : '—'; }
 function workIndex(ex, j){ var k = 0; for(var i=0;i<j;i++) if(!ex.sets[i].warm) k++; return k; }
 function fillSuggestions(ex){
   ex.sets.forEach(function(s, j){
@@ -1301,7 +1413,7 @@ function fillSuggestions(ex){
   var past = pastEntries(ex.name)[0], pastW = past ? past.all.filter(function(s){ return s.warm; }) : [];
   var nW = ex.sets.filter(function(s){ return s.warm; }).length, wi = 0;
   ex.sets.forEach(function(s){
-    if(!s.warm) return; var idx = wi++; if(s.done) return;
+    if(!s.warm) return; var idx = wi++; if(s.done || s.auto) return;
     var fw = firstWork && (firstWork.w != null ? firstWork.w : firstWork.sw);
     if(pastW[idx] && pastW[idx].w != null){ s.sw = pastW[idx].w; s.sr = pastW[idx].r; }
     else if(fw){ s.sw = roundInc(fw * (0.4 + 0.45 * (idx + 1) / (nW + 1))); }
@@ -1318,14 +1430,16 @@ function startEmpty(){
   save(); ui.screen = 'ov'; ui.confirm = null; askWake(); render(); openPicker('session');
 }
 function startSession(pid){
+  ssMigrate(); ui.staleOk = false;
   var p = prog(pid);
   if(!p.ex.length){ toast('Ajoute au moins un exercice à cette séance'); return; }
   S.active = {pid:pid, name:p.name, start:Date.now(), idx:0, rest:null, exercises:p.ex.map(function(e, ti){
     var vars = e.v && e.v.length > 1 ? (e.v.indexOf(e.name) < 0 ? [e.name].concat(e.v) : e.v) : null;
     var lastRest = e.s.length ? e.s[e.s.length - 1].rest : e.rest;
-    var ex = {tpl:ti, name:e.name, variants:vars, rest:lastRest || e.rest, cue:e.cue, note:lastNote(vars || e.name, pid), sel:null,
+    var ex = {tpl:ti, name:e.name, variants:vars, rest:lastRest || e.rest, cue:e.cue, note:lastNote(vars || e.name, pid), sel:null, ss:!!e.ss,
       sets:e.s.map(function(t){ return {lo:t.lo, hi:t.hi, special:t.sp || null, warm:!!t.warm, rest:t.rest, done:false, w:null, r:t.warm ? t.lo : null}; })};
     fillSuggestions(ex);
+    if(autoWarmOn(ex.name)) genWarm(ex, true);
     return ex;
   })};
   save(); ui.screen = 'ex'; ui.confirm = null; askWake(); render();
@@ -1341,13 +1455,23 @@ function validate(){
   var s = ex.sets[j];
   if(s.w == null && s.sw != null) s.w = s.sw;
   if(s.r == null && s.sr != null) s.r = s.sr;
-  if(s.w == null || s.r == null){ toast('Indique la charge et les reps'); return; }
+  if(s.w == null && exType(ex.name) !== 'w') s.w = 0;
+  if(s.w == null || s.r == null){ toast(exType(ex.name) === 'w' ? 'Indique la charge et les reps' : L('Indique les reps', 'Enter the reps')); return; }
+  ex.sel = null;
+  /* série corrigée après coup : pas de nouveau repos, on reste où on en était */
+  if(s.redo){ s.done = true; delete s.redo; save(); render(); toast(L('Série corrigée', 'Set corrected')); return; }
   closeRest();
-  s.done = true; s.doneAt = Date.now(); ex.sel = null;
-  var lastOfEx = selIndex(ex) == null;
+  s.done = true; s.doneAt = Date.now();
+  var from = S.active.idx, lastOfEx = selIndex(ex) == null, n = S.active.exercises.length;
   var restSec = s.rest || (s.warm ? 60 : ex.rest);
-  S.active.rest = {start:Date.now(), total:restSec, ex:S.active.idx, set:j, label: lastOfEx ? 'EXERCICE SUIVANT' : ''};
-  if(lastOfEx && exView() === 'focus' && S.active.idx < S.active.exercises.length - 1){ S.active.idx++; ui.gapEdit = null; }
+  /* superset : on alterne avec l'exercice lié tant qu'il lui reste des séries */
+  var pi = ssPartner(from), go = null, label = '';
+  if(pi != null && !s.warm && hasWork(S.active.exercises[pi])){ go = pi; label = 'SUPERSET'; }
+  else if(lastOfEx && exView() === 'focus'){ var nx = pi != null ? Math.max(from, pi) + 1 : from + 1; if(nx < n){ go = nx; label = 'EXERCICE SUIVANT'; } }
+  else if(lastOfEx) label = 'EXERCICE SUIVANT';
+  S.active.rest = {start:Date.now(), total:restSec, ex:from, set:j, label:label};
+  if(go != null){ S.active.idx = go; ui.gapEdit = null; }
+  ui.fixLast = false;
   unlockAudio(); save(); render();
   /* the sergeant comments on roughly one set in three, so it stays a surprise */
   if(S.settings.hardcore && Math.random() < .35) { var HS = isEN() ? HARD_SET_EN : HARD_SET; toast(HS[Math.floor(Math.random() * HS.length)]); }
@@ -1364,47 +1488,59 @@ function plural(n, w){ return n + ' ' + w + (n > 1 ? 's' : ''); }
 function diffSession(a){
   var w = prog(a.pid); if(!w) return null;
   if(!a.exercises.some(function(e){ return e.tpl != null; })) return null;
-  var changes = [], used = {};
-  var newEx = a.exercises.map(function(e){
-    var t = e.tpl != null ? w.ex[e.tpl] : null, sets = e.sets.map(setTpl);
-    if(!t){ changes.push('Ajout : ' + e.name + ' (' + plural(sets.filter(function(x){ return !x.warm; }).length, 'série') + ')'); return {name:e.name, s:sets, rest:e.rest, cue:e.cue || ''}; }
-    used[e.tpl] = 1;
+  var changes = [], used = {}, lastTpl = -1, reordered = false, newEx = [];
+  a.exercises.forEach(function(e){
+    if(e.partial) return; /* la partie faite avant un remplacement : la place revient au nouvel exercice */
+    var t = e.tpl != null ? w.ex[e.tpl] : null, auto = e.sets.some(function(x){ return x.auto; });
+    var sets = (e.pre || []).concat(e.sets).filter(function(x){ return !x.auto; }).map(setTpl);
+    if(!t){ changes.push('Ajout : ' + e.name + ' (' + plural(sets.filter(function(x){ return !x.warm; }).length, 'série') + ')'); newEx.push({name:e.name, s:sets, rest:e.rest, cue:e.cue || ''}); return; }
+    used[e.tpl] = 1; if(e.tpl < lastTpl) reordered = true; lastTpl = Math.max(lastTpl, e.tpl);
+    var inSlot = e.name === t.name || (t.v && t.v.indexOf(e.name) >= 0);
+    if(!inSlot) changes.push('Remplacé : ' + t.name + ' → ' + e.name);
+    /* échauffement automatique : les échauffements du modèle restent tels quels */
+    if(auto) sets = t.s.filter(function(x){ return x.warm; }).map(function(x){ return {lo:x.lo, hi:x.hi, sp:x.sp || null, warm:true, rest:x.rest}; }).concat(sets.filter(function(x){ return !x.warm; }));
     var tw = t.s.filter(function(x){ return !x.warm; }).length, nw = sets.filter(function(x){ return !x.warm; }).length;
     var tu = t.s.filter(function(x){ return x.warm; }).length, nu = sets.filter(function(x){ return x.warm; }).length;
-    if(tw !== nw) changes.push(t.name + ' : ' + plural(nw, 'série') + ' au lieu de ' + tw);
-    if(tu !== nu) changes.push(t.name + ' : ' + plural(nu, 'échauffement') + ' au lieu de ' + tu);
-    if(tw === nw && tu === nu && sets.some(function(x, i){ return t.s[i] && t.s[i].rest !== x.rest; })) changes.push(t.name + ' : temps de repos modifiés');
+    if(tw !== nw) changes.push((inSlot ? t.name : e.name) + ' : ' + plural(nw, 'série') + ' au lieu de ' + tw);
+    if(tu !== nu) changes.push((inSlot ? t.name : e.name) + ' : ' + plural(nu, 'échauffement') + ' au lieu de ' + tu);
+    if(tw === nw && tu === nu && sets.some(function(x, i){ return t.s[i] && t.s[i].rest !== x.rest; })) changes.push((inSlot ? t.name : e.name) + ' : temps de repos modifiés');
     if(tw === nw && tu === nu){ sets.forEach(function(x, i){ if(x.warm && t.s[i]){ x.lo = t.s[i].lo; x.hi = t.s[i].hi; } }); }
-    return {name:t.name, v:t.v, s:sets, rest:t.rest, cue:t.cue};
+    var o = {name:inSlot ? t.name : e.name, s:sets, rest:t.rest, cue:t.cue}; if(inSlot && t.v) o.v = t.v; if(t.ss) o.ss = true;
+    newEx.push(o);
   });
+  if(reordered) changes.push('Ordre des exercices modifié');
   w.ex.forEach(function(t, i){ if(!used[i]) changes.push('Retrait : ' + t.name); });
   return changes.length ? {pid:a.pid, wname:w.name, ex:newEx, changes:changes} : null;
 }
-function finish(){
+function finish(endAt){
+  if(typeof endAt !== 'number') endAt = null;
+  if(endAt && S.active) S.active.rest = null;
   closeRest();
+  /* une série rouverte pour être corrigée et laissée telle quelle reste comptée */
+  S.active.exercises.forEach(function(e){ e.sets.forEach(function(s){ if(s.redo){ s.done = true; delete s.redo; } }); });
   ui.pending = diffSession(S.active);
   var kept = S.active.exercises.filter(function(e){ return e.sets.some(function(s){ return s.done; }); });
-  if(!ui.pending && (!S.active.pid || !prog(S.active.pid)) && kept.length) ui.pending = {fresh:true, wname:S.active.name, ex:kept.map(function(e){ return {name:e.name, s:e.sets.map(setTpl), rest:e.rest, cue:e.cue || ''}; })};
+  if(!ui.pending && (!S.active.pid || !prog(S.active.pid)) && kept.length) ui.pending = {fresh:true, wname:S.active.name, ex:kept.map(function(e){ return {name:e.name, s:e.sets.filter(function(x){ return !x.auto; }).map(setTpl), rest:e.rest, cue:e.cue || ''}; })};
   if(ui.pending) ui.pending.saveName = ui.pending.fresh ? (isEN() ? 'Free session ' : 'Séance libre du ') + fmtDate(Date.now()) : trText(ui.pending.wname) + (isEN() ? ' (variant)' : ' (variante)');
-  ui.saveAs = false;
+  ui.saveAs = false; ui.saveDest = null;
   var a = S.active, prevBest = {};
   a.exercises.forEach(function(e){ prevBest[e.name] = bestFor(e.name).e; });
-  var rec = {id:'s' + Date.now(), date:a.start, pid:a.pid, name:a.name, dur:Math.round((Date.now() - a.start)/1000),
+  var rec = {id:'s' + Date.now(), date:a.start, pid:a.pid, name:a.name, dur:Math.round(((endAt || Date.now()) - a.start)/1000),
     exercises:a.exercises.map(function(e){
       return {name:e.name, note:(e.note || '').trim(), sets:e.sets.filter(function(s){ return s.done; }).map(function(s){ return {w:s.w, r:s.r, warm:s.warm, special:s.special, lo:s.lo, hi:s.hi, rest:s.restTaken || null}; })};
     }).filter(function(e){ return e.sets.length; })};
   var prs = [];
   rec.exercises.forEach(function(e){
-    var b = 0; e.sets.forEach(function(s){ if(!s.warm) b = Math.max(b, e1rm(s.w, s.r)); });
-    if(b > 0 && b > (prevBest[e.name] || 0) && prevBest[e.name] > 0) prs.push(e.name);
+    var b = 0; e.sets.forEach(function(s){ if(!s.warm) b = Math.max(b, score(e.name, s.w, s.r)); });
+    if(b > 0 && b > (prevBest[e.name] || 0) && prevBest[e.name] > 0 && prs.indexOf(e.name) < 0) prs.push(e.name);
   });
   rec.prs = prs;
-  if(rec.exercises.length) S.history.push(rec);
-  S.active = null; ui.last = rec; ui.screen = 'done'; ui.confirm = null; save(); releaseWake(); render();
+  if(rec.exercises.length){ S.history.push(rec); sortHist(); }
+  S.active = null; ui.last = rec; ui.screen = 'done'; ui.confirm = null; ui.staleOk = false; save(); releaseWake(); render();
 }
 function bestFor(name){
   var best = {e:0, w:null, r:null};
-  S.history.forEach(function(h){ h.exercises.forEach(function(e){ if(e.name !== name) return; e.sets.forEach(function(s){ if(s.warm) return; var v = e1rm(s.w, s.r); if(v > best.e) best = {e:v, w:s.w, r:s.r}; }); }); });
+  S.history.forEach(function(h){ h.exercises.forEach(function(e){ if(e.name !== name) return; e.sets.forEach(function(s){ if(s.warm) return; var v = score(name, s.w, s.r); if(v > best.e) best = {e:v, w:s.w, r:s.r}; }); }); });
   return best;
 }
 
@@ -1451,7 +1587,7 @@ function computeStats(){
   var per = {};
   S.history.forEach(function(h){
     if(now - h.date > 42 * DAYMS) return;
-    h.exercises.forEach(function(e){ var b = 0; e.sets.forEach(function(s){ if(!s.warm) b = Math.max(b, e1rm(s.w, s.r)); }); if(b > 0) (per[e.name] = per[e.name] || []).push(b); });
+    h.exercises.forEach(function(e){ var b = 0; e.sets.forEach(function(s){ if(!s.warm) b = Math.max(b, score(e.name, s.w, s.r)); }); if(b > 0) (per[e.name] = per[e.name] || []).push(b); });
   });
   var top = Object.keys(per).filter(function(n){ return per[n].length >= 2; }).map(function(n){ var a = per[n]; return {n:n, first:a[0], last:a[a.length-1], pts:a.slice(-6), g:(a[a.length-1] - a[0]) / a[0]}; })
     .filter(function(x){ return x.g > 0; }).sort(function(a, b){ return b.g - a.g; }).slice(0, 3);
@@ -1557,7 +1693,7 @@ function topProgress(days){
   var now = Date.now(), per = {};
   S.history.forEach(function(h){
     if(days && now - h.date > days * DAYMS) return;
-    h.exercises.forEach(function(e){ var b = 0; e.sets.forEach(function(s){ if(!s.warm) b = Math.max(b, e1rm(s.w, s.r)); }); if(b > 0) (per[e.name] = per[e.name] || []).push(b); });
+    h.exercises.forEach(function(e){ var b = 0; e.sets.forEach(function(s){ if(!s.warm) b = Math.max(b, score(e.name, s.w, s.r)); }); if(b > 0) (per[e.name] = per[e.name] || []).push(b); });
   });
   return Object.keys(per).filter(function(n){ return per[n].length >= 2; }).map(function(n){ var a = per[n]; return {n:n, first:a[0], last:a[a.length - 1], pts:a.slice(-6), g:(a[a.length - 1] - a[0]) / a[0]}; })
     .filter(function(x){ return x.g > 0; }).sort(function(a, b){ return b.g - a.g; }).slice(0, 3);
@@ -1719,8 +1855,8 @@ function vEx(){
   }
   if(sj != null){
     var s0 = ex.sets[sj];
-    h += '<div class="grid2"><div><div class="stepper"><button data-a="w" data-d="-1" aria-label="Moins de charge">−</button><input id="in-w" data-f="w" inputmode="decimal" value="' + (s0.w != null ? kg(s0.w) : '') + '" placeholder="0" aria-label="Charge en kilos"><button data-a="w" data-d="1" aria-label="Plus de charge">+</button></div><span class="u lbl">KG</span></div>' +
-      '<div><div class="stepper"><button data-a="r" data-d="-1" aria-label="Une rep de moins">−</button><input id="in-r" data-f="r" inputmode="numeric" value="' + (s0.r != null ? s0.r : '') + '" placeholder="0" aria-label="Répétitions"><button data-a="r" data-d="1" aria-label="Une rep de plus">+</button></div><span class="u lbl">REPS</span></div></div>';
+    h += '<div class="grid2"><div><div class="stepper"><button data-a="w" data-d="-1" aria-label="Moins de charge">−</button><input id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + (s0.w != null ? kg(s0.w) : '') + '" placeholder="0" aria-label="Charge en kilos"><button data-a="w" data-d="1" aria-label="Plus de charge">+</button></div><span class="u lbl">KG</span></div>' +
+      '<div><div class="stepper"><button data-a="r" data-d="-1" aria-label="Une rep de moins">−</button><input id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + (s0.r != null ? s0.r : '') + '" placeholder="0" aria-label="Répétitions"><button data-a="r" data-d="1" aria-label="Une rep de plus">+</button></div><span class="u lbl">REPS</span></div></div>';
     h += '<button class="go solid" data-a="validate">VALIDER <span>→</span></button>';
   } else {
     h += next ? '<button class="go solid" data-a="nav" data-d="1">EXERCICE SUIVANT <span>→</span></button>' : '<button class="go solid" data-a="scr" data-s="ov">FINIR LA SÉANCE <span>→</span></button>';
@@ -1735,11 +1871,12 @@ function vOv(){
   var h = restBar();
   h += '<div class="top"><button data-a="scr" data-s="ex">◧ EXERCICE</button><button data-a="scr" data-s="home">⌂ ACCUEIL</button><span class="chip on tnum" id="clock">● ' + mmss((Date.now()-a.start)/1000) + '</span></div>';
   h += '<div class="disp" style="font-size:60px">' + esc(a.name) + '</div>';
+  h += '<span class="lbl">' + L('FIN PRÉVUE VERS ', 'EXPECTED END ') + etaTxt(a) + '</span>';
   h += '<div style="display:flex;flex-direction:column">';
   a.exercises.forEach(function(e, i){
     var isCur = i === a.idx, sj = selIndex(e);
     h += '<button class="box exrow' + (isCur ? ' cur' : '') + '" data-a="goto" data-i="' + i + '"><span class="row between" style="width:100%"><span class="disp" style="font-size:22px">' + ('0'+(i+1)).slice(-2) + ' ' + esc(e.name) + '</span><span class="lbl">⏱ ' + restLbl(e.rest) + '</span></span><span class="row" style="gap:5px;flex-wrap:wrap">' + e.sets.map(function(s, j){ return '<span class="sq' + (s.warm ? ' w' : '') + (s.done ? ' ok' : '') + (j === sj && isCur ? ' next' : '') + '"></span>'; }).join('') + '<span class="lbl" style="margin-left:6px">' + e.sets.filter(function(s){ return !s.warm; }).map(function(s){ return s.lo + '–' + s.hi; }).join(' · ') + '</span></span></button>';
-    if(i < a.exercises.length - 1) h += '<div class="link">↓ ' + restLbl(e.rest) + '</div>';
+    if(i < a.exercises.length - 1) h += '<div class="link">' + (e.ss ? '⇄ SUPERSET' : '↓ ' + restLbl(e.rest)) + '</div>';
   });
   h += '</div>';
   if(ui.adding){
@@ -1783,17 +1920,19 @@ function vDone(){
   h += '<div class="stat"><div><span class="lbl">DURÉE</span><span class="disp tnum">' + mmss(r.dur) + '</span></div><div><span class="lbl">SÉRIES</span><span class="disp tnum">' + n + '</span></div><div><span class="lbl">VOLUME</span><span class="disp tnum">' + (vol >= 1000 ? kg(Math.round(vol/100)/10) + ' T' : kg(vol)) + '</span></div></div>';
   h += m3BkBox();
   if(ui.pending){
-    var pd = ui.pending, form = pd.fresh || ui.saveAs;
-    h += '<div class="box" style="display:flex;flex-direction:column;gap:8px;border-width:4px">';
-    if(pd.fresh) h += '<span class="lbl">SÉANCE IMPROVISÉE</span><span class="disp" style="font-size:28px">La garder pour la refaire ?</span>';
-    else h += '<span class="lbl">SÉANCE MODIFIÉE · ' + esc(pd.wname).toUpperCase() + '</span><span class="disp" style="font-size:28px">Garder ces changements pour les prochaines fois ?</span><div style="display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700">' + pd.changes.map(function(c){ return '<span>▸ ' + esc(c) + '</span>'; }).join('') + '</div>';
+    var pd = ui.pending, form = pd.fresh || ui.saveAs, wn = esc(trText(pd.wname));
+    h += '<div class="box m3-end" style="display:flex;flex-direction:column;gap:10px">';
+    if(pd.fresh) h += '<span class="lbl">' + L('SÉANCE IMPROVISÉE', 'IMPROVISED SESSION') + '</span><span class="disp" style="font-size:28px">' + L('La garder pour la refaire ?', 'Keep it to do it again?') + '</span><span class="m3s-note" style="margin:0">' + L('Elle est déjà dans ton journal. Tu peux aussi en faire une séance réutilisable.', 'It is already in your log. You can also turn it into a reusable session.') + '</span>';
+    else h += '<span class="lbl">' + L('SÉANCE MODIFIÉE · ', 'SESSION CHANGED · ') + wn.toUpperCase() + '</span><span class="disp" style="font-size:28px">' + L('Que faire de ces changements ?', 'What to do with these changes?') + '</span><div class="m3-changes">' + pd.changes.map(function(c){ return '<span>▸ ' + esc(trText(c)) + '</span>'; }).join('') + '</div>';
     if(form){
-      var dest = ui.saveDest || 'libres';
-      h += '<div class="fl2"><label class="lbl" for="sv-name">NOM DE LA NOUVELLE SÉANCE</label><input class="field" id="sv-name" value="' + esc(pd.saveName) + '" autocomplete="off"></div>';
-      h += '<div class="fl2"><label class="lbl" for="sv-dest">RANGER DANS</label><select class="field" id="sv-dest">' + [freeProg()].concat(realProgs().filter(function(p){ return !p.demo; })).map(function(p){ return '<option value="' + p.id + '"' + (p.id === dest ? ' selected' : '') + '>' + esc(p.free ? 'Séances libres (hors programme)' : 'Programme ' + p.name) + '</option>'; }).join('') + '</select></div>';
-      h += '<div class="grid2"><button data-a="' + (pd.fresh ? 'keeporig' : 'saveascancel') + '">' + (pd.fresh ? 'NE PAS GARDER' : '← RETOUR') + '</button><button class="solid" data-a="savenew">ENREGISTRER</button></div>';
+      var dest = ui.saveDest || (!pd.fresh && wkProg(pd.pid) && !wkProg(pd.pid).demo ? wkProg(pd.pid).id : 'libres');
+      h += '<div class="fl2"><label class="lbl" for="sv-name">' + L('NOM DE LA NOUVELLE SÉANCE', 'NAME OF THE NEW SESSION') + '</label><input class="field" id="sv-name" value="' + esc(pd.saveName) + '" autocomplete="off"></div>';
+      h += '<div class="fl2"><label class="lbl" for="sv-dest">' + L('RANGER DANS', 'PUT IT IN') + '</label><select class="field" id="sv-dest">' + [freeProg()].concat(realProgs().filter(function(p){ return !p.demo; })).map(function(p){ return '<option value="' + p.id + '"' + (p.id === dest ? ' selected' : '') + '>' + esc(p.free ? L('Séances libres (hors programme)', 'Free sessions (outside programs)') : L('Programme ', 'Program ') + trText(p.name)) + '</option>'; }).join('') + '</select></div>';
+      h += '<div class="grid2"><button data-a="' + (pd.fresh ? 'keeporig' : 'saveascancel') + '">' + (pd.fresh ? L('Juste l\'enregistrer', 'Just save it') : L('← Retour', '← Back')) + '</button><button class="solid" data-a="savenew">' + L('Créer la séance', 'Create the session') + '</button></div>';
     } else {
-      h += '<button class="solid" data-a="applytpl" style="min-height:52px">METTRE À JOUR « ' + esc(pd.wname).toUpperCase() + ' »</button><div class="grid2"><button data-a="saveas">EN FAIRE UNE NOUVELLE SÉANCE</button><button data-a="keeporig">NE RIEN GARDER</button></div>';
+      h += '<button class="m3-opt" data-a="applytpl"><b>' + L('Écraser « ', 'Overwrite “') + wn + L(' »', '”') + '</b><small>' + L('Le modèle est remplacé par ce que tu viens de faire. Les prochaines séances partiront de là.', 'The template is replaced by what you just did. Next sessions start from there.') + '</small></button>';
+      h += '<button class="m3-opt" data-a="saveas"><b>' + L('Créer un nouveau workout', 'Create a new workout') + '</b><small>' + L('« ', '“') + wn + L(' » reste tel quel. Une nouvelle séance est créée avec ces modifications.', '” stays as it is. A new session is created with these changes.') + '</small></button>';
+      h += '<button class="m3-opt" data-a="keeporig"><b>' + L('Juste enregistrer la séance', 'Just save the session') + '</b><small>' + L('Elle est dans ton journal. Le modèle ne change pas.', 'It is in your log. The template does not change.') + '</small></button>';
     }
     h += '</div>';
   }
@@ -1852,7 +1991,7 @@ function funFact(vol){
 function funLine(vol){ var f = funFact(vol); return f ? '≈ ' + f.count + ' ' + f.name.toUpperCase() : ''; }
 function bestSet(r){
   var best = null;
-  r.exercises.forEach(function(e){ e.sets.forEach(function(s){ if(s.warm) return; var v = e1rm(s.w, s.r); if(!best || v > best.v) best = {v:v, n:e.name, w:s.w, r:s.r}; }); });
+  r.exercises.forEach(function(e){ e.sets.forEach(function(s){ if(s.warm) return; var v = score(e.name, s.w, s.r); if(!best || v > best.v) best = {v:v, n:e.name, w:s.w, r:s.r}; }); });
   return best;
 }
 function fitText(ctx, txt, maxW, size, font){
@@ -1927,7 +2066,7 @@ function drawCard(r, photo){
     } else if(bs){
       /* the block is short when a photo is on the card: lines are sized to the room left so they never overlap */
       x.font = '700 34px ' + MONO; x.fillText('MEILLEURE SÉRIE', P + 36, y + 70);
-      var tw5 = W - 2 * P - 72, top5 = y + 92, room = y + blockH - 36 - top5, lift = kg(bs.w) + ' × ' + bs.r;
+      var tw5 = W - 2 * P - 72, top5 = y + 92, room = y + blockH - 36 - top5, lift = fmtS(bs.n, bs.w, bs.r).replace('×', ' × ');
       if(room >= 230){
         var f5 = fitText(x, bs.n.toUpperCase(), tw5, Math.min(84, room * .32), DISP); x.fillText(bs.n.toUpperCase(), P + 36, top5 + f5 * .85);
         var f6 = fitText(x, lift, tw5, Math.min(150, room - f5 - 24), DISP); x.fillText(lift, P + 36, top5 + f5 + 24 + f6 * .85);
@@ -2359,7 +2498,7 @@ function applyStrong(st){
   S.history.forEach(function(h){
     var mine = ids[h.id];
     h.exercises.forEach(function(e){
-      var b = 0; e.sets.forEach(function(s){ if(!s.warm) b = Math.max(b, e1rm(s.w, s.r)); });
+      var b = 0; e.sets.forEach(function(s){ if(!s.warm) b = Math.max(b, score(e.name, s.w, s.r)); });
       if(mine && b > 0 && best[e.name] > 0 && b > best[e.name]) h.prs.push(e.name);
       best[e.name] = Math.max(best[e.name] || 0, b);
     });
@@ -2417,7 +2556,7 @@ function vHist(){
   for(var i = S.history.length - 1; i >= 0; i--){
     var s = S.history[i], open = ui.openHist === s.id;
     h += '<div class="box" style="display:flex;flex-direction:column;gap:6px"><button data-a="hist" data-id="' + s.id + '" style="border:0;padding:0;min-height:36px;display:flex;justify-content:space-between;align-items:center"><span class="disp" style="font-size:24px">' + fmtDate(s.date) + ' · ' + esc(s.name) + '</span><span class="lbl">' + mmss(s.dur) + ' ▸</span></button>';
-    if(open) s.exercises.forEach(function(e){ h += '<div class="row between" style="border-top:2px solid var(--ink);padding-top:6px;align-items:flex-start;gap:10px"><span style="font-weight:700">' + esc(e.name) + '</span><span class="tnum" style="text-align:right">' + e.sets.map(function(x){ return (x.warm ? 'W ' : '') + kg(x.w) + '×' + x.r; }).join(' · ') + (e.note ? '<br><i>' + esc(e.note) + '</i>' : '') + '</span></div>'; });
+    if(open) s.exercises.forEach(function(e){ h += '<div class="row between" style="border-top:2px solid var(--ink);padding-top:6px;align-items:flex-start;gap:10px"><span style="font-weight:700">' + esc(e.name) + '</span><span class="tnum" style="text-align:right">' + e.sets.map(function(x){ return (x.warm ? 'W ' : '') + fmtS(e.name, x.w, x.r); }).join(' · ') + (e.note ? '<br><i>' + esc(e.note) + '</i>' : '') + '</span></div>'; });
     h += '</div>';
   }
   return h + nav('hist');
@@ -2428,36 +2567,38 @@ function vHist(){
    anything added then removed the same day is left out. Hidden extras (double tap on a coloris,
    the shape button) stay out on purpose: they are meant to be found. */
 var CHANGELOG = [
-  {v:'1.14', d:'15.10.26', t:'Une série à la fois et 11 programmes',
-   summary:['En séance, une série à la fois : charge et reps en très gros, un énorme bouton Valider, le repos en plein écran.','À zéro, la série suivante s\'ouvre seule, et après la dernière série on passe directement à l\'exercice suivant.','Une bibliothèque de 11 programmes, dans Programme. Zero To Hero s\'appelle maintenant Ascension.','Les nouveaux utilisateurs choisissent leur programme en une minute au premier lancement.'],
+  {v:'1.15', d:'15.10.26', t:'Séance guidée, journal modifiable et nouveau look',
+   summary:['En séance, une série à la fois : charge et reps en très gros, un pavé numérique maison, un énorme bouton Valider et le repos en plein écran.','Une erreur ? Corrige la série que tu viens de valider pendant le repos, ou n\'importe quelle série en touchant sa barre.','Le Journal devient modifiable : corrige, supprime ou ajoute une séance oubliée. Les records se recalculent.','Pompes, tractions, dips et gainage sont gérés au poids du corps ou en durée, avec leurs propres records.','Les vrais supersets, l\'échauffement automatique, le calcul des disques et le remplacement d\'un exercice quand la machine est prise.','En fin de séance modifiée, trois choix clairs : écraser le modèle, créer un nouveau workout ou juste enregistrer.','Un nouveau style au choix, HUD, 4 coloris, des widgets sur l\'accueil, une bibliothèque de 11 programmes et un premier lancement guidé.'],
    sections:[
-    {t:'Une série à la fois', items:['L\'écran de séance montre seulement la série en cours : la charge et les reps proposées en grand, des boutons + et − larges, et Valider en bas.','Touche le chiffre pour le taper au clavier, ou « La dernière fois » pour reprendre ta perf.','« Toutes les séries » en bas ouvre l\'ancienne vue en liste ; « Revenir à une série à la fois » ramène la nouvelle. L\'appli retient ton choix.']},
-    {t:'Le repos plein écran', items:['Après Valider, le repos prend tout l\'écran : un grand chrono, ±15 s, et la série qui suit avec sa charge.','À zéro, un petit son, puis la série suivante s\'affiche toute seule. « Passer » arrête le repos plus tôt.']},
-    {t:'La bibliothèque', items:['Programme › Bibliothèque de programmes : 11 programmes, de 2 à 6 jours, du débutant au confirmé, en salle, avec une barre ou des haltères à la maison.','Touche un programme pour l\'ajouter et l\'activer. Tes autres programmes et ton historique restent.','Zero To Hero devient Ascension. Ses séances et ton historique ne changent pas.']},
-    {t:'Le premier lancement', items:['Une nouvelle installation pose quatre questions (objectif, niveau, jours, matériel) et propose le programme qui colle, avec deux alternatives.','Ce parcours ne s\'affiche qu\'une fois, au tout premier lancement. Il ne réapparaît jamais ensuite.']}
-   ]},
-  {v:'1.13', d:'15.10.26', t:'Charge proposée, fiche et programme',
-   summary:['En séance, la charge et les reps proposées s\'affichent en grisé : valide directement, ou touche la perf de la dernière séance pour la reprendre.','Un seul réglage de repos entre les séries, au lieu d\'une puce sous chaque série.','La fiche exercice est refaite, avec une courbe de progression : charge max et 1RM estimé.','La page Programme est allégée : la prochaine séance en grand, les autres en lignes.','La semaine du cycle se compte depuis le début de ton programme.','L\'appli te propose une sauvegarde en fin de séance, toutes les 10 séances par défaut.'],
+    {t:'Une série à la fois', items:['L\'écran de séance montre seulement la série en cours : la charge et les reps proposées en grand, des boutons + et − larges, et Valider en bas.','Touche le chiffre pour ouvrir un pavé numérique géant : plus de clavier du téléphone qui cache l\'écran. Laisse le doigt appuyé sur + ou − pour faire défiler la valeur.','La charge et les reps calculées par la double progression sont en grisé : Valider sans rien toucher les enregistre. « La dernière fois » recopie ta perf précédente.','Une note par exercice s\'écrit directement sous les chiffres, d\'un tap.','L\'heure de fin prévue s\'affiche en haut, calculée avec tes temps de repos.','« Toutes les séries » ouvre la vue en liste ; l\'appli retient ton choix.']},
+    {t:'Le repos', items:['Après Valider, le repos prend tout l\'écran : un grand chrono, ±15 s, et la série qui suit avec sa charge. À zéro, un petit son, puis la série suivante s\'ouvre seule.','En vue liste, le repos s\'affiche en grand sous la série, et un bandeau le rappelle en haut quand il sort de l\'écran.','Dans Profil › Notifications, « Fin de repos » te prévient quand tu es sur une autre appli ou écran verrouillé.','Un seul réglage « Repos entre séries » par exercice, et le repos avant l\'exercice suivant sous la dernière série.']},
+    {t:'Corriger une erreur', items:['Pendant le repos, touche la série que tu viens de valider pour corriger la charge ou les reps, sans arrêter le chrono.','Touche la barre d\'une série déjà faite (ou la série en vue liste) pour la rouvrir et la corriger. L\'enregistrer ne relance pas de repos.']},
+    {t:'Un journal modifiable', items:['Dans une séance du Journal, « Modifier » permet de changer le nom, la date, la durée, chaque série, d\'ajouter ou retirer des séries et des exercices.','« Supprimer » retire une séance lancée par erreur.','« + Ajouter une séance oubliée » sous le calendrier : choisis la séance et le jour, elle est pré-remplie avec tes dernières charges.','Après chaque changement, records, fantôme et progression se recalculent.','Les records du Journal sont classés du plus récent au plus ancien, avec « Tout voir et chercher ».']},
+    {t:'Poids du corps et durée', items:['Pompes, tractions, dips et compagnie se notent en reps, avec un lest si tu veux. La progression ajoute des reps, jamais de poids d\'office.','Le gainage et les exercices tenus se notent en secondes. La progression ajoute 5 s.','Ces exercices ont enfin leurs records et leur courbe. Le type se change dans la fiche de l\'exercice.']},
+    {t:'Supersets', items:['Deux exercices liés s\'enchaînent série par série : A, B, A, B, avec le repos prévu entre chaque.','Les supersets annoncés dans tes programmes (leg curl et leg extension dans Ascension, par exemple) sont déjà liés.','Dans l\'éditeur de séance, « Mettre en superset avec le suivant » lie ou délie deux exercices.']},
+    {t:'Charge et échauffement', items:['Sous la charge des exercices à la barre, les disques à mettre de chaque côté. Le poids de la barre (20, 15 ou 10 kg) se règle dans la fiche.','« Ajouter un échauffement auto » crée la montée en charge avant ta première série. Il revient à chaque séance, et se coupe dans la fiche.']},
+    {t:'Remplacer un exercice', items:['Machine prise ? « ⇄ » à côté du nom de l\'exercice propose d\'abord des exercices du même groupe musculaire.','Ta note et les séries qui restent passent sur le nouvel exercice. Les séries déjà faites restent sur l\'ancien.']},
+    {t:'La fin de séance', items:['Si ta séance a changé, trois choix : écraser le modèle, créer un nouveau workout avec ces modifications (rangé où tu veux), ou juste enregistrer la séance.','La liste des changements s\'affiche avant de choisir : exercices ajoutés, retirés, remplacés, séries en plus ou en moins, ordre.','Une séance restée ouverte depuis plusieurs heures ? À l\'ouverture, l\'appli propose de la terminer à l\'heure de ta dernière série.']},
+    {t:'Programmes', items:['Programme › Bibliothèque de programmes : 11 programmes, de 2 à 6 jours, du débutant au confirmé, en salle ou à la maison. Zero To Hero devient Ascension.','La page Programme montre la prochaine séance en grand et les autres en lignes. La progression du cycle compte les semaines depuis l\'activation du programme.','Une nouvelle installation pose quatre questions (objectif, niveau, jours, matériel) et propose le programme qui colle. Ce parcours ne s\'affiche qu\'une fois.','La durée annoncée d\'une séance s\'appuie sur tes vraies séances, ou sur tes temps de repos.']},
+    {t:'Accueil, fiches et style', items:['Les carrés de l\'accueil sont des widgets : 13 infos au choix, en petit, large ou grand. Appui long pour les déplacer.','Touche un exercice de la prochaine séance pour ouvrir sa fiche : mouvement, notes, courbe de progression, records et dernières séances.','Profil › Style : Édito (clair) ou HUD (néon, sur fond noir ou blanc), avec 4 coloris.','Le Journal a son calendrier du mois et une barre de progression vers ton objectif.','Les fenêtres qui s\'ouvrent par le bas se ferment en les glissant vers le bas. La barre du bas flotte au-dessus du contenu.']},
+    {t:'Sauvegarde et corrections', items:['En fin de séance, l\'appli te propose d\'envoyer ta sauvegarde toutes les 10 séances (réglable dans Profil › Sauvegarde).','L\'éditeur de séance s\'ouvre de nouveau correctement.']}
+   ],
+   en:{t:'Guided sessions, an editable log and a new look',
+   summary:['During a session, one set at a time: huge weight and reps, a built-in keypad, a big Log button and a full-screen rest.','A mistake? Fix the set you just logged during the rest, or any set by tapping its bar.','Your log is now editable: fix, delete or add a missed session. Records are recalculated.','Push-ups, pull-ups, dips and planks work as bodyweight or timed exercises, with their own records.','Real supersets, automatic warm-ups, a plate calculator, and swapping an exercise when the machine is taken.','After a changed session, three clear choices: overwrite the template, create a new workout or just save.','A new HUD style, 4 colorways, Home widgets, a library of 11 programs and a guided first launch.'],
    sections:[
-    {t:'La charge proposée', items:['La charge et les reps calculées par la double progression sont en grisé dans « Aujourd\'hui » et dans les champs Charge et Répétitions.','« Valider la série » sans rien toucher enregistre la proposition. Les boutons + et − partent de la proposition.','Touche la perf « Dernière » d\'une série, ou une des pastilles de la dernière séance en haut, pour la recopier dans la série du jour.']},
-    {t:'Le repos', items:['Les puces de repos sous chaque série disparaissent. Un seul réglage « Repos entre séries » au-dessus des séries, et le repos avant l\'exercice suivant sous la dernière.']},
-    {t:'La fiche exercice', items:['Même style que le reste de l\'appli, en Édito comme en HUD.','Une courbe sur tes 16 dernières séances : charge max en trait plein, 1RM estimé en pointillés, avec ta progression depuis la première.']},
-    {t:'Le programme', items:['La prochaine séance est en grand avec un seul bouton Commencer. Les autres séances tiennent sur une ligne : touche le nom pour la modifier, ▶ pour la lancer.','La progression du cycle compte les semaines depuis l\'activation du programme (ou ta première séance avec lui), sur 6 semaines.']},
-    {t:'La sauvegarde', items:['En fin de séance, l\'appli te propose d\'envoyer ta sauvegarde (Fichiers, Drive, mail) quand le nombre de séances choisi est atteint.','Règle la fréquence dans Profil › Sauvegarde : 5, 10, 20 séances ou jamais.','Les widgets de l\'accueil ne passent plus sous la barre du bas.']}
-   ]},
-  {v:'1.12', d:'15.10.26', t:'Widgets, fiches et fenêtres',
-   summary:['Sur Aujourd\'hui, touche un exercice de la prochaine séance pour ouvrir sa fiche : historique, records et façon de faire.','Les carrés de l\'accueil deviennent des widgets : choisis ce qu\'ils affichent, en petit, en large ou en grand.','Les fenêtres qui s\'ouvrent par le bas se ferment en les glissant vers le bas.','Un Profil plus simple, et 4 coloris au choix : Forêt, Océan, Terre et Prune.','La barre du bas flotte au-dessus du contenu.','Le Journal a son calendrier du mois, avec une barre de progression vers ton objectif.','Nouveau style au choix dans le Profil : HUD, en néon sur fond noir ou sur fond blanc.'],
-   sections:[
-    {t:'Les fiches depuis l\'accueil', items:['Tous les exercices de la prochaine séance sont listés, et chacun ouvre sa fiche d\'un tap.','La fiche montre le mouvement, tes notes, tes records et tes dernières séances sur cet exercice.']},
-    {t:'Fin de repos, même ailleurs', items:['Dans Profil › Notifications, active « Fin de repos » : quand ton repos se termine et que tu es sur une autre appli ou écran verrouillé, une notification te prévient.','Dans l\'appli, la fin du repos sonne maintenant comme un petit ding, avec une légère vibration quand le téléphone le permet.','« Tester » envoie une notification dans 10 secondes pour vérifier que tout marche.']},
-    {t:'Le repos en grand', items:['Quand tu valides une série, le repos s\'affiche en grand juste sous elle : chiffres géants, lisibles téléphone posé sur le banc.','+15 / −15 ajustent le repos en cours, « Passer » le termine. À zéro, le bandeau passe en couleur et affiche GO.','Si tu fais défiler et que le repos sort de l\'écran, un petit bandeau apparaît tout en haut avec le temps restant. Touche-le pour revenir au repos.']},
-    {t:'Le calendrier du journal', items:['En haut du Journal, le mois en cours : séances faites en couleur, séances prévues en pointillés, jours manqués barrés.','Touche un jour coloré pour revoir la séance. Les flèches passent d\'un mois à l\'autre.','La barre de progression compte tes séances face à l\'objectif du mois (tes jours d\'entraînement prévus), avec un repère qui montre où tu devrais en être aujourd\'hui.']},
-    {t:'Une barre qui flotte', items:['La barre du bas se détache des bords de l\'écran : une pilule légèrement transparente, posée au-dessus du contenu.','Quand tu fais défiler vers le bas, elle s\'estompe peu à peu ; elle revient dès que tu remontes, et elle est toujours là en haut et en bas de la page.']},
-    {t:'Le mode HUD', items:['Dans Profil › Style, choisis entre Édito (clair) et HUD (fond noir, néon). Tu bascules quand tu veux : historique, programmes et notes restent les mêmes.','En HUD, les quatre coloris deviennent Acide, Cyan, Braise et Néon. Le bouton principal, le chrono de repos et la série en cours s\'allument dans ta couleur.','Le HUD existe aussi en négatif : choisis Fond blanc sous le style. Encre noire, aplats néon et ombres franches.']},
-    {t:'Profil et coloris', items:['Le Profil est réorganisé : coloris, langue, palier de charge, nouveautés et sauvegarde, sans encadrés.','Quatre coloris : Forêt, Océan, Terre et Prune. Tout l\'appli suit, widgets compris.']},
-    {t:'Des fenêtres qui se glissent', items:['Une séance du journal, une fiche ou un widget s\'ouvre dans une fenêtre par le bas : attrape-la par le haut et descends-la du doigt pour la fermer.','Plus bas dans la fenêtre, le geste marche aussi une fois remonté tout en haut.']},
-    {t:'Tes widgets', items:['Touche un widget pour changer l\'information qu\'il affiche ou sa taille.','Trois tailles : petit (1 carré), large (2 carrés côte à côte) et grand (4 carrés). En large et en grand, le widget en montre plus : graphique sur 8 semaines, détail, liste.','Treize infos au choix : volume de la dernière séance ou de la semaine, nombre de séances, semaines d\'affilée, ta semaine jour par jour, ton mois, séries, dernière séance, records, progressions, temps d\'entraînement, total soulevé et répartition.','Laisse ton doigt appuyé sur un widget : il s\'enfonce puis se soulève. Glisse-le où tu veux, les autres se décalent pour lui faire de la place.','Chaque taille apporte plus d\'informations : en petit le chiffre, en large le détail ou le graphique, en grand le graphique complet et des infos en plus. Le détail de chaque taille est expliqué quand tu modifies un widget.','« + Ajouter » pour en mettre d\'autres, et « Retirer ce widget » pour l\'enlever.','Ta disposition reste sur ton téléphone et fait partie de ta sauvegarde.']}
-   ]},
+    {t:'One set at a time', items:['The session screen shows only the current set: suggested weight and reps in big type, wide + and − buttons, and Log at the bottom.','Tap a number to open a giant keypad: no more phone keyboard covering the screen. Hold + or − to scroll the value.','Double progression suggestions are greyed out: Log without touching anything saves them. “Last time” copies your previous performance.','One note per exercise, typed right under the numbers.','The expected end time shows at the top, based on your rest times.','“All sets” opens the list view; the app remembers your choice.']},
+    {t:'Rest', items:['After Log, the rest fills the screen: a big timer, ±15 s, and the next set with its weight. At zero, a short sound, then the next set opens by itself.','In list view, the rest shows large under the set, with a banner at the top when it scrolls away.','In Settings › Notifications, “End of rest” alerts you when you are in another app or the screen is locked.','One “Rest between sets” setting per exercise, and the rest before the next exercise under the last set.']},
+    {t:'Fix a mistake', items:['During the rest, tap the set you just logged to fix its weight or reps, without stopping the timer.','Tap the bar of a finished set (or the set in list view) to reopen and fix it. Saving it does not start a new rest.']},
+    {t:'An editable log', items:['In a session of your log, “Edit” changes the name, date, length and every set, and adds or removes sets and exercises.','“Delete” removes a session started by mistake.','“+ Add a missed session” under the calendar: pick the session and the day, it is prefilled with your last weights.','After every change, records, ghost and progression are recalculated.','Log records are sorted from newest to oldest, with “See all and search”.']},
+    {t:'Bodyweight and time', items:['Push-ups, pull-ups, dips and co. are logged in reps, with extra weight if you like. Progression adds reps, never weight on its own.','Planks and holds are logged in seconds. Progression adds 5 s.','These exercises finally have their records and chart. Change the type in the exercise info sheet.']},
+    {t:'Supersets', items:['Two linked exercises alternate set by set: A, B, A, B, with the planned rest in between.','Supersets announced in your programs (leg curl and leg extension in Ascension, for example) are already linked.','In the session editor, “Superset with the next one” links or unlinks two exercises.']},
+    {t:'Weight and warm-up', items:['Under the weight of barbell exercises, the plates to load on each side. The bar weight (20, 15 or 10 kg) is set in the info sheet.','“Add an automatic warm-up” builds the ramp-up before your first set. It comes back every session, and can be turned off in the info sheet.']},
+    {t:'Swap an exercise', items:['Machine taken? “⇄” next to the exercise name suggests the same muscle group first.','Your note and the remaining sets move to the new exercise. Sets already done stay on the old one.']},
+    {t:'End of session', items:['If your session changed, three choices: overwrite the template, create a new workout with these changes (wherever you like), or just save the session.','The list of changes shows before you choose: exercises added, removed or swapped, more or fewer sets, order.','A session left open for hours? When you open the app, it offers to finish it at the time of your last set.']},
+    {t:'Programs', items:['Program › Program library: 11 programs, 2 to 6 days, beginner to advanced, at the gym or at home. Zero To Hero becomes Ascension.','The Program page shows the next session large and the others as rows. Cycle progress counts weeks since the program was activated.','A new install asks four questions (goal, level, days, equipment) and suggests the right program. This only shows once.','A session\'s announced length is based on your real sessions, or on your rest times.']},
+    {t:'Home, info sheets and style', items:['Home tiles are widgets: 13 infos to choose from, small, wide or large. Long press to move them.','Tap an exercise of the next session to open its info: movement, notes, progress chart, records and recent sessions.','Settings › Style: Editorial (light) or HUD (neon, on black or white), with 4 colorways.','The log has its month calendar and a progress bar toward your goal.','Bottom sheets close with a swipe down. The bottom bar floats above the content.']},
+    {t:'Backup and fixes', items:['At the end of a session, the app offers to send your backup every 10 sessions (change it in Settings › Backup).','The session editor opens properly again.']}
+   ]}},
   {v:'1.11', d:'14.10.26', t:'Lisible, import et anglais',
    summary:['Un nouveau style dans les Réglages : Lisible. Fond sombre, une seule couleur pour ce qui compte, et des chiffres qui se lisent d\'un coup d\'œil.','Tu viens d\'une autre appli ? Importe tout ton historique depuis son export CSV.','En séance, touche un temps de repos pour le régler sur place.','L\'appli parle aussi anglais : choisis ta langue dans les Réglages.'],
    sections:[
@@ -2482,7 +2623,7 @@ var CHANGELOG = [
     {t:'Et aussi', items:['L\'appli a un nom : Muscle 3000.','Une pastille te signale chaque nouveauté dans les Réglages.']}
    ]}
 ];
-CHANGELOG[0].en = {t:'Readable, import and English',
+CHANGELOG.filter(function(c){ return c.v === '1.11'; })[0].en = {t:'Readable, import and English',
   summary:['A new style in Settings: Readable. Dark background, a single color for what matters, and numbers you read at a glance.','Coming from another app? Import your whole history from its CSV export.','During a session, tap a rest time to adjust it on the spot.','The app speaks English too: pick your language in Settings.'],
   sections:[
     {t:'Readable mode', items:['In Settings › Style, choose between Brutal and Readable. Switch whenever you like: your history, programs and notes stay the same.','In Readable, your colorway only paints the markers: the main button, the timer, the current set and your progress.','No more thick borders: blocks stand apart through spacing and light fills.','Numbers (weights, reps, timer, stats) use an easier-to-read font, titles keep their character.']},
@@ -2490,7 +2631,7 @@ CHANGELOG[0].en = {t:'Readable, import and English',
     {t:'Import your data', items:['In Settings › Backup, “Import data (CSV)” reads the CSV file exported by your old training app.','Your imported sessions are added to your history: nothing is replaced, and sessions already there are skipped.','Each exercise in the file is linked to its Muscle 3000 match (you can correct it): your past feeds the ghost, progression and records right away.','Warm-ups, drop sets, notes and rest times come along. Weights in pounds are converted to kilos.','An import can be undone in one tap.']},
     {t:'French or English', items:['In Settings › Language, switch the whole app to English, and back to French whenever you like.','Everything follows: screens, exercise names, the morning message, the share card, the Excel spreadsheet, and even the drill sergeant.','Exercise search understands English names too.','Your data doesn\'t move: history, programs and notes stay the same in both languages.']}
   ]};
-CHANGELOG[1].en = {t:'The launch',
+CHANGELOG.filter(function(c){ return c.v === '1.9'; })[0].en = {t:'The launch',
   summary:['Muscle 3000 is born: your programs, guided sessions and double progression that works out your weights.','Stats that motivate and a card to share at the end of a session.','A message every morning, tailored to your history.','Browse your history session by session.','Every exercise shows its movement in two pictures.'],
   sections:[
     {t:'The basics', items:['The Ascension program, ready to go.','Double progression works out your weight for every set, with your ghost from last time.','A big rest timer, swipe between exercises, warm-ups and a note per exercise.','4 colorways: Acid, Blaze, Ice and Night.']},
@@ -2566,8 +2707,8 @@ function welcomeData(){
     if(slip) return;
     var p = pastEntries(e.name); if(p.length < 2) return;
     var b0 = 0, b1 = 0;
-    p[0].sets.forEach(function(s){ b0 = Math.max(b0, e1rm(s.w, s.r)); });
-    p[1].sets.forEach(function(s){ b1 = Math.max(b1, e1rm(s.w, s.r)); });
+    p[0].sets.forEach(function(s){ b0 = Math.max(b0, score(e.name, s.w, s.r)); });
+    p[1].sets.forEach(function(s){ b1 = Math.max(b1, score(e.name, s.w, s.r)); });
     if(b1 && b0 < b1 * 0.95) slip = e.name;
   });
   /* upper / lower balance over 30 days */
@@ -2856,10 +2997,12 @@ function vDay(k){
   list.forEach(function(s){
     var vol = sessVol(s), n = 0; s.exercises.forEach(function(e){ e.sets.forEach(function(x){ if(!x.warm) n++; }); });
     if(list.length > 1) h += '<span class="lbl">' + esc(s.name).toUpperCase() + '</span>';
+    if(ui.hEdit === s.id){ h += histEditor(s); return; }
+    h += histTools(s);
     h += '<button class="chip" data-a="story" data-id="' + s.id + '" style="align-self:flex-start;min-height:40px;border-width:3px;gap:6px">PARTAGER EN STORY' + (photoFor(s.id) ? ' · AVEC PHOTO' : '') + ' ▸</button>';
     h += '<div class="stat"><div><span class="lbl">DURÉE</span><span class="disp tnum">' + mmss(s.dur) + '</span></div><div><span class="lbl">SÉRIES</span><span class="disp tnum">' + n + '</span></div><div class="inv"><span class="lbl">VOLUME</span><span class="disp tnum">' + fmtT(vol).toUpperCase() + '</span></div></div>';
     h += '<div style="display:flex;flex-direction:column;gap:6px">' + s.exercises.map(function(e){
-      var sets = e.sets.map(function(x){ return '<span class="chip' + (x.warm ? '' : ' on') + ' tnum" style="min-height:30px">' + (x.warm ? 'W ' : '') + kg(x.w) + '×' + x.r + '</span>'; }).join('');
+      var sets = e.sets.map(function(x){ return '<span class="chip' + (x.warm ? '' : ' on') + ' tnum" style="min-height:30px">' + (x.warm ? 'W ' : '') + fmtS(e.name, x.w, x.r) + '</span>'; }).join('');
       return '<button class="box exrow" data-a="fiche" data-n="' + esc(e.name) + '" style="gap:8px"><span class="row between" style="width:100%"><span class="disp" style="font-size:20px">' + esc(e.name) + '</span><span class="lbl" style="flex:none;white-space:nowrap">FICHE ▸</span></span><span class="row" style="flex-wrap:wrap;gap:5px">' + sets + '</span>' + (e.note ? '<span style="font-size:12px;font-style:italic;text-align:left">' + esc(e.note) + '</span>' : '') + '</button>';
     }).join('') + '</div>';
   });
@@ -3064,9 +3207,10 @@ function moveFrames(name){
 }
 
 /* courbe de progression : charge max et 1RM estimé, séance après séance */
-function m3fChart(past){
+function m3fChart(past, name){
+  var nonW = !!name && exType(name) !== 'w', unit = name && exType(name) === 'time' ? ' s' : ' reps';
   var pts = past.slice(0, 16).reverse().map(function(p){
-    var w = 0, e = 0; p.sets.forEach(function(x){ if(x.w != null){ w = Math.max(w, x.w); e = Math.max(e, e1rm(x.w, x.r)); } });
+    var w = 0, e = 0; p.sets.forEach(function(x){ if(nonW){ w = Math.max(w, x.r || 0); e = w; } else if(x.w != null){ w = Math.max(w, x.w); e = Math.max(e, e1rm(x.w, x.r)); } });
     return {d:p.date, w:w, e:e};
   }).filter(function(x){ return x.w > 0; });
   if(pts.length < 2) return '<div class="m3f-chart empty"><span>' + L('La courbe apparaît après deux séances sur cet exercice.', 'The chart shows up after two sessions on this exercise.') + '</span></div>';
@@ -3079,9 +3223,10 @@ function m3fChart(past){
   var f = pts[0], l = pts[pts.length - 1], dw = l.w - f.w, de = Math.round(l.e - f.e);
   var g = '<svg viewBox="0 0 ' + W + ' ' + H + '" class="m3f-svg" role="img" aria-label="' + L('Progression sur ', 'Progress over ') + pts.length + L(' séances', ' sessions') + '">';
   [0, .5, 1].forEach(function(t){ var y = top + t * (H - top - bot); g += '<line x1="' + P + '" x2="' + (W - P) + '" y1="' + y + '" y2="' + y + '" class="m3f-grid"/>'; });
-  g += '<path d="' + area + '" class="m3f-area"/><path d="' + line('e') + '" class="m3f-e"/><path d="' + line('w') + '" class="m3f-w"/>';
+  g += '<path d="' + area + '" class="m3f-area"/>' + (nonW ? '' : '<path d="' + line('e') + '" class="m3f-e"/>') + '<path d="' + line('w') + '" class="m3f-w"/>';
   pts.forEach(function(x, i){ g += '<circle cx="' + X(i).toFixed(1) + '" cy="' + Y(x.w).toFixed(1) + '" r="' + (i === pts.length - 1 ? 4.5 : 2.6) + '" class="m3f-dot' + (i === pts.length - 1 ? ' last' : '') + '"/>'; });
   g += '<text x="' + P + '" y="' + (H - 6) + '" class="m3f-t">' + fmtDate(f.d) + '</text><text x="' + (W - P) + '" y="' + (H - 6) + '" text-anchor="end" class="m3f-t">' + fmtDate(l.d) + '</text></svg>';
+  if(nonW) return '<div class="m3f-chart"><div class="m3f-kpi"><div><small>' + (unit === ' s' ? L('DURÉE MAX', 'TOP TIME') : L('REPS MAX', 'TOP REPS')) + '</small><b>' + l.w + unit + '</b><em class="' + (dw >= 0 ? 'up' : 'down') + '">' + (dw >= 0 ? '+' : '') + dw + unit + '</em></div></div>' + g + '<div class="m3f-leg"><span><i class="w"></i>' + (unit === ' s' ? L('Durée max', 'Top time') : L('Reps max', 'Top reps')) + '</span><span>' + pts.length + L(' séances', ' sessions') + '</span></div></div>';
   return '<div class="m3f-chart"><div class="m3f-kpi"><div><small>' + L('CHARGE MAX', 'TOP WEIGHT') + '</small><b>' + kg(l.w) + ' kg</b><em class="' + (dw >= 0 ? 'up' : 'down') + '">' + (dw >= 0 ? '+' : '') + kg(dw) + ' kg</em></div><div><small>' + L('1RM ESTIMÉ', 'EST. 1RM') + '</small><b>' + Math.round(l.e) + ' kg</b><em class="' + (de >= 0 ? 'up' : 'down') + '">' + (de >= 0 ? '+' : '') + de + ' kg</em></div></div>' + g +
     '<div class="m3f-leg"><span><i class="w"></i>' + L('Charge max', 'Top weight') + '</span><span><i class="e"></i>' + L('1RM estimé', 'Est. 1RM') + '</span><span>' + pts.length + L(' séances', ' sessions') + '</span></div></div>';
 }
@@ -3095,9 +3240,11 @@ function vFiche(name){
   h += '<header class="m3f-head"><div><span class="m3-eyebrow">' + L('FICHE', 'INFO') + (lf ? ' · ' + esc(trText(lf.g)).toUpperCase() : '') + (lf && lf.own ? ' · PERSO' : '') + '</span><h2>' + esc(exDisp(name)) + '</h2></div><button class="m3f-x" data-a="closesheet" aria-label="' + L('Fermer', 'Close') + '">✕</button></header>';
   try{ h += '<div class="m3f-move">' + moveFrames(name) + '</div>'; }catch(e){}
   if(cueEx && cueEx.cue) h += '<p class="m3f-cue">' + esc(trText(cueEx.cue)) + '</p>';
-  h += '<section class="m3f-sec"><div class="m3s-lbl">' + L('PROGRESSION', 'PROGRESS') + '</div>' + m3fChart(past) + '</section>';
-  h += '<section class="m3f-stats"><div><small>' + L('1RM EST.', 'EST. 1RM') + '</small><b>' + (b.e ? Math.round(b.e) : '—') + '</b></div><div><small>' + L('MEILLEURE SÉRIE', 'BEST SET') + '</small><b>' + (b.w != null ? kg(b.w) + '×' + b.r : '—') + '</b></div><div><small>' + L('VOLUME MAX', 'TOP VOLUME') + '</small><b>' + (vmax ? (vmax >= 1000 ? kg(Math.round(vmax / 100) / 10) + ' t' : kg(vmax)) : '—') + '</b></div></section>';
-  h += '<section class="m3f-sec"><div class="m3s-lbl">' + L('DERNIÈRES SÉANCES', 'RECENT SESSIONS') + '</div>' + (past.length ? '<div class="m3f-list">' + past.slice(0, 6).map(function(p){ return '<div><span>' + fmtDate(p.date) + '</span><b>' + p.sets.map(function(x){ return kg(x.w) + '×' + x.r; }).join(' · ') + '</b></div>'; }).join('') + '</div>' : '<p class="m3s-note">' + L('Pas encore d\'historique sur cet exercice.', 'No history on this exercise yet.') + '</p>') + '</section>';
+  h += '<section class="m3f-sec"><div class="m3s-lbl">' + L('PROGRESSION', 'PROGRESS') + '</div>' + m3fChart(past, name) + '</section>';
+  var xt = exType(name);
+  h += '<section class="m3f-stats"><div><small>' + (xt === 'w' ? L('1RM EST.', 'EST. 1RM') : xt === 'time' ? L('DURÉE MAX', 'TOP TIME') : L('REPS MAX', 'TOP REPS')) + '</small><b>' + (xt === 'w' ? (b.e ? Math.round(b.e) : '—') : (b.r != null ? b.r + (xt === 'time' ? ' s' : '') : '—')) + '</b></div><div><small>' + L('MEILLEURE SÉRIE', 'BEST SET') + '</small><b>' + (b.w != null ? fmtS(name, b.w, b.r) : '—') + '</b></div><div><small>' + (xt === 'w' ? L('VOLUME MAX', 'TOP VOLUME') : L('SÉANCES', 'SESSIONS')) + '</small><b>' + (xt === 'w' ? (vmax ? (vmax >= 1000 ? kg(Math.round(vmax / 100) / 10) + ' t' : kg(vmax)) : '—') : past.length) + '</b></div></section>';
+  h += '<section class="m3f-sec"><div class="m3s-lbl">' + L('DERNIÈRES SÉANCES', 'RECENT SESSIONS') + '</div>' + (past.length ? '<div class="m3f-list">' + past.slice(0, 6).map(function(p){ return '<div><span>' + fmtDate(p.date) + '</span><b>' + p.sets.map(function(x){ return fmtS(name, x.w, x.r); }).join(' · ') + '</b></div>'; }).join('') + '</div>' : '<p class="m3s-note">' + L('Pas encore d\'historique sur cet exercice.', 'No history on this exercise yet.') + '</p>') + '</section>';
+  h += m3fSettings(name);
   var custom = S.customEx.filter(function(c){ return fold(c.n) === fold(name); })[0];
   if(custom){
     var usedIn = [];
@@ -3127,6 +3274,7 @@ function createBlock(q, action, idSuffix){
 function pickResults(q){
   q = q || '';
   var res = libSearch(q, null);
+  if(ui.picker && ui.picker.ctx === 'replace' && cur()){ var g0 = (libFind(cur().name) || {}).g, cn = fold(cur().name); res = res.filter(function(e){ return fold(e.n) !== cn; }); if(g0) res = res.filter(function(e){ return e.g === g0; }).concat(res.filter(function(e){ return e.g !== g0; })); }
   var exact = res.some(function(e){ return fold(e.n) === fold(q); });
   var h = '';
   if(q.trim() && !res.length) h += '<div class="empty">Aucun exercice ne correspond à « ' + esc(q) + ' ». Tu peux le créer.</div>' + createBlock(q, 'pickcreate', 'p');
@@ -3137,9 +3285,9 @@ function pickResults(q){
 function vPicker(){
   var ctx = ui.picker.ctx === 'edit' ? 'À LA SÉANCE' : 'À LA SÉANCE EN COURS';
   return '<div class="pane" role="dialog" aria-label="Ajouter un exercice" style="height:88%"><div class="row" style="justify-content:center"><div style="width:56px;height:5px;background:var(--ink)"></div></div>' +
-    '<div class="row between"><div><span class="lbl">AJOUTER ' + ctx + '</span><div class="disp" style="font-size:32px">Exercice</div></div><button data-a="closesheet" aria-label="Fermer" style="width:44px;flex:none;font-size:18px">✕</button></div>' +
+    '<div class="row between"><div>' + (ui.picker.ctx === 'replace' ? '<span class="lbl">' + L('REMPLACER ', 'REPLACE ') + esc(exDisp(cur().name)).toUpperCase() + '</span><div class="disp" style="font-size:32px">' + L('Par quoi ?', 'With what?') + '</div>' : '<span class="lbl">AJOUTER ' + (ui.picker.ctx === 'hist' ? 'À LA SÉANCE' : ctx) + '</span><div class="disp" style="font-size:32px">Exercice</div>') + '</div><button data-a="closesheet" aria-label="Fermer" style="width:44px;flex:none;font-size:18px">✕</button></div>' +
     '<label class="lbl" for="pick-q" style="position:absolute;width:1px;height:1px;overflow:hidden">Rechercher un exercice</label><input class="field" id="pick-q" data-q="pick" value="' + esc(ui.pickQ || '') + '" placeholder="Cherche : curl, squat, poulie, dos…" autocomplete="off" autocapitalize="off" style="font-size:16px;min-height:52px">' +
-    '<div id="pick-res" style="display:flex;flex-direction:column">' + pickResults(ui.pickQ) + '</div></div>';
+    (ui.picker.ctx === 'replace' ? '<p class="m3s-note" style="margin:0">' + L('Même groupe musculaire en premier. Tes notes et tes séries restantes passent sur l\'exercice choisi.', 'Same muscle group first. Your notes and remaining sets move to the exercise you pick.') + '</p>' : '') + '<div id="pick-res" style="display:flex;flex-direction:column">' + pickResults(ui.pickQ) + '</div></div>';
 }
 function gloResults(){
   var res = libSearch(ui.gloQ || '', ui.gloG || null), h = '';
@@ -3155,6 +3303,8 @@ function vGlo(){
   return h + nav('glo');
 }
 function addPicked(name){
+  if(ui.picker && ui.picker.ctx === 'replace'){ doReplace(name); return; }
+  if(ui.picker && ui.picker.ctx === 'hist'){ histAddEx(name); return; }
   var lib = libFind(name), comp = lib && lib.c;
   var lo = comp ? 6 : 8, hi = comp ? 10 : 12, rest = comp ? 120 : 90;
   if(ui.picker.ctx === 'edit'){
@@ -3181,7 +3331,7 @@ function dayOptions(sel){
   [1,2,3,4,5,6,0].forEach(function(d){ o += '<option value="' + d + '"' + (sel === d ? ' selected' : '') + '>' + DAYNAMES[d] + '</option>'; });
   return o;
 }
-function vProg(){
+function vProgEditor(){
   var h = restBar() + '<div class="top"><span>PROGRAMMES</span>' + (S.active ? '<span class="lbl">SÉANCE EN COURS : NE CHANGE PAS</span>' : '') + '</div>';
   /* level 3: one séance */
   if(ui.edWk && prog(ui.edWk)){
@@ -3209,7 +3359,7 @@ function vProg(){
       });
       h += '<div class="grid2"><button data-a="setadd" data-i="' + i + '">+ SÉRIE</button><button data-a="setaddw" data-i="' + i + '" style="border-style:dashed">+ ÉCHAUFFEMENT</button></div>';
       h += '<div class="fl2"><label class="lbl" for="e-var-' + i + '">VARIANTES</label><input class="field" id="e-var-' + i + '" data-ed="exvar" data-i="' + i + '" value="' + esc((e.v || []).map(exDisp).join(' / ')) + '" placeholder="Squat / Deadlift"></div>';
-      h += '<div class="fl2"><label class="lbl" for="e-cue-' + i + '">NOTE</label><input class="field" id="e-cue-' + i + '" data-ed="excue" data-i="' + i + '" value="' + esc(trText(e.cue || '')) + '" placeholder="Ex. Tempo 3-1-1-0"></div></div>';
+      h += '<div class="fl2"><label class="lbl" for="e-cue-' + i + '">NOTE</label><input class="field" id="e-cue-' + i + '" data-ed="excue" data-i="' + i + '" value="' + esc(trText(e.cue || '')) + '" placeholder="Ex. Tempo 3-1-1-0"></div>' + (i < w.ex.length - 1 ? '<button class="chip' + (e.ss ? ' on' : '') + '" data-a="exss" data-i="' + i + '" style="align-self:flex-start;min-height:40px">⇄ ' + (e.ss ? L('EN SUPERSET AVEC LE SUIVANT · TOUCHER POUR DÉLIER', 'SUPERSET WITH THE NEXT ONE · TAP TO UNLINK') : L('METTRE EN SUPERSET AVEC LE SUIVANT', 'SUPERSET WITH THE NEXT ONE')) + '</button>' : '') + '</div>';
     });
     if(!w.ex.length) h += '<div class="empty">Aucun exercice dans cette séance. Ajoute le premier ci-dessous.</div>';
     h += '<button class="solid" data-a="exadd" style="min-height:56px">+ AJOUTER UN EXERCICE</button>';
@@ -3655,7 +3805,7 @@ function render(){
   app.innerHTML = trHTML(hardify(html));
   var sh = document.getElementById('sheet');
   if(ui.screen === 'done') buildShare();
-  sh.innerHTML = trHTML(hardify(ui.welcome ? vWelcome() : ui.storyId ? '<div class="sheet" data-a="closesheet">' + vStory(ui.storyId) + '</div>' : ui.newsDay != null ? '<div class="sheet" data-a="closesheet">' + vNewsDay(ui.newsDay) + '</div>' : ui.wSheet ? '<div class="sheet" data-a="closesheet">' + vWidgetSheet() + '</div>' : ui.daySheet ? '<div class="sheet" data-a="closesheet">' + vDay(ui.daySheet) + '</div>' : ui.picker ? '<div class="sheet" data-a="closesheet">' + vPicker() + '</div>' : ui.sheet ? '<div class="sheet" data-a="closesheet">' + vFiche(ui.sheet) + '</div>' : ''));
+  sh.innerHTML = trHTML(hardify(staleOn() ? '<div class="sheet">' + vStale() + '</div>' : ui.pad ? '<div class="sheet" data-a="closesheet">' + vPad() + '</div>' : ui.addPast ? '<div class="sheet" data-a="closesheet">' + vAddPast() + '</div>' : ui.welcome ? vWelcome() : ui.storyId ? '<div class="sheet" data-a="closesheet">' + vStory(ui.storyId) + '</div>' : ui.newsDay != null ? '<div class="sheet" data-a="closesheet">' + vNewsDay(ui.newsDay) + '</div>' : ui.wSheet ? '<div class="sheet" data-a="closesheet">' + vWidgetSheet() + '</div>' : ui.daySheet ? '<div class="sheet" data-a="closesheet">' + vDay(ui.daySheet) + '</div>' : ui.picker ? '<div class="sheet" data-a="closesheet">' + vPicker() + '</div>' : ui.sheet ? '<div class="sheet" data-a="closesheet">' + vFiche(ui.sheet) + '</div>' : ''));
   if(ui.storyId) buildStory();
   if(typeof m3PinCheck === 'function') m3PinCheck();
 }
@@ -3762,7 +3912,7 @@ document.addEventListener('click', function(ev){
     case 'pushtest': m3PushTest(); return;
     case 'restshow': var rb = document.getElementById('rest-band'); if(rb) rb.scrollIntoView({behavior:'smooth', block:'center'}); return;
     case 'w': j = selIndex(ex); if(j != null){ var s1 = ex.sets[j]; s1.w = Math.max(0, Math.round(((s1.w != null ? s1.w : (s1.sw || 0)) + d * inc())*100)/100); s1.trend = null; save(); } break;
-    case 'r': j = selIndex(ex); if(j != null){ var s2 = ex.sets[j]; s2.r = Math.max(0, (s2.r != null ? s2.r : (s2.sr || 0)) + d); s2.trend = null; save(); } break;
+    case 'r': j = selIndex(ex); if(j != null){ var s2 = ex.sets[j]; s2.r = Math.max(0, (s2.r != null ? s2.r : (s2.sr || 0)) + d * (exType(ex.name) === 'time' ? 5 : 1)); s2.trend = null; save(); } break;
     case 'validate': validate(); return;
     case 'addex': openPicker('session'); return;
     case 'addcancel': ui.adding = false; break;
@@ -3840,9 +3990,9 @@ document.addEventListener('click', function(ev){
       break;
     case 'applytpl':
       var tw2 = ui.pending && prog(ui.pending.pid);
-      if(tw2){ tw2.ex = ui.pending.ex; save(); toast('Séance mise à jour'); }
+      if(tw2){ tw2.ex = ui.pending.ex; save(); toast(L('« ', '“') + trText(tw2.name) + L(' » écrasée avec tes changements', '” overwritten with your changes')); }
       ui.pending = null; break;
-    case 'keeporig': var wasFresh = ui.pending && ui.pending.fresh; ui.pending = null; ui.saveAs = false; toast(wasFresh ? 'Séance non gardée' : 'Séance inchangée'); break;
+    case 'keeporig': var wasFresh = ui.pending && ui.pending.fresh; ui.pending = null; ui.saveAs = false; toast(wasFresh ? L('Séance enregistrée dans le journal', 'Session saved to your log') : L('Séance enregistrée · modèle inchangé', 'Session saved · template unchanged')); break;
     case 'saveas': ui.saveAs = true; break;
     case 'saveascancel': ui.saveAs = false; break;
     case 'savenew':
@@ -4060,7 +4210,7 @@ document.addEventListener('touchend', function(ev){
 /* ================= MUSCLE 3000 V2 — DEEP UX REVAMP =================
    The data model and event engine remain intact. This layer changes hierarchy,
    navigation language and the active-workout experience without migrating data. */
-var legacyProgView = vProg;
+var legacyProgView = vProgEditor;
 function DAB(d){ return (isEN() ? ['SUN','MON','TUE','WED','THU','FRI','SAT'] : ['DIM','LUN','MAR','MER','JEU','VEN','SAM'])[d]; }
 
 function m3kWeekNo(){ return m3Cycle().week; }
@@ -4107,14 +4257,14 @@ function vHome(){
     h+='<div class="m3-kicker">'+L('SÉANCE EN COURS','SESSION IN PROGRESS')+'</div><div class="m3-title">'+esc(trText(S.active.name))+'</div><div class="m3-meta">'+done+' / '+tot+L(' séries · ',' sets · ')+mmss((Date.now()-S.active.start)/1000)+'</div><button class="m3-primary" data-a="goex">'+L('REPRENDRE LA SÉANCE','RESUME SESSION')+' <span>→</span></button>';
   } else if(next){
     var sets=next.ex.reduce(function(n,e){return n+e.s.filter(function(s){return !s.warm;}).length;},0);
-    h+='<div class="m3-kicker">'+L('PROCHAINE SÉANCE','NEXT SESSION')+'</div><div class="m3-title">'+esc(trText(next.name))+'</div><div class="m3-meta">'+next.ex.length+L(' exercices · ',' exercises · ')+sets+L(' séries · ~',' sets · ~')+Math.max(30,next.ex.length*9)+' min</div><div class="m3-ex-list">'+next.ex.map(function(e,i){return '<button data-a="fiche" data-n="'+esc(e.name)+'" aria-label="'+esc(L('Fiche ','Info: ')+exDisp(e.name))+'"><i>'+('0'+(i+1)).slice(-2)+'</i><span>'+esc(exDisp(e.name))+'</span><em>›</em></button>';}).join('')+'</div><button class="m3-primary" data-a="start" data-p="'+esc(next.id)+'">'+L('COMMENCER','START')+' <span>→</span></button>';
+    h+='<div class="m3-kicker">'+L('PROCHAINE SÉANCE','NEXT SESSION')+'</div><div class="m3-title">'+esc(trText(next.name))+'</div><div class="m3-meta">'+next.ex.length+L(' exercices · ',' exercises · ')+sets+L(' séries · ~',' sets · ~')+Math.round(estDur(next)/60)+' min</div><div class="m3-ex-list">'+next.ex.map(function(e,i){return '<button data-a="fiche" data-n="'+esc(e.name)+'" aria-label="'+esc(L('Fiche ','Info: ')+exDisp(e.name))+'"><i>'+('0'+(i+1)).slice(-2)+'</i><span>'+esc(exDisp(e.name))+'</span><em>›</em></button>';}).join('')+'</div><button class="m3-primary" data-a="start" data-p="'+esc(next.id)+'">'+L('COMMENCER','START')+' <span>→</span></button>';
   } else h+='<div class="m3-kicker">'+L('TON PROGRAMME EST VIDE','YOUR PROGRAM IS EMPTY')+'</div><div class="m3-title">'+L('Construis ta première séance.','Build your first session.')+'</div><button class="m3-primary" data-a="scr" data-s="prog">'+L('CRÉER UNE SÉANCE','CREATE A SESSION')+' <span>→</span></button>';
   h+='</section>';
   h+='<section class="m3-week"><div class="m3-section-head"><span>'+L('CETTE SEMAINE','THIS WEEK')+'</span><b>'+st.thisN+' / '+st.planned+'</b></div><div class="m3-days">'+m3kWeekStrip()+'</div></section>';
   h+=m3wSection(st);
   h+='<section class="m3-block"><div class="m3-section-head"><span>'+L('JOURNAL','LOG')+'</span><button data-a="scr" data-s="hist">'+L('VOIR TOUT','SEE ALL')+' →</button></div>'+(m3kRecent()||'<div class="m3-empty">'+L('Ta première séance apparaîtra ici.','Your first session will show up here.')+'</div>')+'</section>';
   var prs=[]; for(var i=S.history.length-1;i>=0&&prs.length<3;i--)(S.history[i].prs||[]).forEach(function(n){if(prs.length<3&&prs.indexOf(n)<0)prs.push(n);});
-  h+='<section class="m3-block"><div class="m3-section-head"><span>'+L('RECORDS RÉCENTS','RECENT RECORDS')+'</span></div>'+(prs.length?prs.map(function(n){var b=bestFor(n);return '<button class="m3-record" data-a="fiche" data-n="'+esc(n)+'"><span>'+esc(exDisp(n))+'</span><b>'+kg(b.w)+' × '+b.r+'</b></button>';}).join(''):'<div class="m3-empty">'+L('Tes records apparaîtront après tes premières séances.','Your records will show up after your first sessions.')+'</div>')+'</section>';
+  h+='<section class="m3-block"><div class="m3-section-head"><span>'+L('RECORDS RÉCENTS','RECENT RECORDS')+'</span></div>'+(prs.length?prs.map(function(n){var b=bestFor(n);return '<button class="m3-record" data-a="fiche" data-n="'+esc(n)+'"><span>'+esc(exDisp(n))+'</span><b>'+fmtS(n,b.w,b.r)+'</b></button>';}).join(''):'<div class="m3-empty">'+L('Tes records apparaîtront après tes premières séances.','Your records will show up after your first sessions.')+'</div>')+'</section>';
   return h+nav('home');
 }
 
@@ -4138,10 +4288,11 @@ function vEx(){
   var h='<header class="m3-work-head"><button data-a="scr" data-s="ov">← '+esc(trText(a.name))+'</button><span>'+('0'+(i+1)).slice(-2)+' / '+('0'+n).slice(-2)+'</span><b id="clock">'+mmss((Date.now()-a.start)/1000)+'</b></header>';
   h+='<button class="fx-switch" data-a="exview" data-v="focus">'+L('Revenir à une série à la fois','Back to one set at a time')+'</button>';
   h+='<div class="m3-progress"><i style="width:'+Math.round(doneSets/Math.max(1,totalSets)*100)+'%"></i></div>';
-  h+='<div class="m3-focus"><span class="m3-eyebrow">'+L('EXERCICE ','EXERCISE ')+('0'+(i+1)).slice(-2)+'</span><h2>'+esc(exDisp(ex.name))+'</h2><button class="m3-link" data-a="fiche" data-n="'+esc(ex.name)+'">'+L('VOIR LA FICHE','SEE THE INFO')+' →</button></div>';
+  h+='<div class="m3-focus"><span class="m3-eyebrow">'+L('EXERCICE ','EXERCISE ')+('0'+(i+1)).slice(-2)+'</span><h2>'+esc(exDisp(ex.name))+'</h2><div class="m3-links"><button class="m3-link" data-a="fiche" data-n="'+esc(ex.name)+'">'+L('VOIR LA FICHE','SEE THE INFO')+' →</button><button class="m3-link" data-a="repl">'+L('REMPLACER','REPLACE')+' ⇄</button></div></div>';
   if(ex.cue) h+='<div class="m3-cue">'+esc(trText(ex.cue))+'</div>';
+  h+='<input class="fx-note m3-note" data-f="note" value="'+esc(ex.note||'')+'" placeholder="'+L('+ Ajouter une note','+ Add a note')+'" aria-label="'+L('Note sur l\'exercice','Exercise note')+'" autocomplete="off">';
   var p=pastEntries(ex.name)[0], prev=p?p.sets.filter(function(s){return !s.warm;}):[];
-  h+='<section class="m3-last"><span>'+L('DERNIÈRE SÉANCE','LAST SESSION')+(prev.length&&sj!=null?' <em>'+L('touche pour reprendre','tap to reuse')+'</em>':'')+'</span><div>'+ (prev.length?prev.map(function(s,pk){return '<button class="m3-lastchip" data-a="uselast" data-k="'+pk+'">'+kg(s.w)+' × '+s.r+'</button>';}).join(''):'<small>'+L('Pas encore de référence','No reference yet')+'</small>')+'</div></section>';
+  h+='<section class="m3-last"><span>'+L('DERNIÈRE SÉANCE','LAST SESSION')+(prev.length&&sj!=null?' <em>'+L('touche pour reprendre','tap to reuse')+'</em>':'')+'</span><div>'+ (prev.length?prev.map(function(s,pk){return '<button class="m3-lastchip" data-a="uselast" data-k="'+pk+'">'+fmtS(ex.name,s.w,s.r)+'</button>';}).join(''):'<small>'+L('Pas encore de référence','No reference yet')+'</small>')+'</div></section>';
   var bandDone=false;
   if(ri && ri.r.ex!==i){ h+=m3RestBand(ri, a.exercises[ri.r.ex] || ex, ri.r.set); bandDone=true; }
   h+=m3RestAll(ex)+'<section class="m3-sets">'; var k=0;
@@ -4151,10 +4302,10 @@ function vEx(){
     else if(!s.warm && j===ex.sets.length-1 && (next || freeSession())) h+=gapRow(ex,j,true);
   });
   h+='</section>';
-  if(sj!=null){var ss=ex.sets[sj];h+='<section class="m3-input"><div><label>'+L('CHARGE','WEIGHT')+'</label><div class="m3-step"><button data-a="w" data-d="-1">−</button><input id="in-w" data-f="w" inputmode="decimal" value="'+(ss.w!=null?kg(ss.w):'')+'" placeholder="'+(ss.sw!=null?kg(ss.sw):'—')+'"><button data-a="w" data-d="1">+</button></div><small>KG</small></div><div><label>'+L('RÉPÉTITIONS','REPS')+'</label><div class="m3-step"><button data-a="r" data-d="-1">−</button><input id="in-r" data-f="r" inputmode="numeric" value="'+(ss.r!=null?ss.r:'')+'" placeholder="'+(ss.sr!=null?ss.sr:'—')+'"><button data-a="r" data-d="1">+</button></div><small>REPS</small></div></section>';
+  if(sj!=null){var ss=ex.sets[sj];h+='<section class="m3-input"><div><label>'+L('CHARGE','WEIGHT')+'</label><div class="m3-step"><button data-a="w" data-d="-1">−</button><input id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="'+(ss.w!=null?kg(ss.w):'')+'" placeholder="'+(ss.sw!=null?kg(ss.sw):'—')+'"><button data-a="w" data-d="1">+</button></div><small>KG</small></div><div><label>'+L('RÉPÉTITIONS','REPS')+'</label><div class="m3-step"><button data-a="r" data-d="-1">−</button><input id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="'+(ss.r!=null?ss.r:'')+'" placeholder="'+(ss.sr!=null?ss.sr:'—')+'"><button data-a="r" data-d="1">+</button></div><small>REPS</small></div></section>';
     h+='<button class="m3-validate" data-a="validate">'+L('VALIDER LA SÉRIE','LOG SET')+' <span>→</span></button>';
   }
-  h+='<div class="m3-work-tools"><button data-a="addset">'+L('+ SÉRIE','+ SET')+'</button><button data-a="addwarm">'+L('+ ÉCHAUF','+ WARM-UP')+'</button><button data-a="restadj" data-d="-15">−15s</button><button data-a="restadj" data-d="15">+15s</button></div>';
+  h+='<div class="m3-work-tools"><button data-a="addset">'+L('+ SÉRIE','+ SET')+'</button><button data-a="addwarm">'+L('+ ÉCHAUF','+ WARM-UP')+'</button><button data-a="autowarm">'+L('⚡ AUTO','⚡ AUTO')+'</button><button data-a="restadj" data-d="-15">−15s</button><button data-a="restadj" data-d="15">+15s</button></div>';
   if(ri) h+=m3RestPin(ri);
   h+='<div class="m3-next-ex"><span>'+L('PROCHAIN','NEXT')+'</span><b>'+(next?esc(exDisp(next.name)):L('FIN DE SÉANCE','END OF SESSION'))+'</b>'+(next?'<button data-a="nav" data-d="1">→</button>':'<button data-a="scr" data-s="ov">'+L('RÉSUMÉ','SUMMARY')+' →</button>')+'</div>';
   return h;
@@ -4163,16 +4314,15 @@ function vEx(){
 function vHist(){
   var h=restBar()+'<header class="m3-page-head"><span class="m3-eyebrow">'+L('JOURNAL','LOG')+'</span><h1>'+L('Ce que tu as','What you have')+'<br><em>'+L('accompli.','achieved.')+'</em></h1></header>';
   h+=m3jCal();
+  h+='<button class="m3-addpast-btn" data-a="addpast">'+L('+ Ajouter une séance oubliée','+ Add a missed session')+'</button>';
   if(!S.history.length) return h+'<div class="m3-empty">'+L('Aucune séance pour le moment. Termine ta première séance et ton journal commencera ici.','No sessions yet. Finish your first session and your log will start here.')+'</div>'+nav('hist');
   var names={}; S.history.forEach(function(s){s.exercises.forEach(function(e){names[e.name]=1;});});
   h+='<section class="m3-stats-strip"><div><b>'+S.history.length+'</b><small>'+L('SÉANCES','SESSIONS')+'</small></div><div><b>'+fmtT(S.history.reduce(function(a,x){return a+sessVol(x);},0))+'</b><small>VOLUME</small></div><div><b>'+S.history.reduce(function(a,x){return a+(x.prs||[]).length;},0)+'</b><small>RECORDS</small></div></section>';
   h+='<section class="m3-block"><div class="m3-section-head"><span>'+L('TES SÉANCES','YOUR SESSIONS')+'</span></div>';
   S.history.slice().reverse().forEach(function(s){var open=ui.openHist===s.id; h+='<div class="m3-history-card"><button data-a="hist" data-id="'+esc(s.id)+'"><span><b>'+esc(trText(s.name))+'</b><small>'+fmtDate(s.date)+' · '+mmss(s.dur)+'</small></span><strong>'+fmtT(sessVol(s))+'</strong></button>';
-    if(open){s.exercises.forEach(function(e){h+='<div class="m3-history-ex"><span>'+esc(exDisp(e.name))+'</span><b>'+e.sets.filter(function(x){return !x.warm;}).map(function(x){return kg(x.w)+'×'+x.r;}).join(' · ')+'</b></div>';});}
+    if(open){s.exercises.forEach(function(e){h+='<div class="m3-history-ex"><span>'+esc(exDisp(e.name))+'</span><b>'+e.sets.filter(function(x){return !x.warm;}).map(function(x){return fmtS(e.name,x.w,x.r);}).join(' · ')+'</b></div>';});}
     h+='</div>';});
-  h+='</section><section class="m3-block"><div class="m3-section-head"><span>'+L('EXERCICES · MEILLEURES PERFORMANCES','EXERCISES · PERSONAL BESTS')+'</span></div>';
-  Object.keys(names).sort().slice(0,12).forEach(function(n){var b=bestFor(n);h+='<button class="m3-record" data-a="fiche" data-n="'+esc(n)+'"><span>'+esc(exDisp(n))+'</span><b>'+kg(b.w)+' × '+b.r+'</b></button>';});
-  h+='</section>'; return h+nav('hist');
+  h+='</section>'+m3RecSection(); return h+nav('hist');
 }
 
 function vProg(){
@@ -4725,6 +4875,7 @@ function m3jCal(){
 /* rest between two sets: a large band sitting right under the set just done, readable from 1–2 m
    (phone on the bench). When the band is scrolled out of view, a slim copy pins to the top. */
 function m3RestNext(ri, ex, j){
+  if(ri.r.label === 'SUPERSET') return 'SUPERSET · ' + exDisp(cur().name).toUpperCase();
   if(ri.r.label) return L('EXERCICE SUIVANT', 'NEXT EXERCISE');
   var n = 0; for(var x = 0; x <= j + 1 && x < ex.sets.length; x++) if(!ex.sets[x].warm) n++;
   return ex.sets[j + 1] ? (ex.sets[j + 1].warm ? L('ÉCHAUFFEMENT', 'WARM-UP') : L('SÉRIE ', 'SET ') + n) : L('EXERCICE SUIVANT', 'NEXT EXERCISE');
@@ -4796,7 +4947,7 @@ function m3PushSchedule(){
   if(!S.settings.pushOn || !S.active) return;
   var ri = restInfo(); if(!ri || ri.over) return;
   var ex = S.active.exercises[ri.r.ex], nx = ex ? m3RestNext(ri, ex, ri.r.set) : '';
-  var who = ri.r.label || !ex ? (S.active.exercises[ri.r.ex + 1] ? exDisp(S.active.exercises[ri.r.ex + 1].name) : '') : exDisp(ex.name);
+  var who = ri.r.label === 'SUPERSET' ? exDisp(cur().name) : ri.r.label || !ex ? (S.active.exercises[ri.r.ex + 1] ? exDisp(S.active.exercises[ri.r.ex + 1].name) : '') : exDisp(ex.name);
   m3PushSend('/schedule', {at:ri.r.start + ri.r.total * 1000, title:L('Repos terminé', 'Rest is over'), body:(who ? who + ' · ' : '') + nx.charAt(0) + nx.slice(1).toLowerCase() + L(' : c\'est reparti.', ': let\'s go.')});
 }
 function m3PushTest(){ m3PushSend('/schedule', {at:Date.now() + 10000, title:L('Repos terminé', 'Rest is over'), body:L('Test : tes notifications de fin de repos marchent.', 'Test: your end-of-rest notifications work.')}); toast(L('Notification dans 10 s : quitte l\'appli', 'Notification in 10 s: leave the app')); }
@@ -4819,7 +4970,7 @@ function m3Ding(){
    From the top strip it always works; lower in the sheet, only once its content is scrolled to the top. */
 (function(){
   var drag = null;
-  function closeAll(){ ui.sheet = null; ui.picker = null; ui.daySheet = null; ui.ficheFrom = null; ui.newsDay = null; ui.storyId = null; ui.storyFrom = null; ui.wSheet = null; ui.confirm = null; render(); }
+  function closeAll(){ ui.pad = null; ui.addPast = null; if(ui.hEdit) finishHistEdit(); ui.sheet = null; ui.picker = null; ui.daySheet = null; ui.ficheFrom = null; ui.newsDay = null; ui.storyId = null; ui.storyFrom = null; ui.wSheet = null; ui.confirm = null; render(); }
   function snapBack(d){ d.pane.style.transition = 'transform .24s cubic-bezier(.2,.8,.2,1)'; d.pane.style.transform = ''; d.sheet.style.transition = 'background .24s'; d.sheet.style.background = ''; }
   document.addEventListener('touchstart', function(ev){
     drag = null;
@@ -5102,52 +5253,75 @@ function fxLast(ex, j){
   return pl.sets[workIndex(ex, j)] || null;
 }
 function fxDots(ex, sj){
-  return '<div class="fx-dots" aria-hidden="true">' + ex.sets.map(function(s, j){ return '<i class="' + (s.done ? 'done' : j === sj ? 'now' : '') + (s.warm ? ' warm' : '') + '"></i>'; }).join('') + '</div>';
+  return '<div class="fx-dots">' + ex.sets.map(function(s, j){
+    var c = (s.done ? 'done' : j === sj ? 'now' : '') + (s.warm ? ' warm' : '') + (s.redo ? ' redo' : '');
+    return s.done ? '<button class="' + c + '" data-a="reopen" data-j="' + j + '" aria-label="' + L('Corriger la série ', 'Fix set ') + (j + 1) + '"></button>' : '<i class="' + c + '" aria-hidden="true"></i>';
+  }).join('') + '</div>';
 }
 function fxHead(a, i, n){
   var doneSets = 0, totalSets = 0; a.exercises.forEach(function(e){ e.sets.forEach(function(s){ if(!s.warm){ totalSets++; if(s.done) doneSets++; } }); });
-  return '<header class="fx-head"><button data-a="scr" data-s="ov">← ' + esc(trText(a.name)) + '</button><span>' + L('EXO ', 'EX ') + (i + 1) + ' / ' + n + '</span><b id="clock">● ' + mmss((Date.now() - a.start) / 1000) + '</b></header><div class="m3-progress fx-prog"><i style="width:' + Math.round(doneSets / Math.max(1, totalSets) * 100) + '%"></i></div>';
+  return '<header class="fx-head"><button data-a="scr" data-s="ov">← ' + esc(trText(a.name)) + '</button><span>' + L('EXO ', 'EX ') + (i + 1) + ' / ' + n + ' · ' + L('FIN ', 'END ') + etaTxt(a) + '</span><b id="clock">● ' + mmss((Date.now() - a.start) / 1000) + '</b></header><div class="m3-progress fx-prog"><i style="width:' + Math.round(doneSets / Math.max(1, totalSets) * 100) + '%"></i></div>';
 }
 function fxNextTxt(a, ex, sj){
-  var nxt = sj != null ? null : a.exercises[a.idx + 1];
+  var pi = ssPartner(a.idx), cs = sj != null ? ex.sets[sj] : null;
+  if(pi != null && cs && !cs.warm && hasWork(a.exercises[pi])) return exDisp(a.exercises[pi].name) + ' (superset)';
   for(var j = (sj == null ? ex.sets.length : sj + 1); j < ex.sets.length; j++) if(!ex.sets[j].done) return fxSetLabel(ex, j).split(' · ')[0].toLowerCase();
   var ne = a.exercises[a.idx + 1]; return ne ? exDisp(ne.name) : L('fin de séance', 'end of session');
 }
+function fxFixRow(k, label, val){
+  return '<div class="fx-fix-row"><button data-a="fx' + k + '" data-d="-1" aria-label="' + L('Moins', 'Less') + '">−</button><div><small>' + label + '</small><b>' + val + '</b></div><button data-a="fx' + k + '" data-d="1" aria-label="' + L('Plus', 'More') + '">+</button></div>';
+}
 function vFocus(){
-  var a = S.active, ex = cur(), i = a.idx, n = a.exercises.length, sj = selIndex(ex), ri = restInfo();
+  var a = S.active, ex = cur(), i = a.idx, n = a.exercises.length, sj = selIndex(ex), ri = restInfo(), xt = exType(ex.name);
   var h = fxHead(a, i, n);
   /* repos en plein écran tant qu'il n'est pas fini ; à zéro, render() repasse ici et la série suivante s'affiche */
   if(ri && !ri.over){
-    var rex = a.exercises[ri.r.ex] || ex, rs = rex.sets[ri.r.set], nj = selIndex(ex), ns = nj != null ? ex.sets[nj] : null;
+    var rex = a.exercises[ri.r.ex] || ex, rs = rex.sets[ri.r.set], rt = exType(rex.name), nj = selIndex(ex), ns = nj != null ? ex.sets[nj] : null;
     var nw = ns ? (ns.w != null ? ns.w : ns.sw) : null, circ = 854.5;
-    h += '<section class="fx-rest" id="rest-band"><div class="fx-rest-done"><i aria-hidden="true">✓</i><span>' + (rs ? fxSetLabel(rex, ri.r.set).split(' · ')[0] + L(' validée · ', ' logged · ') + '<b>' + kg(rs.w) + ' kg × ' + rs.r + '</b>' : L('Série validée', 'Set logged')) + '</span></div>';
+    h += '<section class="fx-rest" id="rest-band">';
+    /* la série qu'on vient de valider se corrige ici, sans arrêter le repos */
+    if(ui.fixLast && rs){
+      h += '<div class="fx-fix"><span>' + fxSetLabel(rex, ri.r.set).split(' · ')[0] + ' · ' + esc(exDisp(rex.name)).toUpperCase() + '</span>';
+      h += fxFixRow('w', wLab(rex.name), kg(rs.w || 0) + ' kg') + fxFixRow('r', rt === 'time' ? L('DURÉE', 'TIME') : 'REPS', rs.r + (rt === 'time' ? ' s' : ''));
+      h += '<button class="fx-fix-ok" data-a="fixok">' + L('C\'est corrigé', 'Done') + '</button></div>';
+    } else {
+      h += '<button class="fx-rest-done" data-a="fixlast"><i aria-hidden="true">✓</i><span>' + (rs ? fxSetLabel(rex, ri.r.set).split(' · ')[0] + L(' validée · ', ' logged · ') + '<b>' + fmtS(rex.name, rs.w, rs.r) + '</b>' : L('Série validée', 'Set logged')) + '</span><em>' + L('Corriger', 'Fix') + '</em></button>';
+    }
     h += '<div class="fx-ring"><svg viewBox="0 0 300 300" aria-hidden="true"><circle cx="150" cy="150" r="136" class="fx-ring-bg"/><circle cx="150" cy="150" r="136" class="fx-ring-fg" id="t-ring" stroke-dasharray="' + circ + '" stroke-dashoffset="' + (circ * ri.pct / 100).toFixed(1) + '" transform="rotate(-90 150 150)"/></svg><div><strong id="t-big">' + mmss(ri.left) + '</strong><small>' + L('sur ', 'of ') + mmss(ri.r.total) + '</small></div></div>';
     h += '<div class="fx-rest-adj"><button data-a="tadj" data-d="-15">−15 s</button><button data-a="tadj" data-d="15">+15 s</button></div>';
-    h += '<div class="fx-rest-next"><div><span>' + L('ENSUITE · ', 'NEXT · ') + (ns ? fxSetLabel(ex, nj).split(' · ')[0] + (a.idx !== ri.r.ex ? ' · ' + esc(exDisp(ex.name)).toUpperCase() : '') : L('FIN DE L\'EXERCICE', 'END OF EXERCISE')) + '</span><b>' + (ns ? (nw != null ? kg(nw) + ' kg × ' : '') + ns.lo + (ns.hi !== ns.lo ? '–' + ns.hi : '') : esc(fxNextTxt(a, ex, null))) + '</b></div><button data-a="skip">' + L('PASSER', 'SKIP') + ' →</button></div>';
-    h += '<p class="fx-rest-tip">' + L('À zéro : un petit son, puis la série suivante s\'ouvre seule.', 'At zero: a short sound, then the next set opens by itself.') + '</p></section>';
+    var sup = ri.r.label === 'SUPERSET' ? L('SUPERSET · ', 'SUPERSET · ') : '';
+    h += '<div class="fx-rest-next"><div><span>' + L('ENSUITE · ', 'NEXT · ') + sup + (ns ? fxSetLabel(ex, nj).split(' · ')[0] + (a.idx !== ri.r.ex ? ' · ' + esc(exDisp(ex.name)).toUpperCase() : '') : L('FIN DE L\'EXERCICE', 'END OF EXERCISE')) + '</span><b>' + (ns ? tgtTxt(ex.name, nw, ns.lo, ns.hi) : esc(fxNextTxt(a, ex, null))) + '</b></div><button data-a="skip">' + L('PASSER', 'SKIP') + ' →</button></div>';
+    h += '<p class="fx-rest-tip">' + L('À zéro : un petit son, puis la série suivante s\'ouvre seule. Touche la série validée pour la corriger.', 'At zero: a short sound, then the next set opens by itself. Tap the logged set to fix it.') + '</p></section>';
     return h;
   }
+  ui.fixLast = false;
   if(sj == null){
     var ne = a.exercises[i + 1];
-    h += '<section class="fx-end"><span class="m3-eyebrow">' + L('EXERCICE TERMINÉ', 'EXERCISE DONE') + '</span><h1>' + esc(exDisp(ex.name)) + '</h1><p>' + ex.sets.filter(function(s){ return s.done && !s.warm; }).map(function(s){ return kg(s.w) + '×' + s.r; }).join(' · ') + '</p>';
+    h += '<section class="fx-end"><span class="m3-eyebrow">' + L('EXERCICE TERMINÉ', 'EXERCISE DONE') + '</span><h1>' + esc(exDisp(ex.name)) + '</h1><p>' + ex.sets.filter(function(s){ return s.done && !s.warm; }).map(function(s){ return fmtS(ex.name, s.w, s.r); }).join(' · ') + '</p>';
+    h += fxDots(ex, null);
     h += ne ? '<button class="fx-validate" data-a="nav" data-d="1">' + esc(exDisp(ne.name)).toUpperCase() + ' <span aria-hidden="true">→</span></button>' : (freeSession() ? '<button class="fx-validate" data-a="nav" data-d="1">' + L('AJOUTER UN EXERCICE', 'ADD AN EXERCISE') + '</button>' : '<button class="fx-validate" data-a="askfinish">' + L('TERMINER LA SÉANCE', 'FINISH SESSION') + ' <span aria-hidden="true">✓</span></button>');
-    h += '<button class="fx-alt" data-a="addset">' + L('+ Une série de plus', '+ One more set') + '</button></section>';
+    h += '<button class="fx-alt" data-a="addset">' + L('+ Une série de plus', '+ One more set') + '</button>';
+    h += '<p class="fx-cue">' + L('Une erreur ? Touche une barre ci-dessus pour corriger la série.', 'A mistake? Tap a bar above to fix that set.') + '</p></section>';
     if(ui.confirm === 'finish') h += '<div class="m3s-list fx-confirm">' + m3sConfirm(L('Terminer et enregistrer la séance ?', 'Finish and save the session?'), 'finish', L('Terminer', 'Finish')) + '</div>';
     return h + fxFoot(a, ex, sj);
   }
-  var s = ex.sets[sj], last = fxLast(ex, sj), wv = s.w != null ? s.w : s.sw, rv = s.r != null ? s.r : s.sr;
-  var hint = s.w == null && s.sw != null && s.trend ? ({'▲':L('+' + kg(inc()) + ' kg proposé', '+' + kg(inc()) + ' kg suggested'), '+1':L('+1 rep proposée', '+1 rep suggested'), '▼':L('charge allégée', 'lighter weight'), '=':L('même charge', 'same weight')})[s.trend] || '' : (s.w == null && s.sw != null ? L('proposé', 'suggested') : '');
-  h += '<div class="fx-title"><div><span class="m3-eyebrow fx-eye">' + fxSetLabel(ex, sj) + '</span><h1>' + esc(exDisp(ex.name)) + '</h1></div><button class="fx-info" data-a="fiche" data-n="' + esc(ex.name) + '" aria-label="' + L('Ouvrir la fiche', 'Open the info') + '">i</button></div>';
+  var s = ex.sets[sj], last = fxLast(ex, sj), wv = s.w != null ? s.w : s.sw, pi = ssPartner(i);
+  var hint = s.w == null && s.sw != null && s.trend ? ({'▲':L('+' + kg(inc()) + ' kg proposé', '+' + kg(inc()) + ' kg suggested'), '+1':(xt === 'time' ? L('+5 s proposées', '+5 s suggested') : L('+1 rep proposée', '+1 rep suggested')), '▼':L('charge allégée', 'lighter weight'), '=':L('même charge', 'same weight')})[s.trend] || '' : (s.w == null && s.sw != null ? L('proposé', 'suggested') : '');
+  var eye = (s.redo ? L('CORRECTION · ', 'FIXING · ') : '') + (pi != null ? 'SUPERSET ' + (pi > i ? 'A' : 'B') + ' · ' : '') + fxSetLabel(ex, sj) + (xt === 'time' ? ' s' : '');
+  h += '<div class="fx-title"><div><span class="m3-eyebrow fx-eye">' + eye + '</span><h1>' + esc(exDisp(ex.name)) + '</h1></div><div class="fx-tbtns"><button class="fx-info" data-a="repl" aria-label="' + L('Remplacer l\'exercice', 'Replace the exercise') + '">⇄</button><button class="fx-info" data-a="fiche" data-n="' + esc(ex.name) + '" aria-label="' + L('Ouvrir la fiche', 'Open the info') + '">i</button></div></div>';
   h += fxDots(ex, sj);
   if(ri && ri.over) h += '<div class="fx-over">' + L('Repos terminé · ', 'Rest done · ') + '<b id="t-over">+' + mmss(-ri.left) + '</b></div>';
   h += '<section class="fx-card">';
-  h += '<div class="fx-row"><button class="fx-pm" data-a="w" data-d="-1" aria-label="' + L('Moins ', 'Minus ') + kg(inc()) + ' kg">−</button><label class="fx-val"><span>' + L('CHARGE', 'WEIGHT') + '</span><input id="in-w" data-f="w" inputmode="decimal" value="' + (s.w != null ? kg(s.w) : '') + '" placeholder="' + (s.sw != null ? kg(s.sw) : '—') + '" class="' + (s.w == null ? 'sug' : '') + '"><small class="' + (hint ? 'hint' : '') + '">' + (hint || 'kg') + '</small></label><button class="fx-pm" data-a="w" data-d="1" aria-label="' + L('Plus ', 'Plus ') + kg(inc()) + ' kg">+</button></div>';
+  h += '<div class="fx-row"><button class="fx-pm" data-a="w" data-d="-1" aria-label="' + L('Moins ', 'Minus ') + kg(inc()) + ' kg">−</button><label class="fx-val"><span>' + wLab(ex.name) + '</span><input id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + (s.w != null ? kg(s.w) : '') + '" placeholder="' + (s.sw != null ? kg(s.sw) : xt !== 'w' ? '0' : '—') + '" class="' + (s.w == null ? 'sug' : '') + '"><small class="' + (hint ? 'hint' : '') + '">' + (hint || 'kg') + '</small></label><button class="fx-pm" data-a="w" data-d="1" aria-label="' + L('Plus ', 'Plus ') + kg(inc()) + ' kg">+</button></div>';
   h += '<div class="fx-sep"></div>';
-  h += '<div class="fx-row"><button class="fx-pm" data-a="r" data-d="-1" aria-label="' + L('Une rep de moins', 'One rep less') + '">−</button><label class="fx-val"><span>' + L('RÉPÉTITIONS', 'REPS') + '</span><input id="in-r" data-f="r" inputmode="numeric" value="' + (s.r != null ? s.r : '') + '" placeholder="' + (s.sr != null ? s.sr : '—') + '" class="' + (s.r == null ? 'sug' : '') + '"><small>reps</small></label><button class="fx-pm" data-a="r" data-d="1" aria-label="' + L('Une rep de plus', 'One rep more') + '">+</button></div>';
+  h += '<div class="fx-row"><button class="fx-pm" data-a="r" data-d="-1" aria-label="' + (xt === 'time' ? L('5 secondes de moins', '5 seconds less') : L('Une rep de moins', 'One rep less')) + '">−</button><label class="fx-val"><span>' + rLab(ex.name) + '</span><input id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + (s.r != null ? s.r : '') + '" placeholder="' + (s.sr != null ? s.sr : '—') + '" class="' + (s.r == null ? 'sug' : '') + '"><small>' + (xt === 'time' ? L('secondes', 'seconds') : 'reps') + '</small></label><button class="fx-pm" data-a="r" data-d="1" aria-label="' + (xt === 'time' ? L('5 secondes de plus', '5 seconds more') : L('Une rep de plus', 'One rep more')) + '">+</button></div>';
   h += '</section>';
-  if(last) h += '<button class="fx-last" data-a="uselast">' + L('La dernière fois : ', 'Last time: ') + '<b>' + kg(last.w) + ' × ' + last.r + '</b> · ' + L('reprendre', 'reuse') + '</button>';
+  if(xt === 'w' && barOn(ex.name) && wv) h += '<p class="fx-plates">' + platesTxt(ex.name, wv) + '</p>';
+  if(last) h += '<button class="fx-last" data-a="uselast">' + L('La dernière fois : ', 'Last time: ') + '<b>' + fmtS(ex.name, last.w, last.r) + '</b> · ' + L('reprendre', 'reuse') + '</button>';
   if(ex.cue) h += '<p class="fx-cue">' + esc(trText(ex.cue)) + '</p>';
-  h += '<button class="fx-validate" data-a="validate">' + L('VALIDER', 'LOG SET') + ' <span aria-hidden="true">✓</span></button>';
+  h += '<input class="fx-note" data-f="note" value="' + esc(ex.note || '') + '" placeholder="' + L('+ Ajouter une note', '+ Add a note') + '" aria-label="' + L('Note sur l\'exercice', 'Exercise note') + '" autocomplete="off">';
+  h += '<button class="fx-validate" data-a="validate">' + (s.redo ? L('ENREGISTRER', 'SAVE') : L('VALIDER', 'LOG SET')) + ' <span aria-hidden="true">✓</span></button>';
+  if(xt === 'w' && !s.warm && !ex.sets.some(function(x){ return x.warm || x.done; })) h += '<button class="fx-alt fx-warm" data-a="autowarm">⚡ ' + L('Ajouter un échauffement auto', 'Add an automatic warm-up') + '</button>';
   return h + fxFoot(a, ex, sj);
 }
 function fxFoot(a, ex, sj){
@@ -5162,6 +5336,432 @@ setInterval(function(){
   var r = document.getElementById('t-ring'); if(!r) return;
   var ri = restInfo(); if(ri) r.setAttribute('stroke-dashoffset', (854.5 * ri.pct / 100).toFixed(1));
 }, 250);
+
+/* ================= 1.15 : SAISIE, JOURNAL, SUPERSETS, POIDS DU CORPS =================
+   Tout ce bloc s'ajoute au moteur existant : le modèle de données ne change pas, il gagne seulement
+   quelques champs optionnels (type d'exercice, superset, échauffement auto, série corrigée). */
+function m3map(k){ if(!S.settings[k] || typeof S.settings[k] !== 'object') S.settings[k] = {}; return S.settings[k]; }
+function pad2(n){ return ('0' + n).slice(-2); }
+function hm(t){ var d = new Date(t); return isEN() ? d.getHours() + ':' + pad2(d.getMinutes()) : d.getHours() + 'h' + pad2(d.getMinutes()); }
+
+/* ---------- type d'exercice : charge, poids du corps (lest optionnel), durée ---------- */
+var BW_RX = /^(pompes|tractions|dips|chin|pull.?up|push.?up|muscle.?up|burpee|crunch|relev|abdo|mountain|squat saute|fentes sautees|hollow|v.?up|toes|australian|rowing inverse|traction australienne)/;
+var TIME_RX = /(gainage|planche abdo|plank|chaise murale|wall sit|dead hang|suspension|hollow hold|l.?sit)/;
+function exType(name){
+  var t = m3map('exType')[fold(name)]; if(t === 'w' || t === 'bw' || t === 'time') return t;
+  var n = fold(name);
+  if(/lest|weighted/.test(n)) return 'w';
+  if(TIME_RX.test(n)) return 'time';
+  if(BW_RX.test(n)) return 'bw';
+  return 'w';
+}
+/* valeur qui sert aux records et à la progression : 1RM estimé pour la charge, sinon lest d'abord puis reps (ou secondes) */
+function score(name, w, r){
+  if(!r) return 0;
+  return exType(name) === 'w' ? e1rm(w, r) : (w || 0) * 1000 + r;
+}
+function fmtS(name, w, r){
+  var t = exType(name), rr = r == null ? '—' : r;
+  if(t === 'w') return kg(w) + '×' + rr;
+  if(t === 'time') return (w ? '+' + kg(w) + ' kg · ' : '') + rr + ' s';
+  return w ? '+' + kg(w) + '×' + rr : rr + ' reps';
+}
+function tgtTxt(name, w, lo, hi){
+  var t = exType(name), rg = lo + (hi !== lo ? '–' + hi : '');
+  if(t === 'w') return (w != null ? kg(w) + ' kg × ' : '') + rg;
+  return (w ? '+' + kg(w) + ' kg · ' : '') + rg + (t === 'time' ? ' s' : ' reps');
+}
+function wLab(name){ return exType(name) === 'w' ? L('CHARGE', 'WEIGHT') : L('LEST', 'EXTRA'); }
+function rLab(name){ return exType(name) === 'time' ? L('DURÉE', 'TIME') : L('RÉPÉTITIONS', 'REPS'); }
+
+/* ---------- barre et disques ---------- */
+function barW(){ return S.settings.barW || 20; }
+function barOn(name){
+  var v = m3map('exBar')[fold(name)]; if(typeof v === 'boolean') return v;
+  var n = fold(name);
+  if(exType(name) !== 'w' || /halt|machine|poulie|smith|kettle|cable|guide|presse|bulgare|goblet|hack|landmine|elastique/.test(n)) return false;
+  return /barre|squat|souleve|deadlift|developpe couche|developpe incline|developpe militaire|overhead press|military|hip thrust|good morning|bench press|front squat/.test(n);
+}
+function platesTxt(name, W){
+  if(!W || !barOn(name)) return '';
+  var bar = barW();
+  if(W < bar) return L('Moins que la barre seule (', 'Less than the empty bar (') + bar + ' kg)';
+  if(Math.abs(W - bar) < .01) return L('Barre seule · ', 'Empty bar · ') + bar + ' kg';
+  var side = (W - bar) / 2, out = [];
+  [20, 10, 5, 2.5, 1.25].forEach(function(p){ while(side >= p - 1e-6){ out.push(p); side -= p; } });
+  return L('Par côté : ', 'Per side: ') + out.map(kg).join(' + ') + (side > .01 ? ' (≈)' : '') + L(' · barre ', ' · bar ') + bar + ' kg';
+}
+
+/* ---------- échauffement automatique ---------- */
+function autoWarmOn(name){ return !!m3map('autoWarm')[fold(name)]; }
+function genWarm(ex, silent){
+  if(exType(ex.name) !== 'w'){ if(!silent) toast(L('L\'échauffement auto sert aux exercices avec charge', 'Automatic warm-ups are for weighted exercises')); return false; }
+  if(ex.sets.some(function(s){ return s.warm && s.done; }) || ex.sets.some(function(s){ return !s.warm && s.done; })){ if(!silent) toast(L('L\'exercice a déjà commencé', 'This exercise has already started')); return false; }
+  var fw = ex.sets.filter(function(s){ return !s.warm; })[0], W = fw && (fw.w != null ? fw.w : fw.sw);
+  if(!W){ if(!silent) toast(L('Indique d\'abord la charge de ta première série', 'Enter the weight of your first work set first')); return false; }
+  var bar = barOn(ex.name) ? barW() : 0, steps = W >= 60 ? [[0, 10], [.5, 5], [.7, 3], [.85, 1]] : W >= 30 ? [[.5, 8], [.75, 4]] : [[.6, 8]];
+  var out = [], last = 0;
+  steps.forEach(function(st){
+    var w = st[0] === 0 ? bar : Math.max(bar, roundInc(W * st[0]));
+    if(!w || w <= last || w >= W) return;
+    last = w; out.push({lo:st[1], hi:st[1], special:null, warm:true, auto:true, rest:st[0] >= .85 ? 90 : 60, done:false, w:null, r:null, sw:w, sr:st[1]});
+  });
+  if(!out.length){ if(!silent) toast(L('Charge trop légère pour un échauffement', 'Too light for a warm-up')); return false; }
+  ex.sets = out.concat(ex.sets.filter(function(s){ return !s.warm; })); ex.sel = null;
+  return true;
+}
+
+/* ---------- supersets ---------- */
+function ssPartner(i){
+  var x = S.active && S.active.exercises; if(!x || !x[i]) return null;
+  if(x[i].ss && x[i + 1]) return i + 1;
+  if(i > 0 && x[i - 1].ss) return i - 1;
+  return null;
+}
+function hasWork(ex){ return !!ex && ex.sets.some(function(s){ return !s.done && !s.warm; }); }
+/* séances dont la note annonce un superset : on relie les deux exercices une fois, ensuite c'est l'utilisateur qui décide */
+function ssMigrate(){
+  var ch = false;
+  S.programs.forEach(function(p){ p.workouts.forEach(function(w){
+    if(w.ssDone) return; w.ssDone = true; ch = true;
+    w.ex.forEach(function(e, i){ var prev = w.ex[i - 1]; if(w.ex[i + 1] && !(prev && prev.ss) && /superset/i.test(e.cue || '')) e.ss = true; });
+  }); });
+  if(ch) save();
+}
+
+/* ---------- durées ---------- */
+function estDur(w){
+  var past = S.history.filter(function(h){ return h.pid === w.id && !h.demo && h.dur > 600 && h.dur < 4 * 3600; }).slice(-5).map(function(h){ return h.dur; });
+  if(past.length >= 2){ past.sort(function(a, b){ return a - b; }); return past[Math.floor(past.length / 2)]; }
+  var t = 0;
+  w.ex.forEach(function(e, i){ e.s.forEach(function(s, j){ t += s.warm ? 30 : 45; if(j < e.s.length - 1 || i < w.ex.length - 1) t += s.rest || e.rest || 90; }); t += 45; });
+  return t;
+}
+function remainSec(a){
+  var t = 0, ri = restInfo(); if(ri && !ri.over) t += ri.left;
+  a.exercises.forEach(function(e, i){ e.sets.forEach(function(s, j){
+    if(s.done) return; t += s.warm ? 30 : 45;
+    if(j < e.sets.length - 1 || i < a.exercises.length - 1) t += s.rest || (s.warm ? 60 : e.rest) || 90;
+  }); });
+  return t;
+}
+function etaTxt(a){ return hm(Date.now() + remainSec(a) * 1000); }
+function lastAct(a){ var t = a.start; a.exercises.forEach(function(e){ e.sets.forEach(function(s){ if(s.doneAt && s.doneAt > t) t = s.doneAt; }); }); return t; }
+
+/* ---------- séance oubliée ouverte ---------- */
+function staleOn(){ return !!(S.active && !ui.staleOk && ui.screen !== 'done' && Date.now() - lastAct(S.active) > 3 * 3600e3); }
+function vStale(){
+  var a = S.active, t = lastAct(a), n = 0; a.exercises.forEach(function(e){ e.sets.forEach(function(s){ if(s.done) n++; }); });
+  var day = dayKey(a.start) === dayKey(Date.now()) ? '' : L(' le ', ' on ') + fmtDate(a.start);
+  var h = '<div class="pane m3-stale" role="dialog" aria-label="' + L('Séance toujours ouverte', 'Session still open') + '"><div class="m3f-grab"></div>';
+  h += '<span class="m3-eyebrow">' + L('SÉANCE TOUJOURS OUVERTE', 'SESSION STILL OPEN') + '</span><h2>' + esc(trText(a.name)) + '</h2>';
+  h += '<p class="m3s-note">' + (n ? L('Commencée', 'Started') + day + L(' à ', ' at ') + hm(a.start) + L('. Ta dernière série date de ', '. Your last set was at ') + hm(t) + L(' : tu as sans doute oublié d\'appuyer sur Terminer.', ': you probably forgot to tap Finish.') : L('Commencée', 'Started') + day + L(' à ', ' at ') + hm(a.start) + L(', sans aucune série validée.', ', with no set logged.')) + '</p>';
+  if(n) h += '<button class="m3-primary" data-a="stalefin">' + L('Terminer à ', 'Finish at ') + hm(t + 60e3) + ' <span>→</span></button>';
+  h += '<button class="m3-ghost" data-a="staleok">' + L('Reprendre la séance', 'Resume the session') + '</button>';
+  h += '<button class="m3-ghost danger" data-a="staledrop">' + (n ? L('Abandonner sans enregistrer', 'Discard without saving') : L('Abandonner', 'Discard')) + '</button>';
+  return h + '</div>';
+}
+
+/* ---------- remplacer un exercice en cours de séance ---------- */
+function cleanSet(s){ return {lo:s.lo, hi:s.hi, special:s.special || null, warm:!!s.warm, rest:s.rest, done:false, w:null, r:null}; }
+function doReplace(name){
+  var a = S.active, i = a.idx, ex = a.exercises[i], old = ex.name;
+  ui.picker = null;
+  if(fold(name) === fold(old)){ render(); return; }
+  var note = ex.note || lastNote(name, a.pid) || '';
+  if(ex.sets.some(function(s){ return s.done; })){
+    var left = ex.sets.filter(function(s){ return !s.done && !s.warm; });
+    if(!left.length){ toast(L('Cet exercice est déjà terminé', 'This exercise is already done')); render(); return; }
+    /* les séries déjà faites restent sur l'ancien exercice, les séries restantes passent sur le nouveau */
+    var nex = {tpl:ex.tpl, name:name, variants:null, rest:ex.rest, cue:ex.cue, note:note, sel:null, ss:ex.ss, replaced:old, sets:left.map(cleanSet), pre:ex.sets.filter(function(s){ return s.done && !s.auto; }).map(function(s){ return {lo:s.lo, hi:s.hi, special:s.special, warm:s.warm, rest:s.rest, r:s.r}; })};
+    ex.sets = ex.sets.filter(function(s){ return s.done; }); ex.partial = true; ex.tpl = null; ex.ss = false; ex.sel = null;
+    a.exercises.splice(i + 1, 0, nex); a.idx = i + 1;
+    if(a.rest && a.rest.ex > i) a.rest.ex++;
+    fillSuggestions(nex); if(autoWarmOn(name)) genWarm(nex, true);
+  } else {
+    ex.name = name; ex.variants = null; ex.replaced = old; ex.note = note; ex.sel = null;
+    ex.sets = ex.sets.filter(function(s){ return !s.auto; }).map(cleanSet);
+    fillSuggestions(ex); if(autoWarmOn(name)) genWarm(ex, true);
+  }
+  save(); render(); window.scrollTo(0, 0);
+  toast(exDisp(old) + ' → ' + exDisp(name));
+}
+
+/* ---------- pavé numérique (remplace le clavier du téléphone en séance) ---------- */
+function vPad(){
+  var p = ui.pad, ex = cur(); if(!ex){ ui.pad = null; return ''; }
+  var xt = exType(ex.name), isW = p.f === 'w', j = selIndex(ex), s = j != null ? ex.sets[j] : null;
+  var title = isW ? wLab(ex.name) : rLab(ex.name), unit = isW ? 'kg' : (xt === 'time' ? 's' : 'reps');
+  var ph = s ? (isW ? (s.w != null ? kg(s.w) : s.sw != null ? kg(s.sw) : (xt !== 'w' ? '0' : '')) : (s.r != null ? String(s.r) : s.sr != null ? String(s.sr) : '')) : '';
+  var shown = p.v !== '' ? p.v : ph;
+  var h = '<div class="pane m3pad" role="dialog" aria-label="' + esc(title) + '"><div class="m3f-grab"></div>';
+  h += '<div class="m3pad-top"><span class="m3-eyebrow">' + esc(title) + ' · ' + esc(exDisp(ex.name)).toUpperCase() + '</span><button class="m3f-x" data-a="closesheet" aria-label="' + L('Fermer', 'Close') + '">✕</button></div>';
+  h += '<div class="m3pad-val' + (p.v === '' ? ' sug' : '') + '"><b>' + esc(shown || '0') + '</b><small>' + unit + '</small></div>';
+  if(isW && xt === 'w' && barOn(ex.name)) h += '<p class="m3pad-plates">' + (platesTxt(ex.name, num(shown)) || '&nbsp;') + '</p>';
+  var keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', isW ? (isEN() ? '.' : ',') : '', '0', '⌫'];
+  h += '<div class="m3pad-keys">' + keys.map(function(k){ return k ? '<button data-a="padk" data-k="' + k + '"' + (k === '⌫' ? ' aria-label="' + L('Effacer', 'Delete') + '"' : '') + '>' + k + '</button>' : '<span></span>'; }).join('') + '</div>';
+  return h + '<button class="m3pad-ok" data-a="padok">' + L('OK', 'OK') + '</button></div>';
+}
+function padKey(k){
+  var p = ui.pad, v = p.v;
+  if(k === '⌫'){ p.v = v.slice(0, -1); return; }
+  if(k === ',' || k === '.'){ if(/[.,]/.test(v)) return; p.v = (v || '0') + k; return; }
+  if(/[.,]\d{2}$/.test(v) || v.replace(/[.,]/, '').length >= 5) return;
+  p.v = v === '0' ? k : v + k;
+}
+function padOk(){
+  var p = ui.pad, ex = cur(), j = ex ? selIndex(ex) : null; ui.pad = null;
+  if(j == null || p.v === '') return;
+  var s = ex.sets[j], n = num(p.v); if(n == null) return;
+  if(p.f === 'w') s.w = Math.round(n * 100) / 100; else s.r = Math.round(n);
+  s.trend = null; save();
+}
+
+/* ---------- appui long sur + et − : la valeur défile ---------- */
+var lp = null;
+function stepVal(a, d){
+  var ex = cur(), j = ex ? selIndex(ex) : null; if(j == null) return;
+  var s = ex.sets[j];
+  if(a === 'w'){ s.w = Math.max(0, Math.round(((s.w != null ? s.w : (s.sw || 0)) + d * inc()) * 100) / 100); var iw = document.getElementById('in-w'); if(iw){ iw.value = kg(s.w); iw.classList.remove('sug'); } }
+  else { s.r = Math.max(0, (s.r != null ? s.r : (s.sr || 0)) + d * (exType(ex.name) === 'time' ? 5 : 1)); var ir = document.getElementById('in-r'); if(ir){ ir.value = s.r; ir.classList.remove('sug'); } }
+  s.trend = null;
+}
+document.addEventListener('pointerdown', function(ev){
+  var el = ev.target.closest && ev.target.closest('[data-a="w"],[data-a="r"]'); if(!el || !S.active) return;
+  var a = el.getAttribute('data-a'), d = +el.getAttribute('data-d') || 0;
+  if(lp) clearTimeout(lp.t);
+  lp = {n:0, skip:false};
+  lp.t = setTimeout(function tick(){ if(!lp) return; lp.n++; stepVal(a, d); try{ if(navigator.vibrate) navigator.vibrate(4); }catch(e){} lp.t = setTimeout(tick, lp.n > 10 ? 55 : 110); }, 420);
+});
+function lpEnd(){ if(!lp) return; clearTimeout(lp.t); if(lp.n){ lp.skip = true; save(); render(); setTimeout(function(){ lp = null; }, 400); } else lp = null; }
+document.addEventListener('pointerup', lpEnd); document.addEventListener('pointercancel', lpEnd);
+document.addEventListener('contextmenu', function(ev){ if(ev.target.closest && ev.target.closest('[data-a="w"],[data-a="r"]')) ev.preventDefault(); });
+
+/* ---------- journal : records, séances modifiables, séance oubliée ---------- */
+function histById(id){ return S.history.filter(function(x){ return x.id === id; })[0] || null; }
+function sortHist(){ S.history.sort(function(a, b){ return a.date - b.date; }); }
+function recomputePRs(){
+  sortHist();
+  var best = {};
+  S.history.forEach(function(h){
+    var prs = [];
+    h.exercises.forEach(function(e){
+      var b = 0; e.sets.forEach(function(s){ if(!s.warm) b = Math.max(b, score(e.name, s.w, s.r)); });
+      if(b > 0 && best[e.name] > 0 && b > best[e.name] && prs.indexOf(e.name) < 0) prs.push(e.name);
+      if(b > (best[e.name] || 0)) best[e.name] = b;
+    });
+    h.prs = prs;
+  });
+}
+function recData(){
+  var best = {};
+  S.history.forEach(function(h){ h.exercises.forEach(function(e){ e.sets.forEach(function(s){ if(s.warm) return; var v = score(e.name, s.w, s.r); if(v > 0 && (!best[e.name] || v > best[e.name].v)) best[e.name] = {v:v, d:h.date, w:s.w, r:s.r}; }); }); });
+  return {best:best, names:Object.keys(best).sort(function(a, b){ return best[b].d - best[a].d || a.localeCompare(b); })};
+}
+function recRows(rd, list){
+  if(!list.length) return '<div class="m3-empty">' + L('Aucun exercice ne correspond.', 'No exercise matches.') + '</div>';
+  return list.map(function(n){ var b = rd.best[n]; return '<button class="m3-record" data-a="fiche" data-n="' + esc(n) + '"><span>' + esc(exDisp(n)) + '<small>' + L('Record du ', 'Record on ') + fmtDate(b.d) + '</small></span><b>' + fmtS(n, b.w, b.r) + '</b></button>'; }).join('');
+}
+function m3RecSection(){
+  var rd = recData(), q = fold(ui.recQ || ''), list = q ? rd.names.filter(function(n){ return fold(exDisp(n) + ' ' + n).indexOf(q) >= 0; }) : rd.names;
+  var shown = ui.allRec || q ? list : list.slice(0, 8);
+  var h = '<section class="m3-block"><div class="m3-section-head"><span>' + L('RECORDS · LES PLUS RÉCENTS D\'ABORD', 'RECORDS · MOST RECENT FIRST') + '</span><b>' + rd.names.length + '</b></div>';
+  if(rd.names.length > 8 && (ui.allRec || q)) h += '<input class="field m3-recq" data-q="rec" value="' + esc(ui.recQ || '') + '" placeholder="' + L('Chercher un exercice…', 'Find an exercise…') + '" autocomplete="off" autocapitalize="off" aria-label="' + L('Chercher un record', 'Find a record') + '">';
+  h += '<div id="rec-res">' + (rd.names.length ? recRows(rd, shown) : '<div class="m3-empty">' + L('Tes records apparaîtront après tes premières séances.', 'Your records will show up after your first sessions.') + '</div>') + '</div>';
+  if(rd.names.length > 8) h += '<button class="m3-more" data-a="recall">' + (ui.allRec ? L('Réduire', 'Show less') : L('Tout voir et chercher (', 'See all and search (') + rd.names.length + ')') + '</button>';
+  return h + '</section>';
+}
+document.addEventListener('input', function(ev){
+  if(!ev.target.getAttribute || ev.target.getAttribute('data-q') !== 'rec') return;
+  ui.recQ = ev.target.value;
+  var rd = recData(), q = fold(ui.recQ), list = q ? rd.names.filter(function(n){ return fold(exDisp(n) + ' ' + n).indexOf(q) >= 0; }) : rd.names;
+  var box = document.getElementById('rec-res'); if(box) box.innerHTML = trHTML(recRows(rd, list));
+});
+
+function histTools(s){
+  if(ui.confirm === 'hdel:' + s.id) return '<div class="m3he-confirm">' + m3sConfirm(L('Supprimer cette séance du journal ? Ses séries ne compteront plus dans tes records ni dans la progression.', 'Delete this session from your log? Its sets will no longer count toward records or progression.'), 'hdel', L('Supprimer', 'Delete')).replace('data-a="hdel"', 'data-a="hdel" data-id="' + s.id + '"') + '</div>';
+  return '<div class="m3he-tools"><button data-a="hedit" data-id="' + s.id + '">✎ ' + L('Modifier', 'Edit') + '</button><button data-a="askhdel" data-id="' + s.id + '">' + L('Supprimer', 'Delete') + '</button></div>';
+}
+function histEditor(s){
+  var d = new Date(s.date), dv = d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()), t = new Date(), tv = t.getFullYear() + '-' + pad2(t.getMonth() + 1) + '-' + pad2(t.getDate());
+  var at = ' data-id="' + s.id + '"';
+  var h = '<div class="m3he">';
+  h += '<div class="m3he-top"><span class="m3-eyebrow">' + L('MODIFIER LA SÉANCE', 'EDIT SESSION') + '</span><button class="m3he-done" data-a="hdone">' + L('Terminé', 'Done') + '</button></div>';
+  h += '<label class="m3he-f"><small>' + L('NOM', 'NAME') + '</small><input class="field" data-he="name"' + at + ' value="' + esc(s.name) + '" autocomplete="off"></label>';
+  h += '<div class="m3he-two"><label class="m3he-f"><small>' + L('DATE', 'DATE') + '</small><input class="field" type="date" data-he="date"' + at + ' value="' + dv + '" max="' + tv + '"></label><label class="m3he-f"><small>' + L('DURÉE (MIN)', 'LENGTH (MIN)') + '</small><input class="field" inputmode="numeric" data-he="dur"' + at + ' value="' + Math.round((s.dur || 0) / 60) + '"></label></div>';
+  s.exercises.forEach(function(e, ei){
+    var xt = exType(e.name), k = 0, ea = at + ' data-e="' + ei + '"';
+    h += '<div class="m3he-ex"><div class="m3he-exh"><b>' + esc(exDisp(e.name)) + '</b><button data-a="hexdel"' + ea + '>' + L('Retirer', 'Remove') + '</button></div>';
+    h += '<div class="m3he-row m3he-lbl"><span></span><small>' + (xt === 'w' ? 'KG' : L('LEST (KG)', 'EXTRA (KG)')) + '</small><small>' + (xt === 'time' ? L('SECONDES', 'SECONDS') : 'REPS') + '</small><span></span></div>';
+    e.sets.forEach(function(x, si){
+      var sa = ea + ' data-s="' + si + '"';
+      h += '<div class="m3he-row"><button class="m3he-tag' + (x.warm ? ' warm' : '') + '" data-a="hwarm"' + sa + ' aria-label="' + L('Échauffement ou série de travail', 'Warm-up or work set') + '">' + (x.warm ? 'W' : ++k) + '</button><input class="field" inputmode="decimal" data-he="w"' + sa + ' value="' + (x.w != null ? kg(x.w) : '') + '" placeholder="' + (xt === 'w' ? '—' : '0') + '" aria-label="' + (xt === 'w' ? L('Charge', 'Weight') : L('Lest', 'Extra weight')) + '"><input class="field" inputmode="numeric" data-he="r"' + sa + ' value="' + (x.r != null ? x.r : '') + '" placeholder="—" aria-label="' + (xt === 'time' ? L('Secondes', 'Seconds') : 'Reps') + '"><button class="m3he-x" data-a="hsdel"' + sa + ' aria-label="' + L('Supprimer la série', 'Delete set') + '">✕</button></div>';
+    });
+    h += '<button class="m3he-add" data-a="hsadd"' + ea + '>+ ' + L('Série', 'Set') + '</button></div>';
+  });
+  h += '<button class="m3he-add big" data-a="hexadd"' + at + '>+ ' + L('Ajouter un exercice', 'Add an exercise') + '</button>';
+  h += '<p class="m3s-note">' + L('Chaque changement est gardé tout de suite. Les séries laissées vides sont retirées quand tu touches Terminé. Records et progression se recalculent.', 'Every change is kept right away. Empty sets are removed when you tap Done. Records and progression are recalculated.') + '</p>';
+  return h + '</div>';
+}
+function finishHistEdit(){
+  var rec = histById(ui.hEdit); ui.hEdit = null; ui.confirm = null;
+  if(!rec) return;
+  rec.exercises.forEach(function(e){
+    var bw = exType(e.name) !== 'w';
+    e.sets = e.sets.filter(function(x){ return x.r != null && x.r > 0 && (x.w != null || bw); });
+    e.sets.forEach(function(x){ if(x.w == null) x.w = 0; });
+  });
+  rec.exercises = rec.exercises.filter(function(e){ return e.sets.length; });
+  if(!rec.exercises.length){ S.history = S.history.filter(function(x){ return x !== rec; }); if(!S.history.some(function(x){ return dayKey(x.date) === ui.daySheet; })) ui.daySheet = null; toast(L('Séance vide retirée du journal', 'Empty session removed from your log')); }
+  else toast(L('Séance mise à jour', 'Session updated'));
+  recomputePRs(); save();
+}
+document.addEventListener('change', function(ev){
+  var f = ev.target.getAttribute && ev.target.getAttribute('data-he'); if(!f) return;
+  var rec = histById(ev.target.getAttribute('data-id')); if(!rec) return;
+  var v = ev.target.value;
+  if(f === 'name'){ if(v.trim()) rec.name = v.trim(); }
+  else if(f === 'date'){
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v); if(!m) return;
+    var od = new Date(rec.date), nd = new Date(+m[1], +m[2] - 1, +m[3], od.getHours(), od.getMinutes()).getTime();
+    if(nd > Date.now()){ toast(L('Une séance ne peut pas être dans le futur', 'A session can\'t be in the future')); render(); return; }
+    rec.date = nd; ui.daySheet = dayKey(nd);
+  }
+  else if(f === 'dur'){ var mn = num(v); if(mn != null && mn > 0) rec.dur = Math.round(mn * 60); }
+  else {
+    var e = rec.exercises[+ev.target.getAttribute('data-e')], x = e && e.sets[+ev.target.getAttribute('data-s')]; if(!x) return;
+    var nv = num(v); if(f === 'w') x.w = nv == null ? null : Math.max(0, nv); else x.r = nv == null ? null : Math.max(0, Math.round(nv));
+  }
+  recomputePRs(); save();
+  if(f === 'date') render();
+});
+
+function vAddPast(){
+  var o = ui.addPast, opts = '';
+  S.programs.forEach(function(p){ if(p.demo) return; p.workouts.forEach(function(w){ opts += '<option value="' + w.id + '"' + (o.wid === w.id ? ' selected' : '') + '>' + esc(trText(w.name)) + ' · ' + esc(p.free ? L('Séances libres', 'Free sessions') : trText(p.name)) + '</option>'; }); });
+  opts += '<option value=""' + (!o.wid ? ' selected' : '') + '>' + L('Séance vide (j\'ajoute les exercices)', 'Empty session (I add the exercises)') + '</option>';
+  var t = new Date(), tv = t.getFullYear() + '-' + pad2(t.getMonth() + 1) + '-' + pad2(t.getDate());
+  var h = '<div class="pane m3-addpast" role="dialog" aria-label="' + L('Ajouter une séance oubliée', 'Add a missed session') + '"><div class="m3f-grab"></div>';
+  h += '<div class="m3pad-top"><span class="m3-eyebrow">' + L('JOURNAL', 'LOG') + '</span><button class="m3f-x" data-a="closesheet" aria-label="' + L('Fermer', 'Close') + '">✕</button></div>';
+  h += '<h2>' + L('Une séance oubliée ?', 'Forgot to log a session?') + '</h2><p class="m3s-note">' + L('Choisis la séance et le jour : elle est pré-remplie avec tes dernières charges, tu ajustes ensuite série par série.', 'Pick the session and the day: it\'s prefilled with your last weights, then you adjust set by set.') + '</p>';
+  h += '<label class="m3he-f"><small>' + L('SÉANCE', 'SESSION') + '</small><select class="field" id="ap-wk">' + opts + '</select></label>';
+  h += '<label class="m3he-f"><small>' + L('JOUR', 'DAY') + '</small><input class="field" type="date" id="ap-date" value="' + esc(o.date) + '" max="' + tv + '"></label>';
+  return h + '<button class="m3-primary" data-a="pastok">' + L('Créer et compléter', 'Create and fill in') + ' <span>→</span></button></div>';
+}
+function pastCreate(){
+  var wid = (document.getElementById('ap-wk') || {}).value || '', dv = (document.getElementById('ap-date') || {}).value || '';
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dv); if(!m){ toast(L('Choisis un jour', 'Pick a day')); return false; }
+  var ts = new Date(+m[1], +m[2] - 1, +m[3], 18, 0).getTime();
+  if(dayKey(ts) > dayKey(Date.now())){ toast(L('Une séance ne peut pas être dans le futur', 'A session can\'t be in the future')); return false; }
+  if(dayKey(ts) === dayKey(Date.now()) && ts > Date.now()) ts = Date.now() - 3600e3;
+  var w = wid ? prog(wid) : null, before = S.history.filter(function(h){ return h.date < ts; });
+  var lastOf = function(name){ for(var i = before.length - 1; i >= 0; i--){ var e = before[i].exercises.filter(function(x){ return x.name === name; })[0]; if(e) return e.sets.filter(function(s){ return !s.warm; }); } return []; };
+  var rec = {id:'s' + Date.now(), date:ts, pid:w ? w.id : null, name:w ? w.name : L('Séance', 'Session'), dur:w ? estDur(w) : 3600, added:true, prs:[], exercises:[]};
+  if(w) w.ex.forEach(function(e){
+    var prev = lastOf(e.name), k = 0;
+    rec.exercises.push({name:e.name, note:'', sets:e.s.filter(function(t){ return !t.warm; }).map(function(t){ var p = prev[k++]; return {w:p ? p.w : null, r:p ? p.r : t.lo, warm:false, special:t.sp || null, lo:t.lo, hi:t.hi, rest:null}; })});
+  });
+  S.history.push(rec); recomputePRs(); save();
+  ui.addPast = null; ui.screen = 'hist'; ui.daySheet = dayKey(ts); ui.hEdit = rec.id;
+  if(!w){ ui.pickHist = {id:rec.id, day:ui.daySheet}; ui.daySheet = null; ui.picker = {ctx:'hist'}; ui.pickQ = ''; }
+  return true;
+}
+function histAddEx(name){
+  var ph = ui.pickHist, rec = ph && histById(ph.id); ui.picker = null; ui.pickHist = null;
+  if(rec){ rec.exercises.push({name:name, note:'', sets:[0, 1, 2].map(function(){ return {w:null, r:null, warm:false, special:null}; })}); ui.daySheet = ph.day; ui.hEdit = rec.id; save(); }
+  render(); toast(exDisp(name) + L(' ajouté', ' added'));
+}
+
+/* ---------- réglages de l'exercice, dans sa fiche ---------- */
+function m3fSettings(name){
+  var t = exType(name), n = esc(name);
+  var sw = function(a, title, sub, on){ return '<button class="m3s-row" data-a="' + a + '" data-n="' + n + '"><span>' + title + '<small>' + sub + '</small></span><b class="m3-sw' + (on ? ' on' : '') + '" aria-hidden="true"><i></i></b></button>'; };
+  var h = '<section class="m3f-sec"><div class="m3s-lbl">' + L('RÉGLAGES DE L\'EXERCICE', 'EXERCISE SETTINGS') + '</div>';
+  h += '<div class="m3-seg" role="group" aria-label="' + L('Type d\'exercice', 'Exercise type') + '">' + [['w', L('Charge', 'Weight')], ['bw', L('Poids du corps', 'Bodyweight')], ['time', L('Durée', 'Time')]].map(function(o){ return '<button class="' + (t === o[0] ? 'on' : '') + '" data-a="extype" data-n="' + n + '" data-v="' + o[0] + '" aria-pressed="' + (t === o[0]) + '">' + o[1] + '</button>'; }).join('') + '</div>';
+  h += '<p class="m3s-note">' + (t === 'w' ? L('Charge × reps. En haut de la fourchette, la progression ajoute du poids.', 'Weight × reps. At the top of the range, progression adds weight.') : t === 'bw' ? L('Au poids du corps, avec un lest si tu veux. La progression ajoute des reps, jamais de poids d\'office. Les records comptent le lest, puis les reps.', 'Bodyweight, with extra weight if you like. Progression adds reps, never weight on its own. Records count the extra weight, then reps.') : L('En secondes, avec un lest si tu veux. La progression ajoute 5 s à chaque fois que tu tiens la durée visée.', 'In seconds, with extra weight if you like. Progression adds 5 s each time you hold the target.')) + '</p>';
+  if(t === 'w'){
+    h += '<div class="m3s-list">' + sw('exbar', L('Calcul des disques', 'Plate calculator'), L('Les disques à mettre de chaque côté de la barre, sous la charge', 'The plates to load on each side, under the weight'), barOn(name)) + sw('exwarm', L('Échauffement automatique', 'Automatic warm-up'), L('Une montée en charge avant la première série, à chaque séance', 'A ramp-up before the first set, every session'), autoWarmOn(name)) + '</div>';
+    if(barOn(name)) h += '<div class="m3-seg" role="group" aria-label="' + L('Poids de la barre', 'Bar weight') + '" style="margin-top:10px">' + [20, 15, 10].map(function(v){ return '<button class="' + (barW() === v ? 'on' : '') + '" data-a="barw" data-v="' + v + '">' + L('Barre ', 'Bar ') + v + ' kg</button>'; }).join('') + '</div>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- actions de la 1.15 : écoutées avant le moteur principal ---------- */
+document.addEventListener('click', function(ev){
+  var el = ev.target.closest && ev.target.closest('[data-a],[data-pad]'); if(!el) return;
+  if(lp && lp.skip && el.closest('[data-a="w"],[data-a="r"]')){ ev.stopPropagation(); ev.preventDefault(); return; }
+  var stop = function(){ ev.stopPropagation(); ev.preventDefault(); render(); };
+  var pd = el.getAttribute('data-pad');
+  if(pd && S.active){ ui.pad = {f:pd, v:''}; return stop(); }
+  var a = el.getAttribute('data-a'), ex = cur(), d = +el.getAttribute('data-d') || 0, j, s, rec, rr;
+  switch(a){
+    case 'closesheet':
+      if(el.classList.contains('sheet') && ev.target !== el) return;
+      ui.pad = null; ui.addPast = null;
+      if(ui.hEdit) finishHistEdit();
+      if(ui.picker && ui.pickHist){ ui.picker = null; ui.daySheet = ui.pickHist.day; ui.hEdit = ui.pickHist.id; ui.pickHist = null; return stop(); }
+      return;
+    case 'skip': ui.fixLast = false; return;
+    case 'sel':
+      if(!S.active) return; j = +el.getAttribute('data-j'); s = ex.sets[j];
+      if(s && s.done){ s.done = false; s.redo = true; ex.sel = j; save(); return stop(); }
+      return;
+    case 'reopen':
+      j = +el.getAttribute('data-j'); s = ex && ex.sets[j]; if(!s) return;
+      s.done = false; s.redo = true; ex.sel = j; ui.fixLast = false; save(); return stop();
+    case 'fixlast': ui.fixLast = true; return stop();
+    case 'fixok': ui.fixLast = false; toast(L('Série corrigée', 'Set corrected')); return stop();
+    case 'fxw': case 'fxr':
+      rr = S.active && S.active.rest; s = rr && S.active.exercises[rr.ex] && S.active.exercises[rr.ex].sets[rr.set]; if(!s) return stop();
+      if(a === 'fxw') s.w = Math.max(0, Math.round(((s.w || 0) + d * inc()) * 100) / 100);
+      else s.r = Math.max(0, (s.r || 0) + d * (exType(S.active.exercises[rr.ex].name) === 'time' ? 5 : 1));
+      save(); return stop();
+    case 'repl': if(!S.active) return; ui.picker = {ctx:'replace'}; ui.pickQ = ''; ui.sheet = null; return stop();
+    case 'autowarm':
+      if(ex && genWarm(ex)){ m3map('autoWarm')[fold(ex.name)] = true; save(); toast(L('Échauffement ajouté. Il reviendra à chaque séance (réglable dans la fiche).', 'Warm-up added. It will come back every session (change it in the info sheet).')); }
+      return stop();
+    case 'extype':
+      m3map('exType')[fold(el.getAttribute('data-n'))] = el.getAttribute('data-v');
+      if(S.active) S.active.exercises.forEach(function(e){ if(fold(e.name) === fold(el.getAttribute('data-n'))) fillSuggestions(e); });
+      recomputePRs(); save(); return stop();
+    case 'exbar': m3map('exBar')[fold(el.getAttribute('data-n'))] = !barOn(el.getAttribute('data-n')); save(); return stop();
+    case 'exwarm': var wk = fold(el.getAttribute('data-n')), aw = m3map('autoWarm'); if(aw[wk]) delete aw[wk]; else aw[wk] = true; save(); return stop();
+    case 'barw': S.settings.barW = +el.getAttribute('data-v'); save(); return stop();
+    case 'exss':
+      var tw = ui.edWk && prog(ui.edWk), ti = +el.getAttribute('data-i'), te = tw && tw.ex[ti]; if(!te) return stop();
+      te.ss = !te.ss; tw.ssDone = true;
+      if(te.ss){ if(tw.ex[ti - 1]) tw.ex[ti - 1].ss = false; if(tw.ex[ti + 1]) tw.ex[ti + 1].ss = false; }
+      save(); return stop();
+    case 'stalefin': ev.stopPropagation(); ev.preventDefault(); finish(lastAct(S.active) + 60e3); return;
+    case 'staleok': ui.staleOk = true; return stop();
+    case 'staledrop': S.active = null; ui.confirm = null; ui.screen = 'home'; ui.staleOk = false; save(); releaseWake(); toast(L('Séance abandonnée', 'Session discarded')); return stop();
+    case 'padk': if(ui.pad) padKey(el.getAttribute('data-k')); return stop();
+    case 'padok': if(ui.pad) padOk(); return stop();
+    case 'recall': ui.allRec = !ui.allRec; if(!ui.allRec) ui.recQ = ''; return stop();
+    case 'addpast': var nx = m3kTodayWorkout ? m3kTodayWorkout() : null, yd = new Date(Date.now() - 864e5); ui.addPast = {wid:nx ? nx.id : '', date:yd.getFullYear() + '-' + pad2(yd.getMonth() + 1) + '-' + pad2(yd.getDate())}; return stop();
+    case 'pastok': pastCreate(); return stop();
+    case 'hedit': if(ui.hEdit && ui.hEdit !== el.getAttribute('data-id')) finishHistEdit(); ui.hEdit = el.getAttribute('data-id'); ui.confirm = null; return stop();
+    case 'hdone': finishHistEdit(); return stop();
+    case 'askhdel': ui.confirm = 'hdel:' + el.getAttribute('data-id'); return stop();
+    case 'hdel':
+      rec = histById(el.getAttribute('data-id')); if(!rec) return stop();
+      S.history = S.history.filter(function(x){ return x !== rec; }); try{ dropPhoto(rec.id); }catch(e){}
+      ui.confirm = null; ui.hEdit = null; if(!S.history.some(function(x){ return dayKey(x.date) === ui.daySheet; })) ui.daySheet = null;
+      recomputePRs(); save(); toast(L('Séance supprimée', 'Session deleted')); return stop();
+    case 'hsadd': case 'hsdel': case 'hwarm': case 'hexdel':
+      rec = histById(el.getAttribute('data-id')); var he = rec && rec.exercises[+el.getAttribute('data-e')]; if(!he) return stop();
+      var hs = +el.getAttribute('data-s');
+      if(a === 'hsadd'){ var lw = he.sets.filter(function(x){ return !x.warm; }).slice(-1)[0]; he.sets.push({w:lw ? lw.w : null, r:lw ? lw.r : null, warm:false, special:null}); }
+      else if(a === 'hsdel') he.sets.splice(hs, 1);
+      else if(a === 'hwarm'){ if(he.sets[hs]) he.sets[hs].warm = !he.sets[hs].warm; }
+      else rec.exercises.splice(+el.getAttribute('data-e'), 1);
+      recomputePRs(); save(); return stop();
+    case 'hexadd': ui.pickHist = {id:el.getAttribute('data-id'), day:ui.daySheet}; ui.daySheet = null; ui.picker = {ctx:'hist'}; ui.pickQ = ''; return stop();
+  }
+}, true);
+
+if(!S.settings.exType) S.settings.exType = {};
+ssMigrate();
 
 render();
 })();
