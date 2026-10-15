@@ -245,14 +245,14 @@ body .m3-band button{color:var(--m3-card,#FFFDF9)!important;border:1px solid col
 .m3-band-bar i{display:block;height:100%;border-radius:99px;background:var(--m3-card,#FFFDF9);transition:width .25s linear}
 body .m3-band-bot>button{border:0!important;font-size:10px!important;letter-spacing:.1em;padding:0 4px!important}
 .m3-band-over{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;opacity:.85}
-.m3-pin{position:fixed;z-index:35;left:50%;top:calc(env(safe-area-inset-top,0px) + 8px);transform:translate(-50%,-160%);width:min(496px,calc(100vw - 24px));box-sizing:border-box;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:6px 8px 6px 16px;border-radius:20px;background:var(--m3-ink);color:var(--m3-card,#FFFDF9);box-shadow:0 10px 28px rgba(0,0,0,.2);transition:transform .28s cubic-bezier(.2,.8,.2,1),background .3s;pointer-events:none}
+.m3-pin{position:fixed;z-index:35;left:50%;top:calc(env(safe-area-inset-top,0px) + 6px);transform:translate(-50%,-160%);width:min(496px,calc(100vw - 20px));box-sizing:border-box;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;padding:8px 10px 8px 18px;border-radius:20px;background:var(--m3-ink);color:var(--m3-card,#FFFDF9);box-shadow:0 10px 28px rgba(0,0,0,.2);transition:transform .28s cubic-bezier(.2,.8,.2,1),background .3s;pointer-events:none}
 .m3-pin.show{transform:translate(-50%,0);pointer-events:auto}
 .m3-pin.over{background:var(--m3-accent)}
 body .m3-pin button{color:var(--m3-card,#FFFDF9)!important;border:0!important;background:transparent!important;min-height:44px!important;padding:0!important}
-.m3-pin-go{display:flex!important;align-items:baseline;gap:10px}
+.m3-pin-go{display:flex!important;flex-direction:column;align-items:flex-start!important;gap:2px}
 .m3-pin-l{font-size:9px;font-weight:800;letter-spacing:.14em;opacity:.7}
-.m3-pin-go strong{font-size:34px;font-weight:800;letter-spacing:-.05em;font-variant-numeric:tabular-nums;line-height:1}
-.m3-pin-bar{height:5px;border-radius:99px;background:color-mix(in srgb,var(--m3-card,#fff) 20%,transparent);overflow:hidden}.m3-pin-bar i{display:block;height:100%;background:var(--m3-card,#FFFDF9);border-radius:99px;transition:width .25s linear}
+.m3-pin-go strong{font-size:56px;line-height:.9!important;font-weight:800;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.m3-pin-bar{height:8px;border-radius:99px;background:color-mix(in srgb,var(--m3-card,#fff) 20%,transparent);overflow:hidden}.m3-pin-bar i{display:block;height:100%;background:var(--m3-card,#FFFDF9);border-radius:99px;transition:width .25s linear}
 body .m3-pin .m3-pin-skip{font-size:10px!important;font-weight:800!important;letter-spacing:.1em;padding:0 10px!important;border:1px solid color-mix(in srgb,var(--m3-card,#fff) 35%,transparent)!important;border-radius:14px!important}
 @media(max-width:360px){.m3-band-n{font-size:78px}}
 /* widget sheet */
