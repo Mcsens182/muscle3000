@@ -1486,6 +1486,18 @@ function renameEx(old, nn){
   if(moved) recomputePRs();
   return moved;
 }
+/* noms d'exercices qui n'existent plus que dans l'historique (renommés avant, ou retirés du programme) */
+function orphanNames(name){
+  var used = {}, cnt = {}, fn = fold(name);
+  (S.programs || []).forEach(function(p){ (p.workouts || []).forEach(function(w){ (w.ex || []).forEach(function(e){ used[e.name] = 1; (e.v || []).forEach(function(v){ used[v] = 1; }); }); }); });
+  if(S.active) S.active.exercises.forEach(function(e){ used[e.name] = 1; });
+  S.history.forEach(function(h){ var seen = {}; (h.exercises || []).forEach(function(e){ if(!seen[e.name]){ seen[e.name] = 1; cnt[e.name] = (cnt[e.name] || 0) + 1; } }); });
+  var words = fn.split(' ').filter(function(w){ return w.length > 2; });
+  return Object.keys(cnt).filter(function(n){ return n !== name && !used[n]; }).map(function(n){
+    var fo = fold(n), sim = words.filter(function(w){ return fo.indexOf(w) >= 0; }).length;
+    return {n:n, c:cnt[n], sim:sim};
+  }).sort(function(a, b){ return b.sim - a.sim || b.c - a.c || a.n.localeCompare(b.n); });
+}
 function pastEntries(name){
   var out = [];
   for(var i = S.history.length - 1; i >= 0; i--){
@@ -3377,6 +3389,21 @@ function vFiche(name){
   h += '<section class="m3f-stats"><div><small>' + (xt === 'w' ? L('1RM EST.', 'EST. 1RM') : xt === 'time' ? L('DURÉE MAX', 'TOP TIME') : L('REPS MAX', 'TOP REPS')) + '</small><b>' + (xt === 'w' ? (b.e ? Math.round(b.e) : '—') : (b.r != null ? b.r + (xt === 'time' ? ' s' : '') : '—')) + '</b></div><div><small>' + L('MEILLEURE SÉRIE', 'BEST SET') + '</small><b>' + (b.w != null ? fmtS(name, b.w, b.r) : '—') + '</b></div><div><small>' + (xt === 'w' ? L('VOLUME MAX', 'TOP VOLUME') : L('SÉANCES', 'SESSIONS')) + '</small><b>' + (xt === 'w' ? (vmax ? (vmax >= 1000 ? kg(Math.round(vmax / 100) / 10) + ' t' : kg(vmax)) : '—') : past.length) + '</b></div></section>';
   h += '<section class="m3f-sec"><div class="m3s-lbl">' + L('DERNIÈRES SÉANCES', 'RECENT SESSIONS') + '</div>' + (past.length ? '<div class="m3f-list">' + past.slice(0, 6).map(function(p){ return '<div><span>' + fmtDate(p.date) + '</span><b>' + p.sets.map(function(x){ return fmtS(name, x.w, x.r); }).join(' · ') + '</b></div>'; }).join('') + '</div>' : '<p class="m3s-note">' + L('Pas encore d\'historique sur cet exercice.', 'No history on this exercise yet.') + '</p>') + '</section>';
   h += m3fSettings(name);
+  var orph = orphanNames(name);
+  if(orph.length){
+    h += '<section class="m3f-sec"><div class="m3s-lbl">' + L('ANCIENS NOMS', 'OLD NAMES') + '</div>';
+    if(ui.confirm && ui.confirm.indexOf('merge:') === 0){
+      var on = ui.confirm.slice(6), oc = (orph.filter(function(o){ return o.n === on; })[0] || {}).c || 0;
+      h += m3sConfirm((oc > 1 ? L('Les ', 'The ') + oc + L(' séances enregistrées sous « ', ' sessions logged as “') : L('La séance enregistrée sous « ', 'The session logged as “')) + esc(exDisp(on)) + (oc > 1 ? L(' » passeront sous « ', '” will move to “') : L(' » passera sous « ', '” will move to “')) + esc(exDisp(name)) + L(' ».', '”.'), 'domerge', L('Rattacher', 'Merge')).replace('data-a="domerge"', 'data-a="domerge" data-o="' + esc(on) + '" data-n="' + esc(name) + '"');
+    } else if(!ui.mergeOpen){
+      h += '<div class="m3s-list"><button class="m3s-row" data-a="mergeopen"><span>' + L('Rattacher des séances passées', 'Attach past sessions') + '<small>' + L('Si tu as fait cet exo sous un autre nom avant', 'If you logged this exercise under another name before') + '</small></span><b>›</b></button></div>';
+    } else {
+      h += '<p class="m3s-note">' + L('Exercices qui n\'existent plus que dans ton journal. Touche celui qui correspond à « ', 'Exercises that only exist in your log now. Tap the one that matches “') + esc(exDisp(name)) + L(' » pour récupérer ses séances.', '” to bring its sessions over.') + '</p><div class="m3s-list">' + orph.map(function(o){
+        return '<button class="m3s-row" data-a="askmerge" data-o="' + esc(o.n) + '"><span>' + esc(exDisp(o.n)) + '<small>' + o.c + L(' séance', ' session') + (o.c > 1 ? 's' : '') + '</small></span><b>+</b></button>';
+      }).join('') + '</div>';
+    }
+    h += '</section>';
+  }
   var custom = S.customEx.filter(function(c){ return fold(c.n) === fold(name); })[0];
   if(custom){
     var usedIn = [];
@@ -4200,8 +4227,14 @@ document.addEventListener('click', function(ev){
     case 'fiche':
       /* opened from a past séance: remember it (and where we were in it) so the fiche can go back */
       if(ui.daySheet){ var dp = document.querySelector('.sheet .pane'); ui.ficheFrom = ui.daySheet; ui.dayScroll = dp ? dp.scrollTop : 0; } else ui.ficheFrom = null;
-      ui.sheet = el.getAttribute('data-n') || (ex && ex.name); ui.daySheet = null; ui.confirm = null; render();
+      ui.sheet = el.getAttribute('data-n') || (ex && ex.name); ui.daySheet = null; ui.confirm = null; ui.mergeOpen = false; render();
       var fp = document.querySelector('.sheet .pane'); if(fp) fp.scrollTop = 0; return;
+    case 'mergeopen': ui.mergeOpen = true; render(); return;
+    case 'askmerge': ui.confirm = 'merge:' + el.getAttribute('data-o'); render(); return;
+    case 'domerge':
+      var mo = el.getAttribute('data-o'), mn = el.getAttribute('data-n'), mc = renameEx(mo, mn);
+      ui.confirm = null; ui.mergeOpen = false; save(); render();
+      toast(mc === 1 ? L('1 séance rattachée', '1 session attached') : mc + L(' séances rattachées', ' sessions attached')); return;
     case 'ficheback':
       ui.daySheet = ui.ficheFrom; ui.ficheFrom = null; ui.sheet = null; ui.confirm = null; render();
       var bp = document.querySelector('.sheet .pane'); if(bp) bp.scrollTop = ui.dayScroll || 0; return;
