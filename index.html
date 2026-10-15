@@ -3512,9 +3512,9 @@ document.addEventListener('click', function(ev){
     case 'wgadd': ui.wSheet = {i:-1, k:null, z:'s'}; break;
     case 'wgpick': if(ui.wSheet){ ui.wSheet.k = el.getAttribute('data-k'); } m3wRerender(); return;
     case 'wgsize': if(ui.wSheet) ui.wSheet.z = el.getAttribute('data-z'); m3wRerender(); return;
-    case 'wgmove': if(ui.wSheet && ui.wSheet.i >= 0){ var wl = m3wList(), wn = ui.wSheet.i + d; if(wn >= 0 && wn < wl.length){ var wt = wl[wn]; wl[wn] = wl[ui.wSheet.i]; wl[ui.wSheet.i] = wt; ui.wSheet.i = wn; save(); } } m3wRerender(); return;
+    case 'wgmove': if(ui.wSheet && ui.wSheet.i >= 0){ var wl = m3wList(), wn = ui.wSheet.i + d; if(wn >= 0 && wn < wl.length){ var wt = wl[wn]; wl[wn] = wl[ui.wSheet.i]; wl[ui.wSheet.i] = wt; ui.wSheet.i = wn; wl.forEach(function(x){ delete x.c; delete x.r; }); save(); } } m3wRerender(); return;
     case 'wgdel': if(ui.wSheet && ui.wSheet.i >= 0){ m3wList().splice(ui.wSheet.i, 1); save(); toast('Widget retiré'); } ui.wSheet = null; break;
-    case 'wgsave': if(ui.wSheet && ui.wSheet.k){ var wl2 = m3wList(), wv = {k:ui.wSheet.k, z:ui.wSheet.z}; if(ui.wSheet.i >= 0) wl2[ui.wSheet.i] = wv; else wl2.push(wv); save(); toast(ui.wSheet.i >= 0 ? 'Widget modifié' : 'Widget ajouté'); } ui.wSheet = null; break;
+    case 'wgsave': if(ui.wSheet && ui.wSheet.k){ var wl2 = m3wList(), wv = {k:ui.wSheet.k, z:ui.wSheet.z}; if(ui.wSheet.i >= 0){ var wo = wl2[ui.wSheet.i]; if(wo && wo.c != null){ wv.c = wo.c; wv.r = wo.r; } wl2[ui.wSheet.i] = wv; } else wl2.push(wv); save(); toast(ui.wSheet.i >= 0 ? 'Widget modifié' : 'Widget ajouté'); } ui.wSheet = null; break;
     case 'newsday': ui.newsDay = +el.getAttribute('data-i'); break;
     case 'day': ui.daySheet = +el.getAttribute('data-k'); ui.sheet = null; break;
     case 'hist': var hs = S.history.filter(function(x){ return x.id === el.getAttribute('data-id'); })[0]; if(hs){ ui.daySheet = dayKey(hs.date); ui.sheet = null; } break;
@@ -4046,17 +4046,41 @@ function m3wBody(k, z, c){
   return null;
 }
 
-function m3wTile(w, i, c, preview){
+/* grid placement: 3 columns. Each widget keeps its square (c = column, r = row) in S.settings.widgets.
+   m3wPack places them without overlap: a pinned widget (the one being dragged) takes its square first,
+   then the others keep their spot if it is free, or flow into the first free spot that fits them. */
+function m3wSpan(z){ return z === 'l' ? [2, 2] : z === 'm' ? [2, 1] : [1, 1]; }
+function m3wPack(list, pin, flow){
+  var occ = {}, out = [];
+  function free(c, r, w, h){ if(c < 0 || r < 0 || c + w > 3) return false; for(var y = 0; y < h; y++) for(var x = 0; x < w; x++) if(occ[(r + y) * 3 + c + x]) return false; return true; }
+  function take(i, c, r, w, h){ for(var y = 0; y < h; y++) for(var x = 0; x < w; x++) occ[(r + y) * 3 + c + x] = 1; out[i] = {c:c, r:r, w:w, h:h}; }
+  function first(i, w, h){ for(var r = 0; r < 400; r++) for(var c = 0; c <= 3 - w; c++) if(free(c, r, w, h)){ take(i, c, r, w, h); return; } }
+  var idx = list.map(function(w, i){ return i; }).filter(function(i){ return !pin || i !== pin.i; });
+  /* reading order of the others (by their square, then by list order) */
+  idx.sort(function(a, b){ var A = list[a], B = list[b], ra = A.r == null ? 1e6 : A.r, rb = B.r == null ? 1e6 : B.r; return ra - rb || (A.c || 0) - (B.c || 0) || a - b; });
+  if(pin){ var ps = m3wSpan(list[pin.i].z); take(pin.i, Math.max(0, Math.min(3 - ps[0], pin.c)), Math.max(0, pin.r), ps[0], ps[1]); }
+  if(!flow) idx = idx.filter(function(i){ var w = list[i], sp = m3wSpan(w.z); if(w.c != null && w.r != null && free(w.c, w.r, sp[0], sp[1])){ take(i, w.c, w.r, sp[0], sp[1]); return false; } return true; });
+  idx.forEach(function(i){ var sp = m3wSpan(list[i].z); first(i, sp[0], sp[1]); });
+  /* no empty row left between widgets */
+  var used = {}; out.forEach(function(p){ for(var y = 0; y < p.h; y++) used[p.r + y] = 1; });
+  var map = {}, n = 0, top = 0; out.forEach(function(p){ top = Math.max(top, p.r + p.h); });
+  for(var r = 0; r < top; r++){ map[r] = n; if(used[r]) n++; }
+  out.forEach(function(p){ p.r = map[p.r]; });
+  return out;
+}
+function m3wPos(p){ return 'grid-column:' + (p.c + 1) + ' / span ' + p.w + ';grid-row:' + (p.r + 1) + ' / span ' + p.h; }
+
+function m3wTile(w, i, c, preview, pos){
   var b = m3wBody(w.k, w.z, c); if(!b) return '';
   var inner = '<span class="m3w-l">' + b.l + '</span><strong class="m3w-m' + (b.sm ? ' sm' : '') + '">' + b.m + '</strong><small class="m3w-s">' + b.s + '</small>' + (w.z !== 's' && b.x ? '<div class="m3w-x">' + b.x + '</div>' : '');
   var cls = 'm3w z-' + w.z;
   if(preview) return '<div class="' + cls + '">' + inner + '</div>';
   var def = m3wDef(w.k);
-  return '<button class="' + cls + '" data-a="wgopen" data-i="' + i + '" aria-label="' + esc((def ? m3wT(def) : 'Widget') + L(' : toucher pour modifier', ': tap to edit')) + '">' + inner + '</button>';
+  return '<button class="' + cls + '" data-a="wgopen" data-i="' + i + '"' + (pos ? ' style="' + m3wPos(pos) + '"' : '') + ' aria-label=""' + esc((def ? m3wT(def) : 'Widget') + L(' : toucher pour modifier', ': tap to edit')) + '">' + inner + '</button>';
 }
 function m3wSection(st){
-  var c = m3wCtx(st), list = m3wList(), h = '';
-  list.forEach(function(w, i){ h += m3wTile(w, i, c, false); });
+  var c = m3wCtx(st), list = m3wList(), h = '', pk = m3wPack(list);
+  list.forEach(function(w, i){ w.c = pk[i].c; w.r = pk[i].r; h += m3wTile(w, i, c, false, pk[i]); });
   return '<section class="m3-block m3-widgets"><div class="m3-section-head"><span>' + L('TES WIDGETS', 'YOUR WIDGETS') + '</span><button data-a="wgadd">' + L('+ AJOUTER', '+ ADD') + '</button></div>' +
     (h ? '<div class="m3wg">' + h + '</div>' : '<button class="m3w-empty" data-a="wgadd">' + L('Ajoute tes premiers widgets : volume, séances, records, progression…', 'Add your first widgets: volume, sessions, records, progress…') + '</button>') + '</section>';
 }
@@ -4087,26 +4111,32 @@ function m3wRerender(){ var p = document.querySelector('.sheet .pane'), t = p ? 
     var r = g.base;
     g.el.style.transform = 'translate(' + (g.cx - g.offX - r.left) + 'px,' + (g.cy - g.offY - r.top) + 'px) scale(1.06)';
   }
-  function rebuild(from, to){
-    /* move the real nodes (the held one must stay in the page, or the end of the touch is lost) */
-    var list = m3wList(), els = tiles(), before = new Map(), grid = els[0].parentNode, held = els[from];
+  /* the square under the top-left corner of the held widget */
+  function cell(){
+    var gr = g.grid.getBoundingClientRect(), cs = getComputedStyle(g.grid), gap = parseFloat(cs.columnGap) || 7;
+    var cw = (gr.width - 2 * gap) / 3, rh = parseFloat(cs.gridAutoRows) || cw;
+    return {c:Math.round((g.cx - g.offX - gr.left) / (cw + gap)), r:Math.round((g.cy - g.offY - gr.top) / (rh + gap))};
+  }
+  /* lay every widget out again with the held one pinned on its square; the others slide to make room */
+  function relayout(t){
+    var list = g.list, els = tiles(), before = new Map(), held = g.el;
+    var others = m3wPack(list.map(function(w, i){ return i === g.i ? {k:w.k, z:'s', c:w.c, r:w.r} : w; }).filter(function(w, i){ return i !== g.i; }), null, true);
+    var rows = 0; others.forEach(function(p){ rows = Math.max(rows, p.r + p.h); });
+    var pk = m3wPack(list, {i:g.i, c:t.c, r:Math.min(t.r, rows)}, true);
     els.forEach(function(el){ if(el !== held) before.set(el, el.getBoundingClientRect()); });
-    var item = list.splice(from, 1)[0]; list.splice(to, 0, item);
-    grid.insertBefore(held, to > from ? els[to].nextSibling : els[to]);
-    tiles().forEach(function(el, i){ el.setAttribute('data-i', i); });
+    els.forEach(function(el){ var i = +el.getAttribute('data-i'), p = pk[i]; if(p){ el.style.gridColumn = (p.c + 1) + ' / span ' + p.w; el.style.gridRow = (p.r + 1) + ' / span ' + p.h; } });
     before.forEach(function(a, el){
       var b = el.getBoundingClientRect(), dx = a.left - b.left, dy = a.top - b.top; if(!dx && !dy) return;
       el.style.transition = 'none'; el.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
       el.getBoundingClientRect();
       el.style.transition = 'transform .24s cubic-bezier(.2,.8,.2,1)'; el.style.transform = '';
     });
-    g.i = to; held.style.transition = 'none'; held.style.transform = ''; g.base = held.getBoundingClientRect(); place();
+    g.pack = pk; held.style.transition = 'none'; held.style.transform = ''; g.base = held.getBoundingClientRect(); place();
   }
   function check(){
-    if(!g || !g.lifted || g.busy) return;
-    var hit = -1;
-    tiles().forEach(function(el, i){ if(i === g.i) return; var r = el.getBoundingClientRect(); if(g.cx >= r.left && g.cx <= r.right && g.cy >= r.top && g.cy <= r.bottom) hit = i; });
-    if(hit >= 0){ g.busy = true; rebuild(g.i, hit); setTimeout(function(){ if(g){ g.busy = false; check(); } }, 220); }
+    if(!g || !g.lifted) return;
+    var t = cell(), k = t.c + ',' + t.r; if(k === g.cellKey) return;
+    g.cellKey = k; relayout(t);
   }
   document.addEventListener('touchstart', function(ev){
     var el = ev.target.closest && ev.target.closest('.m3wg:not(.m3wg-prev) > .m3w');
@@ -4117,6 +4147,7 @@ function m3wRerender(){ var p = document.querySelector('.sheet .pane'), t = p ? 
     g.timer = setTimeout(function(){
       if(!g) return;
       g.lifted = true; g.ctx = m3wCtx(computeStats());
+      g.grid = g.el.parentNode; g.list = m3wList(); g.cellKey = (g.list[g.i] || {}).c + ',' + (g.list[g.i] || {}).r;
       g.el.classList.remove('press'); g.el.classList.add('lifted');
       document.documentElement.classList.add('m3w-dragging');
       g.base = g.el.getBoundingClientRect(); g.el.style.transition = 'transform .16s ease-out'; place();
@@ -4137,7 +4168,12 @@ function m3wRerender(){ var p = document.querySelector('.sheet .pane'), t = p ? 
     suppress = true; setTimeout(function(){ suppress = false; }, 400);
     document.documentElement.classList.remove('m3w-dragging');
     d.el.style.transition = 'transform .22s cubic-bezier(.2,.8,.2,1)'; d.el.style.transform = '';
-    setTimeout(function(){ d.el.classList.remove('lifted'); save(); render(); }, 230);
+    setTimeout(function(){
+      d.el.classList.remove('lifted');
+      /* keep the squares as they were on the screen, and the list in reading order */
+      if(d.pack){ var list = m3wList(); list.forEach(function(w, i){ var p = d.pack[i]; if(p){ w.c = p.c; w.r = p.r; } }); list.sort(function(a, b){ return a.r - b.r || a.c - b.c; }); }
+      save(); render();
+    }, 230);
   }
   document.addEventListener('touchend', drop);
   document.addEventListener('touchcancel', drop);
