@@ -276,7 +276,6 @@ body .m3-pin .m3-pin-skip{font-size:10px!important;font-weight:800!important;let
 .m3-ws-list span{display:flex;flex-direction:column;gap:3px;min-width:0}.m3-ws-list b{font-size:13px;font-weight:800}.m3-ws-list small{font-size:11px;line-height:1.35;color:var(--m3-muted)}
 .m3-ws-list em{font-style:normal;flex:none;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--m3-line);display:grid;place-items:center;font-size:12px;font-weight:900}
 .m3-ws-list button.on{background:var(--m3-tint,#EEF3EE)!important}.m3-ws-list button.on em{background:var(--m3-accent);border-color:var(--m3-accent);color:#fff}
-.m3-ws-move{display:grid;grid-template-columns:1fr 1fr;gap:7px}.m3-ws-move button{min-height:44px!important;border-radius:14px!important;font-size:10px;font-weight:800!important;background:var(--m3-card)!important}
 .m3-wsheet button[disabled]{opacity:.35}
 .m3-ws-save{width:100%;min-height:54px!important;margin-top:8px;border:0!important;border-radius:17px!important;background:var(--m3-ink)!important;color:#fff!important;font-weight:800!important;font-size:12px}
 .m3-ws-del{width:100%;min-height:46px!important;border:0!important;color:#B4472B!important;font-size:11px;font-weight:800!important}
@@ -3506,13 +3505,12 @@ document.addEventListener('click', function(ev){
       ui.daySheet = ui.ficheFrom; ui.ficheFrom = null; ui.sheet = null; ui.confirm = null; render();
       var bp = document.querySelector('.sheet .pane'); if(bp) bp.scrollTop = ui.dayScroll || 0; return;
     case 'closesheet': ui.sheet = null; ui.picker = null; ui.daySheet = null; ui.ficheFrom = null; ui.newsDay = null; ui.storyId = null; ui.storyFrom = null; ui.wSheet = null; break;
-    /* home widgets: open, add, pick an info, pick a size, move, remove, save */
+    /* home widgets: open, add, pick an info, pick a size, remove, save */
     case 'wgopen': var wgi = +el.getAttribute('data-i'), wgw = m3wList()[wgi]; if(wgw) ui.wSheet = {i:wgi, k:wgw.k, z:wgw.z}; break;
     case 'jcal': ui.calOff = Math.min(1, (ui.calOff || 0) + d); break;
     case 'wgadd': ui.wSheet = {i:-1, k:null, z:'s'}; break;
     case 'wgpick': if(ui.wSheet){ ui.wSheet.k = el.getAttribute('data-k'); } m3wRerender(); return;
     case 'wgsize': if(ui.wSheet) ui.wSheet.z = el.getAttribute('data-z'); m3wRerender(); return;
-    case 'wgmove': if(ui.wSheet && ui.wSheet.i >= 0){ var wl = m3wList(), wn = ui.wSheet.i + d; if(wn >= 0 && wn < wl.length){ var wt = wl[wn]; wl[wn] = wl[ui.wSheet.i]; wl[ui.wSheet.i] = wt; ui.wSheet.i = wn; wl.forEach(function(x){ delete x.c; delete x.r; }); save(); } } m3wRerender(); return;
     case 'wgdel': if(ui.wSheet && ui.wSheet.i >= 0){ m3wList().splice(ui.wSheet.i, 1); save(); toast('Widget retiré'); } ui.wSheet = null; break;
     case 'wgsave': if(ui.wSheet && ui.wSheet.k){ var wl2 = m3wList(), wv = {k:ui.wSheet.k, z:ui.wSheet.z}; if(ui.wSheet.i >= 0){ var wo = wl2[ui.wSheet.i]; if(wo && wo.c != null){ wv.c = wo.c; wv.r = wo.r; } wl2[ui.wSheet.i] = wv; } else wl2.push(wv); save(); toast(ui.wSheet.i >= 0 ? 'Widget modifié' : 'Widget ajouté'); } ui.wSheet = null; break;
     case 'newsday': ui.newsDay = +el.getAttribute('data-i'); break;
@@ -4085,15 +4083,14 @@ function m3wSection(st){
     (h ? '<div class="m3wg">' + h + '</div>' : '<button class="m3w-empty" data-a="wgadd">' + L('Ajoute tes premiers widgets : volume, séances, records, progression…', 'Add your first widgets: volume, sessions, records, progress…') + '</button>') + '</section>';
 }
 
-/* the sheet to add or edit a widget: preview, size, info, position */
+/* the sheet to add or edit a widget: preview, size, info */
 function vWidgetSheet(){
-  var w = ui.wSheet, edit = w.i >= 0, c = m3wCtx(computeStats()), n = m3wList().length;
+  var w = ui.wSheet, edit = w.i >= 0, c = m3wCtx(computeStats());
   var h = '<div class="pane m3-wsheet" role="dialog" aria-label="' + (edit ? L('Modifier le widget', 'Edit widget') : L('Ajouter un widget', 'Add a widget')) + '"><div class="m3-ws-grip"></div>';
   h += '<div class="m3-ws-top"><div class="m3-ws-head"><div><span class="m3-eyebrow">WIDGET</span><h2>' + (edit ? L('Modifier', 'Edit') : L('Ajouter', 'Add')) + '</h2></div><button data-a="closesheet" aria-label="' + L('Fermer', 'Close') + '">✕</button></div>';
   h += w.k ? '<div class="m3wg m3wg-prev">' + m3wTile({k:w.k, z:w.z}, 0, c, true) + '</div>' : '<div class="m3-ws-hint">' + L('Choisis l\'information à afficher, puis sa taille.', 'Pick the info to show, then its size.') + '</div>';
   h += '<div class="m3-ws-sizes" role="radiogroup" aria-label="' + L('Taille', 'Size') + '">' + M3W_SIZES.map(function(s){ if(isEN()) s = [s[0], M3W_SIZES_EN[s[0]][0], M3W_SIZES_EN[s[0]][1]]; return '<button role="radio" aria-checked="' + (w.z === s[0]) + '" class="' + (w.z === s[0] ? 'on' : '') + '" data-a="wgsize" data-z="' + s[0] + '"><i class="ic-' + s[0] + '"></i><b>' + s[1] + '</b><small>' + s[2] + '</small></button>'; }).join('') + '</div>' + (w.k ? '<div class="m3-ws-tier"><b>' + (isEN() ? M3W_SIZES_EN[w.z][0] : M3W_SIZES.filter(function(x){ return x[0] === w.z; })[0][1]) + '</b> ' + esc(m3wTier(w.k, w.z)) + '</div>' : '') + '</div>';
   h += '<span class="m3-ws-h">' + L('INFORMATION À AFFICHER', 'INFO TO SHOW') + '</span><div class="m3-ws-list">' + M3W.map(function(d){ var on = d.k === w.k; return '<button class="' + (on ? 'on' : '') + '" data-a="wgpick" data-k="' + d.k + '" aria-pressed="' + on + '"><span><b>' + esc(m3wT(d)) + '</b><small>' + esc(m3wD(d)) + '</small></span><em>' + (on ? '✓' : '') + '</em></button>'; }).join('') + '</div>';
-  if(edit && n > 1) h += '<span class="m3-ws-h">POSITION · ' + (w.i + 1) + L(' SUR ', ' OF ') + n + '</span><div class="m3-ws-move"><button data-a="wgmove" data-d="-1"' + (w.i === 0 ? ' disabled' : '') + '>' + L('← AVANT', '← BEFORE') + '</button><button data-a="wgmove" data-d="1"' + (w.i === n - 1 ? ' disabled' : '') + '>' + L('APRÈS →', 'AFTER →') + '</button></div>';
   h += '<button class="m3-ws-save" data-a="wgsave"' + (w.k ? '' : ' disabled') + '>' + (edit ? L('ENREGISTRER', 'SAVE') : L('AJOUTER LE WIDGET', 'ADD WIDGET')) + '</button>';
   if(edit) h += '<button class="m3-ws-del" data-a="wgdel">' + L('RETIRER CE WIDGET', 'REMOVE THIS WIDGET') + '</button>';
   return h + '</div>';
