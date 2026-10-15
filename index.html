@@ -230,6 +230,31 @@ button.m3c-d:active{transform:scale(.92)}
 .m3w.lifted{position:relative;z-index:5;box-shadow:0 18px 40px rgba(0,0,0,.18),0 4px 10px rgba(0,0,0,.08)!important}
 html.m3w-dragging .m3w:not(.lifted){animation:m3wjig .32s ease-in-out infinite alternate}
 @keyframes m3wjig{from{rotate:-.6deg}to{rotate:.6deg}}
+/* rest band between sets (A) and its pinned copy */
+.m3-band{margin:6px 0;border-radius:22px;padding:16px 16px 10px 18px;background:var(--m3-ink);color:var(--m3-card,#FFFDF9);display:flex;flex-direction:column;gap:10px;transition:background .3s}
+.m3-band.over{background:var(--m3-accent)}
+.m3-band-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.m3-band-main{display:flex;flex-direction:column;gap:6px;min-width:0}
+.m3-band-l{font-size:10px;font-weight:800;letter-spacing:.14em;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m3-band-n{font-size:92px;line-height:.86;font-weight:800;letter-spacing:-.06em;font-variant-numeric:tabular-nums}
+.m3-band-adj{display:flex;flex-direction:column;gap:8px;flex:none}
+body .m3-band button{color:var(--m3-card,#FFFDF9)!important;border:1px solid color-mix(in srgb,var(--m3-card,#fff) 35%,transparent)!important;background:transparent!important;border-radius:14px!important;min-height:44px!important;font-weight:800!important;font-size:12px!important}
+.m3-band-adj button{width:54px}
+.m3-band-bot{display:flex;align-items:center;gap:12px}
+.m3-band-bar{flex:1;height:6px;border-radius:99px;background:color-mix(in srgb,var(--m3-card,#fff) 20%,transparent);overflow:hidden}
+.m3-band-bar i{display:block;height:100%;border-radius:99px;background:var(--m3-card,#FFFDF9);transition:width .25s linear}
+body .m3-band-bot>button{border:0!important;font-size:10px!important;letter-spacing:.1em;padding:0 4px!important}
+.m3-band-over{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;opacity:.85}
+.m3-pin{position:fixed;z-index:35;left:50%;top:calc(env(safe-area-inset-top,0px) + 8px);transform:translate(-50%,-160%);width:min(496px,calc(100vw - 24px));box-sizing:border-box;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:6px 8px 6px 16px;border-radius:20px;background:var(--m3-ink);color:var(--m3-card,#FFFDF9);box-shadow:0 10px 28px rgba(0,0,0,.2);transition:transform .28s cubic-bezier(.2,.8,.2,1),background .3s;pointer-events:none}
+.m3-pin.show{transform:translate(-50%,0);pointer-events:auto}
+.m3-pin.over{background:var(--m3-accent)}
+body .m3-pin button{color:var(--m3-card,#FFFDF9)!important;border:0!important;background:transparent!important;min-height:44px!important;padding:0!important}
+.m3-pin-go{display:flex!important;align-items:baseline;gap:10px}
+.m3-pin-l{font-size:9px;font-weight:800;letter-spacing:.14em;opacity:.7}
+.m3-pin-go strong{font-size:34px;font-weight:800;letter-spacing:-.05em;font-variant-numeric:tabular-nums;line-height:1}
+.m3-pin-bar{height:5px;border-radius:99px;background:color-mix(in srgb,var(--m3-card,#fff) 20%,transparent);overflow:hidden}.m3-pin-bar i{display:block;height:100%;background:var(--m3-card,#FFFDF9);border-radius:99px;transition:width .25s linear}
+body .m3-pin .m3-pin-skip{font-size:10px!important;font-weight:800!important;letter-spacing:.1em;padding:0 10px!important;border:1px solid color-mix(in srgb,var(--m3-card,#fff) 35%,transparent)!important;border-radius:14px!important}
+@media(max-width:360px){.m3-band-n{font-size:78px}}
 /* widget sheet */
 .sheet .pane.m3-wsheet{background:var(--m3-bg)!important;border-top:0!important;border-radius:26px 26px 0 0!important;padding:8px 18px calc(env(safe-area-inset-bottom,0px) + 20px)!important;gap:10px!important;color:var(--m3-ink)}
 .sheet .pane>.row:first-child>div[style*="height:5px"]{background:var(--m3-line,#ccc)!important;border-radius:99px;width:40px!important}
@@ -2041,6 +2066,7 @@ var CHANGELOG = [
    summary:['Sur Aujourd\'hui, touche un exercice de la prochaine séance pour ouvrir sa fiche : historique, records et façon de faire.','Les carrés de l\'accueil deviennent des widgets : choisis ce qu\'ils affichent, en petit, en large ou en grand.','Les fenêtres qui s\'ouvrent par le bas se ferment en les glissant vers le bas.','Un Profil plus simple, et 4 coloris au choix : Forêt, Océan, Terre et Prune.','La barre du bas flotte au-dessus du contenu.','Le Journal a son calendrier du mois, avec une barre de progression vers ton objectif.'],
    sections:[
     {t:'Les fiches depuis l\'accueil', items:['Tous les exercices de la prochaine séance sont listés, et chacun ouvre sa fiche d\'un tap.','La fiche montre le mouvement, tes notes, tes records et tes dernières séances sur cet exercice.']},
+    {t:'Le repos en grand', items:['Quand tu valides une série, le repos s\'affiche en grand juste sous elle : chiffres géants, lisibles téléphone posé sur le banc.','+15 / −15 ajustent le repos en cours, « Passer » le termine. À zéro, le bandeau passe en couleur et affiche GO.','Si tu fais défiler et que le repos sort de l\'écran, un petit bandeau apparaît tout en haut avec le temps restant. Touche-le pour revenir au repos.']},
     {t:'Le calendrier du journal', items:['En haut du Journal, le mois en cours : séances faites en couleur, séances prévues en pointillés, jours manqués barrés.','Touche un jour coloré pour revoir la séance. Les flèches passent d\'un mois à l\'autre.','La barre de progression compte tes séances face à l\'objectif du mois (tes jours d\'entraînement prévus), avec un repère qui montre où tu devrais en être aujourd\'hui.']},
     {t:'Une barre qui flotte', items:['La barre du bas se détache des bords de l\'écran : une pilule légèrement transparente, posée au-dessus du contenu.','Quand tu fais défiler vers le bas, elle s\'estompe peu à peu ; elle revient dès que tu remontes, et elle est toujours là en haut et en bas de la page.']},
     {t:'Profil et coloris', items:['Le Profil est réorganisé : coloris, langue, palier de charge, nouveautés et sauvegarde, sans encadrés.','Quatre coloris : Forêt, Océan, Terre et Prune. Tout l\'appli suit, widgets compris.']},
@@ -3226,6 +3252,7 @@ function render(){
   if(ui.screen === 'done') buildShare();
   sh.innerHTML = trHTML(hardify(ui.welcome ? vWelcome() : ui.storyId ? '<div class="sheet" data-a="closesheet">' + vStory(ui.storyId) + '</div>' : ui.newsDay != null ? '<div class="sheet" data-a="closesheet">' + vNewsDay(ui.newsDay) + '</div>' : ui.wSheet ? '<div class="sheet" data-a="closesheet">' + vWidgetSheet() + '</div>' : ui.daySheet ? '<div class="sheet" data-a="closesheet">' + vDay(ui.daySheet) + '</div>' : ui.picker ? '<div class="sheet" data-a="closesheet">' + vPicker() + '</div>' : ui.sheet ? '<div class="sheet" data-a="closesheet">' + vFiche(ui.sheet) + '</div>' : ''));
   if(ui.storyId) buildStory();
+  if(typeof m3PinCheck === 'function') m3PinCheck();
 }
 function openPicker(ctx){
   ui.picker = {ctx:ctx}; ui.pickQ = ''; ui.sheet = null; render();
@@ -3259,6 +3286,11 @@ setInterval(function(){
   if(!ri.over) wasOver = false;
   var b = document.getElementById('t-big'); if(b) b.textContent = ri.over ? '+' + mmss(-ri.left) : mmss(ri.left);
   var f = document.getElementById('t-bar'); if(f) f.style.width = ri.pct + '%';
+  var tl = document.getElementById('t-left'); if(tl) tl.style.width = (ri.over ? 0 : 100 - ri.pct) + '%';
+  var to = document.getElementById('t-over'); if(to) to.textContent = '+' + mmss(-ri.left);
+  var tp = document.getElementById('t-pin'); if(tp) tp.textContent = ri.over ? '+' + mmss(-ri.left) : mmss(ri.left);
+  var tpb = document.getElementById('t-pinbar'); if(tpb) tpb.style.width = (ri.over ? 0 : 100 - ri.pct) + '%';
+  m3PinCheck();
   var rt = document.getElementById('rb-t'); if(rt) rt.textContent = trText('⏱ ' + (ri.over ? 'REPOS FINI +' + mmss(-ri.left) : 'REPOS ' + mmss(ri.left)));
   var rf = document.getElementById('rb-f'); if(rf) rf.style.width = ri.pct + '%';
 }, 250);
@@ -3311,6 +3343,7 @@ document.addEventListener('click', function(ev){
     case 'gapok': ui.gapEdit = null; break;
     case 'tadj': if(S.active.rest){ S.active.rest.total = Math.max(5, S.active.rest.total + d); save(); } break;
     case 'skip': closeRest(); save(); break;
+    case 'restshow': var rb = document.getElementById('rest-band'); if(rb) rb.scrollIntoView({behavior:'smooth', block:'center'}); return;
     case 'w': j = selIndex(ex); if(j != null){ var s1 = ex.sets[j]; s1.w = Math.max(0, Math.round(((s1.w || 0) + d * inc())*100)/100); s1.trend = null; save(); } break;
     case 'r': j = selIndex(ex); if(j != null){ var s2 = ex.sets[j]; s2.r = Math.max(0, (s2.r || 0) + d); s2.trend = null; save(); } break;
     case 'validate': validate(); return;
@@ -3664,17 +3697,20 @@ function vEx(){
   if(ex.cue) h+='<div class="m3-cue">'+esc(trText(ex.cue))+'</div>';
   var p=pastEntries(ex.name)[0], prev=p?p.sets.filter(function(s){return !s.warm;}):[];
   h+='<section class="m3-last"><span>'+L('DERNIÈRE SÉANCE','LAST SESSION')+'</span><div>'+ (prev.length?prev.map(function(s){return '<b>'+kg(s.w)+' × '+s.r+'</b>';}).join(''):'<small>'+L('Pas encore de référence','No reference yet')+'</small>')+'</div></section>';
+  var bandDone=false;
+  if(ri && ri.r.ex!==i){ h+=m3RestBand(ri, a.exercises[ri.r.ex] || ex, ri.r.set); bandDone=true; }
   h+='<section class="m3-sets">'; var k=0;
   ex.sets.forEach(function(s,j){var lab=s.warm?'W':('0'+(++k)).slice(-2), target=s.warm?L('ÉCHAUF','WARM-UP'):s.lo+'–'+s.hi, g=s.warm?'':ghost(ex.name,k-1), active=j===sj;
     h+='<button class="m3-set '+(active?'active ':'')+(s.done?'done ':'')+(s.warm?'warm':'')+'" data-a="sel" data-j="'+j+'"><span class="m3-set-num">'+(s.done?'✓':lab)+'</span><span><small>'+L('CIBLE','TARGET')+'</small><b>'+target+'</b></span><span><small>'+L('DERNIÈRE','LAST')+'</small><b>'+g+'</b></span><span><small>'+L('AUJOURD’HUI','TODAY')+'</small><b>'+(s.w!=null?kg(s.w):'—')+' × '+(s.r!=null?s.r:'—')+(s.trend&&!s.done?' '+s.trend:'')+'</b></span></button>';
-    if(!s.warm && (j<ex.sets.length-1 || next || freeSession())) h+=gapRow(ex,j,j===ex.sets.length-1);
+    if(ri && !bandDone && ri.r.ex===i && ri.r.set===j){ h+=m3RestBand(ri, ex, j); bandDone=true; }
+    else if(!s.warm && (j<ex.sets.length-1 || next || freeSession())) h+=gapRow(ex,j,j===ex.sets.length-1);
   });
   h+='</section>';
   if(sj!=null){var ss=ex.sets[sj];h+='<section class="m3-input"><div><label>'+L('CHARGE','WEIGHT')+'</label><div class="m3-step"><button data-a="w" data-d="-1">−</button><input id="in-w" data-f="w" inputmode="decimal" value="'+(ss.w!=null?kg(ss.w):'')+'"><button data-a="w" data-d="1">+</button></div><small>KG</small></div><div><label>'+L('RÉPÉTITIONS','REPS')+'</label><div class="m3-step"><button data-a="r" data-d="-1">−</button><input id="in-r" data-f="r" inputmode="numeric" value="'+(ss.r!=null?ss.r:'')+'"><button data-a="r" data-d="1">+</button></div><small>REPS</small></div></section>';
     h+='<button class="m3-validate" data-a="validate">'+L('VALIDER LA SÉRIE','LOG SET')+' <span>→</span></button>';
   }
   h+='<div class="m3-work-tools"><button data-a="addset">'+L('+ SÉRIE','+ SET')+'</button><button data-a="addwarm">'+L('+ ÉCHAUF','+ WARM-UP')+'</button><button data-a="restadj" data-d="-15">−15s</button><button data-a="restadj" data-d="15">+15s</button></div>';
-  if(ri){h+='<section class="m3-rest"><span>'+L('REPOS','REST')+'</span><strong id="t-big">'+(ri.over?'+'+mmss(-ri.left):mmss(ri.left))+'</strong><div class="m3-restbar"><i id="t-bar" style="width:'+ri.pct+'%"></i></div><button data-a="skip">'+L('TERMINER LE REPOS','END REST')+'</button></section>';}
+  if(ri) h+=m3RestPin(ri);
   h+='<div class="m3-next-ex"><span>'+L('PROCHAIN','NEXT')+'</span><b>'+(next?esc(exDisp(next.name)):L('FIN DE SÉANCE','END OF SESSION'))+'</b>'+(next?'<button data-a="nav" data-d="1">→</button>':'<button data-a="scr" data-s="ov">'+L('RÉSUMÉ','SUMMARY')+' →</button>')+'</div>';
   return h;
 }
@@ -4161,6 +4197,35 @@ function m3jCal(){
   h += '<div class="m3c-sum"><div><b>' + n + '</b><small>' + L('SÉANCES', 'SESSIONS') + '</small></div><div><b>' + fmtT(vol) + '</b><small>' + L('VOLUME', 'VOLUME') + '</small></div><div><b>' + prs + '</b><small>' + L('RECORDS', 'RECORDS') + '</small></div></div>';
   return h + '</section>';
 }
+
+/* rest between two sets: a large band sitting right under the set just done, readable from 1–2 m
+   (phone on the bench). When the band is scrolled out of view, a slim copy pins to the top. */
+function m3RestNext(ri, ex, j){
+  if(ri.r.label) return L('EXERCICE SUIVANT', 'NEXT EXERCISE');
+  var n = 0; for(var x = 0; x <= j + 1 && x < ex.sets.length; x++) if(!ex.sets[x].warm) n++;
+  return ex.sets[j + 1] ? (ex.sets[j + 1].warm ? L('ÉCHAUFFEMENT', 'WARM-UP') : L('SÉRIE ', 'SET ') + n) : L('EXERCICE SUIVANT', 'NEXT EXERCISE');
+}
+function m3RestBand(ri, ex, j){
+  var nx = m3RestNext(ri, ex, j), over = ri.over;
+  var h = '<section class="m3-band' + (over ? ' over' : '') + '" id="rest-band" aria-live="off">';
+  h += '<div class="m3-band-top"><div class="m3-band-main"><span class="m3-band-l">' + (over ? nx + L(' · À TOI', ' · YOUR TURN') : L('REPOS · PUIS ', 'REST · THEN ') + nx) + '</span>';
+  h += over ? '<strong class="m3-band-n">GO</strong>' : '<strong class="m3-band-n" id="t-big">' + mmss(ri.left) + '</strong>';
+  h += '</div><div class="m3-band-adj"><button data-a="tadj" data-d="15" aria-label="' + L('Ajouter 15 secondes', 'Add 15 seconds') + '">+15</button><button data-a="tadj" data-d="-15" aria-label="' + L('Retirer 15 secondes', 'Remove 15 seconds') + '">−15</button></div></div>';
+  h += '<div class="m3-band-bot"><div class="m3-band-bar"><i id="t-left" style="width:' + (over ? 0 : 100 - ri.pct) + '%"></i></div>';
+  h += over ? '<span class="m3-band-over" id="t-over">+' + mmss(-ri.left) + '</span><button data-a="skip">' + L('OK', 'OK') + '</button>' : '<button data-a="skip">' + L('PASSER', 'SKIP') + ' →</button>';
+  return h + '</div></section>';
+}
+function m3RestPin(ri){
+  return '<div class="m3-pin' + (ri.over ? ' over' : '') + '" id="rest-pin"><button class="m3-pin-go" data-a="restshow"><span class="m3-pin-l">' + (ri.over ? L('REPOS FINI', 'REST DONE') : L('REPOS', 'REST')) + '</span><strong id="t-pin">' + (ri.over ? '+' + mmss(-ri.left) : mmss(ri.left)) + '</strong></button>' +
+    '<div class="m3-pin-bar"><i id="t-pinbar" style="width:' + (ri.over ? 0 : 100 - ri.pct) + '%"></i></div><button class="m3-pin-skip" data-a="skip">' + (ri.over ? 'OK' : L('PASSER', 'SKIP')) + '</button></div>';
+}
+function m3PinCheck(){
+  var pin = document.getElementById('rest-pin'); if(!pin) return;
+  var band = document.getElementById('rest-band'), off = true;
+  if(band){ var r = band.getBoundingClientRect(); off = r.bottom < 70 || r.top > window.innerHeight - 40; }
+  pin.classList.toggle('show', off);
+}
+window.addEventListener('scroll', function(){ m3PinCheck(); }, {passive:true});
 
 /* sheets (journal, fiche, widgets…): grab the top and pull down to close, like a native sheet.
    From the top strip it always works; lower in the sheet, only once its content is scrolled to the top. */
