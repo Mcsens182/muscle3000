@@ -1163,6 +1163,15 @@ html.hud .m5-ava{background:var(--h-fill);color:var(--h-on);border-radius:var(--
 .m5-chat{display:flex;flex-direction:column;gap:10px;padding:18px 0}
 .m5-day{align-self:center;font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--m3-muted)}
 .m5-bub{margin:0;align-self:flex-start;max-width:84%;background:var(--m3-card);border:1px solid var(--m3-line);border-radius:18px 18px 18px 6px;padding:11px 14px;font-size:15px;line-height:1.4}
+/* le coach écrit… */
+.m5-typing{align-self:flex-start;display:flex;gap:5px;align-items:center;padding:14px 16px;background:var(--m3-card);border:1px solid var(--m3-line);border-radius:18px 18px 18px 6px;animation:m5in .2s ease-out}
+.m5-typing i{width:7px;height:7px;border-radius:4px;background:var(--m3-muted);animation:m5dot 1.2s infinite ease-in-out}
+.m5-typing i:nth-child(2){animation-delay:.15s}.m5-typing i:nth-child(3){animation-delay:.3s}
+@keyframes m5dot{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-4px);opacity:1}}
+.m5-in{animation:m5in .25s ease-out}
+@keyframes m5in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.m5-typing i,.m5-in,.m5-typing{animation:none}}
+html.hud .m5-typing{border-radius:var(--h-r)}
 .m5-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:6px;opacity:.5}
 .m5-choices span{display:flex;align-items:center;min-height:44px;padding:8px 12px;border:1.5px dashed var(--m3-ink);border-radius:12px;font-size:13px;font-weight:700}
 .m5-prem{display:flex;flex-direction:column;gap:8px;padding:18px;border-radius:18px;background:var(--m3-ink);color:var(--m3-card);margin-bottom:24px}
@@ -2673,7 +2682,7 @@ var CHANGELOG = [
     {t:'Remplacer un exercice', items:['Machine prise ? « ⇄ » à côté du nom de l\'exercice propose d\'abord des exercices du même groupe musculaire.','Ta note et les séries qui restent passent sur le nouvel exercice. Les séries déjà faites restent sur l\'ancien.']},
     {t:'La fin de séance', items:['Si ta séance a changé, trois choix : écraser le modèle, créer un nouveau workout avec ces modifications (rangé où tu veux), ou juste enregistrer la séance.','La liste des changements s\'affiche avant de choisir : exercices ajoutés, retirés, remplacés, séries en plus ou en moins, ordre.','Une séance restée ouverte depuis plusieurs heures ? À l\'ouverture, l\'appli propose de la terminer à l\'heure de ta dernière série.']},
     {t:'Programmes', items:['L\'onglet Programme ouvre directement la bibliothèque : tes programmes, puis les 11 prêts à l\'emploi, de 2 à 6 jours, du débutant au confirmé. Zero To Hero devient Ascension.','Touche un programme pour voir ses séances, puis une séance pour voir chaque exercice, ses séries, ses cibles et ses repos. Le crayon la modifie.','La séance libre se lance depuis Aujourd\'hui, sous la prochaine séance.','En démarrant une séance, tu vois d\'abord toutes les séries à faire. La série en grand s\'ouvre quand tu lances le premier exercice.','La barre du bas passe en icônes.','Une nouvelle installation pose quatre questions (objectif, niveau, jours, matériel) et propose le programme qui colle. Ce parcours ne s\'affiche qu\'une fois.','La durée annoncée d\'une séance s\'appuie sur tes vraies séances, ou sur tes temps de repos.']},
-    {t:'Le Coach', items:['Un nouvel onglet Coach au centre de la barre, légèrement en relief, à la place d\'Exercices. Un petit point apparaît quand il a un message pour toi.','Chaque semaine, il fait ton bilan : séances faites par rapport à ton programme, et il repère un exercice qui stagne depuis trois séances.','Le coach premium arrive bientôt : réponses à choix, diagnostic des plateaux et séances ajustées d\'un tap.']},
+    {t:'Le Coach', items:['Un nouvel onglet Coach au centre de la barre, légèrement en relief, à la place d\'Exercices. Un petit point apparaît quand il a un message pour toi.','Chaque semaine, il fait ton bilan : séances faites par rapport à ton programme, et il repère un exercice qui stagne depuis trois séances.','Comme dans une messagerie, une bulle à trois points s\'affiche pendant qu\'il écrit, puis ses messages arrivent un par un, avec un emoji quand ça s\'y prête.','Le coach premium arrive bientôt : réponses à choix, diagnostic des plateaux et séances ajustées d\'un tap.']},
     {t:'Exercices dans Programme', items:['L\'onglet Programme a trois sous-onglets : Programmes, Séances et Exercices.','Séances liste toutes tes séances, programme par programme. Exercices reprend l\'ancien onglet : recherche, groupes musculaires, fiches et création d\'un exercice.']},
     {t:'Accueil, fiches et style', items:['Les carrés de l\'accueil sont des widgets : 13 infos au choix, en petit, large ou grand. Appui long pour les déplacer.','Touche un exercice de la prochaine séance pour ouvrir sa fiche : mouvement, notes, courbe de progression, records et dernières séances.','Profil › Style : Édito (clair) ou HUD (néon, sur fond noir ou blanc), avec 4 coloris.','Le Journal a son calendrier du mois et une barre de progression vers ton objectif.','Les fenêtres qui s\'ouvrent par le bas se ferment en les glissant vers le bas. La barre du bas flotte au-dessus du contenu.']},
     {t:'Sauvegarde et corrections', items:['En fin de séance, l\'appli te propose d\'envoyer ta sauvegarde toutes les 10 séances (réglable dans Profil › Sauvegarde).','L\'éditeur de séance s\'ouvre de nouveau correctement.']}
@@ -6099,23 +6108,43 @@ function m5Plateau(){
 }
 function m5CoachMsgs(){
   var wk = m5Week(), ap = activeProg(), goal = ap ? ap.workouts.filter(function(w){ return w.ex.length; }).length : 0, m = [];
-  if(!S.history.length) return [L('Salut. Fais ta première séance, je te fais ton premier bilan juste après.', 'Hi. Do your first session and I\'ll give you your first review right after.')];
-  if(!wk.length) m.push(L('Pas encore de séance cette semaine. La prochaine t\'attend sur Aujourd\'hui.', 'No session yet this week. The next one is waiting on Today.'));
-  else m.push(plural(wk.length, L('séance', 'session')) + (goal ? L(' sur ', ' out of ') + goal + L(' cette semaine.', ' this week.') : L(' cette semaine.', ' this week.')) + (goal && wk.length >= goal ? L(' Propre.', ' Clean.') : ''));
+  if(!S.history.length) return [L('Salut 👋', 'Hi 👋'), L('Fais ta première séance, je te fais ton premier bilan juste après.', 'Do your first session and I\'ll give you your first review right after.')];
+  if(!wk.length) m.push(L('Pas encore de séance cette semaine. La prochaine t\'attend sur Aujourd\'hui ⏳', 'No session yet this week. The next one is waiting on Today ⏳'));
+  else m.push(plural(wk.length, L('séance', 'session')) + (goal ? L(' sur ', ' out of ') + goal + L(' cette semaine.', ' this week.') : L(' cette semaine.', ' this week.')) + (goal && wk.length >= goal ? L(' Propre 💪', ' Clean 💪') : ''));
   var pl = m5Plateau();
-  if(pl) m.push(exDisp(pl.n) + L(' ne bouge plus depuis 3 séances, à ', ' hasn\'t moved in 3 sessions, at ') + fmtS(pl.n, pl.w, pl.r) + L('. J\'ai une idée pour le relancer.', '. I have an idea to get it going again.'));
+  if(pl) m.push(exDisp(pl.n) + L(' ne bouge plus depuis 3 séances, à ', ' hasn\'t moved in 3 sessions, at ') + fmtS(pl.n, pl.w, pl.r) + L('. J\'ai une idée pour le relancer 🔧', '. I have an idea to get it going again 🔧'));
   return m;
 }
 function m5CoachKey(){ return m5WeekStart() + ':' + m5CoachMsgs().join('|').length; }
 function m5CoachUnread(){ try{ return S.history.length > 0 && (S.settings.coachSeen || '') !== m5CoachKey(); }catch(e){ return false; } }
+function m5Typing(){ return '<div class="m5-typing" role="status" aria-label="' + L('Le coach écrit…', 'Coach is typing…') + '"><i></i><i></i><i></i></div>'; }
+function m5CoachStep(){
+  var an = ui.coachAnim; if(!an || ui.screen !== 'coach'){ ui.coachAnim = null; return; }
+  var msgs = m5CoachMsgs();
+  if(an.typing){ an.typing = false; an.n++; render(); if(an.n < msgs.length) an.t = setTimeout(function(){ an.typing = true; render(); m5CoachQueue(); }, 450); else { ui.coachAnim = null; ui.coachFresh = true; render(); } }
+}
+function m5CoachQueue(){
+  var an = ui.coachAnim; if(!an) return;
+  var next = m5CoachMsgs()[an.n] || '', wait = reduceMotion() ? 200 : Math.min(2400, 800 + next.length * 20);
+  clearTimeout(an.t); an.t = setTimeout(m5CoachStep, wait);
+}
+function reduceMotion(){ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){ return false; } }
 function vCoach(){
-  if(m5CoachUnread()){ S.settings.coachSeen = m5CoachKey(); save(); }
+  if(m5CoachUnread()){
+    S.settings.coachSeen = m5CoachKey(); save();
+    if(ui.coachAnim) clearTimeout(ui.coachAnim.t);
+    ui.coachAnim = {n:0, typing:true}; setTimeout(m5CoachQueue, 0);
+  }
   var h = restBar();
   h += '<header class="m5-chead"><span class="m5-ava" aria-hidden="true">?</span><span><b>' + L('Ton coach', 'Your coach') + '</b><small>' + L('Bilan de la semaine', 'Weekly review') + '</small></span></header>';
   h += '<div class="m5-chat"><div class="m5-day">' + L('CETTE SEMAINE', 'THIS WEEK') + '</div>';
-  m5CoachMsgs().forEach(function(t){ h += '<p class="m5-bub">' + esc(t) + '</p>'; });
-  h += '<div class="m5-choices" aria-hidden="true"><span><b>A</b> · ' + L('Je veux savoir', 'Tell me') + '</span><span><b>B</b> · ' + L('Montre le plan', 'Show the plan') + '</span><span><b>C</b> · ' + L('Ajuste ma séance', 'Adjust my session') + '</span><span><b>D</b> · ' + L('Plus tard', 'Later') + '</span></div></div>';
-  h += '<section class="m5-prem"><span class="m3-eyebrow">' + L('COACH PREMIUM · BIENTÔT', 'PREMIUM COACH · SOON') + '</span><b>' + L('Réponds-lui et laisse-le ajuster tes séances.', 'Answer him and let him adjust your sessions.') + '</b><p>' + L('Conversation à choix, diagnostic des plateaux, conseils technique et séances mises à jour d\'un tap.', 'Choice-based chat, plateau diagnosis, technique tips and sessions updated in one tap.') + '</p></section>';
+  var an = ui.coachAnim && ui.screen === 'coach' ? ui.coachAnim : null, msgs = m5CoachMsgs(), shown = an ? an.n : msgs.length;
+  msgs.slice(0, shown).forEach(function(t, i){ h += '<p class="m5-bub' + (an && i === shown - 1 ? ' m5-in' : '') + '">' + esc(t) + '</p>'; });
+  if(an && an.typing) h += m5Typing();
+  if(an) return h + '</div>' + nav('coach');
+  var fresh = ui.coachFresh; ui.coachFresh = false;
+  h += '<div class="m5-choices' + (ui.coachFresh ? ' m5-in' : '') + '" aria-hidden="true"><span><b>A</b> · ' + L('Je veux savoir', 'Tell me') + '</span><span><b>B</b> · ' + L('Montre le plan', 'Show the plan') + '</span><span><b>C</b> · ' + L('Ajuste ma séance', 'Adjust my session') + '</span><span><b>D</b> · ' + L('Plus tard', 'Later') + '</span></div></div>';
+  h += '<section class="m5-prem' + (fresh ? ' m5-in' : '') + '"><span class="m3-eyebrow">' + L('COACH PREMIUM · BIENTÔT', 'PREMIUM COACH · SOON') + '</span><b>' + L('Réponds-lui et laisse-le ajuster tes séances.', 'Answer him and let him adjust your sessions.') + '</b><p>' + L('Conversation à choix, diagnostic des plateaux, conseils technique et séances mises à jour d\'un tap.', 'Choice-based chat, plateau diagnosis, technique tips and sessions updated in one tap.') + '</p></section>';
   return h + nav('coach');
 }
 document.addEventListener('click', function(ev){
