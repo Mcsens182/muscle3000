@@ -255,6 +255,8 @@ body .m3-pin button{color:var(--m3-card,#FFFDF9)!important;border:0!important;ba
 .m3-pin-bar{height:8px;border-radius:99px;background:color-mix(in srgb,var(--m3-card,#fff) 20%,transparent);overflow:hidden}.m3-pin-bar i{display:block;height:100%;background:var(--m3-card,#FFFDF9);border-radius:99px;transition:width .25s linear}
 body .m3-pin .m3-pin-skip{font-size:10px!important;font-weight:800!important;letter-spacing:.1em;padding:0 10px!important;border:1px solid color-mix(in srgb,var(--m3-card,#fff) 35%,transparent)!important;border-radius:14px!important}
 @media(max-width:360px){.m3-band-n{font-size:78px}}
+.m3s-switch{flex:none;width:46px;height:28px;border-radius:99px;background:var(--m3-line);position:relative;transition:background .2s}.m3s-switch i{position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .2s}.m3s-switch.on{background:var(--m3-accent)}.m3s-switch.on i{left:21px}
+.m3s-row[disabled]{opacity:.55}
 /* widget sheet */
 .sheet .pane.m3-wsheet{background:var(--m3-bg)!important;border-top:0!important;border-radius:26px 26px 0 0!important;padding:8px 18px calc(env(safe-area-inset-bottom,0px) + 20px)!important;gap:10px!important;color:var(--m3-ink)}
 .sheet .pane>.row:first-child>div[style*="height:5px"]{background:var(--m3-line,#ccc)!important;border-radius:99px;width:40px!important}
@@ -1060,10 +1062,7 @@ function bestFor(name){
 
 /* ---------- audio / wake ---------- */
 function unlockAudio(){ try{ if(!audio){ var C = window.AudioContext || window.webkitAudioContext; if(C) audio = new C(); } if(audio && audio.state === 'suspended') audio.resume(); }catch(e){} }
-function beep(){
-  try{ if(navigator.vibrate) navigator.vibrate([250,120,250]); }catch(e){}
-  try{ if(!audio) return; [0, .22, .44].forEach(function(d){ var o = audio.createOscillator(), g = audio.createGain(); o.frequency.value = 880; g.gain.value = .15; o.connect(g); g.connect(audio.destination); o.start(audio.currentTime + d); o.stop(audio.currentTime + d + .14); }); }catch(e){}
-}
+function beep(){ m3Haptic(); m3Ding(); }
 function askWake(){ try{ if(navigator.wakeLock && !wake) navigator.wakeLock.request('screen').then(function(w){ wake = w; w.addEventListener('release', function(){ wake = null; }); }).catch(function(){}); }catch(e){} }
 function releaseWake(){ try{ if(wake) wake.release(); }catch(e){} wake = null; }
 document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'visible' && S.active) askWake(); });
@@ -1388,7 +1387,6 @@ function vOv(){
   var h = restBar();
   h += '<div class="top"><button data-a="scr" data-s="ex">◧ EXERCICE</button><button data-a="scr" data-s="home">⌂ ACCUEIL</button><span class="chip on tnum" id="clock">● ' + mmss((Date.now()-a.start)/1000) + '</span></div>';
   h += '<div class="disp" style="font-size:60px">' + esc(a.name) + '</div>';
-  h += '<div class="stat"><div><span class="lbl">SÉRIES</span><span class="disp tnum">' + done + '/' + tot + '</span></div><div><span class="lbl">VOLUME</span><span class="disp tnum">' + (vol >= 1000 ? kg(Math.round(vol/100)/10) + ' T' : kg(vol) + ' KG') + '</span></div><div><span class="lbl">EXOS</span><span class="disp tnum">' + a.exercises.length + '</span></div></div>';
   h += '<div style="display:flex;flex-direction:column">';
   a.exercises.forEach(function(e, i){
     var isCur = i === a.idx, sj = selIndex(e);
@@ -2065,6 +2063,7 @@ var CHANGELOG = [
    summary:['Sur Aujourd\'hui, touche un exercice de la prochaine séance pour ouvrir sa fiche : historique, records et façon de faire.','Les carrés de l\'accueil deviennent des widgets : choisis ce qu\'ils affichent, en petit, en large ou en grand.','Les fenêtres qui s\'ouvrent par le bas se ferment en les glissant vers le bas.','Un Profil plus simple, et 4 coloris au choix : Forêt, Océan, Terre et Prune.','La barre du bas flotte au-dessus du contenu.','Le Journal a son calendrier du mois, avec une barre de progression vers ton objectif.'],
    sections:[
     {t:'Les fiches depuis l\'accueil', items:['Tous les exercices de la prochaine séance sont listés, et chacun ouvre sa fiche d\'un tap.','La fiche montre le mouvement, tes notes, tes records et tes dernières séances sur cet exercice.']},
+    {t:'Fin de repos, même ailleurs', items:['Dans Profil › Notifications, active « Fin de repos » : quand ton repos se termine et que tu es sur une autre appli ou écran verrouillé, une notification te prévient.','Dans l\'appli, la fin du repos sonne maintenant comme un petit ding, avec une légère vibration quand le téléphone le permet.','« Tester » envoie une notification dans 10 secondes pour vérifier que tout marche.']},
     {t:'Le repos en grand', items:['Quand tu valides une série, le repos s\'affiche en grand juste sous elle : chiffres géants, lisibles téléphone posé sur le banc.','+15 / −15 ajustent le repos en cours, « Passer » le termine. À zéro, le bandeau passe en couleur et affiche GO.','Si tu fais défiler et que le repos sort de l\'écran, un petit bandeau apparaît tout en haut avec le temps restant. Touche-le pour revenir au repos.']},
     {t:'Le calendrier du journal', items:['En haut du Journal, le mois en cours : séances faites en couleur, séances prévues en pointillés, jours manqués barrés.','Touche un jour coloré pour revoir la séance. Les flèches passent d\'un mois à l\'autre.','La barre de progression compte tes séances face à l\'objectif du mois (tes jours d\'entraînement prévus), avec un repère qui montre où tu devrais en être aujourd\'hui.']},
     {t:'Une barre qui flotte', items:['La barre du bas se détache des bords de l\'écran : une pilule légèrement transparente, posée au-dessus du contenu.','Quand tu fais défiler vers le bas, elle s\'estompe peu à peu ; elle revient dès que tu remontes, et elle est toujours là en haut et en bas de la page.']},
@@ -3342,6 +3341,8 @@ document.addEventListener('click', function(ev){
     case 'gapok': ui.gapEdit = null; break;
     case 'tadj': if(S.active.rest){ S.active.rest.total = Math.max(5, S.active.rest.total + d); save(); } break;
     case 'skip': closeRest(); save(); break;
+    case 'pushtoggle': m3PushToggle(); return;
+    case 'pushtest': m3PushTest(); return;
     case 'restshow': var rb = document.getElementById('rest-band'); if(rb) rb.scrollIntoView({behavior:'smooth', block:'center'}); return;
     case 'w': j = selIndex(ex); if(j != null){ var s1 = ex.sets[j]; s1.w = Math.max(0, Math.round(((s1.w || 0) + d * inc())*100)/100); s1.trend = null; save(); } break;
     case 'r': j = selIndex(ex); if(j != null){ var s2 = ex.sets[j]; s2.r = Math.max(0, (s2.r || 0) + d); s2.trend = null; save(); } break;
@@ -3777,6 +3778,7 @@ function vSet(){
   h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('PALIER DE CHARGE', 'WEIGHT STEP') + '</div><div class="m3s-seg" role="group">' + [1, 1.25, 2, 2.5, 5].map(function(v){
     return '<button data-a="inc" data-v="' + v + '" class="' + (inc() === v ? 'on' : '') + '" aria-pressed="' + (inc() === v) + '">' + kg(v) + ' kg</button>';
   }).join('') + '</div></section>';
+  h += m3PushRow();
   var nw = unreadLog();
   h += '<section class="m3s-sec"><div class="m3s-list"><button class="m3s-row" data-a="news"><span>' + L('Nouveautés', 'What\'s new') + '<small>' + L('Version ', 'Version ') + CHANGELOG[0].v + ' · ' + esc(clOf(CHANGELOG[0]).t) + '</small></span>' + (nw ? '<span class="m3s-badge">' + L('NOUVEAU', 'NEW') + '</span>' : '<b>›</b>') + '</button></div></section>';
   var nH = S.history.length, last = S.settings.lastExport, ago = last ? Math.floor((Date.now() - last) / DAYMS) : null, und = undoInfo();
@@ -4259,6 +4261,70 @@ function m3PinCheck(){
   pin.classList.toggle('show', off);
 }
 window.addEventListener('scroll', function(){ m3PinCheck(); }, {passive:true});
+
+/* ---------- end-of-rest notification (Web Push through the small muscle3000-push server) ----------
+   iOS lets an installed web app show a notification only when a server sends it, so the app hands the
+   server "notify at T" when it goes to the background during a rest, and cancels it when it comes back. */
+var PUSH_URL = '';
+function m3PushReady(){ return !!PUSH_URL && 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window; }
+function m3Standalone(){ try{ return window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; }catch(e){ return false; } }
+function m3PushRow(){
+  if(!PUSH_URL) return '';
+  var on = !!(S.settings.pushOn && S.settings.pushSub), sub;
+  if(!m3PushReady()) sub = m3Standalone() ? L('Ce téléphone ne permet pas les notifications web (iOS 16.4 minimum).', 'This phone does not allow web notifications (iOS 16.4 or later).') : L('Ouvre l\'appli depuis son icône sur l\'écran d\'accueil pour l\'activer.', 'Open the app from its home screen icon to turn it on.');
+  else if(Notification.permission === 'denied') sub = L('Bloquées : Réglages iPhone › Notifications › Muscle 3000.', 'Blocked: iPhone Settings › Notifications › Muscle 3000.');
+  else sub = on ? L('Un ding quand le repos se termine et que tu n\'es pas sur l\'appli.', 'A ding when rest ends and you are not in the app.') : L('Sois prévenu à la fin du repos, même sur une autre appli.', 'Get notified when rest ends, even in another app.');
+  var h = '<section class="m3s-sec"><div class="m3s-lbl">' + L('NOTIFICATIONS', 'NOTIFICATIONS') + '</div><div class="m3s-list">';
+  h += '<button class="m3s-row" data-a="pushtoggle" role="switch" aria-checked="' + on + '"' + (m3PushReady() ? '' : ' disabled') + '><span>' + L('Fin de repos', 'End of rest') + '<small>' + sub + '</small></span><span class="m3s-switch' + (on ? ' on' : '') + '"><i></i></span></button>';
+  if(on) h += '<button class="m3s-row" data-a="pushtest"><span>' + L('Tester', 'Test it') + '<small>' + L('Envoie une notification dans 10 s : quitte l\'appli pour la voir.', 'Sends a notification in 10 s: leave the app to see it.') + '</small></span><b>›</b></button>';
+  return h + '</div></section>';
+}
+function m3B64(s){ s = s.replace(/-/g, '+').replace(/_/g, '/'); while(s.length % 4) s += '='; var b = atob(s), u = new Uint8Array(b.length); for(var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+function m3PushToggle(){
+  if(!m3PushReady()) return;
+  if(S.settings.pushOn){
+    m3PushSend('/cancel');
+    navigator.serviceWorker.ready.then(function(reg){ return reg.pushManager.getSubscription(); }).then(function(sb){ if(sb) sb.unsubscribe(); }).catch(function(){});
+    S.settings.pushOn = false; S.settings.pushSub = null; save(); render(); toast(L('Notifications coupées', 'Notifications off')); return;
+  }
+  Notification.requestPermission().then(function(perm){
+    if(perm !== 'granted'){ render(); toast(L('Notifications refusées', 'Notifications refused')); throw 0; }
+    return Promise.all([navigator.serviceWorker.ready, fetch(PUSH_URL + '/key').then(function(r){ return r.json(); })]);
+  }).then(function(x){
+    var reg = x[0], key = m3B64(x[1].key);
+    return reg.pushManager.getSubscription().then(function(old){ return old ? old.unsubscribe() : null; }).then(function(){ return reg.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:key}); });
+  }).then(function(sb){
+    S.settings.pushSub = JSON.parse(JSON.stringify(sb)); S.settings.pushOn = true; save(); render(); toast(L('Notification de fin de repos activée', 'End-of-rest notification on'));
+  }).catch(function(e){ if(e !== 0){ render(); toast(L('Activation impossible pour l\'instant. Réessaie avec du réseau.', 'Could not turn it on. Try again online.')); } });
+}
+function m3PushSend(path, extra){
+  if(!PUSH_URL || !S.settings.pushSub) return;
+  var body = JSON.stringify(Object.assign({sub:S.settings.pushSub}, extra || {}));
+  try{ if(navigator.sendBeacon && navigator.sendBeacon(PUSH_URL + path, new Blob([body], {type:'text/plain'}))) return; }catch(e){}
+  try{ fetch(PUSH_URL + path, {method:'POST', body:body, keepalive:true, mode:'cors', headers:{'Content-Type':'text/plain'}}).catch(function(){}); }catch(e){}
+}
+function m3PushSchedule(){
+  if(!S.settings.pushOn || !S.active) return;
+  var ri = restInfo(); if(!ri || ri.over) return;
+  var ex = S.active.exercises[ri.r.ex], nx = ex ? m3RestNext(ri, ex, ri.r.set) : '';
+  var who = ri.r.label || !ex ? (S.active.exercises[ri.r.ex + 1] ? exDisp(S.active.exercises[ri.r.ex + 1].name) : '') : exDisp(ex.name);
+  m3PushSend('/schedule', {at:ri.r.start + ri.r.total * 1000, title:L('Repos terminé', 'Rest is over'), body:(who ? who + ' · ' : '') + nx.charAt(0) + nx.slice(1).toLowerCase() + L(' : c\'est reparti.', ': let\'s go.')});
+}
+function m3PushTest(){ m3PushSend('/schedule', {at:Date.now() + 10000, title:L('Repos terminé', 'Rest is over'), body:L('Test : tes notifications de fin de repos marchent.', 'Test: your end-of-rest notifications work.')}); toast(L('Notification dans 10 s : quitte l\'appli', 'Notification in 10 s: leave the app')); }
+document.addEventListener('visibilitychange', function(){ if(!S.settings.pushOn) return; if(document.visibilityState === 'hidden') m3PushSchedule(); else m3PushSend('/cancel'); });
+window.addEventListener('pagehide', function(){ if(S.settings.pushOn) m3PushSchedule(); });
+
+/* the in-app end of rest: a soft "ding" and a light buzz */
+function m3Haptic(){
+  try{ if(navigator.vibrate){ navigator.vibrate(40); return; } }catch(e){}
+  /* iOS 18+: toggling a native switch gives a light haptic tick */
+  try{ var l = document.getElementById('m3-hap'); if(!l){ l = document.createElement('label'); l.id = 'm3-hap'; l.style.cssText = 'position:fixed;left:-99px;top:0;width:1px;height:1px;overflow:hidden'; l.innerHTML = '<input type="checkbox" switch>'; document.body.appendChild(l); } l.click(); }catch(e){}
+}
+function m3Ding(){
+  try{ if(!audio) return; var t = audio.currentTime;
+    [[1318.5, .22], [2637, .06], [1975.5, .05]].forEach(function(p){ var o = audio.createOscillator(), g = audio.createGain(); o.type = 'sine'; o.frequency.value = p[0]; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(p[1], t + .008); g.gain.exponentialRampToValueAtTime(0.0001, t + 1.4); o.connect(g); g.connect(audio.destination); o.start(t); o.stop(t + 1.5); });
+  }catch(e){}
+}
 
 /* sheets (journal, fiche, widgets…): grab the top and pull down to close, like a native sheet.
    From the top strip it always works; lower in the sheet, only once its content is scrolled to the top. */

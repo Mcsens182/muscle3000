@@ -1,0 +1,11 @@
+name = "muscle3000-push"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+[[durable_objects.bindings]]
+name = "PUSH"
+class_name = "Pusher"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Pusher"]
