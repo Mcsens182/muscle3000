@@ -4265,7 +4265,7 @@ window.addEventListener('scroll', function(){ m3PinCheck(); }, {passive:true});
 /* ---------- end-of-rest notification (Web Push through the small muscle3000-push server) ----------
    iOS lets an installed web app show a notification only when a server sends it, so the app hands the
    server "notify at T" when it goes to the background during a rest, and cancels it when it comes back. */
-var PUSH_URL = '';
+var PUSH_URL = 'https://muscle3000-push.maxence-minebois.workers.dev';
 function m3PushReady(){ return !!PUSH_URL && 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window; }
 function m3Standalone(){ try{ return window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; }catch(e){ return false; } }
 function m3PushRow(){
