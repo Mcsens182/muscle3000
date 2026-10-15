@@ -1387,13 +1387,13 @@ var SEED = [
 /* exercise library: '*' marks a heavy compound lift (defaults 6-10 reps, 2:00 rest) */
 var GROUPS = ['Pectoraux','Dos','Épaules','Biceps','Triceps','Avant-bras','Quadriceps','Ischios & fessiers','Mollets','Abdos','Cardio','Autre'];
 var LIBSRC = {
-  'Pectoraux':'*Développé couché barre|*Développé incliné barre|*Développé décliné barre|*Développé couché haltères|*Développé incliné haltères|*Développé couché machine|*Développé incliné machine|*Dips|*Pompes|*Pompes lestées|Écarté haltères|Écarté incliné haltères|Écarté poulie vis-à-vis|Écarté poulie basse|Pec deck|Pullover haltère',
-  'Dos':'*Tractions|*Tractions lestées|*Tractions neutres|*Tractions supination|*Rowing barre|*Rowing Yates barre|*Rowing haltère|*Rowing T-bar|*Rowing chest supported machine|Rowing poulie basse|Rowing machine|Tirage vertical poulie|Tirage vertical poulie prise serrée|Tirage vertical poulie prise neutre|Tirage vertical poulie unilatéral|Pullover poulie|*Deadlift barre|*Rack pull barre|Shrug barre|Shrug haltères|Extensions lombaires|Good morning barre',
-  'Épaules':'*Overhead press barre|*Développé militaire barre|*Développé haltères assis|*Développé Arnold haltères|*Développé épaules machine|*Push press barre|Élévations latérales haltères|Élévations latérales poulie|Élévations latérales machine|Élévations frontales haltères|Oiseau haltères|Oiseau assis haltères prise neutre|Reverse pec deck|Face pull poulie|Upright row barre|Upright row penché haltères|Y-raise haltères',
+  'Pectoraux':'*Développé couché barre|*Développé incliné barre|*Développé décliné barre|*Développé couché haltères|*Développé incliné haltères|*Développé couché machine|*Développé couché Smith machine|*Développé incliné machine|*Développé incliné Smith machine|*Dips|*Pompes|*Pompes lestées|Écarté haltères|Écarté incliné haltères|Écarté poulie vis-à-vis|Écarté poulie basse|Pec deck|Pullover haltère',
+  'Dos':'*Tractions|*Tractions lestées|*Tractions neutres|*Tractions supination|*Rowing barre|*Rowing Yates barre|*Rowing haltère|*Rowing T-bar|*Rowing chest supported machine|*Rowing Smith machine|Rowing poulie basse|Rowing machine|Tirage vertical poulie|Tirage vertical poulie prise serrée|Tirage vertical poulie prise neutre|Tirage vertical poulie unilatéral|Pullover poulie|*Deadlift barre|*Rack pull barre|Shrug barre|Shrug haltères|Extensions lombaires|Good morning barre',
+  'Épaules':'*Overhead press barre|*Développé militaire barre|*Développé militaire Smith machine|*Développé haltères assis|*Développé Arnold haltères|*Développé épaules machine|*Push press barre|Élévations latérales haltères|Élévations latérales poulie|Élévations latérales machine|Élévations frontales haltères|Oiseau haltères|Oiseau assis haltères prise neutre|Reverse pec deck|Face pull poulie|Upright row barre|Upright row penché haltères|Y-raise haltères',
   'Biceps':'Curl barre|Curl barre EZ|Curl haltères|Curl incliné haltères|Curl marteau haltères|Curl pupitre barre EZ|Curl poulie|Curl concentré haltère|Curl araignée haltères|Curl Bayesian poulie',
   'Triceps':'*Développé couché prise serrée barre|*Dips banc|Extension triceps poulie|Extension triceps poulie corde|Barre au front|Extension nuque haltère|Extension nuque poulie|Kickback triceps haltère',
   'Avant-bras':'Curl poignets barre|Curl poignets inversé barre|Farmer walk haltères|Dead hang',
-  'Quadriceps':'*Squat barre high bar|*Squat barre low bar|*Squat barre|*Front squat barre|*Hack squat machine|*Presse à cuisses|*Goblet squat haltère|*Belt squat machine|*Fentes haltères|*Fentes bulgares haltères|*Fentes marchées haltères|Leg extension machine|Sissy squat|Step-up haltères',
+  'Quadriceps':'*Squat barre high bar|*Squat barre low bar|*Squat barre|*Squat Smith machine|*Front squat barre|*Hack squat machine|*Presse à cuisses|*Goblet squat haltère|*Belt squat machine|*Fentes haltères|*Fentes Smith machine|*Fentes bulgares haltères|*Fentes marchées haltères|Leg extension machine|Sissy squat|Step-up haltères',
   'Ischios & fessiers':'*Romanian deadlift barre|*Soulevé de terre jambes tendues barre|*Sumo deadlift barre|*Hip thrust barre|Leg curl machine|Leg curl assis machine|Leg curl allongé machine|Nordic curl|Glute bridge|Abduction machine|Kickback fessiers poulie',
   'Mollets':'Extensions mollets machine|Mollets debout machine|Mollets assis machine|Mollets à la presse',
   'Abdos':'Crunch|Crunch poulie|Relevé de jambes suspendu|Relevé de genoux|Gainage|Gainage latéral|Ab wheel|Russian twist|Pallof press poulie|Dragon flag',
@@ -1403,12 +1403,13 @@ var LIB = [];
 Object.keys(LIBSRC).forEach(function(g){ LIBSRC[g].split('|').forEach(function(n){ var c = n.charAt(0) === '*'; LIB.push({n:c ? n.slice(1) : n, g:g, c:c}); }); });
 /* 1.15 : le matériel est dans le nom (barre, haltères, machine, poulie). Anciens noms → nouveaux */
 var EQREN = {"Développé couché": "Développé couché barre", "Développé incliné": "Développé incliné barre", "Développé décliné": "Développé décliné barre", "Développé machine": "Développé couché machine", "Rowing Yates": "Rowing Yates barre", "Rowing chest supported": "Rowing chest supported machine", "Tirage vertical": "Tirage vertical poulie", "Tirage vertical prise serrée": "Tirage vertical poulie prise serrée", "Tirage vertical prise neutre": "Tirage vertical poulie prise neutre", "Tirage vertical unilatéral": "Tirage vertical poulie unilatéral", "Deadlift": "Deadlift barre", "Rack pull": "Rack pull barre", "Good morning": "Good morning barre", "Overhead press": "Overhead press barre", "Développé militaire": "Développé militaire barre", "Développé Arnold": "Développé Arnold haltères", "Push press": "Push press barre", "Élévations latérales": "Élévations latérales haltères", "Élévations frontales": "Élévations frontales haltères", "Oiseau": "Oiseau haltères", "Oiseau assis prise neutre": "Oiseau assis haltères prise neutre", "Face pull": "Face pull poulie", "Upright row": "Upright row barre", "Y-raise": "Y-raise haltères", "Curl marteau": "Curl marteau haltères", "Curl pupitre": "Curl pupitre barre EZ", "Curl concentré": "Curl concentré haltère", "Curl araignée": "Curl araignée haltères", "Curl Bayesian": "Curl Bayesian poulie", "Développé couché prise serrée": "Développé couché prise serrée barre", "Extension triceps corde": "Extension triceps poulie corde", "Kickback triceps": "Kickback triceps haltère", "Curl poignets": "Curl poignets barre", "Curl poignets inversé": "Curl poignets inversé barre", "Farmer walk": "Farmer walk haltères", "High bar squat": "Squat barre high bar", "Low bar squat": "Squat barre low bar", "Squat": "Squat barre", "Front squat": "Front squat barre", "Hack squat": "Hack squat machine", "Goblet squat": "Goblet squat haltère", "Belt squat": "Belt squat machine", "Fentes": "Fentes haltères", "Fentes bulgares": "Fentes bulgares haltères", "Fentes marchées": "Fentes marchées haltères", "Leg extension": "Leg extension machine", "Step-up": "Step-up haltères", "Romanian deadlift": "Romanian deadlift barre", "Soulevé de terre jambes tendues": "Soulevé de terre jambes tendues barre", "Sumo deadlift": "Sumo deadlift barre", "Hip thrust": "Hip thrust barre", "Leg curl": "Leg curl machine", "Leg curl assis": "Leg curl assis machine", "Leg curl allongé": "Leg curl allongé machine", "Extensions mollets": "Extensions mollets machine", "Mollets debout": "Mollets debout machine", "Mollets assis": "Mollets assis machine", "Pallof press": "Pallof press poulie", "Upright row penché": "Upright row penché haltères"};
-var EQ_LBL = {barre:['BARRE','BARBELL'], halt:['HALTÈRES','DUMBBELL'], machine:['MACHINE','MACHINE'], poulie:['POULIE','CABLE'], pdc:['POIDS DU CORPS','BODYWEIGHT']};
-var EQ_ORDER = ['barre','halt','machine','poulie','pdc'];
+var EQ_LBL = {barre:['BARRE','BARBELL'], halt:['HALTÈRES','DUMBBELL'], machine:['MACHINE','MACHINE'], smith:['SMITH MACHINE','SMITH MACHINE'], poulie:['POULIE','CABLE'], pdc:['POIDS DU CORPS','BODYWEIGHT']};
+var EQ_ORDER = ['barre','halt','machine','smith','poulie','pdc'];
 function eqOf(n){
   var f = fold(n);
   if(/poulie|face pull/.test(f)) return 'poulie';
-  if(/machine|presse|pec deck|smith|abduction|hack squat|belt squat/.test(f)) return 'machine';
+  if(/smith/.test(f)) return 'smith';
+  if(/machine|presse|pec deck|abduction|hack squat|belt squat/.test(f)) return 'machine';
   if(/halter/.test(f)) return 'halt';
   if(/barre|t bar/.test(f)) return 'barre';
   if(/traction|dips|pompe|nordic|glute bridge|sissy|crunch|releve|gainage|russian|dragon|dead hang|lombaire|ab wheel/.test(f)) return 'pdc';
@@ -2590,7 +2591,7 @@ function undoInfo(){ try{ var u = JSON.parse(localStorage.getItem(UNDO_KEY) || '
    (never replaces). Séances already present are skipped, and a copy of the data before the import is kept for undo. */
 var STRONG_POS = ['date','wname','dur','ex','order','weight','reps','dist','secs','note','wnote','rpe'];
 var STRONG_DICT = {
-  'bench press':'Développé couché barre','bench press|dumbbell':'Développé couché haltères','bench press|smith':'Développé couché machine','bench press|machine':'Développé couché machine',
+  'bench press':'Développé couché barre','bench press|dumbbell':'Développé couché haltères','bench press|smith':'Développé couché Smith machine','incline bench press|smith':'Développé incliné Smith machine','squat|smith':'Squat Smith machine','overhead press|smith':'Développé militaire Smith machine','lunge|smith':'Fentes Smith machine','bent over row|smith':'Rowing Smith machine','bench press|machine':'Développé couché machine',
   'incline bench press':'Développé incliné barre','incline bench press|dumbbell':'Développé incliné haltères','incline bench press|machine':'Développé incliné machine',
   'decline bench press':'Développé décliné barre','close grip bench press':'Développé couché prise serrée barre',
   'chest press':'Développé couché machine','incline chest press':'Développé incliné machine',
@@ -2648,6 +2649,7 @@ function strongGuess0(src){
   if(eq === 'machine' && libFind(base + ' machine')) return libFind(base + ' machine').n;
   if(eq === 'cable' && libFind(base + ' poulie')) return libFind(base + ' poulie').n;
   if(eq === 'barbell' && libFind(base + ' barre')) return libFind(base + ' barre').n;
+  if(eq === 'smith' && libFind(base + ' Smith machine')) return libFind(base + ' Smith machine').n;
   hit = libFind(base); if(hit) return hit.n;
   return '';
 }
@@ -2852,7 +2854,7 @@ var CHANGELOG = [
   {v:'1.16', d:'15.10.26', t:'Le matériel dans le nom, le repos d\'un tap',
    summary:['Chaque exercice dit avec quoi il se fait : barre, haltères, machine ou poulie. Plus de « Développé couché » tout court.','En séance, touche le temps de repos entre deux séries pour le changer.'],
    sections:[
-    {t:'Le matériel', items:['Les exercices qui existent en plusieurs versions portent le matériel dans leur nom : Développé couché barre, Développé couché haltères, Développé couché machine…','Ton historique, tes programmes et tes records suivent le nouveau nom tout seuls.','Dans Exercices, une étiquette indique le matériel, et un filtre Matériel permet de n\'afficher que la barre, les haltères, les machines, les poulies ou le poids du corps.']},
+    {t:'Le matériel', items:['Les exercices qui existent en plusieurs versions portent le matériel dans leur nom : Développé couché barre, Développé couché haltères, Développé couché machine, Développé couché Smith machine…','Nouvelles variantes à la Smith machine : développé couché, développé incliné, développé militaire, squat, fentes et rowing.','Ton historique, tes programmes et tes records suivent le nouveau nom tout seuls.','Dans Exercices, une étiquette indique le matériel, et un filtre Matériel permet de n\'afficher que la barre, les haltères, les machines, les poulies ou le poids du corps.']},
     {t:'Le repos', items:['Dans la liste de la séance, touche le repos entre deux séries : −15 s, +15 s, OK.','Le repos avant l\'exercice suivant se règle de la même façon, sous la dernière série.']},
     {t:'Séance', items:['Le mode « une série à la fois » est retiré : la séance s\'affiche toujours en liste.']}
    ],
@@ -3746,7 +3748,9 @@ var EXN = {
   'Mollets debout machine':'Standing calf raises','Mollets assis machine':'Seated calf raises','Mollets à la presse':'Leg press calf raises','Crunch poulie':'Cable crunch',
   'Relevé de jambes suspendu':'Hanging leg raises','Relevé de genoux':'Knee raises','Gainage':'Plank','Gainage latéral':'Side plank','Vélo':'Bike','Rameur':'Rower',
   'Tapis de course':'Treadmill','Corde à sauter':'Jump rope','Dips lestés':'Weighted dips','Curl Bayesian poulie':'Bayesian curl',
-  'Rowing chest supported machine':'Chest-supported row','Rowing T-bar':'T-bar row','Rowing Yates barre':'Yates row'
+  'Rowing chest supported machine':'Chest-supported row','Rowing T-bar':'T-bar row','Rowing Yates barre':'Yates row',
+  'Développé couché Smith machine':'Smith machine bench press','Développé incliné Smith machine':'Smith machine incline press','Développé militaire Smith machine':'Smith machine overhead press',
+  'Squat Smith machine':'Smith machine squat','Fentes Smith machine':'Smith machine lunge','Rowing Smith machine':'Smith machine row'
 };
 var GRN = {'Pectoraux':'Chest','Dos':'Back','Épaules':'Shoulders','Avant-bras':'Forearms','Quadriceps':'Quads','Ischios & fessiers':'Hamstrings & glutes',
   'Mollets':'Calves','Abdos':'Abs','Autre':'Other','Autres':'Others','Haut du corps':'Upper body','Bas du corps':'Lower body','Tronc':'Core',
