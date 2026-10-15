@@ -1191,6 +1191,121 @@ html.hud .m5-typing{border-radius:var(--h-r)}
 html.hud .m5-prem,html.hud .m5-choices span,html.hud .m5-bub{border-radius:var(--h-r)}
 </style>
 
+<style id="fl-flow">
+/* 1.x : séance en flux — toute la séance en liste, repos plein écran réductible en pilule */
+.fl-wrap{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 120px)}
+.fl-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 0 0}
+body .fl-top button{border:0!important;min-height:44px!important;padding:0 4px!important;font-size:14px!important;font-weight:700!important;color:var(--m3-muted)!important}
+.fl-top b{font-size:14px;font-weight:700;color:var(--m3-muted);font-variant-numeric:tabular-nums}
+.fl-head{padding:14px 2px 16px}
+.fl-head h1{margin:0;font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.fl-head p{margin:6px 0 10px;font-size:14px;font-weight:600;color:var(--m3-muted);font-variant-numeric:tabular-nums}
+.fl-list{display:flex;flex-direction:column;gap:10px}
+.fl-ex{position:relative;background:var(--m3-card);border:2px solid var(--m3-card);border-radius:18px;transition:border-color .35s ease,box-shadow .2s ease,transform .2s ease;scroll-margin-top:84px;scroll-margin-bottom:120px}
+.fl-ex.open{border-color:var(--m3-accent)}
+.fl-exh{display:flex;align-items:center;gap:2px;min-height:54px;padding:0 8px 0 2px;box-sizing:border-box}
+body .fl-grip{flex:none;width:38px;min-height:48px!important;padding:0!important;border:0!important;color:var(--m3-muted)!important;opacity:.7;touch-action:none;cursor:grab;display:flex;align-items:center;justify-content:center}
+body .fl-title{flex:1;min-width:0;min-height:48px!important;padding:0!important;border:0!important;text-align:left;font-size:17px!important;font-weight:700!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fl-ex.open .fl-title{font-weight:800!important}
+body .fl-ico{flex:none;width:38px;min-height:40px!important;padding:0!important;border:0!important;color:var(--m3-muted)!important;display:flex;align-items:center;justify-content:center}
+.fl-ex.open .fl-ico.i{color:var(--m3-accent)!important}
+.fl-cnt{flex:none;font-size:13px;font-weight:800;color:var(--m3-muted);padding:0 2px 0 4px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.fl-ex.open .fl-cnt,.fl-ex.done .fl-cnt{color:var(--m3-accent)}
+.fl-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .42s cubic-bezier(.2,.8,.2,1)}
+.fl-ex.open .fl-body{grid-template-rows:1fr}
+.fl-in{min-height:0;overflow:hidden;opacity:0;transition:opacity .3s ease}
+.fl-ex.open .fl-in{opacity:1}
+.fl-pad{padding:0 12px 14px 8px;display:flex;flex-direction:column;gap:6px}
+.fl-dragging .fl-body{grid-template-rows:0fr!important;transition:none!important}
+.fl-dragging .fl-in{opacity:0!important;transition:none!important}
+.fl-dragging .fl-ex{transition:transform .2s ease}
+.fl-dragging .fl-ex.fl-lift{transition:none;z-index:5;box-shadow:0 14px 30px color-mix(in srgb,var(--m3-ink) 22%,transparent)}
+.fl-tag{align-self:flex-start;margin-left:6px;display:inline-flex;align-items:center;gap:6px;background:#FBEBD3;color:#8A5300;border-radius:8px;padding:5px 9px;font-size:12px;font-weight:700}
+body .fl-note{width:100%;box-sizing:border-box;border:0!important;outline:0;background:transparent!important;padding:2px 6px 6px!important;font-size:14px!important;font-weight:600!important;color:var(--m3-muted)!important}
+.fl-note-t{padding:2px 6px 6px;font-size:14px;font-weight:600;color:var(--m3-muted)}
+.fl-cue{margin:0 6px 4px;font-size:13px;color:var(--m3-muted)}
+.fl-cols,.fl-row{display:grid;grid-template-columns:44px minmax(0,1fr) 58px 50px 40px;gap:6px;align-items:center}
+.fl-cols{padding:0 4px;font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--m3-muted)}
+.fl-row{border:1.5px solid transparent;border-radius:12px;padding:4px}
+.fl-row.done{background:color-mix(in srgb,var(--m3-accent) 9%,var(--m3-card))}
+.fl-row.next{border:1.5px dashed var(--m3-accent)}
+.fl-row.later{color:var(--m3-muted)}
+body .fl-n{width:42px;min-height:36px!important;padding:0!important;border:0!important;border-radius:10px!important;background:color-mix(in srgb,var(--m3-ink) 6%,transparent)!important;font-size:14px!important;font-weight:800!important}
+body .fl-row.done .fl-n{background:color-mix(in srgb,var(--m3-accent) 16%,transparent)!important}
+body .fl-n.w{background:#FBEBD3!important;color:#8A5300!important}
+.fl-prev{font-size:12px;font-weight:600;color:var(--m3-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fl-v{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fl-row.next .fl-v{font-weight:800}
+.fl-v i{font-style:normal;color:var(--m3-muted);font-weight:600}
+body .fl-cell{width:100%;min-height:38px!important;padding:0 4px!important;border:0!important;border-radius:10px!important;background:color-mix(in srgb,var(--m3-ink) 5%,transparent)!important;text-align:center;font-size:15px!important;font-weight:800!important;font-variant-numeric:tabular-nums;box-sizing:border-box;outline:0}
+body .fl-cell::placeholder{color:var(--m3-muted);opacity:1}
+body .fl-cell.sug{color:var(--m3-muted)!important}
+body .fl-mid{grid-column:2 / span 3;display:grid;grid-template-columns:minmax(0,1fr) 58px 50px;gap:6px;align-items:center;min-height:38px!important;padding:0!important;border:0!important;text-align:left;font:inherit;color:inherit!important}
+body .fl-ck{width:34px;height:34px;min-height:34px!important;padding:0!important;border-radius:17px!important;border:2px solid var(--m3-line)!important;display:flex;align-items:center;justify-content:center;box-sizing:border-box}
+body .fl-row.next .fl-ck{border-color:var(--m3-accent)!important}
+body .fl-row.done .fl-ck{background:var(--m3-accent)!important;border-color:var(--m3-accent)!important;color:var(--m3-card)!important}
+.fl-sep{display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;font-size:12px;font-weight:700;color:var(--m3-muted);font-variant-numeric:tabular-nums}
+.fl-sep:before,.fl-sep:after{content:"";flex:1;height:1px;background:var(--m3-line)}
+.fl-sep.live{color:var(--m3-accent);font-weight:800}
+.fl-sep.live:before,.fl-sep.live:after{display:none}
+.fl-sep.live .fl-tr{flex:1;height:2px;border-radius:1px;background:var(--m3-line);overflow:hidden;order:2}
+.fl-sep.live .fl-tr i{display:block;height:100%;background:var(--m3-accent);transition:width .25s linear}
+.fl-adds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:8px 0 0 4px}
+body .fl-adds button{min-height:44px!important;border:1.5px dashed var(--m3-line)!important;border-radius:12px!important;font-size:14px!important;font-weight:700!important}
+body .fl-adds button.w{border-color:#D9A55A!important;color:#8A5300!important}
+body .fl-addex{width:100%;min-height:58px!important;margin-top:4px;border:1.5px dashed var(--m3-line)!important;border-radius:18px!important;font-size:15px!important;font-weight:700!important}
+.fl-end{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+body .fl-mode{border:0!important;min-height:44px!important;font-size:13px!important;font-weight:700!important;color:var(--m3-muted)!important;text-decoration:underline}
+.fl-cta{position:fixed;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:30;max-width:520px;margin:0 auto}
+body .fl-cta button{width:100%;min-height:58px!important;border:0!important;border-radius:18px!important;background:var(--m3-accent)!important;color:var(--m3-card)!important;font-size:16px!important;font-weight:800!important;box-shadow:0 8px 24px color-mix(in srgb,var(--m3-accent) 30%,transparent)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 14px!important}
+.fl-undo{position:fixed;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 84px);z-index:31;max-width:520px;margin:0 auto;min-height:52px;border-radius:16px;background:var(--m3-ink);color:var(--m3-card);display:flex;align-items:center;justify-content:space-between;padding:0 6px 0 16px;box-sizing:border-box;font-size:14px;font-weight:600;animation:flUp .25s ease-out}
+body .fl-undo button{border:0!important;min-height:40px!important;padding:0 14px!important;color:#9FD8BC!important;font-size:14px!important;font-weight:800!important}
+/* pilule de repos, en haut, façon île */
+.fl-pill{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:40;width:min(300px,calc(100vw - 32px));transform:translateX(-50%);min-height:58px;border-radius:29px;background:#18231C;color:#F4F1E9;display:flex;align-items:center;gap:6px;padding:0 8px 0 6px;box-sizing:border-box;box-shadow:0 10px 30px rgba(24,35,28,.28)}
+.fl-pill.pop{animation:flPop .34s cubic-bezier(.2,.8,.2,1)}
+body .fl-pill button{border:0!important;color:#F4F1E9!important}
+body .fl-pill-go{flex:1;min-width:0;min-height:50px!important;padding:0 4px!important;display:flex;align-items:center;gap:10px;text-align:left}
+.fl-pill-go span{display:flex;flex-direction:column;min-width:0}
+.fl-pill-go b{font-size:22px;font-weight:800;line-height:1.05;font-variant-numeric:tabular-nums}
+.fl-pill-go small{font-size:12px;font-weight:600;color:#B9C6BE;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body .fl-pill-p{flex:none;min-height:42px!important;padding:0 14px!important;border-radius:21px!important;background:#2E3D34!important;font-size:14px!important;font-weight:800!important}
+.fl-pill.go{background:var(--m3-accent);justify-content:space-between;padding:0 8px 0 18px;font-size:15px;font-weight:800}
+body .fl-pill.go button{min-height:42px!important;padding:0 16px!important;border-radius:21px!important;background:rgba(0,0,0,.18)!important;font-size:14px!important;font-weight:800!important}
+/* repos plein écran : ouverture et réduction vers la pilule */
+.fl-rest{transform-origin:50% 36px;transition:transform .34s cubic-bezier(.4,0,.2,1),opacity .28s ease,border-radius .34s ease}
+.fl-rest.fl-grow{animation:flGrow .42s cubic-bezier(.2,.8,.2,1)}
+.fl-rest.fl-shrink{transform:translateY(-10px) scale(.16);opacity:0;border-radius:180px;pointer-events:none}
+.fl-rtop{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:480px;width:100%;margin:0 auto 14px}
+.fl-rtop span{font-size:14px;font-weight:700;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body .fl-rtop button{flex:none;min-height:44px!important;padding:0 14px 0 10px!important;border-radius:22px!important;border:1px solid color-mix(in srgb,var(--m3-card) 28%,transparent)!important;color:var(--m3-card)!important;display:flex;align-items:center;gap:6px;font-size:14px!important;font-weight:700!important}
+.fl-strip{display:flex;gap:10px;overflow-x:auto;margin:16px -22px 0;padding:0 22px;scrollbar-width:none}
+.fl-strip::-webkit-scrollbar{display:none}
+body .fl-strip button{flex:none;width:118px;min-height:92px!important;border-radius:16px!important;border:2px solid transparent!important;background:color-mix(in srgb,var(--m3-card) 8%,transparent)!important;color:var(--m3-card)!important;padding:10px!important;display:flex;flex-direction:column;justify-content:space-between;text-align:left;box-sizing:border-box}
+body .fl-strip button.now{border-color:var(--m3-card)!important}
+.fl-strip b{font-size:13px;font-weight:700;line-height:1.2}
+.fl-seg{display:flex;gap:4px;width:100%}
+.fl-seg i{flex:1;height:5px;border-radius:3px;background:color-mix(in srgb,var(--m3-card) 18%,transparent)}
+.fl-seg i.w{flex:.5}.fl-seg i.ok{background:#9FD8BC}.fl-seg i.ok.w{background:#E0B877}.fl-seg i.nx{background:var(--m3-card)}
+/* menu ⋯ */
+.fl-menu{position:fixed;inset:0;z-index:50}
+body .fl-scrim{position:absolute;inset:0;width:100%;min-height:0!important;border:0!important;border-radius:0!important;background:rgba(18,32,26,.45)!important;padding:0!important}
+.fl-acts{position:absolute;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);display:flex;flex-direction:column;gap:8px;max-width:520px;margin:0 auto;animation:flUp .25s ease-out}
+.fl-box{background:var(--m3-card);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
+.fl-box>span{padding:14px 18px;font-size:13px;font-weight:700;color:var(--m3-muted);text-align:center;border-bottom:1px solid var(--m3-line)}
+body .fl-box button{min-height:58px!important;border:0!important;border-radius:0!important;border-bottom:1px solid var(--m3-line)!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:16px!important;font-weight:800!important}
+body .fl-box button:last-child{border-bottom:0!important}
+.fl-box button small{font-size:12px;font-weight:600;color:var(--m3-muted)}
+body .fl-box button.danger{color:#A3332B!important}
+body .fl-cancel{min-height:56px!important;border:0!important;border-radius:20px!important;background:var(--m3-card)!important;font-size:16px!important;font-weight:800!important}
+@keyframes flGrow{from{transform:translateY(-10px) scale(.16);opacity:0;border-radius:180px}to{transform:none;opacity:1;border-radius:0}}
+@keyframes flPop{from{transform:translateX(-50%) scale(.55);opacity:0}to{transform:translateX(-50%) scale(1);opacity:1}}
+@keyframes flUp{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.fl-body,.fl-in,.fl-ex,.fl-rest{transition:none!important}.fl-rest.fl-grow,.fl-pill.pop,.fl-undo,.fl-acts{animation:none!important}}
+html.hud .fl-ex,html.hud .fl-row,html.hud .fl-pill,html.hud .fl-box,html.hud body .fl-cancel,html.hud body .fl-cta button{border-radius:var(--h-r)!important}
+html.hud body .fl-cta button{background:var(--h-fill)!important;color:var(--h-on)!important}
+html.hud .fl-ex.open{border-color:var(--h-fill)}
+html.hud .fl-rtop button,html.hud .fl-strip button{color:var(--m3-ink)!important}
+</style>
 
 <div id="app"></div>
 <div id="sheet"></div>
@@ -1609,9 +1724,10 @@ function validate(){
   /* superset : on alterne avec l'exercice lié tant qu'il lui reste des séries */
   var pi = ssPartner(from), go = null, label = '';
   if(pi != null && !s.warm && hasWork(S.active.exercises[pi])){ go = pi; label = 'SUPERSET'; }
-  else if(lastOfEx && exView() === 'focus'){ var nx = pi != null ? Math.max(from, pi) + 1 : from + 1; if(nx < n){ go = nx; label = 'EXERCICE SUIVANT'; } }
+  else if(lastOfEx && exView() !== 'list'){ var nx = pi != null ? Math.max(from, pi) + 1 : from + 1; if(nx < n){ go = nx; label = 'EXERCICE SUIVANT'; } }
   else if(lastOfEx) label = 'EXERCICE SUIVANT';
   S.active.rest = {start:Date.now(), total:restSec, ex:from, set:j, label:label};
+  ui.restMin = false; ui.flIn = true;
   if(go != null){ S.active.idx = go; ui.gapEdit = null; }
   ui.fixLast = false;
   unlockAudio(); save(); render();
@@ -2710,10 +2826,11 @@ function vHist(){
    the shape button) stay out on purpose: they are meant to be found. */
 var CHANGELOG = [
   {v:'1.15', d:'15.10.26', t:'Séance guidée, journal modifiable et nouveau look',
-   summary:['En séance, une série à la fois : charge et reps en très gros, un pavé numérique maison, un énorme bouton Valider et le repos en plein écran.','Une erreur ? Corrige la série que tu viens de valider pendant le repos, ou n\'importe quelle série en touchant sa barre.','Le Journal devient modifiable : corrige, supprime ou ajoute une séance oubliée. Les records se recalculent.','Pompes, tractions, dips et gainage sont gérés au poids du corps ou en durée, avec leurs propres records.','Les vrais supersets, l\'échauffement automatique, le calcul des disques et le remplacement d\'un exercice quand la machine est prise.','En fin de séance modifiée, trois choix clairs : écraser le modèle, créer un nouveau workout ou juste enregistrer.','Un nouveau style au choix, HUD, 4 coloris, des widgets sur l\'accueil, une bibliothèque de 11 programmes et un premier lancement guidé.','Un onglet Coach avec ton bilan de la semaine, et la bibliothèque d\'exercices rangée dans Programme.'],
+   summary:['En séance, toute la séance en liste avec l\'exercice en cours ouvert. Après chaque série, le repos prend tout l\'écran et se réduit en pilule en haut. Le mode une série à la fois reste au choix.','Glisse un exercice pour changer l\'ordre, supprime-le ou remplace-le depuis son menu ⋯, et transforme une série en échauffement d\'un tap sur son numéro.','Une erreur ? Corrige la série que tu viens de valider pendant le repos, ou n\'importe quelle série en touchant sa barre.','Le Journal devient modifiable : corrige, supprime ou ajoute une séance oubliée. Les records se recalculent.','Pompes, tractions, dips et gainage sont gérés au poids du corps ou en durée, avec leurs propres records.','Les vrais supersets, l\'échauffement automatique, le calcul des disques et le remplacement d\'un exercice quand la machine est prise.','En fin de séance modifiée, trois choix clairs : écraser le modèle, créer un nouveau workout ou juste enregistrer.','Un nouveau style au choix, HUD, 4 coloris, des widgets sur l\'accueil, une bibliothèque de 11 programmes et un premier lancement guidé.','Un onglet Coach avec ton bilan de la semaine, et la bibliothèque d\'exercices rangée dans Programme.'],
    sections:[
-    {t:'Une série à la fois', items:['L\'écran de séance montre seulement la série en cours : la charge et les reps proposées en grand, des boutons + et − larges, et Valider en bas.','Touche le chiffre pour ouvrir un pavé numérique géant : plus de clavier du téléphone qui cache l\'écran. Laisse le doigt appuyé sur + ou − pour faire défiler la valeur.','La charge et les reps calculées par la double progression sont en grisé : Valider sans rien toucher les enregistre. « La dernière fois » recopie ta perf précédente.','Une note par exercice s\'écrit directement sous les chiffres, d\'un tap.','L\'heure de fin prévue s\'affiche en haut, calculée avec tes temps de repos.','« Toutes les séries » ouvre la vue en liste ; l\'appli retient ton choix.']},
-    {t:'Le repos', items:['Après Valider, le repos prend tout l\'écran : un grand chrono, ±15 s, et la série qui suit avec sa charge. À zéro, un petit son, puis la série suivante s\'ouvre seule.','En vue liste, le repos s\'affiche en grand sous la série, et un bandeau le rappelle en haut quand il sort de l\'écran.','Dans Profil › Notifications, « Fin de repos » te prévient quand tu es sur une autre appli ou écran verrouillé.','Un seul réglage « Repos entre séries » par exercice, et le repos avant l\'exercice suivant sous la dernière série.']},
+    {t:'La séance en liste', items:['La séance s\'affiche en entier : l\'exercice en cours est ouvert avec ses séries, les autres sont repliés. Touche un exercice pour l\'ouvrir : l\'autre se replie en douceur.','Le bouton Valider reste en bas de l\'écran, avec la série et la charge à faire. Le rond au bout de chaque ligne valide aussi la série.','Après une série, le repos prend tout l\'écran avec la suite de la séance en bas. « Réduire » le range dans une pilule en haut de l\'écran ; touche-la pour le rouvrir. Entre deux séries, le temps qui reste défile aussi dans la liste.','Touche le numéro d\'une série pour la passer en échauffement (W), touche-le encore pour revenir en arrière.','Le nom de l\'exercice ouvert ou l\'icône i affichent sa fiche. Le menu ⋯ remplace l\'exercice (ta note et tes séries suivent, pour cette séance) ou le supprime, avec « Annuler » pendant quelques secondes.','Attrape la poignée à gauche d\'un exercice et fais-le glisser pour changer l\'ordre de la séance.','« Ajouter un exercice » en bas de la liste. Le mode une série à la fois se choisit sous Terminer la séance.']},
+    {t:'Une série à la fois', items:['L\'écran de séance montre seulement la série en cours : la charge et les reps proposées en grand, des boutons + et − larges, et Valider en bas.','Touche le chiffre pour ouvrir un pavé numérique géant : plus de clavier du téléphone qui cache l\'écran. Laisse le doigt appuyé sur + ou − pour faire défiler la valeur.','La charge et les reps calculées par la double progression sont en grisé : Valider sans rien toucher les enregistre. « La dernière fois » recopie ta perf précédente.','Une note par exercice s\'écrit directement sous les chiffres, d\'un tap.','L\'heure de fin prévue s\'affiche en haut, calculée avec tes temps de repos.','« Toutes les séries » ramène à la séance en liste ; l\'appli retient ton choix.']},
+    {t:'Le repos', items:['Après Valider, le repos prend tout l\'écran : un grand chrono, ±15 s, et la série qui suit avec sa charge. À zéro, un petit son, puis la série suivante s\'ouvre seule.','Dans la séance en liste, le repos réduit devient une pilule en haut de l\'écran, avec +15 s à portée de doigt.','Dans Profil › Notifications, « Fin de repos » te prévient quand tu es sur une autre appli ou écran verrouillé.','Un seul réglage « Repos entre séries » par exercice, et le repos avant l\'exercice suivant sous la dernière série.']},
     {t:'Corriger une erreur', items:['Pendant le repos, touche la série que tu viens de valider pour corriger la charge ou les reps, sans arrêter le chrono.','Touche la barre d\'une série déjà faite (ou la série en vue liste) pour la rouvrir et la corriger. L\'enregistrer ne relance pas de repos.']},
     {t:'Un journal modifiable', items:['Dans une séance du Journal, « Modifier » permet de changer le nom, la date, la durée, chaque série, d\'ajouter ou retirer des séries et des exercices.','« Supprimer » retire une séance lancée par erreur.','« + Ajouter une séance oubliée » sous le calendrier : choisis la séance et le jour, elle est pré-remplie avec tes dernières charges.','Après chaque changement, records, fantôme et progression se recalculent.','Les records du Journal sont classés du plus récent au plus ancien, avec « Tout voir et chercher ».']},
     {t:'Poids du corps et durée', items:['Pompes, tractions, dips et compagnie se notent en reps, avec un lest si tu veux. La progression ajoute des reps, jamais de poids d\'office.','Le gainage et les exercices tenus se notent en secondes. La progression ajoute 5 s.','Ces exercices ont enfin leurs records et leur courbe. Le type se change dans la fiche de l\'exercice.']},
@@ -2728,10 +2845,11 @@ var CHANGELOG = [
     {t:'Sauvegarde et corrections', items:['En fin de séance, l\'appli te propose d\'envoyer ta sauvegarde toutes les 10 séances (réglable dans Profil › Sauvegarde).','L\'éditeur de séance s\'ouvre de nouveau correctement.']}
    ],
    en:{t:'Guided sessions, an editable log and a new look',
-   summary:['During a session, one set at a time: huge weight and reps, a built-in keypad, a big Log button and a full-screen rest.','A mistake? Fix the set you just logged during the rest, or any set by tapping its bar.','Your log is now editable: fix, delete or add a missed session. Records are recalculated.','Push-ups, pull-ups, dips and planks work as bodyweight or timed exercises, with their own records.','Real supersets, automatic warm-ups, a plate calculator, and swapping an exercise when the machine is taken.','After a changed session, three clear choices: overwrite the template, create a new workout or just save.','A new HUD style, 4 colorways, Home widgets, a library of 11 programs and a guided first launch.'],
+   summary:['During a session, the whole session in a list with the current exercise open. After each set, the rest fills the screen and minimises into a pill at the top. One set at a time stays available.','Drag an exercise to reorder it, remove or replace it from its ⋯ menu, and turn a set into a warm-up by tapping its number.','A mistake? Fix the set you just logged during the rest, or any set by tapping its bar.','Your log is now editable: fix, delete or add a missed session. Records are recalculated.','Push-ups, pull-ups, dips and planks work as bodyweight or timed exercises, with their own records.','Real supersets, automatic warm-ups, a plate calculator, and swapping an exercise when the machine is taken.','After a changed session, three clear choices: overwrite the template, create a new workout or just save.','A new HUD style, 4 colorways, Home widgets, a library of 11 programs and a guided first launch.'],
    sections:[
-    {t:'One set at a time', items:['The session screen shows only the current set: suggested weight and reps in big type, wide + and − buttons, and Log at the bottom.','Tap a number to open a giant keypad: no more phone keyboard covering the screen. Hold + or − to scroll the value.','Double progression suggestions are greyed out: Log without touching anything saves them. “Last time” copies your previous performance.','One note per exercise, typed right under the numbers.','The expected end time shows at the top, based on your rest times.','“All sets” opens the list view; the app remembers your choice.']},
-    {t:'Rest', items:['After Log, the rest fills the screen: a big timer, ±15 s, and the next set with its weight. At zero, a short sound, then the next set opens by itself.','In list view, the rest shows large under the set, with a banner at the top when it scrolls away.','In Settings › Notifications, “End of rest” alerts you when you are in another app or the screen is locked.','One “Rest between sets” setting per exercise, and the rest before the next exercise under the last set.']},
+    {t:'The session list', items:['The whole session on one screen: the current exercise is open with its sets, the others are folded. Tap an exercise to open it: the other one folds away smoothly.','The Log button stays at the bottom of the screen with the set and weight to do. The circle at the end of each row logs that set too.','After a set, the rest fills the screen with the rest of the session at the bottom. “Minimise” tucks it into a pill at the top; tap it to open it again. Between sets, the time left also counts down in the list.','Tap a set number to make it a warm-up (W), tap again to undo.','The open exercise name or the i icon shows its info sheet. The ⋯ menu replaces the exercise (your note and sets follow, for this session) or removes it, with “Undo” for a few seconds.','Grab the handle on the left of an exercise and drag it to reorder the session.','“Add an exercise” at the bottom of the list. One set at a time is chosen under Finish the session.']},
+    {t:'One set at a time', items:['The session screen shows only the current set: suggested weight and reps in big type, wide + and − buttons, and Log at the bottom.','Tap a number to open a giant keypad: no more phone keyboard covering the screen. Hold + or − to scroll the value.','Double progression suggestions are greyed out: Log without touching anything saves them. “Last time” copies your previous performance.','One note per exercise, typed right under the numbers.','The expected end time shows at the top, based on your rest times.','“All sets” goes back to the session list; the app remembers your choice.']},
+    {t:'Rest', items:['After Log, the rest fills the screen: a big timer, ±15 s, and the next set with its weight. At zero, a short sound, then the next set opens by itself.','In the session list, the minimised rest becomes a pill at the top of the screen, with +15 s within reach.','In Settings › Notifications, “End of rest” alerts you when you are in another app or the screen is locked.','One “Rest between sets” setting per exercise, and the rest before the next exercise under the last set.']},
     {t:'Fix a mistake', items:['During the rest, tap the set you just logged to fix its weight or reps, without stopping the timer.','Tap the bar of a finished set (or the set in list view) to reopen and fix it. Saving it does not start a new rest.']},
     {t:'An editable log', items:['In a session of your log, “Edit” changes the name, date, length and every set, and adds or removes sets and exercises.','“Delete” removes a session started by mistake.','“+ Add a missed session” under the calendar: pick the session and the day, it is prefilled with your last weights.','After every change, records, ghost and progression are recalculated.','Log records are sorted from newest to oldest, with “See all and search”.']},
     {t:'Bodyweight and time', items:['Push-ups, pull-ups, dips and co. are logged in reps, with extra weight if you like. Progression adds reps, never weight on its own.','Planks and holds are logged in seconds. Progression adds 5 s.','These exercises finally have their records and chart. Change the type in the exercise info sheet.']},
@@ -3476,6 +3594,7 @@ function addPicked(name){
     for(var q=0;q<3;q++) nex.sets.push({lo:lo, hi:hi, special:null, warm:false, rest:rest, done:false, w:null, r:null});
     fillSuggestions(nex); S.active.exercises.push(nex); S.active.idx = S.active.exercises.length - 1;
     ui.picker = null; ui.screen = 'ex'; save(); render(); window.scrollTo(0,0);
+    if(exView() === 'flow') setTimeout(function(){ flScrollTo(S.active.idx); }, 60);
   }
   toast(name + ' ajouté');
 }
@@ -3946,7 +4065,7 @@ function render(){
   if(!S.settings.onboarded){ document.documentElement.lang = isEN() ? 'en' : 'fr'; app.innerHTML = vOnb(); document.getElementById('sheet').innerHTML = ''; return; }
   if((ui.screen === 'ex' || ui.screen === 'ov') && !S.active) ui.screen = 'home';
   if(ui.screen === 'ex' && S.active && !S.active.exercises.length) ui.screen = 'ov';
-  if(ui.screen === 'ex') html = exView() === 'focus' ? vFocus() : vEx();
+  if(ui.screen === 'ex') html = exView() === 'focus' ? vFocus() : exView() === 'list' ? vEx() : vFlow();
   else if(ui.screen === 'lib') html = vLib();
   else if(ui.screen === 'ov') html = vOv();
   else if(ui.screen === 'hist') html = vHist();
@@ -5657,7 +5776,8 @@ function doReplace(name){
     ex.sets = ex.sets.filter(function(s){ return !s.auto; }).map(cleanSet);
     fillSuggestions(ex); if(autoWarmOn(name)) genWarm(ex, true);
   }
-  save(); render(); window.scrollTo(0, 0);
+  save(); render();
+  if(exView() === 'flow') setTimeout(function(){ flScrollTo(a.idx); }, 60); else window.scrollTo(0, 0);
   toast(exDisp(old) + ' → ' + exDisp(name));
 }
 
@@ -6227,6 +6347,282 @@ document.addEventListener('click', function(ev){
 }, true);
 
 if(!S.settings.exType) S.settings.exType = {};
+
+/* ================= SÉANCE EN FLUX =================
+   L'écran de séance par défaut : toute la séance en liste, l'exercice en cours ouvert.
+   Après une série validée, le repos s'ouvre en plein écran ; « Réduire » le range en pilule en haut,
+   un tap sur la pilule le rouvre. Le mode « une série à la fois » reste disponible (S.settings.exUI). */
+function exView(){ var v = S.settings.exUI; return v === 'focus' || v === 'list' ? v : 'flow'; }
+var FL_ICO = {
+  grip:'<svg width="14" height="20" viewBox="0 0 14 20" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="1.8"/><circle cx="10" cy="4" r="1.8"/><circle cx="4" cy="10" r="1.8"/><circle cx="10" cy="10" r="1.8"/><circle cx="4" cy="16" r="1.8"/><circle cx="10" cy="16" r="1.8"/></svg>',
+  info:'<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg>',
+  more:'<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg>',
+  check:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>',
+  swap:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg>',
+  up:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>',
+  plus:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'
+};
+function flCount(e){ var d = 0, t = 0; e.sets.forEach(function(s){ if(!s.warm){ t++; if(s.done) d++; } }); return [d, t]; }
+function flW(name, w){ var xt = exType(name); if(w == null) return null; return xt === 'w' ? kg(w) : (w ? '+' + kg(w) : L('PC', 'BW')); }
+function flR(name, r){ return r == null ? null : r + (exType(name) === 'time' ? ' s' : ''); }
+function flVal(v, sug){ return v != null ? esc(String(v)) : (sug != null ? '<i>' + esc(String(sug)) + '</i>' : '—'); }
+function flSetName(ex, j){ var s = ex.sets[j]; return s.warm ? L('l\'échauffement', 'the warm-up') : L('la série ', 'set ') + (workIndex(ex, j) + 1); }
+function flRows(e, i, open, ri){
+  var a = S.active, sj = open ? selIndex(e) : null, k = 0, h = '';
+  h += '<div class="fl-cols" aria-hidden="true"><span>' + L('SÉRIE', 'SET') + '</span><span>' + L('PRÉC.', 'PREV.') + '</span><span>' + (exType(e.name) === 'w' ? 'KG' : L('LEST', 'EXTRA')) + '</span><span>' + (exType(e.name) === 'time' ? L('SEC', 'SEC') : 'REPS') + '</span><span></span></div>';
+  e.sets.forEach(function(s, j){
+    var lab = s.warm ? 'W' : String(++k), isNext = open && j === sj && !s.done, lx = fxLast(e, j);
+    if(j > 0){
+      var p = e.sets[j - 1], live = ri && !ri.over && ri.r.ex === i && ri.r.set === j - 1;
+      if(live) h += '<div class="fl-sep live"><span id="fl-sep-t">' + mmss(ri.left) + '</span>' + L(' en cours', ' left') + '<span class="fl-tr"><i id="fl-sep-b" style="width:' + Math.min(100, ri.pct) + '%"></i></span></div>';
+      else h += '<div class="fl-sep">' + restLbl(p.rest || (p.warm ? 60 : e.rest) || 90) + '</div>';
+    }
+    var cls = 'fl-row' + (s.done ? ' done' : isNext ? ' next' : ' later');
+    h += '<div class="' + cls + '">';
+    h += open ? '<button class="fl-n' + (s.warm ? ' w' : '') + '" data-a="flwarm" data-j="' + j + '" aria-label="' + (s.warm ? L('Repasser en série de travail', 'Make it a working set') : L('Passer en échauffement', 'Make it a warm-up')) + '">' + lab + '</button>' : '<span class="fl-n' + (s.warm ? ' w' : '') + '" style="display:flex;align-items:center;justify-content:center;min-height:36px">' + lab + '</span>';
+    var prev = lx ? fmtS(e.name, lx.w, lx.r) : '—';
+    if(isNext){
+      var xt = exType(e.name);
+      h += '<span class="fl-prev">' + prev + '</span>';
+      h += '<input class="fl-cell' + (s.w == null ? ' sug' : '') + '" id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + (s.w != null ? kg(s.w) : '') + '" placeholder="' + (s.sw != null ? kg(s.sw) : xt !== 'w' ? '0' : '—') + '" aria-label="' + wLab(e.name) + '">';
+      h += '<input class="fl-cell' + (s.r == null ? ' sug' : '') + '" id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + (s.r != null ? s.r : '') + '" placeholder="' + (s.sr != null ? s.sr : '—') + '" aria-label="' + rLab(e.name) + '">';
+      h += '<button class="fl-ck" data-a="validate" aria-label="' + L('Valider ', 'Log ') + flSetName(e, j) + '"></button>';
+    } else {
+      var vw = flVal(flW(e.name, s.w), s.done ? null : flW(e.name, s.sw)), vr = flVal(flR(e.name, s.r), s.done ? null : flR(e.name, s.sr));
+      if(open && !s.done) h += '<button class="fl-mid" data-a="sel" data-j="' + j + '" aria-label="' + L('Choisir ', 'Pick ') + flSetName(e, j) + '"><span class="fl-prev">' + prev + '</span><span class="fl-v">' + vw + '</span><span class="fl-v">' + vr + '</span></button>';
+      else h += '<span class="fl-prev">' + prev + '</span><span class="fl-v">' + vw + '</span><span class="fl-v">' + vr + '</span>';
+      if(!open) h += '<span></span>';
+      else if(s.done) h += '<button class="fl-ck" data-a="reopen" data-j="' + j + '" aria-label="' + L('Corriger ', 'Fix ') + flSetName(e, j) + '">' + FL_ICO.check + '</button>';
+      else h += '<button class="fl-ck" data-a="flcheck" data-j="' + j + '" aria-label="' + L('Valider ', 'Log ') + flSetName(e, j) + '"></button>';
+    }
+    h += '</div>';
+  });
+  return h;
+}
+function flCard(e, i, ri){
+  var a = S.active, open = i === a.idx, c = flCount(e), all = e.sets.length && e.sets.every(function(s){ return s.done; });
+  var h = '<div class="fl-ex' + (open ? ' open' : '') + (all ? ' done' : '') + '" id="fl-ex-' + i + '" data-i="' + i + '">';
+  h += '<div class="fl-exh"><button class="fl-grip" data-flgrip="' + i + '" aria-label="' + L('Déplacer ', 'Move ') + esc(exDisp(e.name)) + '">' + FL_ICO.grip + '</button>';
+  h += open ? '<button class="fl-title" data-a="fiche" data-n="' + esc(e.name) + '">' + esc(exDisp(e.name)) + '</button>' : '<button class="fl-title" data-a="flopen" data-i="' + i + '">' + esc(exDisp(e.name)) + '</button>';
+  h += '<button class="fl-ico i" data-a="fiche" data-n="' + esc(e.name) + '" aria-label="' + L('Infos de l\'exercice', 'Exercise info') + '">' + FL_ICO.info + '</button>';
+  h += '<button class="fl-ico" data-a="flmenu" data-i="' + i + '" aria-label="' + L('Options de l\'exercice', 'Exercise options') + '">' + FL_ICO.more + '</button>';
+  h += '<span class="fl-cnt">' + (all ? '✓ ' : '') + c[0] + ' / ' + c[1] + '</span></div>';
+  h += '<div class="fl-body"' + (open ? '' : ' inert') + '><div class="fl-in"><div class="fl-pad">';
+  if(e.replaced) h += '<span class="fl-tag">' + FL_ICO.swap + L('Remplace ', 'Replaces ') + esc(exDisp(e.replaced)) + L(' · cette séance', ' · this session') + '</span>';
+  h += open ? '<input class="fl-note" data-f="note" value="' + esc(e.note || '') + '" placeholder="' + L('+ Ajouter une note', '+ Add a note') + '" aria-label="' + L('Note sur l\'exercice', 'Exercise note') + '" autocomplete="off">' : (e.note ? '<div class="fl-note-t">' + esc(e.note) + '</div>' : '');
+  if(e.cue) h += '<p class="fl-cue">' + esc(trText(e.cue)) + '</p>';
+  h += flRows(e, i, open, ri);
+  if(open) h += '<div class="fl-adds"><button data-a="addset">' + L('+ Série', '+ Set') + '</button><button class="w" data-a="addwarm">' + L('+ Échauffement', '+ Warm-up') + '</button></div>';
+  h += '</div></div></div></div>';
+  if(i < a.exercises.length - 1 && e.ss) h += '<div class="m4-link">⇄ SUPERSET</div>';
+  return h;
+}
+function flNextLabel(a){
+  var ex = cur(), j = ex ? selIndex(ex) : null;
+  if(j == null) return null;
+  return {ex:ex, j:j, txt:exDisp(ex.name).split(' ')[0] + ' · ' + (ex.sets[j].warm ? L('échauffement', 'warm-up') : L('série ', 'set ') + (workIndex(ex, j) + 1))};
+}
+function flRestOverlay(a, ri){
+  var ex = cur(), rex = a.exercises[ri.r.ex] || ex, rs = rex.sets[ri.r.set], rt = exType(rex.name), nj = selIndex(ex), ns = nj != null ? ex.sets[nj] : null;
+  var nw = ns ? (ns.w != null ? ns.w : ns.sw) : null, circ = 854.5;
+  var h = '<section class="fx-rest fl-rest' + (ui.flIn ? ' fl-grow' : '') + '" id="rest-band" role="dialog" aria-label="' + L('Repos', 'Rest') + '">';
+  h += '<div class="fl-rtop"><span>' + esc(trText(a.name)) + '</span><button data-a="flmin">' + FL_ICO.up + L('Réduire', 'Minimise') + '</button></div>';
+  if(ui.fixLast && rs){
+    h += '<div class="fx-fix"><span>' + fxSetLabel(rex, ri.r.set).split(' · ')[0] + ' · ' + esc(exDisp(rex.name)).toUpperCase() + '</span>';
+    h += fxFixRow('w', wLab(rex.name), kg(rs.w || 0) + ' kg') + fxFixRow('r', rt === 'time' ? L('DURÉE', 'TIME') : 'REPS', rs.r + (rt === 'time' ? ' s' : ''));
+    h += '<button class="fx-fix-ok" data-a="fixok">' + L('C\'est corrigé', 'Done') + '</button></div>';
+  } else {
+    h += '<button class="fx-rest-done" data-a="fixlast"><i aria-hidden="true">✓</i><span>' + (rs ? fxSetLabel(rex, ri.r.set).split(' · ')[0] + L(' validée · ', ' logged · ') + '<b>' + fmtS(rex.name, rs.w, rs.r) + '</b>' : L('Série validée', 'Set logged')) + '</span><em>' + L('Corriger', 'Fix') + '</em></button>';
+  }
+  h += '<div class="fx-ring"><svg viewBox="0 0 300 300" aria-hidden="true"><circle cx="150" cy="150" r="136" class="fx-ring-bg"/><circle cx="150" cy="150" r="136" class="fx-ring-fg" id="t-ring" stroke-dasharray="' + circ + '" stroke-dashoffset="' + (circ * ri.pct / 100).toFixed(1) + '" transform="rotate(-90 150 150)"/></svg><div><strong id="t-big">' + mmss(ri.left) + '</strong><small>' + L('sur ', 'of ') + mmss(ri.r.total) + '</small></div></div>';
+  h += '<div class="fx-rest-adj"><button data-a="tadj" data-d="-15">−15 s</button><button data-a="tadj" data-d="15">+15 s</button></div>';
+  var sup = ri.r.label === 'SUPERSET' ? 'SUPERSET · ' : '';
+  h += '<div class="fx-rest-next"><div><span>' + L('ENSUITE · ', 'NEXT · ') + sup + (ns ? fxSetLabel(ex, nj).split(' · ')[0] + (a.idx !== ri.r.ex ? ' · ' + esc(exDisp(ex.name)).toUpperCase() : '') : L('FIN DE L\'EXERCICE', 'END OF EXERCISE')) + '</span><b>' + (ns ? tgtTxt(ex.name, nw, ns.lo, ns.hi) : esc(fxNextTxt(a, ex, null))) + '</b>' + (function(){ var lx = ns ? fxLast(ex, nj) : null; return lx ? '<small class="fx-rest-prev">' + L('Dernière fois : ', 'Last time: ') + fmtS(ex.name, lx.w, lx.r) + '</small>' : ''; })() + '</div><button data-a="skip">' + L('GO', 'GO') + ' →</button></div>';
+  h += '<div class="fl-strip" aria-label="' + L('La séance', 'The session') + '">' + a.exercises.map(function(e, i){
+    var sj = selIndex(e), now = i === a.idx;
+    return '<button class="' + (now ? 'now' : '') + '" data-a="flgo" data-i="' + i + '"><b>' + esc(exDisp(e.name)) + '</b><span class="fl-seg">' + e.sets.map(function(s, j){ return '<i class="' + (s.warm ? 'w ' : '') + (s.done ? 'ok' : now && j === sj ? 'nx' : '') + '"></i>'; }).join('') + '</span></button>';
+  }).join('') + '</div>';
+  return h + '</section>';
+}
+function vFlow(){
+  var a = S.active, ri = restInfo(), done = 0, tot = 0;
+  a.exercises.forEach(function(e){ var c = flCount(e); done += c[0]; tot += c[1]; });
+  var h = '<div class="fl-wrap"><header class="fl-top"><button data-a="scr" data-s="home">← ' + L('Accueil', 'Home') + '</button><b id="clock">● ' + mmss((Date.now() - a.start) / 1000) + '</b></header>';
+  h += '<header class="fl-head"><h1>' + esc(trText(a.name)) + '</h1><p>' + done + ' / ' + tot + L(' séries', ' sets') + L(' · fin vers ', ' · ends around ') + etaTxt(a) + '</p><div class="m3-progress"><i style="width:' + Math.round(done / Math.max(1, tot) * 100) + '%"></i></div></header>';
+  h += '<div class="fl-list" id="fl-list">' + a.exercises.map(function(e, i){ return flCard(e, i, ri); }).join('') + '</div>';
+  h += '<button class="fl-addex" data-a="addex">' + FL_ICO.plus + ' ' + L('Ajouter un exercice', 'Add an exercise') + '</button>';
+  h += '<div class="fl-end">';
+  if(ui.confirm === 'finish') h += m3sConfirm(L('Terminer et enregistrer la séance ?', 'Finish and save the session?'), 'finish', L('Terminer', 'Finish'));
+  else if(ui.confirm === 'abandon') h += m3sConfirm(L('Abandonner la séance ? Rien ne sera enregistré.', 'Abandon the session? Nothing will be saved.'), 'abandon', L('Abandonner', 'Abandon'));
+  else h += '<button class="m4-finish" data-a="askfinish">' + L('TERMINER LA SÉANCE', 'FINISH THE SESSION') + ' ✓</button><button class="m4-abandon" data-a="askabandon">' + L('Abandonner la séance', 'Abandon the session') + '</button>';
+  h += '<button class="fl-mode" data-a="exview" data-v="focus">' + L('Passer en mode une série à la fois', 'Switch to one set at a time') + '</button></div></div>';
+  /* bouton principal, toujours à portée de pouce */
+  var ex = cur(), sj = ex ? selIndex(ex) : null;
+  if(ex && sj != null){
+    var s = ex.sets[sj], w = s.w != null ? s.w : s.sw, r = s.r != null ? s.r : s.sr, ld = w != null && r != null ? ' · ' + fmtS(ex.name, w, r) : r != null ? ' · ' + flR(ex.name, r) + (exType(ex.name) === 'time' ? '' : ' reps') : '';
+    h += '<div class="fl-cta"><button data-a="validate">' + (s.redo ? L('Enregistrer la correction', 'Save the fix') : L('Valider ', 'Log ') + flSetName(ex, sj)) + ld + '</button></div>';
+  } else if(a.exercises.some(function(e){ return selIndex(e) != null; })){
+    h += '<div class="fl-cta"><button data-a="flopen" data-i="' + a.exercises.map(function(e){ return selIndex(e) != null; }).indexOf(true) + '">' + L('Exercice suivant', 'Next exercise') + ' →</button></div>';
+  } else if(ui.confirm !== 'finish') h += '<div class="fl-cta"><button data-a="askfinish">' + L('Terminer la séance', 'Finish the session') + ' ✓</button></div>';
+  if(ui.flUndo) h += '<div class="fl-undo" role="status"><span>' + esc(exDisp(ui.flUndo.ex.name)) + L(' supprimé', ' removed') + '</span><button data-a="flundo">' + L('Annuler', 'Undo') + '</button></div>';
+  /* repos : plein écran, ou pilule une fois réduit */
+  if(ri && !ri.over && !ui.restMin) h += flRestOverlay(a, ri);
+  else if(ri && !ri.over){
+    var nx = flNextLabel(a), circ = 100.5;
+    h += '<div class="fl-pill' + (ui.flPop ? ' pop' : '') + '" role="timer"><button class="fl-pill-go" data-a="flmax" aria-label="' + L('Ouvrir le repos en plein écran', 'Open the rest full screen') + '"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="none" stroke="#3A4A40" stroke-width="4"/><circle cx="20" cy="20" r="16" fill="none" stroke="#9FD8BC" stroke-width="4" stroke-linecap="round" id="fl-pring" stroke-dasharray="' + circ + '" stroke-dashoffset="' + (circ * ri.pct / 100).toFixed(1) + '" transform="rotate(-90 20 20)"/></svg><span><b id="t-pin">' + mmss(ri.left) + '</b><small>' + (nx ? esc(nx.txt) : L('Repos', 'Rest')) + '</small></span></button><button class="fl-pill-p" data-a="tadj" data-d="15">+15 s</button></div>';
+  } else if(ri && ri.over){
+    var nx2 = flNextLabel(a);
+    h += '<div class="fl-pill go" role="status"><span>' + L('C\'est reparti', 'Your turn') + (nx2 ? ' · ' + esc(nx2.txt) : '') + ' <span id="t-over" style="opacity:.75">+' + mmss(-ri.left) + '</span></span><button data-a="skip">OK</button></div>';
+  }
+  if(ui.flMenu != null && a.exercises[ui.flMenu]){
+    var me = a.exercises[ui.flMenu];
+    h += '<div class="fl-menu"><button class="fl-scrim" data-a="flclose" aria-label="' + L('Fermer', 'Close') + '"></button><div class="fl-acts"><div class="fl-box"><span>' + esc(exDisp(me.name)) + '</span><button data-a="flrepl" data-i="' + ui.flMenu + '">' + L('Remplacer l\'exercice', 'Replace the exercise') + '<small>' + L('Note et séries gardées, pour cette séance', 'Note and sets kept, for this session') + '</small></button><button class="danger" data-a="flrm" data-i="' + ui.flMenu + '">' + L('Supprimer de la séance', 'Remove from the session') + '</button></div><button class="fl-cancel" data-a="flclose">' + L('Annuler', 'Cancel') + '</button></div></div>';
+  }
+  if(ui.flIn || ui.flPop) setTimeout(function(){ ui.flIn = false; ui.flPop = false; }, 0);
+  return h;
+}
+function flScrollTo(i){
+  var el = document.getElementById('fl-ex-' + i); if(!el || !el.scrollIntoView) return;
+  var r = el.getBoundingClientRect();
+  if(r.top < 80 || r.top > window.innerHeight * 0.55) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+function flOpen(i){
+  var a = S.active; if(!a || !a.exercises[i]) return;
+  if(i === a.idx){ flScrollTo(i); return; }
+  var oc = document.getElementById('fl-ex-' + a.idx), nc = document.getElementById('fl-ex-' + i);
+  a.idx = i; ui.gapEdit = null; ui.confirm = null; save();
+  var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!oc || !nc || calm){ render(); flScrollTo(i); return; }
+  /* l'ancienne carte se replie pendant que la nouvelle s'ouvre, puis on redessine pour de vrai */
+  oc.classList.remove('open'); var ob = oc.querySelector('.fl-body'); if(ob) ob.setAttribute('inert', '');
+  nc.classList.add('open'); var nb = nc.querySelector('.fl-body'); if(nb) nb.removeAttribute('inert');
+  clearTimeout(ui.flOpenT);
+  ui.flOpenT = setTimeout(function(){ render(); flScrollTo(i); }, 440);
+}
+function flRemove(i){
+  var a = S.active, x = a.exercises;
+  if(x.length < 2){ toast(L('Une séance garde au moins un exercice', 'A session keeps at least one exercise')); return; }
+  var curEx = x[a.idx], restEx = a.rest ? x[a.rest.ex] : null, prevSs = i > 0 ? !!x[i - 1].ss : false;
+  var gone = x.splice(i, 1)[0];
+  if(i > 0 && prevSs) x[i - 1].ss = false;
+  if(restEx === gone) a.rest = null; else if(restEx) a.rest.ex = x.indexOf(restEx);
+  if(curEx === gone){ var nx = -1; for(var k = 0; k < x.length; k++) if(selIndex(x[k]) != null){ nx = k; break; } a.idx = nx >= 0 ? nx : Math.min(i, x.length - 1); }
+  else a.idx = x.indexOf(curEx);
+  ui.flUndo = {ex:gone, i:i, wasCur:curEx === gone, prevSs:prevSs};
+  clearTimeout(ui.flUndoT); ui.flUndoT = setTimeout(function(){ ui.flUndo = null; render(); }, 5000);
+  save();
+}
+function flUndoRm(){
+  var u = ui.flUndo, a = S.active; if(!u || !a) return;
+  var x = a.exercises, curEx = x[a.idx], restEx = a.rest ? x[a.rest.ex] : null, at = Math.min(u.i, x.length);
+  x.splice(at, 0, u.ex);
+  if(at > 0 && u.prevSs) x[at - 1].ss = true;
+  a.idx = u.wasCur ? at : x.indexOf(curEx);
+  if(restEx) a.rest.ex = x.indexOf(restEx);
+  ui.flUndo = null; clearTimeout(ui.flUndoT); save();
+}
+function flMove(from, to){
+  var a = S.active, x = a.exercises; if(from === to || !x[from]) return;
+  var curEx = x[a.idx], restEx = a.rest ? x[a.rest.ex] : null, broke = false;
+  /* un exercice déplacé quitte son superset */
+  if(x[from].ss){ x[from].ss = false; broke = true; }
+  if(from > 0 && x[from - 1].ss){ x[from - 1].ss = false; broke = true; }
+  var m = x.splice(from, 1)[0]; x.splice(to, 0, m);
+  a.idx = x.indexOf(curEx); if(restEx) a.rest.ex = x.indexOf(restEx);
+  save();
+  if(broke) toast(L('Superset défait', 'Superset unlinked'));
+}
+
+/* actions de la séance en flux : écoutées en premier (phase de capture) */
+document.addEventListener('click', function(ev){
+  var el = ev.target.closest && ev.target.closest('[data-a]'); if(!el) return;
+  var act = el.getAttribute('data-a');
+  if(act === 'exview'){
+    S.settings.exUI = el.getAttribute('data-v') === 'focus' ? 'focus' : 'flow';
+    save(); window.scrollTo(0, 0); ev.stopImmediatePropagation(); ev.preventDefault(); render(); return;
+  }
+  if(act.indexOf('fl') !== 0 || !S.active) return;
+  var stop = function(){ ev.stopImmediatePropagation(); ev.preventDefault(); };
+  var i = +el.getAttribute('data-i'), ex = cur(), j = +el.getAttribute('data-j');
+  switch(act){
+    case 'flopen': stop(); flOpen(i); return;
+    case 'flwarm':
+      stop(); if(!ex || !ex.sets[j]) return;
+      ex.sets[j].warm = !ex.sets[j].warm; if(ex.sets[j].warm) ex.sets[j].trend = null;
+      fillSuggestions(ex); save(); render(); return;
+    case 'flcheck':
+      stop(); if(!ex || !ex.sets[j]) return;
+      ex.sel = j; validate(); return;
+    case 'flmin':
+      stop();
+      var ov = document.querySelector('.fl-rest');
+      var go = function(){ ui.restMin = true; ui.flPop = true; render(); };
+      if(ov && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)){ ov.classList.remove('fl-grow'); ov.classList.add('fl-shrink'); setTimeout(go, 300); } else go();
+      return;
+    case 'flmax': stop(); ui.restMin = false; ui.flIn = true; render(); return;
+    case 'flgo':
+      stop(); ui.restMin = true; ui.flPop = true;
+      if(S.active.exercises[i]){ S.active.idx = i; ui.gapEdit = null; save(); }
+      render(); setTimeout(function(){ flScrollTo(i); }, 60); return;
+    case 'flmenu': stop(); ui.flMenu = i; render(); return;
+    case 'flclose': stop(); ui.flMenu = null; render(); return;
+    case 'flrepl':
+      stop(); ui.flMenu = null;
+      if(S.active.exercises[i]){ S.active.idx = i; save(); }
+      ui.picker = {ctx:'replace'}; ui.pickQ = ''; ui.sheet = null; render(); return;
+    case 'flrm': stop(); ui.flMenu = null; flRemove(i); render(); return;
+    case 'flundo': stop(); flUndoRm(); render(); return;
+  }
+}, true);
+
+/* glisser une poignée ⋮⋮ pour réordonner les exercices */
+var flDrag = null;
+document.addEventListener('pointerdown', function(ev){
+  var g = ev.target.closest && ev.target.closest('[data-flgrip]'); if(!g || !S.active) return;
+  var list = document.getElementById('fl-list'); if(!list) return;
+  ev.preventDefault();
+  var i = +g.getAttribute('data-flgrip');
+  list.classList.add('fl-dragging');
+  var cards = Array.prototype.slice.call(list.querySelectorAll('.fl-ex')); if(!cards[i]) return;
+  var r0 = cards[i].getBoundingClientRect();
+  var step = cards.length > 1 ? (cards[1].getBoundingClientRect().top - cards[0].getBoundingClientRect().top) : r0.height + 10;
+  cards[i].classList.add('fl-lift');
+  flDrag = {i:i, to:i, cards:cards, step:step || 68, y0:r0.top + r0.height / 2, id:ev.pointerId, list:list};
+  flDragAt(ev.clientY);
+  try{ g.setPointerCapture(ev.pointerId); }catch(e){}
+}, {passive:false});
+function flDragAt(y){
+  var d = flDrag; if(!d) return;
+  var dy = y - d.y0, n = d.cards.length;
+  d.to = Math.max(0, Math.min(n - 1, d.i + Math.round(dy / d.step)));
+  d.cards.forEach(function(c, k){
+    if(k === d.i){ c.style.transform = 'translateY(' + dy + 'px) scale(1.02)'; return; }
+    var t = 0;
+    if(d.i < d.to && k > d.i && k <= d.to) t = -d.step;
+    if(d.to < d.i && k >= d.to && k < d.i) t = d.step;
+    c.style.transform = t ? 'translateY(' + t + 'px)' : '';
+  });
+}
+document.addEventListener('pointermove', function(ev){ if(flDrag && ev.pointerId === flDrag.id){ ev.preventDefault(); flDragAt(ev.clientY); } }, {passive:false});
+function flDragEnd(ev){
+  var d = flDrag; if(!d || (ev && ev.pointerId !== d.id)) return;
+  flDrag = null;
+  d.cards.forEach(function(c){ c.style.transform = ''; c.classList.remove('fl-lift'); });
+  d.list.classList.remove('fl-dragging');
+  if(d.to !== d.i) flMove(d.i, d.to);
+  render();
+}
+document.addEventListener('pointerup', flDragEnd);
+document.addEventListener('pointercancel', flDragEnd);
+
+/* le compte à rebours suit le temps sans tout redessiner : séparateur en direct et anneau de la pilule */
+setInterval(function(){
+  var ri = restInfo(); if(!ri) return;
+  var t = document.getElementById('fl-sep-t'); if(t) t.textContent = mmss(ri.left);
+  var b = document.getElementById('fl-sep-b'); if(b) b.style.width = Math.min(100, ri.pct) + '%';
+  var p = document.getElementById('fl-pring'); if(p) p.setAttribute('stroke-dashoffset', (100.5 * ri.pct / 100).toFixed(1));
+}, 250);
+
 ssMigrate();
 
 render();
