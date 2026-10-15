@@ -1468,6 +1468,22 @@ function applyCalm(){
 }
 
 /* history lookups */
+/* renommer un exercice : l'historique, les records, les réglages et toutes les séances suivent le nouveau nom */
+function renameEx(old, nn){
+  if(!old || !nn || old === nn) return 0;
+  var moved = 0, fo = fold(old), fn = fold(nn);
+  var fix = function(list){ (list || []).forEach(function(e){
+    if(e.name === old) e.name = nn;
+    ['v', 'variants'].forEach(function(k){ if(Array.isArray(e[k])){ var i = e[k].indexOf(old); if(i >= 0) e[k][i] = nn; } });
+  }); };
+  S.history.forEach(function(h){ (h.exercises || []).forEach(function(e){ if(e.name === old){ e.name = nn; moved++; } }); });
+  (S.programs || []).forEach(function(p){ (p.workouts || []).forEach(function(w){ fix(w.ex); }); });
+  if(S.active) fix(S.active.exercises);
+  ['exType', 'exBar', 'autoWarm'].forEach(function(k){ var m = m3map(k); if(fo in m && !(fn in m)) m[fn] = m[fo]; });
+  (S.customEx || []).forEach(function(c){ if(fold(c.n) === fo) c.n = nn; });
+  if(moved) recomputePRs();
+  return moved;
+}
 function pastEntries(name){
   var out = [];
   for(var i = S.history.length - 1; i >= 0; i--){
@@ -4286,7 +4302,7 @@ document.addEventListener('change', function(ev){
   else if(f === 'wname'){ if(w && v.trim()) w.name = v.trim(); }
   else if(f === 'wday'){ if(w) w.day = v === '' ? null : +v; }
   else if(f === 'wmove'){ var dp = progById(v), fp2 = wkProg(ui.edWk); if(w && dp && fp2){ fp2.workouts = fp2.workouts.filter(function(x){ return x.id !== w.id; }); dp.workouts.push(w); ui.edProg = dp.id; save(); toast('Rangée dans ' + dp.name); render(); return; } }
-  else if(e && f === 'exname'){ if(v.trim() && v.trim() !== exDisp(e.name)){ var old = e.name; e.name = exStore(v.trim()); if(e.v){ var k = e.v.indexOf(old); if(k >= 0) e.v[k] = e.name; } } }
+  else if(e && f === 'exname'){ if(v.trim() && v.trim() !== exDisp(e.name)){ var old = e.name, nn = exStore(v.trim()), moved = renameEx(old, nn); e.name = nn; if(e.v){ var k = e.v.indexOf(old); if(k >= 0) e.v[k] = e.name; } if(moved) toast(moved === 1 ? L('Renommé · ta séance suit le nouveau nom', 'Renamed · your session follows the new name') : L('Renommé · tes ', 'Renamed · your ') + moved + L(' séances suivent le nouveau nom', ' sessions follow the new name')); } }
   else if(e && f === 'setrange'){ var t = e.s[+ev.target.getAttribute('data-j')], rr = parseRanges(v)[0]; if(t && rr){ t.lo = rr[0]; t.hi = rr[1]; t.sp = rr[2] ? (t.sp && rr[2] === trText(t.sp) ? t.sp : rr[2]) : null; } else { toast('Écris un nombre de reps, ex. 8 ou 8-12'); render(); return; } }
   else if(e && f === 'setrest'){ var t2 = e.s[+ev.target.getAttribute('data-j')], sec = parseRest(v); if(t2 && sec){ t2.rest = sec; ev.target.value = restIn(sec); } else { toast('Écris un repos, ex. 1:30 ou 90'); } }
   else if(e && f === 'exvar'){ var vs = v.split(/\s*\/\s*|\s+ou\s+|\s+or\s+/i).map(function(s){ return exStore(s.trim()); }).filter(Boolean); e.v = vs.length > 1 ? vs : undefined; if(e.v && e.v.indexOf(e.name) < 0) e.name = e.v[0]; }
