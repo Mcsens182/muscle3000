@@ -1111,6 +1111,16 @@ button.lib-card.m4-free{border-style:dashed!important}
 .m4-sets{display:flex;flex-direction:column;margin-top:8px}
 .m4-set{display:grid;grid-template-columns:28px minmax(0,1.3fr) minmax(0,1fr) 46px;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--m3-line);font-size:13px}
 .m4-ovex .m4-set{grid-template-columns:28px minmax(0,1fr) 56px}
+.m4-prevhead{display:block;margin:6px 0 2px;font-size:11px;font-weight:600;color:var(--m3-muted);line-height:1.4}
+.m4-set small.m4-prev{color:var(--m3-accent);font-weight:700}
+.fx-prev{margin-top:14px;padding:10px 12px;border:1px solid var(--m3-line);border-radius:14px;background:var(--m3-card)}
+.fx-prev>span{display:block;font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--m3-muted)}
+.fx-prev>div{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.fx-prev b{display:inline-flex;align-items:center;gap:5px;padding:5px 9px;border-radius:99px;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;border:1px solid var(--m3-line)}
+.fx-prev b small{font-size:9px;font-weight:700;color:var(--m3-muted)}
+.fx-prev b.now{background:var(--m3-accent);border-color:var(--m3-accent);color:var(--m3-bg)}.fx-prev b.now small{color:inherit;opacity:.75}
+.fx-prev.empty{padding:8px 12px}
+.fx-rest-prev{display:block;margin-top:3px;font-size:12px;font-weight:700;color:var(--m3-accent)}
 .m4-set b{font-weight:800;font-variant-numeric:tabular-nums}.m4-set small{display:block;font-size:10px;font-weight:600;color:var(--m3-muted);margin-top:2px}
 .m4-set-h{font-size:9px;font-weight:800;letter-spacing:.1em;color:var(--m3-muted);border-top:0;padding-top:2px}
 .m4-n{font-size:11px;font-weight:800;color:var(--m3-muted)}
@@ -5357,6 +5367,14 @@ function fxLast(ex, j){
   if(s.warm) return pl.all.filter(function(x){ return x.warm; })[ex.sets.slice(0, j).filter(function(x){ return x.warm; }).length] || null;
   return pl.sets[workIndex(ex, j)] || null;
 }
+/* la dernière séance de l'exercice, série par série : ce qu'il faut battre aujourd'hui */
+function fxPrev(ex, sj){
+  var pl = pastEntries(ex.name)[0], s = sj != null ? ex.sets[sj] : null, cur = s && !s.warm ? workIndex(ex, sj) : -1;
+  if(!pl || !pl.sets.length) return '<div class="fx-prev empty"><span>' + L('PREMIÈRE FOIS SUR CET EXERCICE', 'FIRST TIME ON THIS EXERCISE') + '</span></div>';
+  return '<div class="fx-prev"><span>' + L('À BATTRE · DERNIÈRE SÉANCE LE ', 'TO BEAT · LAST SESSION ON ') + fmtDate(pl.date) + '</span><div>' + pl.sets.map(function(x, k){
+    return '<b' + (k === cur ? ' class="now"' : '') + '><small>' + (k + 1) + '</small>' + fmtS(ex.name, x.w, x.r) + '</b>';
+  }).join('') + '</div></div>';
+}
 function fxDots(ex, sj){
   return '<div class="fx-dots">' + ex.sets.map(function(s, j){
     var c = (s.done ? 'done' : j === sj ? 'now' : '') + (s.warm ? ' warm' : '') + (s.redo ? ' redo' : '');
@@ -5395,7 +5413,7 @@ function vFocus(){
     h += '<div class="fx-ring"><svg viewBox="0 0 300 300" aria-hidden="true"><circle cx="150" cy="150" r="136" class="fx-ring-bg"/><circle cx="150" cy="150" r="136" class="fx-ring-fg" id="t-ring" stroke-dasharray="' + circ + '" stroke-dashoffset="' + (circ * ri.pct / 100).toFixed(1) + '" transform="rotate(-90 150 150)"/></svg><div><strong id="t-big">' + mmss(ri.left) + '</strong><small>' + L('sur ', 'of ') + mmss(ri.r.total) + '</small></div></div>';
     h += '<div class="fx-rest-adj"><button data-a="tadj" data-d="-15">−15 s</button><button data-a="tadj" data-d="15">+15 s</button></div>';
     var sup = ri.r.label === 'SUPERSET' ? L('SUPERSET · ', 'SUPERSET · ') : '';
-    h += '<div class="fx-rest-next"><div><span>' + L('ENSUITE · ', 'NEXT · ') + sup + (ns ? fxSetLabel(ex, nj).split(' · ')[0] + (a.idx !== ri.r.ex ? ' · ' + esc(exDisp(ex.name)).toUpperCase() : '') : L('FIN DE L\'EXERCICE', 'END OF EXERCISE')) + '</span><b>' + (ns ? tgtTxt(ex.name, nw, ns.lo, ns.hi) : esc(fxNextTxt(a, ex, null))) + '</b></div><button data-a="skip">' + L('PASSER', 'SKIP') + ' →</button></div>';
+    h += '<div class="fx-rest-next"><div><span>' + L('ENSUITE · ', 'NEXT · ') + sup + (ns ? fxSetLabel(ex, nj).split(' · ')[0] + (a.idx !== ri.r.ex ? ' · ' + esc(exDisp(ex.name)).toUpperCase() : '') : L('FIN DE L\'EXERCICE', 'END OF EXERCISE')) + '</span><b>' + (ns ? tgtTxt(ex.name, nw, ns.lo, ns.hi) : esc(fxNextTxt(a, ex, null))) + '</b>' + (function(){ var lx = ns ? fxLast(ex, nj) : null; return lx ? '<small class="fx-rest-prev">' + L('Dernière fois : ', 'Last time: ') + fmtS(ex.name, lx.w, lx.r) + '</small>' : ''; })() + '</div><button data-a="skip">' + L('PASSER', 'SKIP') + ' →</button></div>';
     h += '<p class="fx-rest-tip">' + L('À zéro : un petit son, puis la série suivante s\'ouvre seule. Touche la série validée pour la corriger.', 'At zero: a short sound, then the next set opens by itself. Tap the logged set to fix it.') + '</p></section>';
     return h;
   }
@@ -5414,7 +5432,7 @@ function vFocus(){
   var hint = s.w == null && s.sw != null && s.trend ? ({'▲':L('+' + kg(inc()) + ' kg proposé', '+' + kg(inc()) + ' kg suggested'), '+1':(xt === 'time' ? L('+5 s proposées', '+5 s suggested') : L('+1 rep proposée', '+1 rep suggested')), '▼':L('charge allégée', 'lighter weight'), '=':L('même charge', 'same weight')})[s.trend] || '' : (s.w == null && s.sw != null ? L('proposé', 'suggested') : '');
   var eye = (s.redo ? L('CORRECTION · ', 'FIXING · ') : '') + (pi != null ? 'SUPERSET ' + (pi > i ? 'A' : 'B') + ' · ' : '') + fxSetLabel(ex, sj) + (xt === 'time' ? ' s' : '');
   h += '<div class="fx-title"><div><span class="m3-eyebrow fx-eye">' + eye + '</span><h1>' + esc(exDisp(ex.name)) + '</h1></div><div class="fx-tbtns"><button class="fx-info" data-a="repl" aria-label="' + L('Remplacer l\'exercice', 'Replace the exercise') + '">⇄</button><button class="fx-info" data-a="fiche" data-n="' + esc(ex.name) + '" aria-label="' + L('Ouvrir la fiche', 'Open the info') + '">i</button></div></div>';
-  h += fxDots(ex, sj);
+  h += fxDots(ex, sj) + fxPrev(ex, sj);
   if(ri && ri.over) h += '<div class="fx-over">' + L('Repos terminé · ', 'Rest done · ') + '<b id="t-over">+' + mmss(-ri.left) + '</b></div>';
   h += '<section class="fx-card">';
   h += '<div class="fx-row"><button class="fx-pm" data-a="w" data-d="-1" aria-label="' + L('Moins ', 'Minus ') + kg(inc()) + ' kg">−</button><label class="fx-val"><span>' + wLab(ex.name) + '</span><input id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + (s.w != null ? kg(s.w) : '') + '" placeholder="' + (s.sw != null ? kg(s.sw) : xt !== 'w' ? '0' : '—') + '" class="' + (s.w == null ? 'sug' : '') + '"><small class="' + (hint ? 'hint' : '') + '">' + (hint || 'kg') + '</small></label><button class="fx-pm" data-a="w" data-d="1" aria-label="' + L('Plus ', 'Plus ') + kg(inc()) + ' kg">+</button></div>';
@@ -6008,15 +6026,16 @@ function vOv(){
   if(!a.exercises.length) h += '<div class="m3-empty">' + L('Ajoute ton premier exercice pour commencer.', 'Add your first exercise to start.') + '</div>';
   h += '<div class="m4-exlist">';
   a.exercises.forEach(function(e, i){
-    var all = e.sets.every(function(s){ return s.done; }), cur = i === ft, k = 0, sj = selIndex(e);
+    var all = e.sets.every(function(s){ return s.done; }), cur = i === ft, k = 0, sj = selIndex(e), pe = pastEntries(e.name)[0];
     h += '<button class="m4-ex m4-ovex' + (all ? ' done' : '') + (cur ? ' cur' : '') + '" data-a="goto" data-i="' + i + '"><span class="m4-ex-head"><i>' + (all ? '✓' : ('0' + (i + 1)).slice(-2)) + '</i><b>' + esc(exDisp(e.name)) + '</b><em>' + (all ? L('FAIT', 'DONE') : cur ? (started ? L('EN COURS', 'NOW') : L('EN PREMIER', 'FIRST')) : '›') + '</em></span>';
     if(e.cue) h += '<span class="m4-cue">' + esc(trText(e.cue)) + '</span>';
+    if(!all) h += '<span class="m4-prevhead">' + (pe ? L('Dernière séance le ', 'Last session on ') + fmtDate(pe.date) : L('Première fois sur cet exercice', 'First time on this exercise')) + '</span>';
     h += '<span class="m4-sets">';
     e.sets.forEach(function(s, j){
-      var lab = s.warm ? 'W' : ('0' + (++k)).slice(-2), txt;
+      var lab = s.warm ? 'W' : ('0' + (++k)).slice(-2), txt, pv = !s.warm && pe ? pe.sets[k - 1] : null;
       if(s.done) txt = fmtS(e.name, s.w, s.r);
       else txt = tgtTxt(e.name, s.w != null ? s.w : s.sw, s.lo, s.hi);
-      h += '<span class="m4-set' + (s.warm ? ' warm' : '') + (s.done ? ' ok' : '') + (cur && j === sj ? ' next' : '') + '"><span class="m4-n">' + (s.done ? '✓' : lab) + '</span><span><b>' + (s.warm && !s.done && s.w == null && s.sw == null ? L('Échauffement', 'Warm-up') + (s.r ? ' · ' + s.r + ' reps' : '') : txt) + '</b>' + (s.special ? '<small>' + esc(trText(s.special)) + '</small>' : '') + '</span><span class="m4-r">' + (j < e.sets.length - 1 ? '⏱ ' + restLbl(s.rest || (s.warm ? 60 : e.rest) || 90) : '') + '</span></span>';
+      h += '<span class="m4-set' + (s.warm ? ' warm' : '') + (s.done ? ' ok' : '') + (cur && j === sj ? ' next' : '') + '"><span class="m4-n">' + (s.done ? '✓' : lab) + '</span><span><b>' + (s.warm && !s.done && s.w == null && s.sw == null ? L('Échauffement', 'Warm-up') + (s.r ? ' · ' + s.r + ' reps' : '') : txt) + '</b>' + (pv && !s.done ? '<small class="m4-prev">' + L('Dernière fois : ', 'Last time: ') + fmtS(e.name, pv.w, pv.r) + '</small>' : '') + (s.special ? '<small>' + esc(trText(s.special)) + '</small>' : '') + '</span><span class="m4-r">' + (j < e.sets.length - 1 ? '⏱ ' + restLbl(s.rest || (s.warm ? 60 : e.rest) || 90) : '') + '</span></span>';
     });
     h += '</span></button>';
     if(i < a.exercises.length - 1) h += '<div class="m4-link">' + (e.ss ? '⇄ SUPERSET' : '↓ ' + restLbl(e.rest || 90)) + '</div>';
