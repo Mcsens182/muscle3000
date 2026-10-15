@@ -1120,6 +1120,8 @@ button.lib-card.m4-free{border-style:dashed!important}
 .fx-prev b small{font-size:9px;font-weight:700;color:var(--m3-muted)}
 .fx-prev b.now{background:var(--m3-accent);border-color:var(--m3-accent);color:var(--m3-bg)}.fx-prev b.now small{color:inherit;opacity:.75}
 .fx-prev.empty{padding:8px 12px}
+.fx-prev.empty>div{margin-top:4px;font-size:12px;color:var(--m3-muted)}
+input.fx-note.fx-note-top{margin-top:6px!important;min-height:32px!important;text-align:left!important;font-style:italic;color:var(--m3-muted)!important}
 .fx-rest-prev{display:block;margin-top:3px;font-size:12px;font-weight:700;color:var(--m3-accent)}
 .m4-set b{font-weight:800;font-variant-numeric:tabular-nums}.m4-set small{display:block;font-size:10px;font-weight:600;color:var(--m3-muted);margin-top:2px}
 .m4-set-h{font-size:9px;font-weight:800;letter-spacing:.1em;color:var(--m3-muted);border-top:0;padding-top:2px}
@@ -5385,11 +5387,11 @@ function fxLast(ex, j){
 }
 /* la dernière séance de l'exercice, série par série : ce qu'il faut battre aujourd'hui */
 function fxPrev(ex, sj){
-  var pl = pastEntries(ex.name)[0], s = sj != null ? ex.sets[sj] : null, cur = s && !s.warm ? workIndex(ex, sj) : -1;
+  var pl = pastEntries(ex.name)[0], s = sj != null ? ex.sets[sj] : null, cur = s && !s.warm ? workIndex(ex, sj) : 0;
   if(!pl || !pl.sets.length) return '<div class="fx-prev empty"><span>' + L('PREMIÈRE FOIS SUR CET EXERCICE', 'FIRST TIME ON THIS EXERCISE') + '</span></div>';
-  return '<div class="fx-prev"><span>' + L('À BATTRE · DERNIÈRE SÉANCE LE ', 'TO BEAT · LAST SESSION ON ') + fmtDate(pl.date) + '</span><div>' + pl.sets.map(function(x, k){
-    return '<b' + (k === cur ? ' class="now"' : '') + '><small>' + (k + 1) + '</small>' + fmtS(ex.name, x.w, x.r) + '</b>';
-  }).join('') + '</div></div>';
+  var x = pl.sets[cur], lab = (s && s.warm ? L('1RE SÉRIE', 'SET 1') : L('SÉRIE ', 'SET ') + (cur + 1)) + L(' · SÉANCE DU ', ' · SESSION ON ') + fmtDate(pl.date);
+  if(!x) return '<div class="fx-prev empty"><span>' + L('À BATTRE · ', 'TO BEAT · ') + lab + '</span><div>' + L('Pas de série ', 'No set ') + (cur + 1) + L(' la dernière fois : tout est bonus', ' last time: it\'s all bonus') + '</div></div>';
+  return '<div class="fx-prev"><span>' + L('À BATTRE · ', 'TO BEAT · ') + lab + '</span><div><b class="now">' + fmtS(ex.name, x.w, x.r) + '</b></div></div>';
 }
 function fxDots(ex, sj){
   return '<div class="fx-dots">' + ex.sets.map(function(s, j){
@@ -5448,6 +5450,7 @@ function vFocus(){
   var hint = s.w == null && s.sw != null && s.trend ? ({'▲':L('+' + kg(inc()) + ' kg proposé', '+' + kg(inc()) + ' kg suggested'), '+1':(xt === 'time' ? L('+5 s proposées', '+5 s suggested') : L('+1 rep proposée', '+1 rep suggested')), '▼':L('charge allégée', 'lighter weight'), '=':L('même charge', 'same weight')})[s.trend] || '' : (s.w == null && s.sw != null ? L('proposé', 'suggested') : '');
   var eye = (s.redo ? L('CORRECTION · ', 'FIXING · ') : '') + (pi != null ? 'SUPERSET ' + (pi > i ? 'A' : 'B') + ' · ' : '') + fxSetLabel(ex, sj) + (xt === 'time' ? ' s' : '');
   h += '<div class="fx-title"><div><span class="m3-eyebrow fx-eye">' + eye + '</span><h1>' + esc(exDisp(ex.name)) + '</h1></div><div class="fx-tbtns"><button class="fx-info" data-a="repl" aria-label="' + L('Remplacer l\'exercice', 'Replace the exercise') + '">⇄</button><button class="fx-info" data-a="fiche" data-n="' + esc(ex.name) + '" aria-label="' + L('Ouvrir la fiche', 'Open the info') + '">i</button></div></div>';
+  h += '<input class="fx-note fx-note-top" data-f="note" value="' + esc(ex.note || '') + '" placeholder="' + L('+ Ajouter une note', '+ Add a note') + '" aria-label="' + L('Note sur l\'exercice', 'Exercise note') + '" autocomplete="off">';
   h += fxDots(ex, sj) + fxPrev(ex, sj);
   if(ri && ri.over) h += '<div class="fx-over">' + L('Repos terminé · ', 'Rest done · ') + '<b id="t-over">+' + mmss(-ri.left) + '</b></div>';
   h += '<section class="fx-card">';
@@ -5458,7 +5461,6 @@ function vFocus(){
   if(xt === 'w' && barOn(ex.name) && wv) h += '<p class="fx-plates">' + platesTxt(ex.name, wv) + '</p>';
   if(last) h += '<button class="fx-last" data-a="uselast">' + L('La dernière fois : ', 'Last time: ') + '<b>' + fmtS(ex.name, last.w, last.r) + '</b> · ' + L('reprendre', 'reuse') + '</button>';
   if(ex.cue) h += '<p class="fx-cue">' + esc(trText(ex.cue)) + '</p>';
-  h += '<input class="fx-note" data-f="note" value="' + esc(ex.note || '') + '" placeholder="' + L('+ Ajouter une note', '+ Add a note') + '" aria-label="' + L('Note sur l\'exercice', 'Exercise note') + '" autocomplete="off">';
   h += '<button class="fx-validate" data-a="validate">' + (s.redo ? L('ENREGISTRER', 'SAVE') : L('VALIDER', 'LOG SET')) + ' <span aria-hidden="true">✓</span></button>';
   if(xt === 'w' && !s.warm && !ex.sets.some(function(x){ return x.warm || x.done; })) h += '<button class="fx-alt fx-warm" data-a="autowarm">⚡ ' + L('Ajouter un échauffement auto', 'Add an automatic warm-up') + '</button>';
   return h + fxFoot(a, ex, sj);
