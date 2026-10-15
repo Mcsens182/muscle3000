@@ -637,10 +637,10 @@ body:not(.calm) .stylepick button.on{background:var(--ink);color:var(--ground)}
    Activé par la classe hud sur <html> (Profil › Style). Les couleurs viennent des
    variables posées par applyTheme() ; ici on ne règle que ce que l'Édito code en dur
    (blancs, panneaux inversés, polices). */
-html.hud{--h-glow:color-mix(in srgb,var(--m3-accent) 45%,transparent);--h-soft:color-mix(in srgb,var(--m3-accent) 14%,transparent);--h-on:#050706;--h-r:8px}
+html.hud{--h-fill:var(--m3-accent);--h-glow:color-mix(in srgb,var(--h-fill) 45%,transparent);--h-soft:color-mix(in srgb,var(--h-fill) 14%,transparent);--h-on:#050706;--h-r:8px}
 html.hud,html.hud body{background-color:var(--m3-bg)!important}
 html.hud body{background-image:linear-gradient(color-mix(in srgb,var(--m3-accent) 5%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--m3-accent) 5%,transparent) 1px,transparent 1px)!important;background-size:28px 28px!important;background-attachment:fixed!important}
-html.hud ::selection{background:var(--m3-accent);color:var(--h-on)}
+html.hud ::selection{background:var(--h-fill);color:var(--h-on)}
 
 /* typo : titres condensés en capitales, repères en mono */
 html.hud body .m3-hero h1,html.hud body .m3-page-head h1,html.hud body .m3-title,html.hud body .m3-focus h2,html.hud body .m3-session-card h2,html.hud body .disp,html.hud body .m3c-head b{font-family:'Anton',Impact,'Arial Narrow',sans-serif!important;font-weight:400!important;text-transform:uppercase;letter-spacing:.01em!important;line-height:.98!important}
@@ -655,7 +655,7 @@ html.hud body .m3-cycle,html.hud body .m3-cue{background:var(--h-soft)!important
 html.hud body .m3-set.done{background:color-mix(in srgb,var(--m3-accent) 8%,var(--m3-card))!important}
 html.hud body .m3-set.active{border-color:var(--m3-accent)!important;box-shadow:0 0 0 1px var(--m3-accent),0 0 18px var(--h-soft)!important}
 html.hud body .m3-set-num,html.hud body .m3-session-ex span{background:var(--h-soft)!important;color:var(--m3-ink)}
-html.hud body .m3-set.active .m3-set-num,html.hud body .m3w-days .done i,html.hud body .m3s-badge,html.hud body .m3-ws-list button.on em{background:var(--m3-accent)!important;color:var(--h-on)!important;border-color:var(--m3-accent)!important}
+html.hud body .m3-set.active .m3-set-num,html.hud body .m3w-days .done i,html.hud body .m3s-badge,html.hud body .m3-ws-list button.on em{background:var(--h-fill)!important;color:var(--h-on)!important;border-color:var(--h-fill)!important}
 html.hud body .m3-day.planned{background:var(--h-soft)!important}
 html.hud body .m3-session-ex span{border-radius:4px!important}
 
@@ -666,21 +666,21 @@ html.hud body .m3-ex-list,html.hud body .m3-ex-list button{border-color:var(--m3
 html.hud body .box.inv .chip{background:var(--h-soft)!important;border-color:var(--m3-line)!important;color:var(--m3-ink)!important}
 
 /* actions principales : remplies en néon, texte noir */
-html.hud body .m3-primary,html.hud body .m3-program-actions .m3-primary,html.hud body .m3-session-actions button:first-child,html.hud body .m3-validate,html.hud body .m3-ws-save,html.hud body button.solid,html.hud body .go.solid,html.hud body .go[data-a=start],html.hud body [data-a=validate],html.hud body [data-a=askfinish],html.hud body .welcome-act .go,html.hud body .m3s-confirm button.ok{background:var(--m3-accent)!important;color:var(--h-on)!important;border:1px solid var(--m3-accent)!important;border-radius:var(--h-r)!important;box-shadow:0 0 22px var(--h-soft)!important;text-transform:uppercase;letter-spacing:.06em}
+html.hud body .m3-primary,html.hud body .m3-program-actions .m3-primary,html.hud body .m3-session-actions button:first-child,html.hud body .m3-validate,html.hud body .m3-ws-save,html.hud body button.solid,html.hud body .go.solid,html.hud body .go[data-a=start],html.hud body [data-a=validate],html.hud body [data-a=askfinish],html.hud body .welcome-act .go,html.hud body .m3s-confirm button.ok{background:var(--h-fill)!important;color:var(--h-on)!important;border:1px solid var(--h-fill)!important;border-radius:var(--h-r)!important;box-shadow:0 0 22px var(--h-soft)!important;text-transform:uppercase;letter-spacing:.06em}
 html.hud body .m3-primary:active,html.hud body .m3-validate:active{box-shadow:0 0 30px var(--h-glow)!important}
 html.hud body button{border-radius:var(--h-r)!important}
 html.hud body .m3-avatar{background:transparent!important;color:var(--m3-accent)!important;border:1px solid var(--m3-accent)!important;border-radius:50%!important;box-shadow:0 0 14px var(--h-soft)}
 
 /* éléments sélectionnés (chips, jours, séries, tailles de widget) */
-html.hud body .chip.on,html.hud body .day.today,html.hud body .set.sel,html.hud body .set .num.ok,html.hud body .m3-ws-sizes button.on{background:var(--m3-accent)!important;color:var(--h-on)!important;border-color:var(--m3-accent)!important}
+html.hud body .chip.on,html.hud body .day.today,html.hud body .set.sel,html.hud body .set .num.ok,html.hud body .m3-ws-sizes button.on{background:var(--h-fill)!important;color:var(--h-on)!important;border-color:var(--h-fill)!important}
 html.hud body .chip{border-radius:4px!important}
 
 /* repos : bandeau sombre, chiffres néon ; à zéro le bandeau s'allume */
 html.hud body .m3-band,html.hud body .m3-pin,html.hud body .m3-rest,html.hud body .restbar{background:var(--m3-card)!important;color:var(--m3-ink)!important;border:1px solid var(--m3-accent)!important;border-radius:var(--h-r)!important;box-shadow:0 0 28px var(--h-soft)!important}
 html.hud body .m3-band button,html.hud body .m3-pin button,html.hud body .m3-rest button{color:var(--m3-ink)!important;border-color:var(--m3-line)!important}
 html.hud body .m3-band-bar,html.hud body .m3-pin-bar,html.hud body .m3-restbar,html.hud body .restbar .tr{background:var(--h-soft)!important}
-html.hud body .m3-band-bar i,html.hud body .m3-pin-bar i,html.hud body .m3-restbar i,html.hud body .restbar .fl{background:var(--m3-accent)!important;box-shadow:0 0 10px var(--h-glow)}
-html.hud body .m3-band.over,html.hud body .m3-pin.over{background:var(--m3-accent)!important;color:var(--h-on)!important}
+html.hud body .m3-band-bar i,html.hud body .m3-pin-bar i,html.hud body .m3-restbar i,html.hud body .restbar .fl{background:var(--h-fill)!important;box-shadow:0 0 10px var(--h-glow)}
+html.hud body .m3-band.over,html.hud body .m3-pin.over{background:var(--h-fill)!important;color:var(--h-on)!important}
 html.hud body .m3-band.over .m3-band-n,html.hud body .m3-pin.over .m3-pin-go strong{color:var(--h-on);text-shadow:none}
 html.hud body .m3-band.over button,html.hud body .m3-pin.over button{color:var(--h-on)!important;border-color:color-mix(in srgb,var(--h-on) 35%,transparent)!important}
 html.hud body .m3-band.over .m3-band-bar i,html.hud body .m3-pin.over .m3-pin-bar i{background:var(--h-on)!important;box-shadow:none}
@@ -694,11 +694,11 @@ html.hud body .m3w-fun{background:var(--h-soft)!important}
 /* navigation du bas : verre fumé, onglet actif allumé */
 html.hud body nav.nav{background:color-mix(in srgb,var(--m3-card) 88%,transparent)!important;border:1px solid var(--m3-line)!important;border-radius:12px!important;box-shadow:0 10px 30px rgba(0,0,0,.6)!important}
 html.hud body nav.nav button{font-family:'Space Mono',ui-monospace,Menlo,monospace!important;border-radius:8px!important}
-html.hud body nav.nav button.on{background:var(--m3-accent)!important;color:var(--h-on)!important;box-shadow:0 0 16px var(--h-soft)!important}
+html.hud body nav.nav button.on{background:var(--h-fill)!important;color:var(--h-on)!important;box-shadow:0 0 16px var(--h-soft)!important}
 
 /* profil */
 html.hud body .m3s-seg{background:var(--m3-card);border:1px solid var(--m3-line);border-radius:10px}
-html.hud body .m3s-seg button.on{background:var(--m3-accent)!important;color:var(--h-on)!important;box-shadow:0 0 14px var(--h-soft)!important}
+html.hud body .m3s-seg button.on{background:var(--h-fill)!important;color:var(--h-on)!important;box-shadow:0 0 14px var(--h-soft)!important}
 html.hud body .m3s-sw.on i{outline-color:var(--m3-accent)!important;box-shadow:0 0 16px var(--h-glow)}
 html.hud body .m3s-switch i{background:var(--m3-ink)}
 html.hud body .m3s-switch.on i{background:var(--h-on)}
@@ -710,8 +710,26 @@ html.hud body .badge{background:#FF3B6B!important}
 html.hud body .field,html.hud body input,html.hud body textarea,html.hud body select{background:var(--m3-card)!important;border-color:var(--m3-line)!important;color:var(--m3-ink)!important;border-radius:6px!important}
 html.hud body .sheet .pane{background:var(--m3-bg)!important;border-top:1px solid var(--m3-accent)!important;box-shadow:0 -10px 40px var(--h-soft)!important}
 html.hud body .welcome-in{border-top-color:var(--m3-accent)!important}
-html.hud body .toast{background:var(--m3-accent)!important;color:var(--h-on)!important}
+html.hud body .toast{background:var(--h-fill)!important;color:var(--h-on)!important}
 @media (prefers-reduced-motion:reduce){html.hud body *{text-shadow:none!important}}
+
+/* HUD négatif : fond blanc, encre noire. Le néon reste pour les aplats (boutons, onglet, série en cours) ;
+   le texte coloré passe dans une version foncée de la teinte, lisible sur blanc. */
+html.hud.neg{--h-on:#0A0C0B;--h-soft:color-mix(in srgb,var(--h-fill) 22%,transparent)}
+html.hud.neg body .m3-hero h1 em,html.hud.neg body .m3-page-head h1 em,html.hud.neg body .m3-band-n,html.hud.neg body .m3-pin-go strong{text-shadow:none}
+html.hud.neg body .m3-hero h1 em,html.hud.neg body .m3-page-head h1 em{background:linear-gradient(transparent 62%,var(--h-fill) 62%,var(--h-fill) 92%,transparent 92%);color:var(--m3-ink)!important;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+html.hud.neg body .m3-next,html.hud.neg body .box.inv,html.hud.neg body .inv{background:var(--m3-card)!important;border:2px solid var(--m3-ink)!important;box-shadow:5px 5px 0 var(--h-fill)!important}
+html.hud.neg body .m3-band,html.hud.neg body .m3-pin,html.hud.neg body .m3-rest,html.hud.neg body .restbar{border:2px solid var(--m3-ink)!important;box-shadow:5px 5px 0 var(--h-fill)!important}
+html.hud.neg body .m3-band.over,html.hud.neg body .m3-pin.over{background:var(--h-fill)!important}
+html.hud.neg body .m3-set.active{border-color:var(--m3-ink)!important;box-shadow:0 0 0 1px var(--m3-ink),3px 3px 0 var(--h-fill)!important}
+html.hud.neg body .m3-primary,html.hud.neg body .m3-program-actions .m3-primary,html.hud.neg body .m3-session-actions button:first-child,html.hud.neg body .m3-validate,html.hud.neg body .m3-ws-save,html.hud.neg body button.solid,html.hud.neg body .go.solid,html.hud.neg body .go[data-a=start],html.hud.neg body [data-a=validate],html.hud.neg body [data-a=askfinish],html.hud.neg body .welcome-act .go,html.hud.neg body .m3s-confirm button.ok{border:2px solid var(--m3-ink)!important;box-shadow:3px 3px 0 var(--m3-ink)!important}
+html.hud.neg body nav.nav{box-shadow:0 8px 24px rgba(0,0,0,.12)!important;border-color:var(--m3-ink)!important}
+html.hud.neg body nav.nav button.on,html.hud.neg body .m3s-seg button.on{box-shadow:none!important;outline:1.5px solid var(--m3-ink)}
+html.hud.neg body .m3-avatar{color:var(--m3-ink)!important;border:2px solid var(--m3-ink)!important;background:var(--h-fill)!important;box-shadow:none}
+html.hud.neg body .m3s-sw.on i{outline-color:var(--m3-ink)!important;box-shadow:none}
+html.hud.neg body .m3-band-bar i,html.hud.neg body .m3-pin-bar i,html.hud.neg body .m3-progress i,html.hud.neg body .m3-cyclebar i,html.hud.neg body .m3c-bar i,html.hud.neg body .m3w-bars i.on,html.hud.neg body .m3w-weeks i.on{box-shadow:none}
+html.hud.neg body .m3s-switch i{background:#fff}
+html.hud.neg body .m3s-row.danger{color:#C62A1E!important}
 </style>
 
 <div id="app"></div>
@@ -2141,14 +2159,14 @@ function vHist(){
    the shape button) stay out on purpose: they are meant to be found. */
 var CHANGELOG = [
   {v:'1.12', d:'15.10.26', t:'Widgets, fiches et fenêtres',
-   summary:['Sur Aujourd\'hui, touche un exercice de la prochaine séance pour ouvrir sa fiche : historique, records et façon de faire.','Les carrés de l\'accueil deviennent des widgets : choisis ce qu\'ils affichent, en petit, en large ou en grand.','Les fenêtres qui s\'ouvrent par le bas se ferment en les glissant vers le bas.','Un Profil plus simple, et 4 coloris au choix : Forêt, Océan, Terre et Prune.','La barre du bas flotte au-dessus du contenu.','Le Journal a son calendrier du mois, avec une barre de progression vers ton objectif.','Nouveau style au choix dans le Profil : HUD, fond noir et néon.'],
+   summary:['Sur Aujourd\'hui, touche un exercice de la prochaine séance pour ouvrir sa fiche : historique, records et façon de faire.','Les carrés de l\'accueil deviennent des widgets : choisis ce qu\'ils affichent, en petit, en large ou en grand.','Les fenêtres qui s\'ouvrent par le bas se ferment en les glissant vers le bas.','Un Profil plus simple, et 4 coloris au choix : Forêt, Océan, Terre et Prune.','La barre du bas flotte au-dessus du contenu.','Le Journal a son calendrier du mois, avec une barre de progression vers ton objectif.','Nouveau style au choix dans le Profil : HUD, en néon sur fond noir ou sur fond blanc.'],
    sections:[
     {t:'Les fiches depuis l\'accueil', items:['Tous les exercices de la prochaine séance sont listés, et chacun ouvre sa fiche d\'un tap.','La fiche montre le mouvement, tes notes, tes records et tes dernières séances sur cet exercice.']},
     {t:'Fin de repos, même ailleurs', items:['Dans Profil › Notifications, active « Fin de repos » : quand ton repos se termine et que tu es sur une autre appli ou écran verrouillé, une notification te prévient.','Dans l\'appli, la fin du repos sonne maintenant comme un petit ding, avec une légère vibration quand le téléphone le permet.','« Tester » envoie une notification dans 10 secondes pour vérifier que tout marche.']},
     {t:'Le repos en grand', items:['Quand tu valides une série, le repos s\'affiche en grand juste sous elle : chiffres géants, lisibles téléphone posé sur le banc.','+15 / −15 ajustent le repos en cours, « Passer » le termine. À zéro, le bandeau passe en couleur et affiche GO.','Si tu fais défiler et que le repos sort de l\'écran, un petit bandeau apparaît tout en haut avec le temps restant. Touche-le pour revenir au repos.']},
     {t:'Le calendrier du journal', items:['En haut du Journal, le mois en cours : séances faites en couleur, séances prévues en pointillés, jours manqués barrés.','Touche un jour coloré pour revoir la séance. Les flèches passent d\'un mois à l\'autre.','La barre de progression compte tes séances face à l\'objectif du mois (tes jours d\'entraînement prévus), avec un repère qui montre où tu devrais en être aujourd\'hui.']},
     {t:'Une barre qui flotte', items:['La barre du bas se détache des bords de l\'écran : une pilule légèrement transparente, posée au-dessus du contenu.','Quand tu fais défiler vers le bas, elle s\'estompe peu à peu ; elle revient dès que tu remontes, et elle est toujours là en haut et en bas de la page.']},
-    {t:'Le mode HUD', items:['Dans Profil › Style, choisis entre Édito (clair) et HUD (fond noir, néon). Tu bascules quand tu veux : historique, programmes et notes restent les mêmes.','En HUD, les quatre coloris deviennent Acide, Cyan, Braise et Néon. Le bouton principal, le chrono de repos et la série en cours s\'allument dans ta couleur.']},
+    {t:'Le mode HUD', items:['Dans Profil › Style, choisis entre Édito (clair) et HUD (fond noir, néon). Tu bascules quand tu veux : historique, programmes et notes restent les mêmes.','En HUD, les quatre coloris deviennent Acide, Cyan, Braise et Néon. Le bouton principal, le chrono de repos et la série en cours s\'allument dans ta couleur.','Le HUD existe aussi en négatif : choisis Fond blanc sous le style. Encre noire, aplats néon et ombres franches.']},
     {t:'Profil et coloris', items:['Le Profil est réorganisé : coloris, langue, palier de charge, nouveautés et sauvegarde, sans encadrés.','Quatre coloris : Forêt, Océan, Terre et Prune. Tout l\'appli suit, widgets compris.']},
     {t:'Des fenêtres qui se glissent', items:['Une séance du journal, une fiche ou un widget s\'ouvre dans une fenêtre par le bas : attrape-la par le haut et descends-la du doigt pour la fermer.','Plus bas dans la fenêtre, le geste marche aussi une fois remonté tout en haut.']},
     {t:'Tes widgets', items:['Touche un widget pour changer l\'information qu\'il affiche ou sa taille.','Trois tailles : petit (1 carré), large (2 carrés côte à côte) et grand (4 carrés). En large et en grand, le widget en montre plus : graphique sur 8 semaines, détail, liste.','Treize infos au choix : volume de la dernière séance ou de la semaine, nombre de séances, semaines d\'affilée, ta semaine jour par jour, ton mois, séries, dernière séance, records, progressions, temps d\'entraînement, total soulevé et répartition.','Laisse ton doigt appuyé sur un widget : il s\'enfonce puis se soulève. Glisse-le où tu veux, les autres se décalent pour lui faire de la place.','Chaque taille apporte plus d\'informations : en petit le chiffre, en large le détail ou le graphique, en grand le graphique complet et des infos en plus. Le détail de chaque taille est expliqué quand tu modifies un widget.','« + Ajouter » pour en mettre d\'autres, et « Retirer ce widget » pour l\'enlever.','Ta disposition reste sur ton téléphone et fait partie de ta sauvegarde.']}
@@ -3824,16 +3842,19 @@ function vProg(){
 function L(fr, en){ return isEN() ? en : fr; }
 EN['PROFIL'] = 'PROFILE'; EN['JOURNAL'] = 'LOG';
 var M3_THEMES = {
-  foret:{fr:'Forêt', en:'Forest', bg:'#F5F2EA', ink:'#173127', muted:'#718078', line:'#DDE2DB', card:'#FFFDF9', accent:'#1E654A', hud:{fr:'Acide', en:'Acid', accent:'#C8FF3D'}},
-  ocean:{fr:'Océan', en:'Ocean', bg:'#F2F4F6', ink:'#172536', muted:'#6B7887', line:'#DCE2E8', card:'#FFFFFF', accent:'#2B5C8A', hud:{fr:'Cyan', en:'Cyan', accent:'#33E1FF'}},
-  terre:{fr:'Terre', en:'Clay', bg:'#F7F1EB', ink:'#35221A', muted:'#85726A', line:'#E6DCD3', card:'#FFFCF9', accent:'#B0532C', hud:{fr:'Braise', en:'Blaze', accent:'#FF7B2E'}},
-  prune:{fr:'Prune', en:'Plum', bg:'#F5F1F4', ink:'#2C1C2B', muted:'#7E6F7C', line:'#E3DAE1', card:'#FFFCFE', accent:'#7A3B6E', hud:{fr:'Néon', en:'Neon', accent:'#FF4FD8'}}
+  foret:{fr:'Forêt', en:'Forest', bg:'#F5F2EA', ink:'#173127', muted:'#718078', line:'#DDE2DB', card:'#FFFDF9', accent:'#1E654A', hud:{fr:'Acide', en:'Acid', accent:'#C8FF3D', deep:'#4F6B00'}},
+  ocean:{fr:'Océan', en:'Ocean', bg:'#F2F4F6', ink:'#172536', muted:'#6B7887', line:'#DCE2E8', card:'#FFFFFF', accent:'#2B5C8A', hud:{fr:'Cyan', en:'Cyan', accent:'#33E1FF', deep:'#00738F'}},
+  terre:{fr:'Terre', en:'Clay', bg:'#F7F1EB', ink:'#35221A', muted:'#85726A', line:'#E6DCD3', card:'#FFFCF9', accent:'#B0532C', hud:{fr:'Braise', en:'Blaze', accent:'#FF7B2E', deep:'#B43C08'}},
+  prune:{fr:'Prune', en:'Plum', bg:'#F5F1F4', ink:'#2C1C2B', muted:'#7E6F7C', line:'#E3DAE1', card:'#FFFCFE', accent:'#7A3B6E', hud:{fr:'Néon', en:'Neon', accent:'#FF4FD8', deep:'#A3138A'}}
 };
 /* deux styles pour la même appli : Édito (clair, éditorial) et HUD (fond noir, néon). Chaque coloris a sa version néon. */
+function m3Neg(){ return S.settings.m3skin === 'hud' && S.settings.m3hudbg === 'light'; }
 function m3Skin(){ return S.settings.m3skin === 'hud' ? 'hud' : 'edito'; }
 function m3Pal(k){
   var t = M3_THEMES[k]; if(m3Skin() !== 'hud') return t;
-  return {fr:t.hud.fr, en:t.hud.en, bg:'#070908', ink:'#E8F0EA', muted:'#7D8A83', card:'#0D1210', accent:t.hud.accent,
+  if(m3Neg()) return {fr:t.hud.fr, en:t.hud.en, bg:'#FFFFFF', ink:'#0A0C0B', muted:'#5E6862', card:'#FFFFFF', accent:t.hud.deep, fill:t.hud.accent,
+    line:'color-mix(in srgb,' + t.hud.deep + ' 30%,#FFFFFF)'};
+  return {fr:t.hud.fr, en:t.hud.en, bg:'#070908', ink:'#E8F0EA', muted:'#7D8A83', card:'#0D1210', accent:t.hud.accent, fill:t.hud.accent,
     line:'color-mix(in srgb,' + t.hud.accent + ' 22%,#0D1210)'};
 }
 function m3Theme(){ return M3_THEMES[S.settings.m3theme] ? S.settings.m3theme : 'foret'; }
@@ -3841,11 +3862,13 @@ function applyTheme(){
   var b = document.body.classList; ['calm','csq','round','flat','acc'].forEach(function(c){ b.remove(c); });
   var hud = m3Skin() === 'hud', t = m3Pal(m3Theme()), r = document.documentElement.style, tint = 'color-mix(in srgb,' + t.accent + (hud ? ' 12%,' : ' 9%,') + t.bg + ')';
   document.documentElement.classList.toggle('hud', hud);
+  document.documentElement.classList.toggle('neg', hud && m3Neg());
+  if(hud) r.setProperty('--h-fill', t.fill, 'important'); else r.removeProperty('--h-fill');
   var set = function(k, v){ r.setProperty(k, v, 'important'); };
   set('--m3-bg', t.bg); set('--ground', t.bg); set('--m3-ink', t.ink); set('--ink', t.ink); set('--m3-muted', t.muted); set('--muted', t.muted);
   set('--m3-line', t.line); set('--line', t.line); set('--track', t.line); set('--m3-card', t.card); set('--paper', t.card);
   set('--m3-accent', t.accent); set('--acc', t.accent); set('--m3-tint', tint); set('--soft', tint);
-  r.setProperty('color-scheme', hud ? 'dark' : 'light');
+  r.setProperty('color-scheme', hud && !m3Neg() ? 'dark' : 'light');
   var m = document.querySelector('meta[name="theme-color"]'); if(m) m.setAttribute('content', t.bg);
 }
 /* le sergent et le mode Lisible sont retirés : on les coupe chez ceux qui les avaient activés */
@@ -3853,6 +3876,10 @@ if(S.settings.hardcore || S.settings.style === 'calm'){ S.settings.hardcore = fa
 document.addEventListener('click', function(ev){
   var el = ev.target.closest('[data-a="m3theme"]'); if(!el) return;
   S.settings.m3theme = el.getAttribute('data-t'); save(); render();
+});
+document.addEventListener('click', function(ev){
+  var el = ev.target.closest('[data-a="m3hudbg"]'); if(!el) return;
+  S.settings.m3hudbg = el.getAttribute('data-v') === 'light' ? 'light' : 'dark'; save(); render();
 });
 document.addEventListener('click', function(ev){
   var el = ev.target.closest('[data-a="m3skin"]'); if(!el) return;
@@ -3867,10 +3894,13 @@ function vSet(){
   var en = isEN(), cur = m3Theme(), h = restBar();
   h += '<header class="m3-page-head"><span class="m3-eyebrow">' + L('PROFIL', 'PROFILE') + '</span><h1>' + L('Tes', 'Your') + '<br><em>' + L('réglages.', 'settings.') + '</em></h1></header>';
   var sk = m3Skin();
-  h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('STYLE', 'STYLE') + '</div><div class="m3s-seg" role="group"><button data-a="m3skin" data-v="edito" class="' + (sk === 'edito' ? 'on' : '') + '" aria-pressed="' + (sk === 'edito') + '">' + L('Édito', 'Edito') + '</button><button data-a="m3skin" data-v="hud" class="' + (sk === 'hud' ? 'on' : '') + '" aria-pressed="' + (sk === 'hud') + '">HUD</button></div></section>';
+  h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('STYLE', 'STYLE') + '</div><div class="m3s-seg" role="group"><button data-a="m3skin" data-v="edito" class="' + (sk === 'edito' ? 'on' : '') + '" aria-pressed="' + (sk === 'edito') + '">' + L('Édito', 'Edito') + '</button><button data-a="m3skin" data-v="hud" class="' + (sk === 'hud' ? 'on' : '') + '" aria-pressed="' + (sk === 'hud') + '">HUD</button></div>';
+  if(sk === 'hud'){ var ng = m3Neg();
+    h += '<div class="m3s-seg" role="group" style="margin-top:8px"><button data-a="m3hudbg" data-v="dark" class="' + (ng ? '' : 'on') + '" aria-pressed="' + !ng + '">' + L('Fond noir', 'Black background') + '</button><button data-a="m3hudbg" data-v="light" class="' + (ng ? 'on' : '') + '" aria-pressed="' + ng + '">' + L('Fond blanc', 'White background') + '</button></div>'; }
+  h += '</section>';
   h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('COLORIS', 'COLOR') + '</div><div class="m3s-swatches" role="group">' + Object.keys(M3_THEMES).map(function(k){
     var t = m3Pal(k);
-    return '<button class="m3s-sw' + (k === cur ? ' on' : '') + '" data-a="m3theme" data-t="' + k + '" aria-pressed="' + (k === cur) + '"><i style="background:' + t.accent + '"></i><span>' + (en ? t.en : t.fr) + '</span></button>';
+    return '<button class="m3s-sw' + (k === cur ? ' on' : '') + '" data-a="m3theme" data-t="' + k + '" aria-pressed="' + (k === cur) + '"><i style="background:' + (t.fill || t.accent) + '"></i><span>' + (en ? t.en : t.fr) + '</span></button>';
   }).join('') + '</div></section>';
   h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('LANGUE', 'LANGUAGE') + '</div><div class="m3s-seg" role="group"><button data-a="lang" data-v="fr" class="' + (en ? '' : 'on') + '" aria-pressed="' + !en + '">Français</button><button data-a="lang" data-v="en" class="' + (en ? 'on' : '') + '" aria-pressed="' + en + '">English</button></div></section>';
   h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('PALIER DE CHARGE', 'WEIGHT STEP') + '</div><div class="m3s-seg" role="group">' + [1, 1.25, 2, 2.5, 5].map(function(v){
