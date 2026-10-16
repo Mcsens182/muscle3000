@@ -1511,6 +1511,18 @@ html.dark body .m3-day{background:var(--m3-card)}
 html.dark body .nav{background:color-mix(in srgb,var(--m3-card) 92%,transparent)!important;border-color:var(--m3-line)!important;box-shadow:0 10px 30px rgba(0,0,0,.45)!important}
 html.dark body :is(.m3-next,.box,.m3-session-card,.m3w,.m3-history-card){box-shadow:none}
 html.dark body .sheet .pane{background:var(--m3-bg)!important}
+
+/* coloris actif : petit interrupteur blanc / noir sous le nom + pastille bicolore sur le rond, pour montrer qu'on peut retoucher */
+.m3s-sw i{position:relative}
+.m3s-flip{position:absolute;right:-5px;bottom:-5px;width:17px;height:17px;border-radius:50%;background:linear-gradient(135deg,#fff 0 50%,#111 50% 100%);border:2px solid var(--m3-bg);box-shadow:0 0 0 1px var(--m3-line);transition:transform .35s ease}
+html.dark .m3s-flip,html.hud:not(.neg) .m3s-flip{transform:rotate(180deg)}
+.m3s-bg{display:flex;gap:3px;padding:3px;border-radius:99px;border:1px solid var(--m3-line);background:var(--m3-card);height:18px;box-sizing:border-box}
+.m3s-bg.off{visibility:hidden}
+.m3s-bg b{width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);transition:box-shadow .2s,transform .2s}
+.m3s-bg b+b{background:#111;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)}
+.m3s-bg:not(.dk) b:first-child,.m3s-bg.dk b+b{box-shadow:0 0 0 2px var(--m3-accent);transform:scale(1.1)}
+button.m3s-sw:active .m3s-flip{transform:rotate(90deg) scale(1.15)}
+html.club.dark body .m3s-sw.on i{outline-color:var(--m3-ink)!important}
 </style>
 
 <div id="app"></div>
@@ -4941,7 +4953,7 @@ if(S.settings.hardcore || S.settings.style === 'calm'){ S.settings.hardcore = fa
 document.addEventListener('click', function(ev){
   var el = ev.target.closest('[data-a="m3theme"]'); if(!el) return;
   var k = el.getAttribute('data-t');
-  if(k === m3Theme()){ var d = m3ToggleBg(); save(); render(); toast(d ? L('Fond noir', 'Black background') : L('Fond blanc', 'White background')); return; }
+  if(k === m3Theme()){ m3ToggleBg(); save(); render(); return; }
   S.settings.m3theme = k; save(); render();
 });
 document.addEventListener('click', function(ev){
@@ -4964,9 +4976,9 @@ function vSet(){
   h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('STYLE', 'STYLE') + '</div><div class="m3s-seg" role="group"><button data-a="m3skin" data-v="edito" class="' + (sk === 'edito' ? 'on' : '') + '" aria-pressed="' + (sk === 'edito') + '">' + L('Édito', 'Edito') + '</button><button data-a="m3skin" data-v="hud" class="' + (sk === 'hud' ? 'on' : '') + '" aria-pressed="' + (sk === 'hud') + '">HUD</button><button data-a="m3skin" data-v="club" class="' + (sk === 'club' ? 'on' : '') + '" aria-pressed="' + (sk === 'club') + '">Club 78</button></div>';
   h += '</section>';
   h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('COLORIS', 'COLOR') + '</div><div class="m3s-swatches" role="group">' + Object.keys(M3_THEMES).map(function(k){
-    var t = m3Pal(k);
-    return '<button class="m3s-sw' + (k === cur ? ' on' : '') + '" data-a="m3theme" data-t="' + k + '" aria-pressed="' + (k === cur) + '"><i style="background:' + (t.fill || t.accent) + '"></i><span>' + (en ? t.en : t.fr) + '</span></button>';
-  }).join('') + '</div><p class="m3s-note m3s-bghint">' + (m3Dark() ? L('Touche à nouveau ton coloris pour passer en fond blanc.', 'Tap your color again to switch to a white background.') : L('Touche à nouveau ton coloris pour passer en fond noir.', 'Tap your color again to switch to a black background.')) + '</p></section>';
+    var t = m3Pal(k), dk = m3Dark();
+    return '<button class="m3s-sw' + (k === cur ? ' on' : '') + '" data-a="m3theme" data-t="' + k + '" aria-pressed="' + (k === cur) + '"' + (k === cur ? ' aria-label="' + (en ? t.en : t.fr) + ' · ' + (dk ? L('fond noir, touche pour passer en fond blanc', 'black background, tap for white') : L('fond blanc, touche pour passer en fond noir', 'white background, tap for black')) + '"' : '') + '><i style="background:' + (t.fill || t.accent) + '">' + (k === cur ? '<u class="m3s-flip" aria-hidden="true"></u>' : '') + '</i><span>' + (en ? t.en : t.fr) + '</span>' + (k === cur ? '<em class="m3s-bg' + (dk ? ' dk' : '') + '" aria-hidden="true"><b></b><b></b></em>' : '<em class="m3s-bg off" aria-hidden="true"></em>') + '</button>';
+  }).join('') + '</div></section>';
   h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('LANGUE', 'LANGUAGE') + '</div><div class="m3s-seg" role="group"><button data-a="lang" data-v="fr" class="' + (en ? '' : 'on') + '" aria-pressed="' + !en + '">Français</button><button data-a="lang" data-v="en" class="' + (en ? 'on' : '') + '" aria-pressed="' + en + '">English</button></div></section>';
   h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('PALIER DE CHARGE', 'WEIGHT STEP') + '</div><div class="m3s-seg" role="group">' + [1, 1.25, 2, 2.5, 5].map(function(v){
     return '<button data-a="inc" data-v="' + v + '" class="' + (inc() === v ? 'on' : '') + '" aria-pressed="' + (inc() === v) + '">' + kg(v) + ' kg</button>';
