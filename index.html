@@ -141,6 +141,9 @@ button.m3s-sw.on{color:var(--m3-ink)!important}
 .m6-card span{font-size:11px;font-weight:600;color:var(--m3-ink)}
 .m6-card i{font-style:normal;font-size:11px;font-weight:700;color:var(--m3-accent);margin-top:4px}
 .sheet .pane.m6-sheet{gap:0!important}
+.m6-h{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:4px 0 12px;color:var(--m3-ink)}
+.m6-static{cursor:default}
+.m6-sheet .m4-cta{margin-top:18px}
 .m6-x{background:transparent!important;border:0!important;font-size:16px!important;color:var(--m3-muted)!important;min-height:0!important;padding:4px 8px!important}
 .m6-hint{font-size:12px;color:var(--m3-muted);margin:-4px 0 6px}
 .m6-group{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--m3-muted);margin:18px 0 4px}
@@ -4146,7 +4149,7 @@ function render(){
   app.innerHTML = trHTML(hardify(html));
   var sh = document.getElementById('sheet');
   if(ui.screen === 'done') buildShare();
-  sh.innerHTML = trHTML(hardify(staleOn() ? '<div class="sheet">' + vStale() + '</div>' : ui.pad ? '<div class="sheet" data-a="closesheet">' + vPad() + '</div>' : ui.addPast ? '<div class="sheet" data-a="closesheet">' + vAddPast() + '</div>' : ui.welcome ? vWelcome() : ui.storyId ? '<div class="sheet" data-a="closesheet">' + vStory(ui.storyId) + '</div>' : ui.newsDay != null ? '<div class="sheet" data-a="closesheet">' + vNewsDay(ui.newsDay) + '</div>' : ui.wSheet ? '<div class="sheet" data-a="closesheet">' + vWidgetSheet() + '</div>' : ui.otherSheet ? '<div class="sheet" data-a="closesheet">' + m6OtherSheet() + '</div>' : ui.daySheet ? '<div class="sheet" data-a="closesheet">' + vDay(ui.daySheet) + '</div>' : ui.picker ? '<div class="sheet" data-a="closesheet">' + vPicker() + '</div>' : ui.sheet ? '<div class="sheet" data-a="closesheet">' + vFiche(ui.sheet) + '</div>' : ''));
+  sh.innerHTML = trHTML(hardify(staleOn() ? '<div class="sheet">' + vStale() + '</div>' : ui.pad ? '<div class="sheet" data-a="closesheet">' + vPad() + '</div>' : ui.addPast ? '<div class="sheet" data-a="closesheet">' + vAddPast() + '</div>' : ui.welcome ? vWelcome() : ui.storyId ? '<div class="sheet" data-a="closesheet">' + vStory(ui.storyId) + '</div>' : ui.newsDay != null ? '<div class="sheet" data-a="closesheet">' + vNewsDay(ui.newsDay) + '</div>' : ui.wSheet ? '<div class="sheet" data-a="closesheet">' + vWidgetSheet() + '</div>' : ui.otherSheet ? '<div class="sheet" data-a="closesheet">' + m6OtherSheet() + '</div>' : ui.histSheet ? '<div class="sheet" data-a="closesheet">' + m6HistSheet() + '</div>' : ui.daySheet ? '<div class="sheet" data-a="closesheet">' + vDay(ui.daySheet) + '</div>' : ui.picker ? '<div class="sheet" data-a="closesheet">' + vPicker() + '</div>' : ui.sheet ? '<div class="sheet" data-a="closesheet">' + vFiche(ui.sheet) + '</div>' : ''));
   if(ui.storyId) buildStory();
   if(typeof m3PinCheck === 'function') m3PinCheck();
 }
@@ -4420,7 +4423,7 @@ document.addEventListener('click', function(ev){
     case 'ficheback':
       ui.daySheet = ui.ficheFrom; ui.ficheFrom = null; ui.sheet = null; ui.confirm = null; render();
       var bp = document.querySelector('.sheet .pane'); if(bp) bp.scrollTop = ui.dayScroll || 0; return;
-    case 'closesheet': ui.otherSheet = null; ui.sheet = null; ui.picker = null; ui.daySheet = null; ui.ficheFrom = null; ui.newsDay = null; ui.storyId = null; ui.storyFrom = null; ui.wSheet = null; break;
+    case 'closesheet': ui.otherSheet = null; ui.histSheet = null; ui.sheet = null; ui.picker = null; ui.daySheet = null; ui.ficheFrom = null; ui.newsDay = null; ui.storyId = null; ui.storyFrom = null; ui.wSheet = null; break;
     /* home widgets: open, add, pick an info, pick a size, remove, save */
     case 'wgopen': var wgi = +el.getAttribute('data-i'), wgw = m3wList()[wgi]; if(wgw) ui.wSheet = {i:wgi, k:wgw.k, z:wgw.z}; break;
     case 'jcal': ui.calOff = Math.min(1, (ui.calOff || 0) + d); break;
@@ -4529,7 +4532,7 @@ document.addEventListener('change', function(ev){
 });
 document.addEventListener('keydown', function(ev){
   if(ev.key === 'Enter' && ev.target.getAttribute && (ev.target.id === 'in-w' || ev.target.id === 'in-r')) ev.target.blur();
-  if(ev.key === 'Escape' && ui.otherSheet){ ui.otherSheet = null; render(); return; }
+  if(ev.key === 'Escape' && (ui.otherSheet || ui.histSheet)){ ui.otherSheet = null; ui.histSheet = null; render(); return; }
   if(ev.key === 'Escape' && (ui.sheet || ui.wSheet || ui.daySheet || ui.newsDay != null || ui.storyId)){ ui.wSheet = null; ui.sheet = null; ui.daySheet = null; ui.newsDay = null; ui.storyId = null; ui.storyFrom = null; render(); }
 });
 
@@ -6217,8 +6220,9 @@ function m4WkView(p, w){
     h += '</div>' + (e.ss && i < w.ex.length - 1 ? '<div class="m4-ss">⇄ ' + L('EN SUPERSET AVEC LE SUIVANT', 'SUPERSET WITH THE NEXT ONE') + '</div>' : '') + '</section>';
   });
   h += '</div>';
-  if(lib) h += (S.active ? '' : '<button class="m3-primary m4-cta" data-a="m6libonce" data-id="' + p.lib.id + '" data-i="' + p.workouts.indexOf(w) + '">' + L('FAIRE CETTE SÉANCE SANS ACTIVER', 'DO THIS SESSION WITHOUT ACTIVATING') + ' <span>→</span></button>') + '<button class="m6-secondary" data-a="pvlibadd" data-id="' + p.lib.id + '">' + L('Ajouter et activer le programme', 'Add and activate the program') + '</button>';
+  if(lib) h += (S.active ? '' : '<button class="m3-primary m4-cta" data-a="m6libonce" data-id="' + p.lib.id + '" data-i="' + p.workouts.indexOf(w) + '">' + L('FAIRE CETTE SÉANCE SANS ACTIVER', 'DO THIS SESSION WITHOUT ACTIVATING') + ' <span>→</span></button>') + (S.active ? '<button class="m6-secondary" data-a="pvlibadd" data-id="' + p.lib.id + '">' + L('Ajouter et activer le programme', 'Add and activate the program') + '</button>' : '<button class="m6-secondary" data-a="m6libact" data-id="' + p.lib.id + '" data-i="' + p.workouts.indexOf(w) + '">' + L('Activer ' + trText(p.name) + ' et commencer', 'Activate ' + trText(p.name) + ' and start') + '</button>');
   else if(S.active) h += '<button class="m3-primary m4-cta" data-a="scr" data-s="ov">' + L('SÉANCE EN COURS : REPRENDRE', 'SESSION IN PROGRESS: RESUME') + ' <span>→</span></button>';
+  else if(w.ex.length && !p.free && !(activeProg() && activeProg().id === p.id)) h += '<button class="m3-primary m4-cta" data-a="start" data-p="' + esc(w.id) + '">' + L('COMMENCER SANS ACTIVER LE PROGRAMME', 'START WITHOUT ACTIVATING THE PROGRAM') + ' <span>→</span></button><button class="m6-secondary" data-a="m6actgo" data-pr="' + esc(p.id) + '" data-p="' + esc(w.id) + '">' + L('Activer ' + trText(p.name) + ' et commencer', 'Activate ' + trText(p.name) + ' and start') + '</button>';
   else if(w.ex.length) h += '<button class="m3-primary m4-cta" data-a="start" data-p="' + esc(w.id) + '">' + L('COMMENCER CETTE SÉANCE', 'START THIS SESSION') + ' <span>→</span></button>';
   return h;
 }
@@ -6253,6 +6257,12 @@ function m6Ago(t){
   var n = Math.round((d0 - d1) / 864e5);
   return n <= 0 ? L('Aujourd’hui', 'Today') : n === 1 ? L('Hier', 'Yesterday') : n < 7 ? L('Il y a ' + n + ' j', n + ' d ago') : fmtDate(t);
 }
+/* une séance improvisée s'appelle « Séance libre » : on l'affiche plutôt par ses exercices */
+function m6Title(x){
+  if(!/^(séance libre|free session)$/i.test(String(x.name || '').trim())) return trText(x.name);
+  var n = x.exercises.map(function(e){ return exDisp(e.name); });
+  return n.length ? n.slice(0, 2).join(' + ') + (n.length > 2 ? ' +' + (n.length - 2) : '') : L('Séance', 'Session');
+}
 function m6Recent(){
   var seen = {}, out = [];
   for(var i = S.history.length - 1; i >= 0 && out.length < 10; i--){
@@ -6263,9 +6273,9 @@ function m6Recent(){
   var h = '<section class="m3-block m6-recent"><div class="m3-section-head"><span>' + L('DERNIÈRES SÉANCES', 'RECENT SESSIONS') + '</span></div><div class="m6-scroll">';
   out.forEach(function(x){
     var w = x.pid ? prog(x.pid) : null, pp = x.pid ? wkProg(x.pid) : null, v = sessVol(x);
-    var tag = pp ? (pp.free ? L('Séance libre', 'Free session') : trText(pp.name)) : L('Séance libre', 'Free session');
-    var attrs = w && pp ? ' data-a="m6open" data-p="' + esc(pp.id) + '" data-id="' + esc(w.id) + '"' : ' data-a="hist" data-id="' + esc(x.id) + '"';
-    h += '<button class="m6-card"' + attrs + '><small>' + m6Ago(x.date) + '</small><b>' + esc(trText(x.name)) + '</b><em>' + esc(tag) + '</em><span>' + x.exercises.length + L(' exos · ', ' ex. · ') + fmtT(v) + '</span>' + (w && pp && !S.active ? '<i>' + L('Refaire', 'Do again') + ' →</i>' : '') + '</button>';
+    var tag = pp && !pp.free ? trText(pp.name) : '';
+    var attrs = w && pp ? ' data-a="m6open" data-p="' + esc(pp.id) + '" data-id="' + esc(w.id) + '"' : ' data-a="m6hist" data-id="' + esc(x.id) + '"';
+    h += '<button class="m6-card"' + attrs + '><small>' + m6Ago(x.date) + '</small><b>' + esc(m6Title(x)) + '</b>' + (tag ? '<em>' + esc(tag) + '</em>' : '') + '<span>' + x.exercises.length + L(' exos · ', ' ex. · ') + fmtT(v) + '</span>' + (!S.active ? '<i>' + L('Voir', 'View') + ' →</i>' : '') + '</button>';
   });
   return h + '</div></section>';
 }
@@ -6296,6 +6306,34 @@ function m6LibAdd(id){
   S.settings.activeProg = keepAct; S.settings.cycleStart = keepCs;
   return p;
 }
+/* séance faite sans modèle (improvisée) : le détail de ce qui a été fait, et on peut la refaire telle quelle */
+function m6HistSheet(){
+  var x = S.history.filter(function(r){ return r.id === ui.histSheet; })[0];
+  if(!x){ ui.histSheet = null; return ''; }
+  var h = '<div class="pane m3-wsheet m6-sheet" role="dialog" aria-label="' + esc(m6Title(x)) + '"><div class="m3-ws-grip"></div><div class="m3-section-head"><span>' + m6Ago(x.date).toUpperCase() + ' · ' + mmss(x.dur) + '</span><button data-a="closesheet" class="m6-x" aria-label="' + L('Fermer', 'Close') + '">✕</button></div>';
+  h += '<h2 class="m6-h">' + esc(m6Title(x)) + '</h2><div class="m3s-list">';
+  x.exercises.forEach(function(e){
+    var sets = e.sets.filter(function(t){ return !t.warm && t.r != null; });
+    h += '<div class="m3s-row m6-static"><span>' + esc(exDisp(e.name)) + '<small>' + (sets.length ? sets.map(function(t){ return fmtS(e.name, t.w, t.r); }).join(' · ') : '—') + '</small></span></div>';
+  });
+  h += '</div>';
+  if(!S.active) h += '<button class="m3-primary m4-cta" data-a="m6redo" data-id="' + esc(x.id) + '">' + L('REFAIRE CETTE SÉANCE', 'DO THIS SESSION AGAIN') + ' <span>→</span></button>';
+  return h + '</div>';
+}
+function m6StartHist(x){
+  S.active = {pid:null, name:x.name, start:Date.now(), idx:0, rest:null, exercises:x.exercises.map(function(e){
+    var work = e.sets.filter(function(t){ return !t.warm; }), warm = e.sets.filter(function(t){ return t.warm; });
+    var rest = (work[0] && work[0].rest) || e.rest || 90;
+    var rs = work.map(function(t){ return t.r || 8; }), lo = rs.length ? Math.min.apply(null, rs) : 8, hi = rs.length ? Math.max.apply(null, rs) : 12;
+    if(hi === lo) hi = lo + 2;
+    var ex = {name:e.name, variants:null, rest:rest, cue:'', note:lastNote(e.name, null), sel:null, sets:[]};
+    warm.forEach(function(t){ ex.sets.push({lo:t.r || 8, hi:t.r || 8, special:null, warm:true, rest:60, done:false, w:null, r:t.r || 8}); });
+    (work.length ? work : [0, 1, 2]).forEach(function(){ ex.sets.push({lo:lo, hi:hi, special:null, warm:false, rest:rest, done:false, w:null, r:null}); });
+    fillSuggestions(ex); return ex;
+  })};
+  save(); ui.histSheet = null; ui.screen = 'ov'; ui.confirm = null; window.scrollTo(0, 0); askWake(); render();
+}
+function m6Activate(id){ S.settings.activeProg = id; S.settings.cycleStart = S.settings.cycleStart || {}; if(!S.settings.cycleStart[id]) S.settings.cycleStart[id] = Date.now(); }
 function m6Open(pid, wid){ ui.otherSheet = null; ui.screen = 'prog'; ui.pvP = pid; ui.pvW = wid; ui.edProg = null; ui.edWk = null; ui.confirm = null; window.scrollTo(0, 0); }
 document.addEventListener('click', function(ev){
   var el = ev.target.closest && ev.target.closest('[data-a]'); if(!el) return;
@@ -6303,6 +6341,13 @@ document.addEventListener('click', function(ev){
   var stop = function(){ ev.stopPropagation(); ev.preventDefault(); render(); };
   switch(a){
     case 'm6other': ui.otherSheet = true; return stop();
+    case 'm6hist': ui.histSheet = el.getAttribute('data-id'); return stop();
+    case 'm6redo': ev.stopPropagation(); ev.preventDefault(); var hx = S.history.filter(function(r){ return r.id === el.getAttribute('data-id'); })[0]; if(hx) m6StartHist(hx); else render(); return;
+    case 'm6actgo': ev.stopPropagation(); ev.preventDefault(); m6Activate(el.getAttribute('data-pr')); save(); ui.pvP = null; ui.pvW = null; startSession(el.getAttribute('data-p')); return;
+    case 'm6libact':
+      ev.stopPropagation(); ev.preventDefault();
+      var lq = libInstall(el.getAttribute('data-id')), wq = lq && lq.workouts[+el.getAttribute('data-i')];
+      save(); ui.pvP = null; ui.pvW = null; if(wq) startSession(wq.id); else render(); return;
     case 'm6open': m6Open(el.getAttribute('data-p'), el.getAttribute('data-id')); return stop();
     case 'm6lib': m6Open(el.getAttribute('data-id'), null); return stop();
     case 'm6go': ev.stopPropagation(); ev.preventDefault(); ui.otherSheet = null; startSession(el.getAttribute('data-p')); return;
