@@ -1354,6 +1354,13 @@ html.hud.neg .fl-pill-go b{color:var(--m3-ink);text-shadow:none}
 html.hud.neg .fl-pr-fg{stroke:var(--m3-accent);filter:none}
 html.hud.neg body .fl-pill.go{border:2px solid var(--m3-ink);box-shadow:5px 5px 0 var(--m3-ink)}
 
+/* 1.16 : toucher PRÉC. recopie la charge et les reps de la dernière fois */
+body .fl-use{min-height:38px!important;padding:0 4px!important;margin:0 -4px;border:0!important;border-radius:8px!important;background:transparent!important;text-align:left;font:inherit;font-size:12px!important;font-weight:700!important;color:var(--m3-accent)!important;text-decoration:underline dotted;text-decoration-color:color-mix(in srgb,var(--m3-accent) 55%,transparent);text-underline-offset:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+body .fl-use:active{background:color-mix(in srgb,var(--m3-accent) 12%,transparent)!important}
+body .fl-mid.fl-mid2{grid-column:3 / span 2;grid-template-columns:58px 50px}
+html.hud body .fl-use{font-family:'Space Mono',ui-monospace,Menlo,monospace}
+html.hud.neg body .fl-use{color:var(--m3-ink)!important;text-decoration-color:var(--h-fill)}
+
 /* 1.16 : la case de la série en cours reste vide (juste le contour) tant qu'elle n'est pas validée */
 html body .fl-row.next .fl-ck[data-a],html.hud body .fl-row.next .fl-ck[data-a],html.hud.neg body .fl-row.next .fl-ck[data-a],body.acc .fl-row.next .fl-ck[data-a]{background:transparent!important;color:inherit!important;box-shadow:none!important;outline:0!important;border:2px solid var(--m3-accent)!important}
 html.hud.neg body .fl-row.next .fl-ck[data-a]{border-color:var(--m3-ink)!important}
@@ -6626,16 +6633,17 @@ function flRows(e, i, open, ri){
     h += '<div class="' + cls + '">';
     h += open ? '<button class="fl-n' + (s.warm ? ' w' : '') + '" data-a="flwarm" data-j="' + j + '" aria-label="' + (s.warm ? L('Repasser en série de travail', 'Make it a working set') : L('Passer en échauffement', 'Make it a warm-up')) + '">' + lab + '</button>' : '<span class="fl-n' + (s.warm ? ' w' : '') + '" style="display:flex;align-items:center;justify-content:center;min-height:36px">' + lab + '</span>';
     var prev = lx ? fmtS(e.name, lx.w, lx.r) : '—';
+    var prevBtn = open && !s.done && lx ? '<button class="fl-prev fl-use" data-a="uselast" data-j="' + j + '" aria-label="' + L('Reprendre ', 'Reuse ') + prev + '">' + prev + '</button>' : '<span class="fl-prev">' + prev + '</span>';
     if(isNext){
       var xt = exType(e.name);
-      h += '<span class="fl-prev">' + prev + '</span>';
+      h += prevBtn;
       h += '<input class="fl-cell' + (s.w == null ? ' sug' : '') + '" id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + (s.w != null ? kg(s.w) : '') + '" placeholder="' + (s.sw != null ? kg(s.sw) : xt !== 'w' ? '0' : '—') + '" aria-label="' + wLab(e.name) + '">';
       h += '<input class="fl-cell' + (s.r == null ? ' sug' : '') + '" id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + (s.r != null ? s.r : '') + '" placeholder="' + (s.sr != null ? s.sr : '—') + '" aria-label="' + rLab(e.name) + '">';
       h += '<button class="fl-ck" data-a="validate" aria-label="' + L('Valider ', 'Log ') + flSetName(e, j) + '"></button>';
       nextStep = flStepper(e, s);
     } else {
       var vw = flVal(flW(e.name, s.w), s.done ? null : flW(e.name, s.sw)), vr = flVal(flR(e.name, s.r), s.done ? null : flR(e.name, s.sr));
-      if(open && !s.done) h += '<button class="fl-mid" data-a="sel" data-j="' + j + '" aria-label="' + L('Choisir ', 'Pick ') + flSetName(e, j) + '"><span class="fl-prev">' + prev + '</span><span class="fl-v">' + vw + '</span><span class="fl-v">' + vr + '</span></button>';
+      if(open && !s.done) h += prevBtn + '<button class="fl-mid fl-mid2" data-a="sel" data-j="' + j + '" aria-label="' + L('Choisir ', 'Pick ') + flSetName(e, j) + '"><span class="fl-v">' + vw + '</span><span class="fl-v">' + vr + '</span></button>';
       else h += '<span class="fl-prev">' + prev + '</span><span class="fl-v">' + vw + '</span><span class="fl-v">' + vr + '</span>';
       if(!open) h += '<span></span>';
       else if(s.done) h += '<button class="fl-ck" data-a="reopen" data-j="' + j + '" aria-label="' + L('Corriger ', 'Fix ') + flSetName(e, j) + '">' + FL_ICO.check + '</button>';
