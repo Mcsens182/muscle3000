@@ -131,7 +131,7 @@ button.m3s-sw.on{color:var(--m3-ink)!important}
 .m3s-seg{display:flex;background:var(--m3-tint);border-radius:12px;padding:3px;gap:3px}
 .m3s-seg button{flex:1;min-width:0;min-height:36px!important;border:0!important;border-radius:9px!important;background:transparent!important;font-size:12px!important;font-weight:700!important;color:var(--m3-muted)!important;padding:0 4px!important}
 .m3s-seg button.on{background:var(--m3-card)!important;color:var(--m3-ink)!important;box-shadow:0 1px 3px rgba(0,0,0,.08)!important}
-.m6-other{width:100%;margin-top:10px;display:flex!important;justify-content:space-between;align-items:center;background:transparent!important;color:#fff!important;border:1px solid rgba(255,255,255,.35)!important;border-radius:999px!important;padding:13px 18px!important;font-size:13px!important;font-weight:700!important;letter-spacing:.04em;min-height:0!important}
+.m6-other{width:auto;margin:12px auto 0;display:block!important;background:transparent!important;color:inherit!important;opacity:.8;border:0!important;border-radius:0!important;padding:8px 12px!important;font-size:15px!important;font-weight:600!important;letter-spacing:0;text-transform:none!important;text-decoration:underline;text-underline-offset:3px;min-height:44px!important;box-shadow:none!important}
 .m6-scroll{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:2px 2px 8px;margin:0 -2px;scrollbar-width:none}
 .m6-scroll::-webkit-scrollbar{display:none}
 .m6-card{flex:0 0 46%;max-width:200px;scroll-snap-align:start;display:flex!important;flex-direction:column;align-items:flex-start;gap:5px;text-align:left;background:var(--m3-card)!important;border:1px solid var(--m3-line)!important;border-radius:20px!important;padding:14px!important;min-height:0!important;color:var(--m3-ink)!important;box-sizing:border-box}
@@ -1175,7 +1175,7 @@ html.hud body .m4-finish{border-radius:var(--h-r)!important;border-color:var(--m
 <style id="m5-coach">
 /* onglet Coach : en relief, point quand un message attend */
 body nav.nav.m4-nav button.m5-coachtab,body nav.nav.m4-nav button.m5-coachtab.on{overflow:visible;background:transparent!important;box-shadow:none!important;color:inherit}
-.m5-coachbub{position:relative;display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:23px;background:var(--m3-accent);color:var(--m3-card);transform:translateY(-7px);box-shadow:0 4px 12px color-mix(in srgb,var(--m3-ink) 22%,transparent);transition:transform .15s}
+.m5-coachbub{position:relative;display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:23px;background:var(--m3-accent);color:var(--m3-card);transform:none;box-shadow:0 4px 12px color-mix(in srgb,var(--m3-ink) 22%,transparent);transition:transform .15s}
 html.hud .m5-coachbub{background:var(--h-fill);color:var(--h-on);border-radius:var(--h-r);box-shadow:0 0 14px var(--h-glow)}
 body nav.nav.m4-nav button.m5-coachtab svg{stroke-width:2!important}
 body nav.nav.m4-nav button.m5-coachtab.on .m5-coachbub{outline:2px solid var(--m3-accent);outline-offset:3px}
@@ -1458,6 +1458,9 @@ function progById(id){ return S.programs.filter(function(p){ return p.id === id;
 function activeProg(){ var a = progById(S.settings.activeProg); return (a && !a.free ? a : null) || realProgs()[0] || null; }
 function workouts(){ var p = activeProg(); return p ? p.workouts : []; }
 function allEx(fn){ S.programs.forEach(function(p){ p.workouts.forEach(function(w){ w.ex.forEach(fn); }); }); }
+/* nom du programme d'une séance (faite ou à faire), vide pour les séances libres */
+function progLabel(x){ if(!x) return ''; if(x.pname) return x.pname; var pp = x.pid ? wkProg(x.pid) : (x.id ? wkProg(x.id) : null); return pp && !pp.free ? trText(pp.name) : ''; }
+function progPrefix(x){ var n = progLabel(x); return n ? esc(n) + ' · ' : ''; }
 function wkProg(id){ for(var i=0;i<S.programs.length;i++) for(var j=0;j<S.programs[i].workouts.length;j++) if(S.programs[i].workouts[j].id === id) return S.programs[i]; return null; }
 function shortName(n){ n = String(n || ''); return n.replace(/^Upper /i, 'UP ').slice(0, 6); }
 function rangesTxt(e){ return e.r.map(function(r){ return r[0] + (r[1] !== r[0] ? '-' + r[1] : '') + (r[2] ? ' (' + r[2] + ')' : ''); }).join(', '); }
@@ -1828,7 +1831,7 @@ function finish(endAt){
   ui.saveAs = false; ui.saveDest = null;
   var a = S.active, prevBest = {};
   a.exercises.forEach(function(e){ prevBest[e.name] = bestFor(e.name).e; });
-  var rec = {id:'s' + Date.now(), date:a.start, pid:a.pid, name:a.name, dur:Math.round(((endAt || Date.now()) - a.start)/1000),
+  var rec = {id:'s' + Date.now(), date:a.start, pid:a.pid, pname:progLabel({pid:a.pid}) || undefined, name:a.name, dur:Math.round(((endAt || Date.now()) - a.start)/1000),
     exercises:a.exercises.map(function(e){
       return {name:e.name, note:(e.note || '').trim(), sets:e.sets.filter(function(s){ return s.done; }).map(function(s){ return {w:s.w, r:s.r, warm:s.warm, special:s.special, lo:s.lo, hi:s.hi, rest:s.restTaken || null}; })};
     }).filter(function(e){ return e.sets.length; })};
@@ -4596,7 +4599,7 @@ function m3kWeekStrip(){
 function m3kRecent(){
   return S.history.slice(-3).reverse().map(function(x){
     var v=sessVol(x), prs=(x.prs||[]).length;
-    return '<button class="m3-journal-row" data-a="hist" data-id="'+esc(x.id)+'"><span><b>'+esc(trText(x.name))+'</b><small>'+fmtDate(x.date)+' · '+mmss(x.dur)+'</small></span><span><b>'+fmtT(v)+'</b><small>'+(prs?prs+' record'+(prs>1?'s':''):'')+'</small></span></button>';
+    return '<button class="m3-journal-row" data-a="hist" data-id="'+esc(x.id)+'"><span><b>'+esc(trText(x.name))+'</b><small>'+progPrefix(x)+fmtDate(x.date)+' · '+mmss(x.dur)+'</small></span><span><b>'+fmtT(v)+'</b><small>'+(prs?prs+' record'+(prs>1?'s':''):'')+'</small></span></button>';
   }).join('');
 }
 function vHome(){
@@ -4606,12 +4609,12 @@ function vHome(){
   h+='<section class="m3-next">';
   if(S.active){
     var done=0,tot=0; S.active.exercises.forEach(function(e){e.sets.forEach(function(s){tot++;if(s.done)done++;});});
-    h+='<div class="m3-kicker">'+L('SÉANCE EN COURS','SESSION IN PROGRESS')+'</div><div class="m3-title">'+esc(trText(S.active.name))+'</div><div class="m3-meta">'+done+' / '+tot+L(' séries · ',' sets · ')+mmss((Date.now()-S.active.start)/1000)+'</div><button class="m3-primary" data-a="goex">'+L('REPRENDRE LA SÉANCE','RESUME SESSION')+' <span>→</span></button>';
+    h+='<div class="m3-kicker">'+L('SÉANCE EN COURS','SESSION IN PROGRESS')+(progLabel(S.active)?' · '+esc(progLabel(S.active).toUpperCase()):'')+'</div><div class="m3-title">'+esc(trText(S.active.name))+'</div><div class="m3-meta">'+done+' / '+tot+L(' séries · ',' sets · ')+mmss((Date.now()-S.active.start)/1000)+'</div><button class="m3-primary" data-a="goex">'+L('REPRENDRE LA SÉANCE','RESUME SESSION')+' <span>→</span></button>';
   } else if(next){
     var sets=next.ex.reduce(function(n,e){return n+e.s.filter(function(s){return !s.warm;}).length;},0);
-    h+='<div class="m3-kicker">'+L('PROCHAINE SÉANCE','NEXT SESSION')+'</div><div class="m3-title">'+esc(trText(next.name))+'</div><div class="m3-meta">'+next.ex.length+L(' exercices · ',' exercises · ')+sets+L(' séries · ~',' sets · ~')+Math.round(estDur(next)/60)+' min</div><div class="m3-ex-list">'+next.ex.map(function(e,i){return '<button data-a="fiche" data-n="'+esc(e.name)+'" aria-label="'+esc(L('Fiche ','Info: ')+exDisp(e.name))+'"><i>'+('0'+(i+1)).slice(-2)+'</i><span>'+esc(exDisp(e.name))+'</span><em>›</em></button>';}).join('')+'</div><button class="m3-primary" data-a="start" data-p="'+esc(next.id)+'">'+L('COMMENCER','START')+' <span>→</span></button>';
+    h+='<div class="m3-kicker">'+L('PROCHAINE SÉANCE','NEXT SESSION')+(progLabel({pid:next.id})?' · '+esc(progLabel({pid:next.id}).toUpperCase()):'')+'</div><div class="m3-title">'+esc(trText(next.name))+'</div><div class="m3-meta">'+next.ex.length+L(' exercices · ',' exercises · ')+sets+L(' séries · ~',' sets · ~')+Math.round(estDur(next)/60)+' min</div><div class="m3-ex-list">'+next.ex.map(function(e,i){return '<button data-a="fiche" data-n="'+esc(e.name)+'" aria-label="'+esc(L('Fiche ','Info: ')+exDisp(e.name))+'"><i>'+('0'+(i+1)).slice(-2)+'</i><span>'+esc(exDisp(e.name))+'</span><em>›</em></button>';}).join('')+'</div><button class="m3-primary" data-a="start" data-p="'+esc(next.id)+'">'+L('COMMENCER','START')+' <span>→</span></button>';
   } else h+='<div class="m3-kicker">'+L('TON PROGRAMME EST VIDE','YOUR PROGRAM IS EMPTY')+'</div><div class="m3-title">'+L('Construis ta première séance.','Build your first session.')+'</div><button class="m3-primary" data-a="scr" data-s="prog">'+L('CRÉER UNE SÉANCE','CREATE A SESSION')+' <span>→</span></button>';
-  if(!S.active) h+='<button class="m6-other" data-a="m6other">'+L('Faire une autre séance','Do another session')+' <span>→</span></button>';
+  if(!S.active) h+='<button class="m6-other" data-a="m6other">'+L('Autre séance','Another session')+'</button>';
   h+='</section>'+m6Recent()+m4FreeBlock();
   h+='<section class="m3-week"><div class="m3-section-head"><span>'+L('CETTE SEMAINE','THIS WEEK')+'</span><b>'+st.thisN+' / '+st.planned+'</b></div><div class="m3-days">'+m3kWeekStrip()+'</div></section>';
   h+=m3wSection(st);
@@ -4672,7 +4675,7 @@ function vHist(){
   var names={}; S.history.forEach(function(s){s.exercises.forEach(function(e){names[e.name]=1;});});
   h+='<section class="m3-stats-strip"><div><b>'+S.history.length+'</b><small>'+L('SÉANCES','SESSIONS')+'</small></div><div><b>'+fmtT(S.history.reduce(function(a,x){return a+sessVol(x);},0))+'</b><small>VOLUME</small></div><div><b>'+S.history.reduce(function(a,x){return a+(x.prs||[]).length;},0)+'</b><small>RECORDS</small></div></section>';
   h+='<section class="m3-block"><div class="m3-section-head"><span>'+L('TES SÉANCES','YOUR SESSIONS')+'</span></div>';
-  S.history.slice().reverse().forEach(function(s){var open=ui.openHist===s.id; h+='<div class="m3-history-card"><button data-a="hist" data-id="'+esc(s.id)+'"><span><b>'+esc(trText(s.name))+'</b><small>'+fmtDate(s.date)+' · '+mmss(s.dur)+'</small></span><strong>'+fmtT(sessVol(s))+'</strong></button>';
+  S.history.slice().reverse().forEach(function(s){var open=ui.openHist===s.id; h+='<div class="m3-history-card"><button data-a="hist" data-id="'+esc(s.id)+'"><span><b>'+esc(trText(s.name))+'</b><small>'+progPrefix(s)+fmtDate(s.date)+' · '+mmss(s.dur)+'</small></span><strong>'+fmtT(sessVol(s))+'</strong></button>';
     if(open){s.exercises.forEach(function(e){h+='<div class="m3-history-ex"><span>'+esc(exDisp(e.name))+'</span><b>'+e.sets.filter(function(x){return !x.warm;}).map(function(x){return fmtS(e.name,x.w,x.r);}).join(' · ')+'</b></div>';});}
     h+='</div>';});
   h+='</section>'+m3RecSection(); return h+nav('hist');
@@ -6018,7 +6021,7 @@ function pastCreate(){
   if(dayKey(ts) === dayKey(Date.now()) && ts > Date.now()) ts = Date.now() - 3600e3;
   var w = wid ? prog(wid) : null, before = S.history.filter(function(h){ return h.date < ts; });
   var lastOf = function(name){ for(var i = before.length - 1; i >= 0; i--){ var e = before[i].exercises.filter(function(x){ return x.name === name; })[0]; if(e) return e.sets.filter(function(s){ return !s.warm; }); } return []; };
-  var rec = {id:'s' + Date.now(), date:ts, pid:w ? w.id : null, name:w ? w.name : L('Séance', 'Session'), dur:w ? estDur(w) : 3600, added:true, prs:[], exercises:[]};
+  var rec = {id:'s' + Date.now(), date:ts, pid:w ? w.id : null, pname:(w && progLabel({pid:w.id})) || undefined, name:w ? w.name : L('Séance', 'Session'), dur:w ? estDur(w) : 3600, added:true, prs:[], exercises:[]};
   if(w) w.ex.forEach(function(e){
     var prev = lastOf(e.name), k = 0;
     rec.exercises.push({name:e.name, note:'', sets:e.s.filter(function(t){ return !t.warm; }).map(function(t){ var p = prev[k++]; return {w:p ? p.w : null, r:p ? p.r : t.lo, warm:false, special:t.sp || null, lo:t.lo, hi:t.hi, rest:null}; })});
@@ -6273,7 +6276,7 @@ function m6Recent(){
   var h = '<section class="m3-block m6-recent"><div class="m3-section-head"><span>' + L('DERNIÈRES SÉANCES', 'RECENT SESSIONS') + '</span></div><div class="m6-scroll">';
   out.forEach(function(x){
     var w = x.pid ? prog(x.pid) : null, pp = x.pid ? wkProg(x.pid) : null, v = sessVol(x);
-    var tag = pp && !pp.free ? trText(pp.name) : '';
+    var tag = progLabel(x);
     var attrs = w && pp ? ' data-a="m6open" data-p="' + esc(pp.id) + '" data-id="' + esc(w.id) + '"' : ' data-a="m6hist" data-id="' + esc(x.id) + '"';
     h += '<button class="m6-card"' + attrs + '><small>' + m6Ago(x.date) + '</small><b>' + esc(m6Title(x)) + '</b>' + (tag ? '<em>' + esc(tag) + '</em>' : '') + '<span>' + x.exercises.length + L(' exos · ', ' ex. · ') + fmtT(v) + '</span>' + (!S.active ? '<i>' + L('Voir', 'View') + ' →</i>' : '') + '</button>';
   });
