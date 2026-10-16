@@ -1196,6 +1196,9 @@ html.hud .m5-coachbub{background:var(--h-fill);color:var(--h-on);border-radius:v
 body nav.nav.m4-nav button.m5-coachtab svg{stroke-width:2!important}
 body nav.nav.m4-nav button.m5-coachtab.on .m5-coachbub{outline:2px solid var(--m3-accent);outline-offset:3px}
 html.hud body nav.nav.m4-nav button.m5-coachtab.on .m5-coachbub{outline-color:var(--h-fill)}
+/* HUD clair : pas de cadre rectangulaire autour de l'onglet Coach, le contour suit la bulle */
+html.hud.neg body nav.nav.m4-nav button.m5-coachtab.on{outline:0!important}
+html.hud.neg body nav.nav.m4-nav button.m5-coachtab.on .m5-coachbub{outline:1.5px solid var(--m3-ink)!important;outline-offset:3px}
 .m5-dot{position:absolute;top:-2px;right:-2px;width:12px;height:12px;border-radius:6px;background:#E2551B;border:2px solid var(--m3-card)}
 /* Programme : sous-onglets */
 .m5-phead{padding-bottom:14px!important}
