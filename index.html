@@ -216,7 +216,7 @@ button.m3w:active{transform:scale(.97)}
 /* sheets open above the bottom navigation, so their last buttons stay reachable */
 .sheet{z-index:40!important}
 /* bottom navigation: a floating pill, detached from the screen edges (Instagram-like) */
-body nav.nav{bottom:max(6px,calc(env(safe-area-inset-bottom,0px) - 22px))!important;left:50%!important;right:auto!important;transform:translateX(-50%) translateY(var(--navy,0px))!important;opacity:var(--navo,1)!important;transition:opacity .18s linear,transform .18s ease-out!important;will-change:opacity,transform;width:min(420px,calc(100vw - 32px))!important;margin:0!important;padding:5px!important;gap:2px!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;border:1px solid color-mix(in srgb,var(--m3-line) 80%,transparent)!important;border-radius:999px!important;background:color-mix(in srgb,var(--m3-card) 80%,transparent)!important;-webkit-backdrop-filter:saturate(180%) blur(20px)!important;backdrop-filter:saturate(180%) blur(20px)!important;box-shadow:0 12px 32px rgba(0,0,0,.13),0 2px 8px rgba(0,0,0,.06)!important;box-sizing:border-box!important}
+body nav.nav{bottom:max(6px,calc(env(safe-area-inset-bottom,0px) - 22px))!important;left:50%!important;right:auto!important;transform:translateX(-50%) translateY(var(--navy,0px))!important;opacity:var(--navo,1)!important;transition:opacity .18s linear,transform .18s ease-out!important;will-change:opacity,transform;width:min(380px,calc(100vw - 56px))!important;margin:0!important;padding:5px!important;gap:2px!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;border:1px solid color-mix(in srgb,var(--m3-line) 80%,transparent)!important;border-radius:999px!important;background:color-mix(in srgb,var(--m3-card) 80%,transparent)!important;-webkit-backdrop-filter:saturate(180%) blur(20px)!important;backdrop-filter:saturate(180%) blur(20px)!important;box-shadow:0 12px 32px rgba(0,0,0,.13),0 2px 8px rgba(0,0,0,.06)!important;box-sizing:border-box!important}
 body nav.nav button{min-height:46px!important;border:0!important;border-radius:999px!important;font-size:8px!important;letter-spacing:.04em!important;padding:0 2px!important;transition:background .2s,color .2s}
 body nav.nav button.on{background:var(--m3-ink)!important;color:var(--m3-card,#fff)!important}
 body nav.nav .badge{position:relative;top:-1px}
@@ -6213,8 +6213,22 @@ document.addEventListener('change', function(ev){
 
 function vAddPast(){
   var o = ui.addPast, opts = '';
-  S.programs.forEach(function(p){ if(p.demo) return; p.workouts.forEach(function(w){ opts += '<option value="' + w.id + '"' + (o.wid === w.id ? ' selected' : '') + '>' + esc(trText(w.name)) + ' · ' + esc(p.free ? L('Séances libres', 'Free sessions') : trText(p.name)) + '</option>'; }); });
-  opts += '<option value=""' + (!o.wid ? ' selected' : '') + '>' + L('Séance vide (j\'ajoute les exercices)', 'Empty session (I add the exercises)') + '</option>';
+  /* toutes les séances : programme actif d'abord, puis les autres programmes, les séances libres et la bibliothèque */
+  var ap = activeProg(), progs = realProgs().filter(function(p){ return !p.demo; });
+  progs.sort(function(a, b){ return (ap && b.id === ap.id) - (ap && a.id === ap.id); });
+  var opt = function(v, t){ return '<option value="' + esc(v) + '"' + (o.wid === v ? ' selected' : '') + '>' + esc(t) + '</option>'; };
+  progs.concat([freeProg()]).forEach(function(p){
+    var ws = p.workouts.filter(function(w){ return w.ex.length; }); if(!ws.length) return;
+    opts += '<optgroup label="' + esc(p.free ? L('Séances libres', 'Free sessions') : trText(p.name) + (ap && ap.id === p.id ? L(' · actif', ' · active') : '')) + '">';
+    ws.forEach(function(w){ opts += opt(w.id, trText(w.name)); });
+    opts += '</optgroup>';
+  });
+  PROGLIB.filter(function(lp){ return !m4Installed(lp.id); }).forEach(function(lp){
+    opts += '<optgroup label="' + esc(trText(lp.name) + L(' · bibliothèque', ' · library')) + '">';
+    libWorkouts(lp).forEach(function(w, i){ opts += opt('lib:' + lp.id + ':' + i, trText(w.name)); });
+    opts += '</optgroup>';
+  });
+  opts += '<optgroup label="' + L('Autre', 'Other') + '">' + opt('', L('Séance vide (j\'ajoute les exercices)', 'Empty session (I add the exercises)')) + '</optgroup>';
   var t = new Date(), tv = t.getFullYear() + '-' + pad2(t.getMonth() + 1) + '-' + pad2(t.getDate());
   var h = '<div class="pane m3-addpast" role="dialog" aria-label="' + L('Ajouter une séance oubliée', 'Add a missed session') + '"><div class="m3f-grab"></div>';
   h += '<div class="m3pad-top"><span class="m3-eyebrow">' + L('JOURNAL', 'LOG') + '</span><button class="m3f-x" data-a="closesheet" aria-label="' + L('Fermer', 'Close') + '">✕</button></div>';
@@ -6229,9 +6243,15 @@ function pastCreate(){
   var ts = new Date(+m[1], +m[2] - 1, +m[3], 18, 0).getTime();
   if(dayKey(ts) > dayKey(Date.now())){ toast(L('Une séance ne peut pas être dans le futur', 'A session can\'t be in the future')); return false; }
   if(dayKey(ts) === dayKey(Date.now()) && ts > Date.now()) ts = Date.now() - 3600e3;
-  var w = wid ? prog(wid) : null, before = S.history.filter(function(h){ return h.date < ts; });
+  var lm = /^lib:(.+):(\d+)$/.exec(wid), lpw = lm && libById(lm[1]), w = null, pname;
+  if(lpw){
+    /* séance de la bibliothèque : on la prend telle quelle, sans installer ni activer le programme */
+    var lw = libWorkouts(lpw)[+lm[2]];
+    if(lw){ w = {id:null, name:lw.name, ex:JSON.parse(JSON.stringify(lw.ex)).map(function(e){ var x = {name:e.name, r:e.r, rest:e.rest, cue:e.cue || ''}; if(e.v) x.v = e.v; normEx(x); return x; })}; pname = trText(lpw.name); }
+  } else if(wid){ w = prog(wid); pname = w ? progLabel({pid:w.id}) : ''; }
+  var before = S.history.filter(function(h){ return h.date < ts; });
   var lastOf = function(name){ for(var i = before.length - 1; i >= 0; i--){ var e = before[i].exercises.filter(function(x){ return x.name === name; })[0]; if(e) return e.sets.filter(function(s){ return !s.warm; }); } return []; };
-  var rec = {id:'s' + Date.now(), date:ts, pid:w ? w.id : null, pname:(w && progLabel({pid:w.id})) || undefined, name:w ? w.name : L('Séance', 'Session'), dur:w ? estDur(w) : 3600, added:true, prs:[], exercises:[]};
+  var rec = {id:'s' + Date.now(), date:ts, pid:w ? w.id : null, pname:pname || undefined, name:w ? w.name : L('Séance', 'Session'), dur:w ? estDur(w.id ? w : {id:'-', ex:w.ex}) : 3600, added:true, prs:[], exercises:[]};
   if(w) w.ex.forEach(function(e){
     var prev = lastOf(e.name), k = 0;
     rec.exercises.push({name:e.name, note:'', sets:e.s.filter(function(t){ return !t.warm; }).map(function(t){ var p = prev[k++]; return {w:p ? p.w : null, r:p ? p.r : t.lo, warm:false, special:t.sp || null, lo:t.lo, hi:t.hi, rest:null}; })});
