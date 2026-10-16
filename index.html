@@ -6611,7 +6611,7 @@ function flStepper(e, s){
   var wv = s.w != null ? s.w : s.sw, wsug = s.w == null;
   var wtxt = wv != null ? (xt === 'w' ? kg(wv) : (wv ? '+' + kg(wv) : '0')) : (xt === 'w' ? '—' : '0');
   h += '<div class="fl-st"><button class="fl-pm" data-a="w" data-d="-1" aria-label="' + L('Moins ', 'Minus ') + st + ' kg">−</button>';
-  h += '<button class="fl-sv" data-pad="w" aria-label="' + L('Taper la charge', 'Type the weight') + '"><small>' + (xt === 'w' ? L('CHARGE', 'WEIGHT') : L('LEST', 'EXTRA')) + ' · ± ' + st + ' KG</small><b id="in-w2" class="' + (wsug ? 'sug' : '') + '">' + wtxt + (wv != null || xt !== 'w' ? '<i>kg</i>' : '') + '</b><em>' + L('toucher pour taper', 'tap to type') + '</em></button>';
+  h += '<button class="fl-sv" data-pad="w" aria-label="' + L('Taper la charge', 'Type the weight') + '"><small>' + (xt === 'w' ? L('CHARGE', 'WEIGHT') : L('LEST', 'EXTRA')) + ' · ± ' + st + ' KG</small><b id="in-w2" class="' + (wsug ? 'sug' : '') + '">' + wtxt + (wv != null || xt !== 'w' ? '<i>kg</i>' : '') + '</b></button>';
   h += '<button class="fl-pm up" data-a="w" data-d="1" aria-label="' + L('Plus ', 'Plus ') + st + ' kg">+</button></div>';
   var rv = s.r != null ? s.r : s.sr, tm = xt === 'time';
   h += '<div class="fl-st r"><button class="fl-pm" data-a="r" data-d="-1" aria-label="' + (tm ? L('5 secondes de moins', '5 seconds less') : L('Une rep de moins', 'One rep less')) + '">−</button>';
