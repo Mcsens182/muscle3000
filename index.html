@@ -1493,6 +1493,25 @@ html.club body .field,html.club body input,html.club body textarea,html.club bod
 html.club body .sheet .pane{background:var(--m3-bg)!important;border-top:6px solid var(--c-mus)!important}
 html.club body .toast{background:var(--c-brown)!important;color:var(--c-cream)!important;box-shadow:0 0 0 3px var(--c-mus)!important}
 </style>
+<style id="m3k-dark">
+/* ===== fond noir pour Édito et Club 78 (classe dark sur <html>, réglée en touchant deux fois le coloris) ===== */
+/* Édito : les aplats « encre » deviennent clairs, leur texte passe donc en sombre */
+html.dark:not(.club) body :is(.box.exrow.inv,.fl-pill,.fl-undo,.fx-rest-next button,.m3-avatar,.m3-program-actions .m3-primary,.m3-session-actions button:first-child,.m3-ws-save,.m3-ws-sizes button.on,.m3p-next .m3-primary,.m3s-confirm button.ok,.m4-cta.m3-primary,.m5-prem,.m6-go,.nav button.on,.onb-logo,.sheet .pane button.m3-primary,button.fx-fix-ok,button.m3he-done,button.onb-next,button.onb-pick){color:var(--m3-bg)!important}
+/* les grands blocs restent sombres : carte + filet couleur */
+html.dark:not(.club) body :is(.m3-next,.onb-reco,.m3-rest,.fx-rest){background:linear-gradient(160deg,color-mix(in srgb,var(--m3-accent) 16%,var(--m3-card)),var(--m3-card))!important;color:var(--m3-ink)!important;border:1px solid color-mix(in srgb,var(--m3-accent) 40%,var(--m3-line))!important;box-shadow:none!important}
+html.dark:not(.club) body :is(.m3-next,.onb-reco) .m3-primary,html.dark:not(.club) body .onb-reco button.onb-pick{background:var(--m3-accent)!important;color:var(--m3-bg)!important}
+html.dark:not(.club) body .m3-next :is(.m3-kicker,.m3-meta){color:var(--m3-muted)!important;opacity:1!important}
+html.dark:not(.club) body .m3-next .m3-title{color:var(--m3-ink)!important}
+html.dark:not(.club) body .m3-ex-list,html.dark:not(.club) body .m3-ex-list :is(span,button){border-color:var(--m3-line)!important;color:var(--m3-ink)!important}
+html.dark:not(.club) body .m3-ex-list i{color:var(--m3-accent)!important}
+html.dark:not(.club) body .m3-rest button{border-color:var(--m3-line)!important;color:var(--m3-ink)!important}
+html.dark:not(.club) body .m3-restbar{background:var(--m3-line)!important}
+html.dark:not(.club) body .box.inv .chip{background:var(--m3-tint)!important;border-color:var(--m3-line)!important;color:var(--m3-ink)!important}
+html.dark body .m3-day{background:var(--m3-card)}
+html.dark body .nav{background:color-mix(in srgb,var(--m3-card) 92%,transparent)!important;border-color:var(--m3-line)!important;box-shadow:0 10px 30px rgba(0,0,0,.45)!important}
+html.dark body :is(.m3-next,.box,.m3-session-card,.m3w,.m3-history-card){box-shadow:none}
+html.dark body .sheet .pane{background:var(--m3-bg)!important}
+</style>
 
 <div id="app"></div>
 <div id="sheet"></div>
@@ -4787,7 +4806,6 @@ function vHome(){
   } else h+='<div class="m3-kicker">'+L('TON PROGRAMME EST VIDE','YOUR PROGRAM IS EMPTY')+'</div><div class="m3-title">'+L('Construis ta première séance.','Build your first session.')+'</div><button class="m3-primary" data-a="scr" data-s="prog">'+L('CRÉER UNE SÉANCE','CREATE A SESSION')+' <span>→</span></button>';
   if(!S.active) h+='<button class="m6-other" data-a="m6other">'+L('Autre séance','Another session')+'</button>';
   h+='</section>'+m6Recent()+m4FreeBlock();
-  h+='<section class="m3-week"><div class="m3-section-head"><span>'+L('CETTE SEMAINE','THIS WEEK')+'</span><b>'+st.thisN+' / '+st.planned+'</b></div><div class="m3-days">'+m3kWeekStrip()+'</div></section>';
   h+=m3wSection(st);
   h+='<section class="m3-block"><div class="m3-section-head"><span>'+L('JOURNAL','LOG')+'</span><button data-a="scr" data-s="hist">'+L('VOIR TOUT','SEE ALL')+' →</button></div>'+(m3kRecent()||'<div class="m3-empty">'+L('Ta première séance apparaîtra ici.','Your first session will show up here.')+'</div>')+'</section>';
   var prs=[]; for(var i=S.history.length-1;i>=0&&prs.length<3;i--)(S.history[i].prs||[]).forEach(function(n){if(prs.length<3&&prs.indexOf(n)<0)prs.push(n);});
@@ -4879,19 +4897,24 @@ function vProg(){
 function L(fr, en){ return isEN() ? en : fr; }
 EN['PROFIL'] = 'PROFILE'; EN['JOURNAL'] = 'LOG';
 var M3_THEMES = {
-  foret:{fr:'Forêt', en:'Forest', bg:'#F5F2EA', ink:'#173127', muted:'#718078', line:'#DDE2DB', card:'#FFFDF9', accent:'#1E654A', hud:{fr:'Acide', en:'Acid', accent:'#C8FF3D', deep:'#4F6B00'}, club:{fr:'Avocat', en:'Avocado', accent:'#5E6B22'}},
-  ocean:{fr:'Océan', en:'Ocean', bg:'#F2F4F6', ink:'#172536', muted:'#6B7887', line:'#DCE2E8', card:'#FFFFFF', accent:'#2B5C8A', hud:{fr:'Cyan', en:'Cyan', accent:'#33E1FF', deep:'#00738F'}, club:{fr:'Pétrole', en:'Petrol', accent:'#1F5E66'}},
-  terre:{fr:'Terre', en:'Clay', bg:'#F7F1EB', ink:'#35221A', muted:'#85726A', line:'#E6DCD3', card:'#FFFCF9', accent:'#B0532C', hud:{fr:'Braise', en:'Blaze', accent:'#FF7B2E', deep:'#B43C08'}, club:{fr:'Orange', en:'Orange', accent:'#B83D17'}},
-  prune:{fr:'Prune', en:'Plum', bg:'#F5F1F4', ink:'#2C1C2B', muted:'#7E6F7C', line:'#E3DAE1', card:'#FFFCFE', accent:'#7A3B6E', hud:{fr:'Néon', en:'Neon', accent:'#FF4FD8', deep:'#A3138A'}, club:{fr:'Bordeaux', en:'Burgundy', accent:'#8A2B3B'}}
+  foret:{fr:'Forêt', en:'Forest', bg:'#F5F2EA', ink:'#173127', muted:'#718078', line:'#DDE2DB', card:'#FFFDF9', accent:'#1E654A', hud:{fr:'Acide', en:'Acid', accent:'#C8FF3D', deep:'#4F6B00'}, club:{fr:'Avocat', en:'Avocado', accent:'#5E6B22', night:'#B9C75C'}, night:{bg:'#0F1613', card:'#16201B', line:'#26332C', ink:'#E9EFEA', muted:'#8C9A92', accent:'#5FC596'}},
+  ocean:{fr:'Océan', en:'Ocean', bg:'#F2F4F6', ink:'#172536', muted:'#6B7887', line:'#DCE2E8', card:'#FFFFFF', accent:'#2B5C8A', hud:{fr:'Cyan', en:'Cyan', accent:'#33E1FF', deep:'#00738F'}, club:{fr:'Pétrole', en:'Petrol', accent:'#1F5E66', night:'#62B7C1'}, night:{bg:'#0E1319', card:'#151C24', line:'#252F3B', ink:'#E8EDF2', muted:'#8996A4', accent:'#7DB4E6'}},
+  terre:{fr:'Terre', en:'Clay', bg:'#F7F1EB', ink:'#35221A', muted:'#85726A', line:'#E6DCD3', card:'#FFFCF9', accent:'#B0532C', hud:{fr:'Braise', en:'Blaze', accent:'#FF7B2E', deep:'#B43C08'}, club:{fr:'Orange', en:'Orange', accent:'#B83D17', night:'#F0804C'}, night:{bg:'#16100D', card:'#211814', line:'#36281F', ink:'#F2EAE4', muted:'#A08D82', accent:'#E88A5C'}},
+  prune:{fr:'Prune', en:'Plum', bg:'#F5F1F4', ink:'#2C1C2B', muted:'#7E6F7C', line:'#E3DAE1', card:'#FFFCFE', accent:'#7A3B6E', hud:{fr:'Néon', en:'Neon', accent:'#FF4FD8', deep:'#A3138A'}, club:{fr:'Bordeaux', en:'Burgundy', accent:'#8A2B3B', night:'#E07D8E'}, night:{bg:'#150F15', card:'#1F171F', line:'#352734', ink:'#F1E9F0', muted:'#9D8C9A', accent:'#D88BC8'}}
 };
 /* trois styles pour la même appli : Édito (clair, éditorial), HUD (fond noir, néon) et Club 78 (salle de sport des années 70).
    Chaque coloris a sa version néon et sa version Club 78. */
 function m3Neg(){ return S.settings.m3skin === 'hud' && S.settings.m3hudbg === 'light'; }
+/* fond noir ou blanc, réglé séparément pour chaque style. HUD : noir par défaut. Édito et Club 78 : blanc par défaut. */
+function m3BgKey(){ var k = m3Skin(); return k === 'hud' ? 'm3hudbg' : k === 'club' ? 'm3clubbg' : 'm3editobg'; }
+function m3Dark(){ return m3Skin() === 'hud' ? S.settings.m3hudbg !== 'light' : S.settings[m3BgKey()] === 'dark'; }
+function m3ToggleBg(){ var key = m3BgKey(), d = m3Dark(); S.settings[key] = d ? 'light' : 'dark'; return !d; }
 function m3Skin(){ var k = S.settings.m3skin; return k === 'hud' || k === 'club' ? k : 'edito'; }
 function m3Pal(k){
   var t = M3_THEMES[k];
-  if(m3Skin() === 'club') return {fr:t.club.fr, en:t.club.en, bg:'#F3E4C5', ink:'#3A2216', muted:'#765A44', line:'#DCC79F', card:'#FFF6E3', accent:t.club.accent};
-  if(m3Skin() !== 'hud') return t;
+  if(m3Skin() === 'club') return m3Dark() ? {fr:t.club.fr, en:t.club.en, bg:'#1E130C', ink:'#F3E4C5', muted:'#B39A7C', line:'#4A3323', card:'#2B1C12', accent:t.club.night}
+    : {fr:t.club.fr, en:t.club.en, bg:'#F3E4C5', ink:'#3A2216', muted:'#765A44', line:'#DCC79F', card:'#FFF6E3', accent:t.club.accent};
+  if(m3Skin() !== 'hud') return m3Dark() ? {fr:t.fr, en:t.en, bg:t.night.bg, ink:t.night.ink, muted:t.night.muted, line:t.night.line, card:t.night.card, accent:t.night.accent} : t;
   if(m3Neg()) return {fr:t.hud.fr, en:t.hud.en, bg:'#FFFFFF', ink:'#0A0C0B', muted:'#5E6862', card:'#FFFFFF', accent:t.hud.deep, fill:t.hud.accent,
     line:'color-mix(in srgb,' + t.hud.deep + ' 30%,#FFFFFF)'};
   return {fr:t.hud.fr, en:t.hud.en, bg:'#070908', ink:'#E8F0EA', muted:'#7D8A83', card:'#0D1210', accent:t.hud.accent, fill:t.hud.accent,
@@ -4904,19 +4927,22 @@ function applyTheme(){
   document.documentElement.classList.toggle('hud', hud);
   document.documentElement.classList.toggle('club', m3Skin() === 'club');
   document.documentElement.classList.toggle('neg', hud && m3Neg());
+  document.documentElement.classList.toggle('dark', !hud && m3Dark());
   if(hud) r.setProperty('--h-fill', t.fill, 'important'); else r.removeProperty('--h-fill');
   var set = function(k, v){ r.setProperty(k, v, 'important'); };
   set('--m3-bg', t.bg); set('--ground', t.bg); set('--m3-ink', t.ink); set('--ink', t.ink); set('--m3-muted', t.muted); set('--muted', t.muted);
   set('--m3-line', t.line); set('--line', t.line); set('--track', t.line); set('--m3-card', t.card); set('--paper', t.card);
   set('--m3-accent', t.accent); set('--acc', t.accent); set('--m3-tint', tint); set('--soft', tint);
-  r.setProperty('color-scheme', hud && !m3Neg() ? 'dark' : 'light');
+  r.setProperty('color-scheme', m3Dark() ? 'dark' : 'light');
   var m = document.querySelector('meta[name="theme-color"]'); if(m) m.setAttribute('content', t.bg);
 }
 /* le sergent et le mode Lisible sont retirés : on les coupe chez ceux qui les avaient activés */
 if(S.settings.hardcore || S.settings.style === 'calm'){ S.settings.hardcore = false; S.settings.style = 'brutal'; save(); }
 document.addEventListener('click', function(ev){
   var el = ev.target.closest('[data-a="m3theme"]'); if(!el) return;
-  S.settings.m3theme = el.getAttribute('data-t'); save(); render();
+  var k = el.getAttribute('data-t');
+  if(k === m3Theme()){ var d = m3ToggleBg(); save(); render(); toast(d ? L('Fond noir', 'Black background') : L('Fond blanc', 'White background')); return; }
+  S.settings.m3theme = k; save(); render();
 });
 document.addEventListener('click', function(ev){
   var el = ev.target.closest('[data-a="m3hudbg"]'); if(!el) return;
@@ -4936,13 +4962,11 @@ function vSet(){
   h += '<header class="m3-page-head"><span class="m3-eyebrow">' + L('PROFIL', 'PROFILE') + '</span><h1>' + L('Tes', 'Your') + '<br><em>' + L('réglages.', 'settings.') + '</em></h1></header>';
   var sk = m3Skin();
   h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('STYLE', 'STYLE') + '</div><div class="m3s-seg" role="group"><button data-a="m3skin" data-v="edito" class="' + (sk === 'edito' ? 'on' : '') + '" aria-pressed="' + (sk === 'edito') + '">' + L('Édito', 'Edito') + '</button><button data-a="m3skin" data-v="hud" class="' + (sk === 'hud' ? 'on' : '') + '" aria-pressed="' + (sk === 'hud') + '">HUD</button><button data-a="m3skin" data-v="club" class="' + (sk === 'club' ? 'on' : '') + '" aria-pressed="' + (sk === 'club') + '">Club 78</button></div>';
-  if(sk === 'hud'){ var ng = m3Neg();
-    h += '<div class="m3s-seg" role="group" style="margin-top:8px"><button data-a="m3hudbg" data-v="dark" class="' + (ng ? '' : 'on') + '" aria-pressed="' + !ng + '">' + L('Fond noir', 'Black background') + '</button><button data-a="m3hudbg" data-v="light" class="' + (ng ? 'on' : '') + '" aria-pressed="' + ng + '">' + L('Fond blanc', 'White background') + '</button></div>'; }
   h += '</section>';
   h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('COLORIS', 'COLOR') + '</div><div class="m3s-swatches" role="group">' + Object.keys(M3_THEMES).map(function(k){
     var t = m3Pal(k);
     return '<button class="m3s-sw' + (k === cur ? ' on' : '') + '" data-a="m3theme" data-t="' + k + '" aria-pressed="' + (k === cur) + '"><i style="background:' + (t.fill || t.accent) + '"></i><span>' + (en ? t.en : t.fr) + '</span></button>';
-  }).join('') + '</div></section>';
+  }).join('') + '</div><p class="m3s-note m3s-bghint">' + (m3Dark() ? L('Touche à nouveau ton coloris pour passer en fond blanc.', 'Tap your color again to switch to a white background.') : L('Touche à nouveau ton coloris pour passer en fond noir.', 'Tap your color again to switch to a black background.')) + '</p></section>';
   h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('LANGUE', 'LANGUAGE') + '</div><div class="m3s-seg" role="group"><button data-a="lang" data-v="fr" class="' + (en ? '' : 'on') + '" aria-pressed="' + !en + '">Français</button><button data-a="lang" data-v="en" class="' + (en ? 'on' : '') + '" aria-pressed="' + en + '">English</button></div></section>';
   h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('PALIER DE CHARGE', 'WEIGHT STEP') + '</div><div class="m3s-seg" role="group">' + [1, 1.25, 2, 2.5, 5].map(function(v){
     return '<button data-a="inc" data-v="' + v + '" class="' + (inc() === v ? 'on' : '') + '" aria-pressed="' + (inc() === v) + '">' + kg(v) + ' kg</button>';
