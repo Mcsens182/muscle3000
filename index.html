@@ -121,7 +121,8 @@ button{color:var(--m3-ink)!important;border-color:var(--m3-line)!important;backg
 body .nav{border:1px solid var(--m3-line)!important}
 /* Profil : sections aérées, listes à filets, pas d'encadrés */
 .m3s-sec{padding:0 2px 28px}
-.m3s-lbl{font-size:10px;font-weight:800;letter-spacing:.14em;color:var(--m3-muted);margin-bottom:12px}
+.m3s-lbl{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:900;letter-spacing:.12em;color:var(--m3-ink);margin-bottom:14px}
+.m3s-lbl::before{content:'';width:14px;height:3px;border-radius:2px;background:var(--m3-accent);flex:none}
 .m3s-note{font-size:12px;line-height:1.55;color:var(--m3-muted);margin:0 0 12px}
 .m3s-swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 button.m3s-sw{display:flex!important;flex-direction:column;align-items:center;gap:9px;border:0!important;background:transparent!important;min-height:0!important;padding:4px 0!important;font-size:11px!important;font-weight:700!important;color:var(--m3-muted)!important}
@@ -1407,7 +1408,8 @@ html.club ::selection{background:var(--c-mus);color:var(--c-brown)}
 /* titres : Fraunces gras, rond et très lisible */
 html.club body .m3-hero h1,html.club body .m3-page-head h1,html.club body .m3-title,html.club body .m3-focus h2,html.club body .m3-session-card h2,html.club body .disp,html.club body .m3c-head b,html.club body .fl-head h1,html.club body .fx-rest-next b,html.club body .fl-pill-go b,html.club body .m5-chead b{font-family:'Fraunces',Georgia,serif!important;font-variation-settings:"SOFT" 100,"opsz" 72;font-weight:800!important;letter-spacing:-.02em!important}
 html.club body .m3-hero h1 em,html.club body .m3-page-head h1 em{color:var(--m3-accent)!important}
-html.club body .m3-eyebrow,html.club body .m3-kicker,html.club body .m3s-lbl,html.club body .m3-section-head span,html.club body .fl-cols,html.club body .m5-day{letter-spacing:.16em!important;font-weight:700!important}
+html.club body .m3-eyebrow,html.club body .m3-kicker,html.club body .m3-section-head span,html.club body .fl-cols,html.club body .m5-day{letter-spacing:.16em!important;font-weight:700!important}
+html.club body .m3s-lbl{letter-spacing:.14em!important;font-weight:800!important}
 html.club body .m3-band-n,html.club body .m3-pin-go strong,html.club body .m3-stats-strip b,html.club body .m3-grid strong,html.club body .m3w-m{font-family:'Fraunces',Georgia,serif!important;font-variation-settings:"SOFT" 100;font-weight:800!important}
 
 /* boutons : pilules brunes, liseré du coloris en bas */
