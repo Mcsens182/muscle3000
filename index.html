@@ -4352,6 +4352,9 @@ function render(){
   }
   document.documentElement.lang = isEN() ? 'en' : 'fr';
   app.innerHTML = trHTML(hardify(html));
+  /* retour à l'accueil après une séance (terminée ou annulée) : on repart du haut de la page */
+  if(ui.screen === 'home' && ui.lastScr && ui.lastScr !== 'home' && ['ex', 'ov', 'done'].indexOf(ui.lastScr) >= 0) window.scrollTo(0, 0);
+  ui.lastScr = ui.screen;
   var sh = document.getElementById('sheet');
   if(ui.screen === 'done') buildShare();
   sh.innerHTML = trHTML(hardify(staleOn() ? '<div class="sheet">' + vStale() + '</div>' : ui.pad ? '<div class="sheet" data-a="closesheet">' + vPad() + '</div>' : ui.addPast ? '<div class="sheet" data-a="closesheet">' + vAddPast() + '</div>' : ui.welcome ? vWelcome() : ui.storyId ? '<div class="sheet" data-a="closesheet">' + vStory(ui.storyId) + '</div>' : ui.newsDay != null ? '<div class="sheet" data-a="closesheet">' + vNewsDay(ui.newsDay) + '</div>' : ui.wSheet ? '<div class="sheet" data-a="closesheet">' + vWidgetSheet() + '</div>' : ui.otherSheet ? '<div class="sheet" data-a="closesheet">' + m6OtherSheet() + '</div>' : ui.histSheet ? '<div class="sheet" data-a="closesheet">' + m6HistSheet() + '</div>' : ui.daySheet ? '<div class="sheet" data-a="closesheet">' + vDay(ui.daySheet) + '</div>' : ui.picker ? '<div class="sheet" data-a="closesheet">' + vPicker() + '</div>' : ui.sheet ? '<div class="sheet" data-a="closesheet">' + vFiche(ui.sheet) + '</div>' : ''));
