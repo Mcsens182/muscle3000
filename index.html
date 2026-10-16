@@ -5483,7 +5483,6 @@ function m3PushRow(){
   else sub = on ? L('Un ding quand le repos se termine et que tu n\'es pas sur l\'appli.', 'A ding when rest ends and you are not in the app.') : L('Sois prévenu à la fin du repos, même sur une autre appli.', 'Get notified when rest ends, even in another app.');
   var h = '<section class="m3s-sec"><div class="m3s-lbl">' + L('NOTIFICATIONS', 'NOTIFICATIONS') + '</div><div class="m3s-list">';
   h += '<button class="m3s-row" data-a="pushtoggle" role="switch" aria-checked="' + on + '"' + (m3PushReady() ? '' : ' disabled') + '><span>' + L('Fin de repos', 'End of rest') + '<small>' + sub + '</small></span><span class="m3s-switch' + (on ? ' on' : '') + '"><i></i></span></button>';
-  if(on) h += '<button class="m3s-row" data-a="pushtest"><span>' + L('Tester', 'Test it') + '<small>' + L('Envoie une notification dans 10 s : quitte l\'appli pour la voir.', 'Sends a notification in 10 s: leave the app to see it.') + '</small></span><b>›</b></button>';
   return h + '</div></section>';
 }
 function m3B64(s){ s = s.replace(/-/g, '+').replace(/_/g, '/'); while(s.length % 4) s += '='; var b = atob(s), u = new Uint8Array(b.length); for(var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
