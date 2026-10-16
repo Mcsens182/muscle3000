@@ -2,7 +2,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#0B0B0B">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@900&family=Space+Mono:wght@400;700&family=Manrope:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@900&family=Space+Mono:wght@400;700&family=Manrope:wght@500;600;700;800&family=Fraunces:opsz,wght,SOFT@9..144,600..800,100&family=Archivo:wght@500;600;700&display=swap">
 <meta name="apple-mobile-web-app-title" content="Muscle 3000">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="description" content="Muscle 3000 — suivi des entraînements de musculation">
@@ -1390,6 +1390,106 @@ html.hud.neg .fl-step{border:2px solid var(--m3-ink)}
 html.hud.neg body .fl-pm{box-shadow:inset 0 0 0 2px var(--m3-ink)}
 html.hud.neg body .fl-pm.up{box-shadow:inset 0 0 0 2px var(--m3-ink),3px 3px 0 var(--m3-ink)}
 html.hud.neg .fl-sv b{color:var(--m3-ink);text-shadow:none}
+</style>
+<style id="m3k-club">
+/* ===== mode Club 78 : même appli que l'Édito, habillage salle de culture physique des années 70 =====
+   Activé par la classe club sur <html> (Profil › Style). Papier crème, encre brune, bandes orange-moutarde-rouille.
+   Les couleurs de base (fond, encre, carte, accent du coloris) viennent d'applyTheme() ; ici les polices,
+   les formes et les touches fixes du style. Titres en Fraunces (lisible, rondeur seventies), texte en Archivo. */
+html.club{--c-brown:#3A2216;--c-or:#E2612A;--c-mus:#F0B13B;--c-rust:#C9441B;--c-cream:#FFF6E3;--c-tan:#D9C29A;
+  --c-stripes:linear-gradient(var(--c-or) 0 33.4%,var(--c-mus) 33.4% 66.7%,var(--c-rust) 66.7%);
+  --display:'Fraunces',Georgia,serif !important;--mono:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif !important}
+html.club,html.club body{background-color:var(--m3-bg)!important}
+html.club body{background-image:linear-gradient(var(--c-or) 0 4px,var(--c-mus) 4px 8px,var(--c-rust) 8px 12px)!important;background-size:100% 12px!important;background-repeat:no-repeat!important}
+html.club body,html.club body button,html.club body input,html.club body textarea,html.club body select{font-family:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif!important}
+html.club ::selection{background:var(--c-mus);color:var(--c-brown)}
+
+/* titres : Fraunces gras, rond et très lisible */
+html.club body .m3-hero h1,html.club body .m3-page-head h1,html.club body .m3-title,html.club body .m3-focus h2,html.club body .m3-session-card h2,html.club body .disp,html.club body .m3c-head b,html.club body .fl-head h1,html.club body .fx-rest-next b,html.club body .fl-pill-go b,html.club body .m5-chead b{font-family:'Fraunces',Georgia,serif!important;font-variation-settings:"SOFT" 100,"opsz" 72;font-weight:800!important;letter-spacing:-.02em!important}
+html.club body .m3-hero h1 em,html.club body .m3-page-head h1 em{color:var(--m3-accent)!important}
+html.club body .m3-eyebrow,html.club body .m3-kicker,html.club body .m3s-lbl,html.club body .m3-section-head span,html.club body .fl-cols,html.club body .m5-day{letter-spacing:.16em!important;font-weight:700!important}
+html.club body .m3-band-n,html.club body .m3-pin-go strong,html.club body .m3-stats-strip b,html.club body .m3-grid strong,html.club body .m3w-m{font-family:'Fraunces',Georgia,serif!important;font-variation-settings:"SOFT" 100;font-weight:800!important}
+
+/* boutons : pilules brunes, liseré du coloris en bas */
+html.club body .m3-primary,html.club body .m4-cta.m3-primary,html.club body .m3-program-actions .m3-primary,html.club body .m3-session-actions button:first-child,html.club body .m3-ws-save,html.club body button.solid,html.club body .go.solid,html.club body .go[data-a=start],html.club body [data-a=askfinish],html.club body .welcome-act .go,html.club body .m3s-confirm button.ok,html.club body .sheet .pane button.m3-primary{background:var(--c-brown)!important;color:var(--c-cream)!important;border:0!important;border-radius:999px!important;box-shadow:inset 0 -5px 0 var(--m3-accent)!important}
+html.club body .m3-validate,html.club body [data-a=validate],html.club body .fl-cta button{background:var(--c-mus)!important;color:var(--c-brown)!important;border:0!important;border-radius:999px!important;box-shadow:inset 0 -6px 0 color-mix(in srgb,var(--c-or) 80%,var(--c-brown)),0 0 0 3px var(--c-brown)!important;font-weight:800!important}
+html.club body .m3-avatar{background:conic-gradient(var(--c-or) 0 33%,var(--c-mus) 0 66%,var(--c-rust) 0)!important;color:var(--c-cream)!important;border:2px solid var(--c-brown)!important;border-radius:50%!important;text-shadow:0 1px 0 var(--c-brown)}
+
+/* « prochaine séance » : un ticket perforé */
+html.club body .m3-next{position:relative;background:var(--m3-card)!important;color:var(--m3-ink)!important;border:2px solid var(--c-brown)!important;border-radius:18px!important;box-shadow:5px 5px 0 var(--c-mus)!important;overflow:visible}
+html.club body .m3-next::before,html.club body .m3-next::after{content:"";position:absolute;top:96px;width:22px;height:22px;border-radius:50%;background:var(--m3-bg);border:2px solid var(--c-brown);box-sizing:border-box}
+html.club body .m3-next::before{left:-12px;clip-path:inset(0 0 0 50%)}
+html.club body .m3-next::after{right:-12px;clip-path:inset(0 50% 0 0)}
+html.club body .m3-next .m3-kicker{color:var(--m3-muted)!important;opacity:1}
+html.club body .m3-next .m3-title{color:var(--m3-accent)!important}
+html.club body .m3-next .m3-meta{color:var(--m3-muted)!important;opacity:1}
+html.club body .m3-ex-list,html.club body .m3-ex-list button{border-color:var(--c-tan)!important;color:var(--m3-ink)!important}
+html.club body .m3-ex-list{border-top:2px dashed var(--c-brown)!important}
+html.club body .m3-ex-list i{color:var(--m3-accent)!important;font-style:normal;font-weight:800}
+html.club body .m3-next .m3-primary{background:var(--c-brown)!important;color:var(--c-cream)!important}
+html.club body .m3-next .m6-other{color:var(--m3-ink)!important}
+html.club body .box.inv,html.club body .inv{background:var(--c-brown)!important;color:var(--c-cream)!important;border-color:var(--c-brown)!important}
+
+/* blocs : cartes crème bordées de brun */
+html.club body .box,html.club body .m3-session-card,html.club body .m3w,html.club body .m3-grid>div,html.club body .m3-stats-strip>div,html.club body .exrow,html.club body .m3-history-card,html.club body .m3-record{background:var(--m3-card)!important;border:2px solid var(--c-brown)!important;border-radius:16px!important;box-shadow:none!important}
+html.club body .m3-day{border-radius:50%!important;border:2px solid var(--c-brown)!important}
+html.club body .m3-day.done,html.club body .m3w-days .done i,html.club body .m3s-badge,html.club body .badge{background:var(--c-or)!important;color:var(--c-brown)!important;border-color:var(--c-brown)!important}
+html.club body .m3-day.today{background:var(--c-brown)!important;color:var(--c-mus)!important}
+html.club body .m3-cue,html.club body .m3-cycle{background:color-mix(in srgb,var(--c-mus) 22%,var(--m3-card))!important;border-radius:14px!important}
+
+/* barres de progression : les trois bandes */
+html.club body .m3-progress,html.club body .m3-cyclebar,html.club body .m3c-bar,html.club body .m3-band-bar,html.club body .m3-pin-bar,html.club body .m3-restbar{background:color-mix(in srgb,var(--c-tan) 60%,var(--m3-bg))!important;border-radius:999px!important}
+html.club body .m3-progress i,html.club body .m3-cyclebar i,html.club body .m3c-bar i,html.club body .m3-band-bar i,html.club body .m3-pin-bar i,html.club body .m3-restbar i,html.club body .fl-sep.live .fl-tr i{background:var(--c-stripes)!important}
+
+/* séance */
+html.club body .fl-ex{background:var(--m3-card)!important;border:2px solid var(--c-tan)!important;border-radius:16px!important}
+html.club body .fl-ex.open{border-color:var(--c-brown)!important;box-shadow:4px 4px 0 var(--c-mus)!important}
+html.club body .fl-row.done{background:color-mix(in srgb,var(--c-mus) 28%,var(--m3-card))!important}
+html.club body .fl-row.next{border:2px dashed var(--c-brown)!important}
+html.club body .fl-pill{background:var(--c-brown)!important;color:var(--c-cream)!important;box-shadow:0 0 0 3px var(--c-mus),0 8px 22px rgba(58,34,22,.3)!important}
+html.club body .fl-pill.go{background:var(--c-mus)!important;color:var(--c-brown)!important}
+html.club body .fl-pill-go small{color:var(--c-tan)!important}
+html.club body .fx-rest{background-color:var(--c-brown)!important;color:var(--c-cream)!important;background-image:linear-gradient(var(--c-or) 0 6px,var(--c-mus) 6px 12px,var(--c-rust) 12px 18px)!important;background-size:100% 18px!important;background-repeat:no-repeat!important}
+html.club body .fx-rest-done i{background:var(--c-mus)!important;color:var(--c-brown)!important}
+html.club body .fx-rest-next{background:var(--c-cream)!important;color:var(--c-brown)!important;border-radius:18px!important;box-shadow:0 0 0 3px var(--c-mus)!important}
+html.club body .fx-rest-next button{background:var(--c-brown)!important;color:var(--c-mus)!important;border-radius:999px!important}
+html.club body .m3-band,html.club body .m3-pin,html.club body .m3-rest,html.club body .restbar{background:var(--c-brown)!important;color:var(--c-cream)!important;border:0!important;border-radius:999px!important}
+html.club body .m3-band button,html.club body .m3-pin button,html.club body .m3-rest button{color:var(--c-cream)!important;border-color:color-mix(in srgb,var(--c-cream) 30%,transparent)!important;background:transparent!important}
+html.club body .m3-band-n,html.club body .m3-pin-go strong{color:var(--c-mus)!important}
+html.club body .m3-band.over,html.club body .m3-pin.over{background:var(--c-mus)!important;color:var(--c-brown)!important}
+html.club body .m3-band.over .m3-band-n,html.club body .m3-pin.over .m3-pin-go strong{color:var(--c-brown)!important}
+html.club body .m4-ex{border:2px solid var(--c-tan)!important;border-radius:16px!important;background:var(--m3-card)!important}
+html.club body .m4-ovex.cur{border-color:var(--c-brown)!important;box-shadow:4px 4px 0 var(--c-mus)!important}
+html.club body .m4-finish{border:2px solid var(--c-brown)!important;color:var(--c-brown)!important;background:transparent!important}
+html.club body .m3pad-val b{font-family:'Fraunces',Georgia,serif;font-variation-settings:"SOFT" 100;font-weight:800}
+html.club body button.m3pad-ok,html.club body button.fx-fix-ok,html.club body .fl-cta button{background:var(--c-mus)!important;color:var(--c-brown)!important}
+
+/* barre du bas : brune, cerclée des bandes, onglet actif moutarde */
+html.club body nav.nav{background:var(--c-brown)!important;border:0!important;border-radius:22px!important;box-shadow:0 0 0 3px var(--c-mus),0 0 0 6px var(--c-or),0 10px 24px rgba(58,34,22,.35)!important}
+html.club body nav.nav button{background:transparent!important;color:var(--c-tan)!important;border:0!important}
+html.club body nav.nav button.on{color:var(--c-mus)!important;background:transparent!important}
+html.club body nav.nav button.on svg{stroke-width:2.4}
+html.club .m5-coachbub{background:var(--c-or)!important;color:var(--c-brown)!important;box-shadow:0 0 0 3px var(--c-brown),0 0 0 6px var(--c-mus)!important}
+html.club body nav.nav.m4-nav button.m5-coachtab.on .m5-coachbub{outline:0!important;background:var(--c-mus)!important}
+html.club .m5-dot{background:var(--c-mus)!important;border-color:var(--c-brown)!important}
+html.club body nav.nav .badge{background:var(--c-or)!important;color:var(--c-brown)!important}
+
+/* coach */
+html.club .m5-ava{background:conic-gradient(var(--c-or) 0 33%,var(--c-mus) 0 66%,var(--c-rust) 0)!important;color:var(--c-cream)!important;border:2px solid var(--c-brown);text-shadow:0 1px 0 var(--c-brown)}
+html.club .m5-chead{border-bottom:2px solid var(--c-brown)!important}
+html.club .m5-bub,html.club .m5-typing{background:var(--m3-card)!important;border:2px solid var(--c-brown)!important;border-radius:20px 20px 20px 6px!important}
+html.club .m5-typing i{background:var(--c-brown)!important}
+html.club .m5-choices span{border:2px dashed var(--c-brown)!important;border-radius:999px!important}
+html.club .m5-prem{background:var(--c-brown)!important;color:var(--c-cream)!important;border-radius:18px!important;box-shadow:5px 5px 0 var(--c-mus)}
+
+/* profil, sélecteurs, champs */
+html.club body .m3s-seg,html.club body .m5-seg,html.club body .m3-seg{background:var(--m3-card)!important;border:2px solid var(--c-brown)!important;border-radius:999px!important}
+html.club body .m3s-seg button,html.club body .m5-seg button,html.club body .m3-seg button{border-radius:999px!important}
+html.club body .m3s-seg button.on,html.club body .m5-seg button.on,html.club body .m3-seg button.on,html.club body .chip.on,html.club body .m3-ws-sizes button.on{background:var(--c-brown)!important;color:var(--c-mus)!important;box-shadow:none!important}
+html.club body .m3s-sw.on i{outline-color:var(--c-brown)!important}
+html.club body .field,html.club body input,html.club body textarea,html.club body select{background:var(--m3-card)!important;border-color:var(--c-brown)!important;color:var(--m3-ink)!important}
+html.club body .sheet .pane{background:var(--m3-bg)!important;border-top:6px solid var(--c-mus)!important}
+html.club body .toast{background:var(--c-brown)!important;color:var(--c-cream)!important;box-shadow:0 0 0 3px var(--c-mus)!important}
 </style>
 
 <div id="app"></div>
@@ -2930,6 +3030,20 @@ function vHist(){
    anything added then removed the same day is left out. Hidden extras (double tap on a coloris,
    the shape button) stay out on purpose: they are meant to be found. */
 var CHANGELOG = [
+  {v:'1.17', d:'16.10.26', t:'Un troisième style : Club 78',
+   summary:['Profil › Style propose Club 78, à côté d\'Édito et HUD : l\'esprit d\'une salle de culture physique des années 70, avec des titres ronds et lisibles.','En séance, de gros boutons + et − pour la charge et les reps, et touche PRÉC. pour recopier ta dernière perf.','Sur Aujourd\'hui, « Autre séance » devient un simple lien et le nom du programme s\'affiche sur les séances.'],
+   sections:[
+    {t:'Le style Club 78', items:['Papier crème, encre brune et trois bandes orange, moutarde et rouille en haut de l\'écran, sur les barres de progression et autour de la barre du bas.','La prochaine séance prend la forme d\'un ticket perforé. Le bouton Valider passe en moutarde, bien visible.','Les titres sont en Fraunces et le texte en Archivo, deux polices choisies pour se lire d\'un coup d\'œil.','Les 4 coloris ont leur version Club 78 : Avocat, Pétrole, Orange et Bordeaux. Tes données ne bougent pas quand tu changes de style.']},
+    {t:'Séance', items:['De gros boutons + et − pour régler la charge et les reps.','Touche PRÉC. pour recopier la charge et les reps de la dernière fois.','La case de la série en cours reste vide jusqu\'à ce que tu la valides.','La pilule de repos prend les couleurs de ton style.']},
+    {t:'Accueil', items:['« Autre séance » devient un simple lien sous la prochaine séance.','Le nom du programme s\'affiche sur les séances, et le Coach est bien centré dans la barre du bas.']}
+   ],
+   en:{t:'A third style: Club 78',
+   summary:['Profile › Style now offers Club 78, next to Edito and HUD: the spirit of a 1970s gym, with round, easy-to-read headings.','During a session, big + and − buttons for weight and reps, and tap PREV. to copy your last performance.','On Today, “Another session” becomes a simple link and the program name shows on sessions.'],
+   sections:[
+    {t:'The Club 78 style', items:['Cream paper, brown ink and three orange, mustard and rust stripes at the top of the screen, on progress bars and around the bottom bar.','The next session looks like a perforated ticket. The Log button turns mustard, easy to spot.','Headings use Fraunces and text uses Archivo, two typefaces picked to read at a glance.','The 4 colours have a Club 78 version: Avocado, Petrol, Orange and Burgundy. Your data stays put when you switch styles.']},
+    {t:'Session', items:['Big + and − buttons to set weight and reps.','Tap PREV. to copy last time\'s weight and reps.','The current set\'s box stays empty until you log it.','The rest pill takes on your style\'s colours.']},
+    {t:'Today', items:['“Another session” becomes a simple link under the next session.','The program name shows on sessions, and the Coach button sits right in the middle of the bottom bar.']}
+   ]}},
   {v:'1.16', d:'15.10.26', t:'Le matériel dans le nom, le repos d\'un tap',
    summary:['Chaque exercice dit avec quoi il se fait : barre, haltères, machine ou poulie. Plus de « Développé couché » tout court.','En séance, touche le temps de repos entre deux séries pour le changer.'],
    sections:[
@@ -4763,16 +4877,19 @@ function vProg(){
 function L(fr, en){ return isEN() ? en : fr; }
 EN['PROFIL'] = 'PROFILE'; EN['JOURNAL'] = 'LOG';
 var M3_THEMES = {
-  foret:{fr:'Forêt', en:'Forest', bg:'#F5F2EA', ink:'#173127', muted:'#718078', line:'#DDE2DB', card:'#FFFDF9', accent:'#1E654A', hud:{fr:'Acide', en:'Acid', accent:'#C8FF3D', deep:'#4F6B00'}},
-  ocean:{fr:'Océan', en:'Ocean', bg:'#F2F4F6', ink:'#172536', muted:'#6B7887', line:'#DCE2E8', card:'#FFFFFF', accent:'#2B5C8A', hud:{fr:'Cyan', en:'Cyan', accent:'#33E1FF', deep:'#00738F'}},
-  terre:{fr:'Terre', en:'Clay', bg:'#F7F1EB', ink:'#35221A', muted:'#85726A', line:'#E6DCD3', card:'#FFFCF9', accent:'#B0532C', hud:{fr:'Braise', en:'Blaze', accent:'#FF7B2E', deep:'#B43C08'}},
-  prune:{fr:'Prune', en:'Plum', bg:'#F5F1F4', ink:'#2C1C2B', muted:'#7E6F7C', line:'#E3DAE1', card:'#FFFCFE', accent:'#7A3B6E', hud:{fr:'Néon', en:'Neon', accent:'#FF4FD8', deep:'#A3138A'}}
+  foret:{fr:'Forêt', en:'Forest', bg:'#F5F2EA', ink:'#173127', muted:'#718078', line:'#DDE2DB', card:'#FFFDF9', accent:'#1E654A', hud:{fr:'Acide', en:'Acid', accent:'#C8FF3D', deep:'#4F6B00'}, club:{fr:'Avocat', en:'Avocado', accent:'#5E6B22'}},
+  ocean:{fr:'Océan', en:'Ocean', bg:'#F2F4F6', ink:'#172536', muted:'#6B7887', line:'#DCE2E8', card:'#FFFFFF', accent:'#2B5C8A', hud:{fr:'Cyan', en:'Cyan', accent:'#33E1FF', deep:'#00738F'}, club:{fr:'Pétrole', en:'Petrol', accent:'#1F5E66'}},
+  terre:{fr:'Terre', en:'Clay', bg:'#F7F1EB', ink:'#35221A', muted:'#85726A', line:'#E6DCD3', card:'#FFFCF9', accent:'#B0532C', hud:{fr:'Braise', en:'Blaze', accent:'#FF7B2E', deep:'#B43C08'}, club:{fr:'Orange', en:'Orange', accent:'#B83D17'}},
+  prune:{fr:'Prune', en:'Plum', bg:'#F5F1F4', ink:'#2C1C2B', muted:'#7E6F7C', line:'#E3DAE1', card:'#FFFCFE', accent:'#7A3B6E', hud:{fr:'Néon', en:'Neon', accent:'#FF4FD8', deep:'#A3138A'}, club:{fr:'Bordeaux', en:'Burgundy', accent:'#8A2B3B'}}
 };
-/* deux styles pour la même appli : Édito (clair, éditorial) et HUD (fond noir, néon). Chaque coloris a sa version néon. */
+/* trois styles pour la même appli : Édito (clair, éditorial), HUD (fond noir, néon) et Club 78 (salle de sport des années 70).
+   Chaque coloris a sa version néon et sa version Club 78. */
 function m3Neg(){ return S.settings.m3skin === 'hud' && S.settings.m3hudbg === 'light'; }
-function m3Skin(){ return S.settings.m3skin === 'hud' ? 'hud' : 'edito'; }
+function m3Skin(){ var k = S.settings.m3skin; return k === 'hud' || k === 'club' ? k : 'edito'; }
 function m3Pal(k){
-  var t = M3_THEMES[k]; if(m3Skin() !== 'hud') return t;
+  var t = M3_THEMES[k];
+  if(m3Skin() === 'club') return {fr:t.club.fr, en:t.club.en, bg:'#F3E4C5', ink:'#3A2216', muted:'#765A44', line:'#DCC79F', card:'#FFF6E3', accent:t.club.accent};
+  if(m3Skin() !== 'hud') return t;
   if(m3Neg()) return {fr:t.hud.fr, en:t.hud.en, bg:'#FFFFFF', ink:'#0A0C0B', muted:'#5E6862', card:'#FFFFFF', accent:t.hud.deep, fill:t.hud.accent,
     line:'color-mix(in srgb,' + t.hud.deep + ' 30%,#FFFFFF)'};
   return {fr:t.hud.fr, en:t.hud.en, bg:'#070908', ink:'#E8F0EA', muted:'#7D8A83', card:'#0D1210', accent:t.hud.accent, fill:t.hud.accent,
@@ -4783,6 +4900,7 @@ function applyTheme(){
   var b = document.body.classList; ['calm','csq','round','flat','acc'].forEach(function(c){ b.remove(c); });
   var hud = m3Skin() === 'hud', t = m3Pal(m3Theme()), r = document.documentElement.style, tint = 'color-mix(in srgb,' + t.accent + (hud ? ' 12%,' : ' 9%,') + t.bg + ')';
   document.documentElement.classList.toggle('hud', hud);
+  document.documentElement.classList.toggle('club', m3Skin() === 'club');
   document.documentElement.classList.toggle('neg', hud && m3Neg());
   if(hud) r.setProperty('--h-fill', t.fill, 'important'); else r.removeProperty('--h-fill');
   var set = function(k, v){ r.setProperty(k, v, 'important'); };
@@ -4804,9 +4922,9 @@ document.addEventListener('click', function(ev){
 });
 document.addEventListener('click', function(ev){
   var el = ev.target.closest('[data-a="m3skin"]'); if(!el) return;
-  var v = el.getAttribute('data-v') === 'hud' ? 'hud' : 'edito'; if(v === m3Skin()) return;
+  var v = el.getAttribute('data-v'); v = v === 'hud' || v === 'club' ? v : 'edito'; if(v === m3Skin()) return;
   S.settings.m3skin = v; save(); render();
-  toast(v === 'hud' ? L('Mode HUD activé. Tes données ne bougent pas.', 'HUD mode on. Your data stays put.') : L('Retour au mode Édito.', 'Back to Edito mode.'));
+  toast(v === 'hud' ? L('Mode HUD activé. Tes données ne bougent pas.', 'HUD mode on. Your data stays put.') : v === 'club' ? L('Mode Club 78 activé. Tes données ne bougent pas.', 'Club 78 mode on. Your data stays put.') : L('Retour au mode Édito.', 'Back to Edito mode.'));
 });
 function m3sConfirm(text, action, label){
   return '<div class="m3s-confirm"><p>' + text + '</p><div><button data-a="noconfirm">' + L('Annuler', 'Cancel') + '</button><button class="danger" data-a="' + action + '">' + label + '</button></div></div>';
@@ -4815,7 +4933,7 @@ function vSet(){
   var en = isEN(), cur = m3Theme(), h = restBar();
   h += '<header class="m3-page-head"><span class="m3-eyebrow">' + L('PROFIL', 'PROFILE') + '</span><h1>' + L('Tes', 'Your') + '<br><em>' + L('réglages.', 'settings.') + '</em></h1></header>';
   var sk = m3Skin();
-  h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('STYLE', 'STYLE') + '</div><div class="m3s-seg" role="group"><button data-a="m3skin" data-v="edito" class="' + (sk === 'edito' ? 'on' : '') + '" aria-pressed="' + (sk === 'edito') + '">' + L('Édito', 'Edito') + '</button><button data-a="m3skin" data-v="hud" class="' + (sk === 'hud' ? 'on' : '') + '" aria-pressed="' + (sk === 'hud') + '">HUD</button></div>';
+  h += '<section class="m3s-sec"><div class="m3s-lbl">' + L('STYLE', 'STYLE') + '</div><div class="m3s-seg" role="group"><button data-a="m3skin" data-v="edito" class="' + (sk === 'edito' ? 'on' : '') + '" aria-pressed="' + (sk === 'edito') + '">' + L('Édito', 'Edito') + '</button><button data-a="m3skin" data-v="hud" class="' + (sk === 'hud' ? 'on' : '') + '" aria-pressed="' + (sk === 'hud') + '">HUD</button><button data-a="m3skin" data-v="club" class="' + (sk === 'club' ? 'on' : '') + '" aria-pressed="' + (sk === 'club') + '">Club 78</button></div>';
   if(sk === 'hud'){ var ng = m3Neg();
     h += '<div class="m3s-seg" role="group" style="margin-top:8px"><button data-a="m3hudbg" data-v="dark" class="' + (ng ? '' : 'on') + '" aria-pressed="' + !ng + '">' + L('Fond noir', 'Black background') + '</button><button data-a="m3hudbg" data-v="light" class="' + (ng ? 'on' : '') + '" aria-pressed="' + ng + '">' + L('Fond blanc', 'White background') + '</button></div>'; }
   h += '</section>';
