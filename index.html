@@ -1291,14 +1291,14 @@ body .fl-cta button{width:100%;min-height:58px!important;border:0!important;bord
 .fl-undo{position:fixed;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 84px);z-index:31;max-width:520px;margin:0 auto;min-height:52px;border-radius:16px;background:var(--m3-ink);color:var(--m3-card);display:flex;align-items:center;justify-content:space-between;padding:0 6px 0 16px;box-sizing:border-box;font-size:14px;font-weight:600;animation:flUp .25s ease-out}
 body .fl-undo button{border:0!important;min-height:40px!important;padding:0 14px!important;color:#9FD8BC!important;font-size:14px!important;font-weight:800!important}
 /* pilule de repos, en haut, façon île */
-.fl-pill{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:40;width:min(300px,calc(100vw - 32px));transform:translateX(-50%);min-height:58px;border-radius:29px;background:#18231C;color:#F4F1E9;display:flex;align-items:center;gap:6px;padding:0 8px 0 6px;box-sizing:border-box;box-shadow:0 10px 30px rgba(24,35,28,.28)}
+.fl-pill{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:40;width:min(300px,calc(100vw - 32px));transform:translateX(-50%);min-height:58px;border-radius:29px;background:var(--m3-ink);color:var(--m3-card);display:flex;align-items:center;gap:6px;padding:0 8px 0 6px;box-sizing:border-box;box-shadow:0 10px 30px color-mix(in srgb,var(--m3-ink) 30%,transparent)}
 .fl-pill.pop{animation:flPop .34s cubic-bezier(.2,.8,.2,1)}
-body .fl-pill button{border:0!important;color:#F4F1E9!important}
+body .fl-pill button{border:0!important;color:var(--m3-card)!important}
 body .fl-pill-go{flex:1;min-width:0;min-height:50px!important;padding:0 4px!important;display:flex;align-items:center;gap:10px;text-align:left}
 .fl-pill-go span{display:flex;flex-direction:column;min-width:0}
 .fl-pill-go b{font-size:22px;font-weight:800;line-height:1.05;font-variant-numeric:tabular-nums}
-.fl-pill-go small{font-size:12px;font-weight:600;color:#B9C6BE;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-body .fl-pill-p{flex:none;min-height:42px!important;padding:0 14px!important;border-radius:21px!important;background:#2E3D34!important;font-size:14px!important;font-weight:800!important}
+.fl-pill-go small{font-size:12px;font-weight:600;color:color-mix(in srgb,var(--m3-card) 68%,transparent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body .fl-pill-p{flex:none;min-height:42px!important;padding:0 14px!important;border-radius:21px!important;background:color-mix(in srgb,var(--m3-card) 14%,transparent)!important;font-size:14px!important;font-weight:800!important}
 .fl-pill.go{background:var(--m3-accent);justify-content:space-between;padding:0 8px 0 18px;font-size:15px;font-weight:800}
 body .fl-pill.go button{min-height:42px!important;padding:0 16px!important;border-radius:21px!important;background:rgba(0,0,0,.18)!important;font-size:14px!important;font-weight:800!important}
 /* repos plein écran : ouverture et réduction vers la pilule */
@@ -1335,6 +1335,54 @@ html.hud .fl-ex,html.hud .fl-row,html.hud .fl-pill,html.hud .fl-box,html.hud bod
 html.hud body .fl-cta button{background:var(--h-fill)!important;color:var(--h-on)!important}
 html.hud .fl-ex.open{border-color:var(--h-fill)}
 html.hud .fl-rtop button,html.hud .fl-strip button{color:var(--m3-ink)!important}
+
+/* 1.16 : pilule de repos aux couleurs du thème */
+.fl-pr-bg{stroke:color-mix(in srgb,var(--m3-card) 20%,transparent)}
+.fl-pr-fg{stroke:color-mix(in srgb,var(--m3-accent) 50%,var(--m3-card));transition:stroke-dashoffset .25s linear}
+body .fl-pill.go button{color:var(--m3-card)!important}
+html.hud body .fl-pill{background:var(--m3-card);color:var(--m3-ink);border:1px solid var(--m3-accent);box-shadow:0 0 28px var(--h-soft),0 10px 30px rgba(0,0,0,.55)}
+html.hud body .fl-pill button{color:var(--m3-ink)!important}
+html.hud .fl-pill-go b{font-family:'Space Mono',ui-monospace,Menlo,monospace;font-weight:700;letter-spacing:-.04em;color:var(--m3-accent);text-shadow:0 0 18px var(--h-glow)}
+html.hud .fl-pill-go small{font-family:'Space Mono',ui-monospace,Menlo,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--m3-muted)}
+html.hud body .fl-pill-p{background:transparent!important;border:1px solid var(--m3-line)!important;border-radius:var(--h-r)!important;font-family:'Space Mono',ui-monospace,Menlo,monospace!important}
+html.hud .fl-pr-bg{stroke:var(--h-soft)}
+html.hud .fl-pr-fg{stroke:var(--h-fill);filter:drop-shadow(0 0 4px var(--h-glow))}
+html.hud body .fl-pill.go{background:var(--h-fill);color:var(--h-on);border-color:var(--h-fill);box-shadow:0 0 30px var(--h-glow)}
+html.hud body .fl-pill.go button{color:var(--h-on)!important;border-radius:var(--h-r)!important}
+html.hud.neg body .fl-pill{border:2px solid var(--m3-ink);box-shadow:5px 5px 0 var(--h-fill)}
+html.hud.neg .fl-pill-go b{color:var(--m3-ink);text-shadow:none}
+html.hud.neg .fl-pr-fg{stroke:var(--m3-accent);filter:none}
+html.hud.neg body .fl-pill.go{border:2px solid var(--m3-ink);box-shadow:5px 5px 0 var(--m3-ink)}
+
+/* 1.16 : la case de la série en cours reste vide (juste le contour) tant qu'elle n'est pas validée */
+html body .fl-row.next .fl-ck[data-a],html.hud body .fl-row.next .fl-ck[data-a],html.hud.neg body .fl-row.next .fl-ck[data-a],body.acc .fl-row.next .fl-ck[data-a]{background:transparent!important;color:inherit!important;box-shadow:none!important;outline:0!important;border:2px solid var(--m3-accent)!important}
+html.hud.neg body .fl-row.next .fl-ck[data-a]{border-color:var(--m3-ink)!important}
+
+/* 1.16 : gros + et − sous la série en cours ; le chiffre ouvre le pavé numérique */
+.fl-step{display:flex;flex-direction:column;gap:8px;margin:4px 0 6px;padding:10px;border-radius:16px;background:color-mix(in srgb,var(--m3-accent) 7%,var(--m3-card));border:1.5px solid color-mix(in srgb,var(--m3-accent) 22%,transparent)}
+.fl-st{display:grid;grid-template-columns:72px minmax(0,1fr) 72px;gap:8px;align-items:stretch}
+body .fl-pm{min-height:68px!important;padding:0!important;border:0!important;border-radius:16px!important;background:var(--m3-card)!important;color:var(--m3-ink)!important;font-size:36px!important;font-weight:500!important;line-height:1;box-shadow:0 1px 0 var(--m3-line),inset 0 0 0 1.5px var(--m3-line);touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;display:flex;align-items:center;justify-content:center}
+body .fl-pm.up{background:var(--m3-accent)!important;color:var(--m3-card)!important;box-shadow:none}
+body .fl-pm:active{transform:scale(.95)}
+body .fl-sv{min-height:68px!important;padding:4px 6px!important;border:0!important;border-radius:16px!important;background:transparent!important;color:var(--m3-ink)!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;text-align:center}
+.fl-sv small{font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--m3-muted);white-space:nowrap}
+.fl-sv b{font-size:34px;font-weight:800;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.fl-sv b.sug{color:var(--m3-muted)}
+.fl-sv b i{font-style:normal;font-size:15px;font-weight:700;margin-left:3px;color:var(--m3-muted)}
+.fl-sv em{font-style:normal;font-size:10px;font-weight:700;color:var(--m3-muted);text-decoration:underline;text-underline-offset:2px}
+.fl-st.r .fl-pm{min-height:52px!important;font-size:28px!important}
+.fl-st.r .fl-sv{min-height:52px!important}
+.fl-st.r .fl-sv b{font-size:24px}
+html.hud .fl-step{background:var(--h-soft);border:1px solid var(--m3-line);border-radius:var(--h-r)}
+html.hud body .fl-pm{background:var(--m3-card)!important;box-shadow:inset 0 0 0 1px var(--m3-line);border-radius:var(--h-r)!important;font-family:'Space Mono',ui-monospace,Menlo,monospace!important}
+html.hud body .fl-pm.up{background:var(--h-fill)!important;color:var(--h-on)!important;box-shadow:0 0 18px var(--h-soft)}
+html.hud .fl-sv b{font-family:'Space Mono',ui-monospace,Menlo,monospace;font-weight:700;letter-spacing:-.05em;color:var(--m3-accent);text-shadow:0 0 18px var(--h-glow)}
+html.hud .fl-sv b.sug{color:var(--m3-muted);text-shadow:none}
+html.hud .fl-sv small,html.hud .fl-sv em{font-family:'Space Mono',ui-monospace,Menlo,monospace}
+html.hud.neg .fl-step{border:2px solid var(--m3-ink)}
+html.hud.neg body .fl-pm{box-shadow:inset 0 0 0 2px var(--m3-ink)}
+html.hud.neg body .fl-pm.up{box-shadow:inset 0 0 0 2px var(--m3-ink),3px 3px 0 var(--m3-ink)}
+html.hud.neg .fl-sv b{color:var(--m3-ink);text-shadow:none}
 </style>
 
 <div id="app"></div>
@@ -5887,8 +5935,8 @@ var lp = null;
 function stepVal(a, d){
   var ex = cur(), j = ex ? selIndex(ex) : null; if(j == null) return;
   var s = ex.sets[j];
-  if(a === 'w'){ s.w = Math.max(0, Math.round(((s.w != null ? s.w : (s.sw || 0)) + d * inc()) * 100) / 100); var iw = document.getElementById('in-w'); if(iw){ iw.value = kg(s.w); iw.classList.remove('sug'); } }
-  else { s.r = Math.max(0, (s.r != null ? s.r : (s.sr || 0)) + d * (exType(ex.name) === 'time' ? 5 : 1)); var ir = document.getElementById('in-r'); if(ir){ ir.value = s.r; ir.classList.remove('sug'); } }
+  if(a === 'w'){ s.w = Math.max(0, Math.round(((s.w != null ? s.w : (s.sw || 0)) + d * inc()) * 100) / 100); var iw = document.getElementById('in-w'); if(iw){ iw.value = kg(s.w); iw.classList.remove('sug'); } var iw2 = document.getElementById('in-w2'); if(iw2){ var xw = exType(ex.name); iw2.innerHTML = (xw === 'w' ? kg(s.w) : (s.w ? '+' + kg(s.w) : '0')) + '<i>kg</i>'; iw2.className = ''; } }
+  else { s.r = Math.max(0, (s.r != null ? s.r : (s.sr || 0)) + d * (exType(ex.name) === 'time' ? 5 : 1)); var ir = document.getElementById('in-r'); if(ir){ ir.value = s.r; ir.classList.remove('sug'); } var ir2 = document.getElementById('in-r2'); if(ir2){ ir2.innerHTML = s.r + (exType(ex.name) === 'time' ? '<i>s</i>' : ''); ir2.className = ''; } }
   s.trend = null;
 }
 document.addEventListener('pointerdown', function(ev){
@@ -6550,8 +6598,22 @@ function flW(name, w){ var xt = exType(name); if(w == null) return null; return 
 function flR(name, r){ return r == null ? null : r + (exType(name) === 'time' ? ' s' : ''); }
 function flVal(v, sug){ return v != null ? esc(String(v)) : (sug != null ? '<i>' + esc(String(sug)) + '</i>' : '—'); }
 function flSetName(ex, j){ var s = ex.sets[j]; return s.warm ? L('l\'échauffement', 'the warm-up') : L('la série ', 'set ') + (workIndex(ex, j) + 1); }
+/* 1.16 : gros + et − pour la charge et les reps de la série en cours ; toucher le chiffre ouvre le pavé */
+function flStepper(e, s){
+  var xt = exType(e.name), st = kg(inc()), h = '<div class="fl-step" role="group" aria-label="' + L('Réglage de la série', 'Set adjust') + '">';
+  var wv = s.w != null ? s.w : s.sw, wsug = s.w == null;
+  var wtxt = wv != null ? (xt === 'w' ? kg(wv) : (wv ? '+' + kg(wv) : '0')) : (xt === 'w' ? '—' : '0');
+  h += '<div class="fl-st"><button class="fl-pm" data-a="w" data-d="-1" aria-label="' + L('Moins ', 'Minus ') + st + ' kg">−</button>';
+  h += '<button class="fl-sv" data-pad="w" aria-label="' + L('Taper la charge', 'Type the weight') + '"><small>' + (xt === 'w' ? L('CHARGE', 'WEIGHT') : L('LEST', 'EXTRA')) + ' · ± ' + st + ' KG</small><b id="in-w2" class="' + (wsug ? 'sug' : '') + '">' + wtxt + (wv != null || xt !== 'w' ? '<i>kg</i>' : '') + '</b><em>' + L('toucher pour taper', 'tap to type') + '</em></button>';
+  h += '<button class="fl-pm up" data-a="w" data-d="1" aria-label="' + L('Plus ', 'Plus ') + st + ' kg">+</button></div>';
+  var rv = s.r != null ? s.r : s.sr, tm = xt === 'time';
+  h += '<div class="fl-st r"><button class="fl-pm" data-a="r" data-d="-1" aria-label="' + (tm ? L('5 secondes de moins', '5 seconds less') : L('Une rep de moins', 'One rep less')) + '">−</button>';
+  h += '<button class="fl-sv" data-pad="r" aria-label="' + L('Taper ', 'Type ') + rLab(e.name) + '"><small>' + (tm ? L('DURÉE', 'TIME') : 'REPS') + '</small><b id="in-r2" class="' + (s.r == null ? 'sug' : '') + '">' + (rv != null ? rv : '—') + (tm ? '<i>s</i>' : '') + '</b></button>';
+  h += '<button class="fl-pm up" data-a="r" data-d="1" aria-label="' + (tm ? L('5 secondes de plus', '5 seconds more') : L('Une rep de plus', 'One rep more')) + '">+</button></div>';
+  return h + '</div>';
+}
 function flRows(e, i, open, ri){
-  var a = S.active, sj = open ? selIndex(e) : null, k = 0, h = '';
+  var a = S.active, sj = open ? selIndex(e) : null, k = 0, h = '', nextStep = '';
   h += '<div class="fl-cols" aria-hidden="true"><span>' + L('SÉRIE', 'SET') + '</span><span>' + L('PRÉC.', 'PREV.') + '</span><span>' + (exType(e.name) === 'w' ? 'KG' : L('LEST', 'EXTRA')) + '</span><span>' + (exType(e.name) === 'time' ? L('SEC', 'SEC') : 'REPS') + '</span><span></span></div>';
   e.sets.forEach(function(s, j){
     var lab = s.warm ? 'W' : String(++k), isNext = open && j === sj && !s.done, lx = fxLast(e, j);
@@ -6570,6 +6632,7 @@ function flRows(e, i, open, ri){
       h += '<input class="fl-cell' + (s.w == null ? ' sug' : '') + '" id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + (s.w != null ? kg(s.w) : '') + '" placeholder="' + (s.sw != null ? kg(s.sw) : xt !== 'w' ? '0' : '—') + '" aria-label="' + wLab(e.name) + '">';
       h += '<input class="fl-cell' + (s.r == null ? ' sug' : '') + '" id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + (s.r != null ? s.r : '') + '" placeholder="' + (s.sr != null ? s.sr : '—') + '" aria-label="' + rLab(e.name) + '">';
       h += '<button class="fl-ck" data-a="validate" aria-label="' + L('Valider ', 'Log ') + flSetName(e, j) + '"></button>';
+      nextStep = flStepper(e, s);
     } else {
       var vw = flVal(flW(e.name, s.w), s.done ? null : flW(e.name, s.sw)), vr = flVal(flR(e.name, s.r), s.done ? null : flR(e.name, s.sr));
       if(open && !s.done) h += '<button class="fl-mid" data-a="sel" data-j="' + j + '" aria-label="' + L('Choisir ', 'Pick ') + flSetName(e, j) + '"><span class="fl-prev">' + prev + '</span><span class="fl-v">' + vw + '</span><span class="fl-v">' + vr + '</span></button>';
@@ -6579,6 +6642,7 @@ function flRows(e, i, open, ri){
       else h += '<button class="fl-ck" data-a="flcheck" data-j="' + j + '" aria-label="' + L('Valider ', 'Log ') + flSetName(e, j) + '"></button>';
     }
     h += '</div>';
+    if(nextStep){ h += nextStep; nextStep = ''; }
   });
   /* repos après la dernière série, avant l'exercice suivant */
   if(open && e.sets.length && i < a.exercises.length - 1 && !e.ss) h += flRestSep(e, i, e.sets.length - 1, true);
@@ -6661,7 +6725,7 @@ function vFlow(){
   if(ri && !ri.over && !ui.restMin) h += flRestOverlay(a, ri);
   else if(ri && !ri.over){
     var nx = flNextLabel(a), circ = 100.5;
-    h += '<div class="fl-pill' + (ui.flPop ? ' pop' : '') + '" role="timer"><button class="fl-pill-go" data-a="flmax" aria-label="' + L('Ouvrir le repos en plein écran', 'Open the rest full screen') + '"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="none" stroke="#3A4A40" stroke-width="4"/><circle cx="20" cy="20" r="16" fill="none" stroke="#9FD8BC" stroke-width="4" stroke-linecap="round" id="fl-pring" stroke-dasharray="' + circ + '" stroke-dashoffset="' + (circ * ri.pct / 100).toFixed(1) + '" transform="rotate(-90 20 20)"/></svg><span><b id="t-pin">' + mmss(ri.left) + '</b><small>' + (nx ? esc(nx.txt) : L('Repos', 'Rest')) + '</small></span></button><button class="fl-pill-p" data-a="tadj" data-d="15">+15 s</button></div>';
+    h += '<div class="fl-pill' + (ui.flPop ? ' pop' : '') + '" role="timer"><button class="fl-pill-go" data-a="flmax" aria-label="' + L('Ouvrir le repos en plein écran', 'Open the rest full screen') + '"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="none" class="fl-pr-bg" stroke-width="4"/><circle cx="20" cy="20" r="16" fill="none" class="fl-pr-fg" stroke-width="4" stroke-linecap="round" id="fl-pring" stroke-dasharray="' + circ + '" stroke-dashoffset="' + (circ * ri.pct / 100).toFixed(1) + '" transform="rotate(-90 20 20)"/></svg><span><b id="t-pin">' + mmss(ri.left) + '</b><small>' + (nx ? esc(nx.txt) : L('Repos', 'Rest')) + '</small></span></button><button class="fl-pill-p" data-a="tadj" data-d="15">+15 s</button></div>';
   } else if(ri && ri.over){
     var nx2 = flNextLabel(a);
     h += '<div class="fl-pill go" role="status"><span>' + L('C\'est reparti', 'Your turn') + (nx2 ? ' · ' + esc(nx2.txt) : '') + ' <span id="t-over" style="opacity:.75">+' + mmss(-ri.left) + '</span></span><button data-a="skip">OK</button></div>';
