@@ -1177,6 +1177,13 @@ input.fx-note.fx-note-top{margin-top:6px!important;min-height:32px!important;tex
 .m4-pkt b{font-size:17px;letter-spacing:-.02em;line-height:1.2}
 .m4-pk .m4-cue{margin-left:68px}
 .m4-ovex.m4-pk .m4-prevhead{margin-left:68px}
+/* petits pictos : prochaine séance (accueil), dernières séances, journal */
+.m4-thumb.m7-th{width:36px;height:36px;border-radius:10px;margin-right:12px}
+.m3-ex-list button .m4-thumb.m7-th{flex:none!important;padding:0!important;border:1px solid var(--m3-line)!important;overflow:hidden;white-space:normal}
+.m3-ex-list button{min-height:52px!important}
+.m7-row{display:flex!important;align-items:center;gap:12px}
+.m7-row .m4-thumb.m7-th{margin-right:0;width:40px;height:40px}
+.m7-row>span:not(.m4-thumb){flex:1;min-width:0}
 /* aperçu en séance */
 .m4-ov-top{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0}
 .m4-ov-top button{width:42px;min-height:42px!important;padding:0!important;border-radius:50%!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important;color:var(--m3-ink)!important;display:flex!important;align-items:center;justify-content:center}
@@ -3577,7 +3584,7 @@ function vDay(k){
     h += '<div class="stat"><div><span class="lbl">DURÉE</span><span class="disp tnum">' + mmss(s.dur) + '</span></div><div><span class="lbl">SÉRIES</span><span class="disp tnum">' + n + '</span></div><div class="inv"><span class="lbl">VOLUME</span><span class="disp tnum">' + fmtT(vol).toUpperCase() + '</span></div></div>';
     h += '<div style="display:flex;flex-direction:column;gap:6px">' + s.exercises.map(function(e){
       var sets = e.sets.map(function(x){ return '<span class="chip' + (x.warm ? '' : ' on') + ' tnum" style="min-height:30px">' + (x.warm ? 'W ' : '') + fmtS(e.name, x.w, x.r) + '</span>'; }).join('');
-      return '<button class="box exrow" data-a="fiche" data-n="' + esc(e.name) + '" style="gap:8px"><span class="row between" style="width:100%"><span class="disp" style="font-size:20px">' + esc(e.name) + '</span><span class="lbl" style="flex:none;white-space:nowrap">FICHE ▸</span></span><span class="row" style="flex-wrap:wrap;gap:5px">' + sets + '</span>' + (e.note ? '<span style="font-size:12px;font-style:italic;text-align:left">' + esc(e.note) + '</span>' : '') + '</button>';
+      return '<button class="box exrow" data-a="fiche" data-n="' + esc(e.name) + '" style="gap:8px"><span class="row between m7-row" style="width:100%">' + m7Th(e.name) + '<span class="disp" style="font-size:20px">' + esc(exDisp(e.name)) + '</span><span class="lbl" style="flex:none;white-space:nowrap">FICHE ▸</span></span><span class="row" style="flex-wrap:wrap;gap:5px">' + sets + '</span>' + (e.note ? '<span style="font-size:12px;font-style:italic;text-align:left">' + esc(e.note) + '</span>' : '') + '</button>';
     }).join('') + '</div>';
   });
   if(!list.length) h += '<div class="empty">Aucune séance enregistrée ce jour-là.</div>';
@@ -4888,7 +4895,7 @@ function vHome(){
     h+='<div class="m3-kicker">'+L('SÉANCE EN COURS','SESSION IN PROGRESS')+(progLabel(S.active)?' · '+esc(progLabel(S.active).toUpperCase()):'')+'</div><div class="m3-title">'+esc(trText(S.active.name))+'</div><div class="m3-meta">'+done+' / '+tot+L(' séries · ',' sets · ')+mmss((Date.now()-S.active.start)/1000)+'</div><button class="m3-primary" data-a="goex">'+L('REPRENDRE LA SÉANCE','RESUME SESSION')+' <span>→</span></button>';
   } else if(next){
     var sets=next.ex.reduce(function(n,e){return n+e.s.filter(function(s){return !s.warm;}).length;},0);
-    h+='<div class="m3-kicker">'+L('PROCHAINE SÉANCE','NEXT SESSION')+(progLabel({pid:next.id})?' · '+esc(progLabel({pid:next.id}).toUpperCase()):'')+'</div><div class="m3-title">'+esc(trText(next.name))+'</div><div class="m3-meta">'+next.ex.length+L(' exercices · ',' exercises · ')+sets+L(' séries · ~',' sets · ~')+Math.round(estDur(next)/60)+' min</div><div class="m3-ex-list">'+next.ex.map(function(e,i){return '<button data-a="fiche" data-n="'+esc(e.name)+'" aria-label="'+esc(L('Fiche ','Info: ')+exDisp(e.name))+'"><i>'+('0'+(i+1)).slice(-2)+'</i><span>'+esc(exDisp(e.name))+'</span><em>›</em></button>';}).join('')+'</div><button class="m3-primary" data-a="start" data-p="'+esc(next.id)+'">'+L('COMMENCER','START')+' <span>→</span></button>';
+    h+='<div class="m3-kicker">'+L('PROCHAINE SÉANCE','NEXT SESSION')+(progLabel({pid:next.id})?' · '+esc(progLabel({pid:next.id}).toUpperCase()):'')+'</div><div class="m3-title">'+esc(trText(next.name))+'</div><div class="m3-meta">'+next.ex.length+L(' exercices · ',' exercises · ')+sets+L(' séries · ~',' sets · ~')+Math.round(estDur(next)/60)+' min</div><div class="m3-ex-list">'+next.ex.map(function(e,i){return '<button data-a="fiche" data-n="'+esc(e.name)+'" aria-label="'+esc(L('Fiche ','Info: ')+exDisp(e.name))+'"><i>'+('0'+(i+1)).slice(-2)+'</i>'+m7Th(e.name)+'<span>'+esc(exDisp(e.name))+'</span><em>›</em></button>';}).join('')+'</div><button class="m3-primary" data-a="start" data-p="'+esc(next.id)+'">'+L('COMMENCER','START')+' <span>→</span></button>';
   } else h+='<div class="m3-kicker">'+L('TON PROGRAMME EST VIDE','YOUR PROGRAM IS EMPTY')+'</div><div class="m3-title">'+L('Construis ta première séance.','Build your first session.')+'</div><button class="m3-primary" data-a="scr" data-s="prog">'+L('CRÉER UNE SÉANCE','CREATE A SESSION')+' <span>→</span></button>';
   if(!S.active) h+='<button class="m6-other" data-a="m6other">'+L('Autre séance','Another session')+'</button>';
   h+='</section>'+m6Recent()+m4FreeBlock();
@@ -6543,6 +6550,7 @@ function m4ProgView(p){
 function m4Thumb(name){
   try{ var parts = moveFrames(name).split('<svg'); return parts.length > 2 ? '<svg' + parts[2].split('</svg>')[0] + '</svg>' : ''; }catch(err){ return ''; }
 }
+function m7Th(name){ var t = m4Thumb(name); return t ? '<span class="m4-thumb m7-th" aria-hidden="true">' + t + '</span>' : ''; }
 function m4WkView(p, w){
   var lib = !!p.lib, h = '<button class="m4-back" data-a="pvwback">← ' + esc(p.free ? L('Séances libres', 'Free sessions') : trText(p.name)) + '</button>';
   h += '<header class="m3-page-head m4-head"><div><span class="m3-eyebrow">' + (w.day != null && !p.free ? dayName(w.day).toUpperCase() : L('SANS JOUR FIXE', 'NO FIXED DAY')) + '</span><h1>' + esc(trText(w.name)) + '</h1><p class="m4-meta">' + m4WkMeta(w) + '</p></div>' + (lib ? '' : '<button class="m3p-edit" data-a="wedit" data-id="' + esc(w.id) + '" aria-label="' + L('Modifier la séance', 'Edit session') + '">✎</button>') + '</header>';
@@ -6655,7 +6663,7 @@ function m6HistSheet(){
   h += '<h2 class="m6-h">' + esc(m6Title(x)) + '</h2><div class="m3s-list">';
   x.exercises.forEach(function(e){
     var sets = e.sets.filter(function(t){ return !t.warm && t.r != null; });
-    h += '<div class="m3s-row m6-static"><span>' + esc(exDisp(e.name)) + '<small>' + (sets.length ? sets.map(function(t){ return fmtS(e.name, t.w, t.r); }).join(' · ') : '—') + '</small></span></div>';
+    h += '<div class="m3s-row m6-static m7-row">' + m7Th(e.name) + '<span>' + esc(exDisp(e.name)) + '<small>' + (sets.length ? sets.map(function(t){ return fmtS(e.name, t.w, t.r); }).join(' · ') : '—') + '</small></span></div>';
   });
   h += '</div>';
   if(!S.active) h += '<button class="m3-primary m4-cta" data-a="m6redo" data-id="' + esc(x.id) + '">' + L('REFAIRE CETTE SÉANCE', 'DO THIS SESSION AGAIN') + ' <span>→</span></button>';
