@@ -7098,7 +7098,9 @@ function vFlow(){
   h += '</div></div>';
   /* bouton principal, toujours à portée de pouce */
   var ex = cur(), sj = ex ? selIndex(ex) : null;
-  if(ex && sj != null){
+  if(ex && sj != null && ex.sets[sj].warm && !ex.sets[sj].redo){
+    /* 06.11.2026 : pas de bouton « Valider l'échauffement », la case à cocher de la ligne suffit */
+  } else if(ex && sj != null){
     var s = ex.sets[sj], w = s.w != null ? s.w : s.sw, r = s.r != null ? s.r : s.sr, ld = w != null && r != null ? ' · ' + fmtS(ex.name, w, r) : r != null ? ' · ' + flR(ex.name, r) + (exType(ex.name) === 'time' ? '' : ' reps') : '';
     h += '<div class="fl-cta"><button data-a="validate">' + (s.redo ? L('Enregistrer la correction', 'Save the fix') : L('Valider ', 'Log ') + flSetName(ex, sj)) + ld + '</button></div>';
   } else if(a.exercises.some(function(e){ return selIndex(e) != null; })){
