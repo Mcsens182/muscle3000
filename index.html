@@ -1232,6 +1232,30 @@ html.hud .m5-ava{background:var(--h-fill);color:var(--h-on);border-radius:var(--
 @keyframes m5in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion: reduce){.m5-typing i,.m5-in,.m5-typing{animation:none}}
 html.hud .m5-typing{border-radius:var(--h-r)}
+.m5-chead{position:relative}
+.m5-chead>span.ai-ht{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0;padding-right:44px}
+.ai-setup .m3-primary{background:var(--m3-ink)!important;color:var(--m3-card)!important}
+.ai-bar textarea{border:0!important;box-shadow:none!important;border-radius:0!important}
+.ai-gear{position:absolute;right:0;top:50%;transform:translateY(-50%);width:40px;min-height:40px!important;padding:0!important;border-radius:50%!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important;color:var(--m3-ink)!important;font-size:17px!important}
+.m5-bub.ai-me{align-self:flex-end;background:var(--m3-accent);border-color:var(--m3-accent);color:var(--m3-card);border-radius:18px 18px 6px 18px}
+.m5-bub.ai-it{max-width:92%}.m5-bub.ai-it b{font-weight:800}
+.m5-bub.ai-err{border-style:dashed;color:var(--m3-muted)}
+.ai-sugg{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.ai-sugg button{min-height:40px!important;padding:0 14px!important;border-radius:99px!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important;color:var(--m3-ink)!important;font-size:13px!important;font-weight:700!important}
+.ai-bar{position:sticky;bottom:calc(env(safe-area-inset-bottom,0px) + 92px);z-index:5;display:flex;gap:8px;align-items:flex-end;margin:14px 0 6px;padding:8px;border:1px solid var(--m3-line);border-radius:22px;background:var(--m3-card);box-shadow:0 6px 18px color-mix(in srgb,var(--m3-ink) 10%,transparent)}
+.ai-bar textarea{flex:1;min-width:0;min-height:40px;max-height:140px;resize:none;border:0;outline:0;background:transparent;color:var(--m3-ink);font:inherit;font-size:16px;line-height:1.35;padding:9px 8px}
+.ai-bar button{flex:none;width:40px;min-height:40px!important;padding:0!important;border-radius:50%!important;border:0!important;background:var(--m3-accent)!important;color:var(--m3-card)!important;font-size:19px!important;font-weight:800!important}
+.ai-bar button[disabled],.ai-bar textarea[disabled]{opacity:.45}
+.ai-clear{display:block;margin:6px auto 24px;min-height:36px!important;border:0!important;background:transparent!important;color:var(--m3-muted)!important;font-size:12px!important;font-weight:700!important;text-decoration:underline}
+.ai-setup{display:flex;flex-direction:column;gap:10px;margin:16px 0 24px;padding:16px;border:1px solid var(--m3-line);border-radius:20px;background:var(--m3-card)}
+.ai-setup>b{font-size:20px;letter-spacing:-.02em}.ai-setup p,.ai-setup ol{margin:0;font-size:14px;line-height:1.45}.ai-setup ol{padding-left:20px}
+.ai-setup a{color:var(--m3-accent);font-weight:700}
+.ai-setup .field{width:100%;min-height:48px;border:1px solid var(--m3-line)!important;border-radius:12px!important;padding:0 12px;font-size:16px;background:transparent;color:var(--m3-ink)}
+.ai-row{display:flex;gap:8px}.ai-row button{flex:1;min-height:48px;border-radius:14px!important}
+.ai-setup small{font-size:11px;line-height:1.45;color:var(--m3-muted)}
+html.hud .ai-bar,html.hud .ai-setup,html.hud .ai-sugg button{border-radius:var(--h-r)!important}
+html.hud .m5-bub.ai-me,html.hud .ai-bar button{background:var(--h-fill)!important;border-color:var(--h-fill);color:var(--h-on)!important}
+html.club .m5-bub.ai-me{background:var(--c-brown)!important;color:var(--m3-card)!important}
 .m5-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:6px;opacity:.5}
 .m5-choices span{display:flex;align-items:center;min-height:44px;padding:8px 12px;border:1.5px dashed var(--m3-ink);border-radius:12px;font-size:13px;font-weight:700}
 .m5-prem{display:flex;flex-direction:column;gap:8px;padding:18px;border-radius:18px;background:var(--m3-ink);color:var(--m3-card);margin-bottom:24px}
@@ -6820,18 +6844,102 @@ function vCoach(){
     if(ui.coachAnim) clearTimeout(ui.coachAnim.t);
     ui.coachAnim = {n:0, typing:true}; setTimeout(m5CoachQueue, 0);
   }
-  var h = restBar();
-  h += '<header class="m5-chead"><span class="m5-ava" aria-hidden="true">?</span><span><b>' + L('Ton coach', 'Your coach') + '</b><small>' + L('Bilan de la semaine', 'Weekly review') + '</small></span></header>';
+  var key = aiKey(), h = restBar();
+  h += '<header class="m5-chead"><span class="m5-ava" aria-hidden="true">?</span><span class="ai-ht"><b>' + L('Ton coach', 'Your coach') + '</b><small>' + (key ? L('Bilan de la semaine · questions libres', 'Weekly review · ask anything') : L('Bilan de la semaine', 'Weekly review')) + '</small></span>' + (key ? '<button class="ai-gear" data-a="aikeyedit" aria-label="' + L('Réglages du coach', 'Coach settings') + '">⚙</button>' : '') + '</header>';
   h += '<div class="m5-chat"><div class="m5-day">' + L('CETTE SEMAINE', 'THIS WEEK') + '</div>';
   var an = ui.coachAnim && ui.screen === 'coach' ? ui.coachAnim : null, msgs = m5CoachMsgs(), shown = an ? an.n : msgs.length;
   msgs.slice(0, shown).forEach(function(t, i){ h += '<p class="m5-bub' + (an && i === shown - 1 ? ' m5-in' : '') + '">' + esc(t) + '</p>'; });
   if(an && an.typing) h += m5Typing();
   if(an) return h + '</div>' + nav('coach');
-  var fresh = ui.coachFresh; ui.coachFresh = false;
-  h += '<div class="m5-choices' + (ui.coachFresh ? ' m5-in' : '') + '" aria-hidden="true"><span><b>A</b> · ' + L('Je veux savoir', 'Tell me') + '</span><span><b>B</b> · ' + L('Montre le plan', 'Show the plan') + '</span><span><b>C</b> · ' + L('Ajuste ma séance', 'Adjust my session') + '</span><span><b>D</b> · ' + L('Plus tard', 'Later') + '</span></div></div>';
-  h += '<section class="m5-prem' + (fresh ? ' m5-in' : '') + '"><span class="m3-eyebrow">' + L('COACH PREMIUM · BIENTÔT', 'PREMIUM COACH · SOON') + '</span><b>' + L('Réponds-lui et laisse-le ajuster tes séances.', 'Answer him and let him adjust your sessions.') + '</b><p>' + L('Conversation à choix, diagnostic des plateaux, conseils technique et séances mises à jour d\'un tap.', 'Choice-based chat, plateau diagnosis, technique tips and sessions updated in one tap.') + '</p></section>';
+  ui.coachFresh = false;
+  if(!key || ui.aiKeyEdit){ h += '</div>' + aiSetup(key); return h + nav('coach'); }
+  var chat = aiChat();
+  if(chat.length) h += '<div class="m5-day">' + L('TES QUESTIONS', 'YOUR QUESTIONS') + '</div>';
+  chat.forEach(function(m){ h += m.r === 'u' ? '<p class="m5-bub ai-me">' + esc(m.t) + '</p>' : '<div class="m5-bub ai-it' + (m.err ? ' ai-err' : '') + '">' + aiFmt(m.t) + '</div>'; });
+  if(ui.aiBusy) h += m5Typing();
+  h += '</div>';
+  if(!chat.length && !ui.aiBusy) h += '<div class="ai-sugg">' + [L('Pourquoi je stagne ?', 'Why am I stuck?'), L('Analyse ma semaine', 'Review my week'), L('Que faire aujourd\'hui ?', 'What should I do today?')].map(function(q){ return '<button data-a="aiask" data-q="' + esc(q) + '">' + esc(q) + '</button>'; }).join('') + '</div>';
+  h += '<div class="ai-bar"><textarea id="ai-q" data-ai="q" rows="1" placeholder="' + L('Pose ta question au coach…', 'Ask your coach…') + '"' + (ui.aiBusy ? ' disabled' : '') + '>' + esc(ui.aiDraft || '') + '</textarea><button data-a="aisend" aria-label="' + L('Envoyer', 'Send') + '"' + (ui.aiBusy ? ' disabled' : '') + '>↑</button></div>';
+  if(chat.length && !ui.aiBusy) h += '<button class="ai-clear" data-a="aiclear">' + L('Effacer la conversation', 'Clear the conversation') + '</button>';
   return h + nav('coach');
 }
+/* ---------- coach IA (Gemini, clé personnelle gardée sur ce téléphone uniquement) ---------- */
+var AI_KEY = 'm3000.gemini', AI_CHAT = 'm3000.coachchat', AI_MODELS = ['gemini-flash-latest', 'gemini-2.5-flash', 'gemini-2.0-flash'];
+function aiKey(){ try{ return localStorage.getItem(AI_KEY) || ''; }catch(e){ return ''; } }
+function aiChat(){ try{ return JSON.parse(localStorage.getItem(AI_CHAT) || '[]'); }catch(e){ return []; } }
+function aiSaveChat(c){ try{ localStorage.setItem(AI_CHAT, JSON.stringify(c.slice(-40))); }catch(e){} }
+function aiSetup(key){
+  var h = '<section class="ai-setup"><span class="m3-eyebrow">' + L('COACH IA', 'AI COACH') + '</span><b>' + (key ? L('Ta clé Gemini', 'Your Gemini key') : L('Pose tes questions au coach', 'Ask your coach anything')) + '</b>';
+  if(!key) h += '<p>' + L('Le coach répond avec Gemini (Google), gratuit dans la limite de quelques questions par minute. Il connaît ton programme, tes séances et tes records.', 'The coach answers with Gemini (Google), free within a few questions per minute. It knows your program, sessions and records.') + '</p><ol><li>' + L('Ouvre', 'Open') + ' <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> ' + L('avec ton compte Google.', 'with your Google account.') + '</li><li>' + L('Touche « Create API key » et copie la clé.', 'Tap “Create API key” and copy it.') + '</li><li>' + L('Colle-la ici.', 'Paste it here.') + '</li></ol>';
+  h += '<input class="field" id="ai-key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="AIza…" value="' + esc(key) + '"><div class="ai-row"><button class="m3-primary" data-a="aikeysave">' + L('ENREGISTRER', 'SAVE') + '</button>' + (key ? '<button data-a="aikeycancel">' + L('Annuler', 'Cancel') + '</button>' : '') + '</div>';
+  if(key) h += '<button class="ai-clear" data-a="aikeydel">' + L('Retirer la clé de ce téléphone', 'Remove the key from this phone') + '</button>';
+  return h + '<small>' + L('La clé reste sur ce téléphone, hors sauvegardes. En gratuit, Google peut utiliser tes questions et tes données d\'entraînement pour améliorer ses modèles.', 'The key stays on this phone, outside backups. On the free tier, Google may use your questions and training data to improve its models.') + '</small></section>';
+}
+function aiFmt(t){
+  return esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/^#{1,4}\s*(.+)$/gm, '<b>$1</b>').replace(/^\s*[-*]\s+/gm, '• ').replace(/\n/g, '<br>');
+}
+function aiContext(){
+  var ap = activeProg(), lines = [], i;
+  lines.push('Date du jour : ' + new Date().toISOString().slice(0, 10) + '.');
+  if(ap){
+    lines.push('Programme actif : ' + ap.name);
+    ap.workouts.forEach(function(w){ lines.push('- ' + w.name + (w.day != null ? ' (' + DAYNAMES[w.day] + ')' : '') + ' : ' + w.ex.map(function(e){ var ws = e.s.filter(function(x){ return !x.warm; }); return exDisp(e.name) + ' ' + ws.length + '×' + (ws[0] ? ws[0].lo + (ws[0].hi !== ws[0].lo ? '-' + ws[0].hi : '') : '?') + (e.cue ? ' [' + e.cue + ']' : ''); }).join(' ; ')); });
+  }
+  var hist = S.history.slice().sort(function(a, b){ return new Date(b.date) - new Date(a.date); }).slice(0, 15);
+  if(hist.length){
+    lines.push('', 'Dernières séances (plus récente en premier, charge×reps, W = échauffement) :');
+    hist.forEach(function(x){ lines.push('- ' + new Date(x.date).toISOString().slice(0, 10) + ' ' + x.name + ' : ' + x.exercises.map(function(e){ return exDisp(e.name) + ' ' + e.sets.map(function(st){ return (st.warm ? 'W ' : '') + fmtS(e.name, st.w, st.r); }).join(', ') + (e.note ? ' (note : ' + e.note + ')' : ''); }).join(' | ')); });
+  } else lines.push('', 'Aucune séance enregistrée pour l\'instant.');
+  var best = {}; S.history.forEach(function(x){ x.exercises.forEach(function(e){ e.sets.forEach(function(st){ if(st.warm || exType(e.name) !== 'w' || !st.w || !st.r) return; var v = e1rm(st.w, st.r); if(!best[e.name] || v > best[e.name].e) best[e.name] = {e:v, w:st.w, r:st.r}; }); }); });
+  var bk = Object.keys(best); if(bk.length){ lines.push('', 'Meilleures séries (1RM estimé) :'); bk.slice(0, 40).forEach(function(n){ lines.push('- ' + exDisp(n) + ' : ' + kg(best[n].w) + '×' + best[n].r + ' (≈' + Math.round(best[n].e) + ' kg)'); }); }
+  var pl = m5Plateau(); if(pl) lines.push('', 'Plateau détecté : ' + exDisp(pl.n) + ' bloqué à ' + fmtS(pl.n, pl.w, pl.r) + ' depuis 3 séances.');
+  return lines.join('\n');
+}
+function aiSystem(){
+  return (isEN() ? 'Answer in English. ' : 'Réponds en français, en tutoyant. ') +
+    'Tu es le coach de musculation de Maxence dans son appli Muscle 3000. Réponses courtes et concrètes (5 à 8 lignes max sauf si on te demande un plan), sans blabla, avec des chiffres précis tirés de ses données quand c\'est utile. Pas de conseil médical : en cas de douleur, renvoie vers un pro. Utilise **gras** et des tirets si besoin, pas de tableaux.\n\nSes données :\n' + aiContext();
+}
+function aiCall(chat, mi){
+  mi = mi || 0;
+  var model = AI_MODELS[mi];
+  var body = {systemInstruction:{parts:[{text:aiSystem()}]}, contents:chat.filter(function(m){ return !m.err; }).slice(-16).map(function(m){ return {role:m.r === 'u' ? 'user' : 'model', parts:[{text:m.t}]}; }), generationConfig:{temperature:0.6, maxOutputTokens:1200}};
+  return fetch('https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent', {method:'POST', headers:{'Content-Type':'application/json', 'x-goog-api-key':aiKey()}, body:JSON.stringify(body)}).then(function(r){
+    if(r.status === 404 && mi < AI_MODELS.length - 1) return aiCall(chat, mi + 1);
+    return r.json().then(function(j){
+      if(!r.ok){ var e = new Error((j && j.error && j.error.message) || ('HTTP ' + r.status)); e.status = r.status; throw e; }
+      var c = j.candidates && j.candidates[0], t = c && c.content && c.content.parts ? c.content.parts.map(function(p){ return p.text || ''; }).join('').trim() : '';
+      if(!t) throw new Error(L('Réponse vide', 'Empty answer'));
+      return t;
+    });
+  });
+}
+function aiAsk(q){
+  q = (q || '').trim(); if(!q || ui.aiBusy) return;
+  var chat = aiChat(); chat.push({r:'u', t:q}); aiSaveChat(chat);
+  ui.aiDraft = ''; ui.aiBusy = true; render(); aiScroll();
+  aiCall(chat).then(function(t){ chat.push({r:'c', t:t}); }, function(err){
+    var m = err.status === 400 || err.status === 401 || err.status === 403 ? L('Ta clé Gemini est refusée. Vérifie-la avec le bouton ⚙ en haut.', 'Your Gemini key was refused. Check it with the ⚙ button at the top.')
+      : err.status === 429 ? L('Trop de questions d\'un coup pour la version gratuite. Réessaie dans une minute.', 'Too many questions at once for the free tier. Try again in a minute.')
+      : !navigator.onLine ? L('Pas de réseau. Le coach a besoin d\'internet pour répondre.', 'No network. The coach needs internet to answer.')
+      : L('Le coach n\'a pas pu répondre : ', 'The coach couldn\'t answer: ') + err.message;
+    chat.push({r:'c', t:m, err:true});
+  }).then(function(){ aiSaveChat(chat); ui.aiBusy = false; if(ui.screen === 'coach') { render(); aiScroll(); } });
+}
+function aiScroll(){ setTimeout(function(){ window.scrollTo({top:document.documentElement.scrollHeight, behavior:reduceMotion() ? 'auto' : 'smooth'}); }, 30); }
+document.addEventListener('input', function(ev){ if(ev.target.getAttribute && ev.target.getAttribute('data-ai') === 'q'){ ui.aiDraft = ev.target.value; ev.target.style.height = 'auto'; ev.target.style.height = Math.min(140, ev.target.scrollHeight) + 'px'; } });
+document.addEventListener('click', function(ev){
+  var el = ev.target.closest && ev.target.closest('[data-a]'); if(!el) return;
+  var a = el.getAttribute('data-a'), done = function(){ ev.stopPropagation(); ev.preventDefault(); };
+  if(a === 'aisend'){ done(); var qi = document.getElementById('ai-q'); aiAsk(qi ? qi.value : ui.aiDraft); return; }
+  if(a === 'aiask'){ done(); aiAsk(el.getAttribute('data-q')); return; }
+  if(a === 'aiclear'){ done(); aiSaveChat([]); render(); return; }
+  if(a === 'aikeyedit'){ done(); ui.aiKeyEdit = true; render(); return; }
+  if(a === 'aikeycancel'){ done(); ui.aiKeyEdit = false; render(); return; }
+  if(a === 'aikeydel'){ done(); try{ localStorage.removeItem(AI_KEY); }catch(e){} ui.aiKeyEdit = false; render(); toast(L('Clé retirée', 'Key removed')); return; }
+  if(a === 'aikeysave'){ done(); var v = ((document.getElementById('ai-key') || {}).value || '').trim();
+    if(!v){ toast(L('Colle d\'abord ta clé', 'Paste your key first')); return; }
+    try{ localStorage.setItem(AI_KEY, v); }catch(e){} ui.aiKeyEdit = false; render(); toast(L('Coach branché', 'Coach connected')); return; }
+}, true);
 document.addEventListener('click', function(ev){
   var el = ev.target.closest && ev.target.closest('[data-a]'); if(!el) return;
   var a = el.getAttribute('data-a');
