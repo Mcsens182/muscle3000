@@ -1176,6 +1176,7 @@ input.fx-note.fx-note-top{margin-top:6px!important;min-height:32px!important;tex
 .m4-pkt small{font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--m3-muted)}
 .m4-pkt b{font-size:17px;letter-spacing:-.02em;line-height:1.2}
 .m4-pk .m4-cue{margin-left:68px}
+.m4-ovex.m4-pk .m4-prevhead{margin-left:68px}
 /* aperçu en séance */
 .m4-ov-top{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0}
 .m4-ov-top button{width:42px;min-height:42px!important;padding:0!important;border-radius:50%!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important;color:var(--m3-ink)!important;display:flex!important;align-items:center;justify-content:center}
@@ -6717,7 +6718,8 @@ function vOv(){
   h += '<div class="m4-exlist">';
   a.exercises.forEach(function(e, i){
     var all = e.sets.every(function(s){ return s.done; }), cur = i === ft, k = 0, sj = selIndex(e), pe = pastEntries(e.name)[0];
-    h += '<button class="m4-ex m4-ovex' + (all ? ' done' : '') + (cur ? ' cur' : '') + '" data-a="goto" data-i="' + i + '"><span class="m4-ex-head"><i>' + (all ? '✓' : ('0' + (i + 1)).slice(-2)) + '</i><b>' + esc(exDisp(e.name)) + '</b><em>' + (all ? L('FAIT', 'DONE') : cur ? (started ? L('EN COURS', 'NOW') : L('EN PREMIER', 'FIRST')) : '›') + '</em></span>';
+    var th = m4Thumb(e.name), gr = exGroup(e.name), grl = gr ? (isEN() ? (GRN[gr] || gr) : gr).toUpperCase() : '', num = all ? '✓' : ('0' + (i + 1)).slice(-2);
+    h += '<button class="m4-ex m4-ovex' + (th ? ' m4-pk' : '') + (all ? ' done' : '') + (cur ? ' cur' : '') + '" data-a="goto" data-i="' + i + '"><span class="m4-ex-head">' + (th ? '<span class="m4-thumb" aria-hidden="true">' + th + '</span><span class="m4-pkt"><small>' + num + (grl ? ' · ' + esc(grl) : '') + '</small><b>' + esc(exDisp(e.name)) + '</b></span>' : '<i>' + num + '</i><b>' + esc(exDisp(e.name)) + '</b>') + '<em>' + (all ? L('FAIT', 'DONE') : cur ? (started ? L('EN COURS', 'NOW') : L('EN PREMIER', 'FIRST')) : '›') + '</em></span>';
     if(e.cue) h += '<span class="m4-cue">' + esc(trText(e.cue)) + '</span>';
     if(!all) h += '<span class="m4-prevhead">' + (pe ? L('Dernière séance le ', 'Last session on ') + fmtDate(pe.date) : L('Première fois sur cet exercice', 'First time on this exercise')) + '</span>';
     h += '<span class="m4-sets">';
