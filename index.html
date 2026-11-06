@@ -1279,6 +1279,10 @@ body .fl-top button{border:0!important;min-height:44px!important;padding:0 4px!i
 .fl-top b{font-size:14px;font-weight:700;color:var(--m3-muted);font-variant-numeric:tabular-nums}
 .fl-head{padding:14px 2px 16px}
 .fl-wrap.has-pill .fl-top{padding-top:56px;transition:padding-top .25s ease}
+/* 06.11.2026 : en séance, plus de grand vide sous « Abandonner la séance ». La marge du bas n'est gardée que si la barre fixe (Exercice suivant / Terminer) est affichée */
+#app:has(> .fl-wrap){padding-bottom:0!important}
+#app > .fl-wrap{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 24px)}
+#app:has(> .fl-cta) > .fl-wrap{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}
 /* 06.11.2026 : bandeau de repos de la séance, collé en haut comme sur l'accueil */
 body .restbar.fl-rband{position:fixed!important;top:env(safe-area-inset-top,0px);left:4px;right:4px;width:auto!important;margin:0!important;z-index:40;padding:10px 16px 10px!important;border-radius:16px!important}
 .fl-head h1{margin:0;font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
