@@ -7263,6 +7263,89 @@ setInterval(function(){
   var p = document.getElementById('fl-pring'); if(p) p.setAttribute('stroke-dashoffset', (100.5 * ri.pct / 100).toFixed(1));
 }, 250);
 
+/* 06.11.2026 : l'éditeur de séance travaille sur un brouillon. Rien n'est enregistré tant que tu ne valides pas,
+   et en quittant l'appli demande : Enregistrer, Annuler les modifications ou Continuer à modifier. */
+var edBaseRender = render, edBaseView = legacyProgView;
+var ED_LEAVE = ['wback', 'scr', 'pback', 'pvback', 'pvwback', 'pvp', 'pvw', 'pvsw', 'pedit', 'wedit', 'start', 'startempty', 'goex', 'wdup', 'news', 'm6open', 'm6go', 'm6other', 'm6actgo', 'ptab'];
+function edJson(id){ var w = prog(id); return w ? JSON.stringify(w) : null; }
+function edDirty(){ if(!ui.edSnap || ui.edSnap.id !== ui.edWk) return false; var j = edJson(ui.edSnap.id); return j != null && j !== ui.edSnap.json; }
+function edRestore(){
+  var w = ui.edSnap && prog(ui.edSnap.id); if(!w) return;
+  var o = JSON.parse(ui.edSnap.json);
+  Object.keys(w).forEach(function(k){ delete w[k]; });
+  Object.keys(o).forEach(function(k){ w[k] = o[k]; });
+}
+/* tant que le brouillon n'est pas validé, le téléphone garde la version d'avant */
+save = function(){
+  try{
+    var live = ui && ui.edSnap && prog(ui.edSnap.id), orig = live ? JSON.parse(ui.edSnap.json) : null;
+    localStorage.setItem(KEY, JSON.stringify(S, function(k, v){ return live && v === live ? orig : v; }));
+  }catch(e){}
+};
+function edBar(){
+  var on = edDirty();
+  return '<div id="ed-bar" style="display:' + (on ? 'flex' : 'none') + ';position:sticky;top:8px;z-index:6;flex-direction:column;gap:8px;padding:10px;border:2px solid currentColor;background:var(--bg, #fff)">' +
+    '<span class="lbl">' + L('MODIFICATIONS NON ENREGISTRÉES', 'UNSAVED CHANGES') + '</span>' +
+    '<div class="grid2"><button data-a="eddrop">' + L('ANNULER LES MODIFS', 'DISCARD CHANGES') + '</button><button class="solid" data-a="edsave">' + L('ENREGISTRER', 'SAVE') + '</button></div></div>';
+}
+legacyProgView = function(){
+  var h = edBaseView();
+  if(!ui.edWk || !prog(ui.edWk)) return h;
+  var b = h.indexOf('data-a="wback"'), e = b >= 0 ? h.indexOf('</button>', b) : -1;
+  return e >= 0 ? h.slice(0, e + 9) + edBar() + h.slice(e + 9) : edBar() + h;
+};
+function edAskSheet(){
+  var w = prog(ui.edWk), nm = w ? esc(trText(w.name)) : '';
+  return '<div class="sheet"><div class="pane m3-wsheet m6-sheet" role="dialog" aria-label="' + L('Modifications non enregistrées', 'Unsaved changes') + '"><div class="m3-ws-grip"></div>' +
+    '<div class="m3-section-head"><span>' + L('MODIFICATIONS NON ENREGISTRÉES', 'UNSAVED CHANGES') + '</span></div>' +
+    '<p class="m6-hint">' + L('Tu as modifié « ' + nm + ' ». Tu enregistres ces changements ?', 'You changed “' + nm + '”. Save these changes?') + '</p>' +
+    '<div style="display:flex;flex-direction:column;gap:8px;margin-top:8px"><button class="m3-primary solid" data-a="edsave">' + L('ENREGISTRER', 'SAVE') + '</button>' +
+    '<button class="m6-secondary" data-a="eddrop">' + L('Annuler les modifications', 'Discard changes') + '</button>' +
+    '<button class="m6-secondary" data-a="edstay">' + L('Continuer à modifier', 'Keep editing') + '</button></div></div></div>';
+}
+render = function(){
+  /* éditeur quitté par un autre chemin : on garde les changements, comme avant */
+  if(ui.edSnap && ui.edSnap.id !== ui.edWk){ ui.edSnap = null; ui.edAsk = null; save(); }
+  edBaseRender();
+  if(ui.edWk && prog(ui.edWk) && !ui.edSnap) ui.edSnap = {id:ui.edWk, json:edJson(ui.edWk)};
+  if(ui.edAsk){ var sh = document.getElementById('sheet'); if(sh) sh.innerHTML = trHTML(hardify(edAskSheet())); }
+};
+function edSync(){ var b = document.getElementById('ed-bar'); if(b) b.style.display = edDirty() ? 'flex' : 'none'; }
+/* reprend l'action qui avait été mise en attente (retour, onglet du bas…) */
+function edReplay(p){
+  if(!p) return;
+  var sel = '[data-a="' + p.a + '"]';
+  ['s', 'id', 'p', 'pr', 't'].forEach(function(k){ if(p[k] != null) sel += '[data-' + k + '="' + String(p[k]).replace(/"/g, '\\"') + '"]'; });
+  var el = document.querySelector((p.nav ? '.nav ' : '') + sel) || document.querySelector(sel);
+  if(el){ ui.edBypass = true; try{ el.click(); }finally{ ui.edBypass = false; } }
+  else if(p.a === 'wback'){ ui.edWk = null; render(); }
+}
+window.addEventListener('click', function(ev){
+  var el = ev.target.closest && ev.target.closest('[data-a]'); if(!el) return;
+  var a = el.getAttribute('data-a');
+  var stop = function(){ ev.stopImmediatePropagation(); ev.preventDefault(); };
+  if(a === 'edsave' || a === 'eddrop' || a === 'edstay'){
+    stop();
+    var pend = ui.edAsk; ui.edAsk = null;
+    if(a === 'edstay'){ render(); return; }
+    if(ui.edSnap){
+      if(a === 'eddrop') edRestore();
+      ui.edSnap.json = edJson(ui.edSnap.id) || ui.edSnap.json;
+    }
+    save(); render();
+    toast(a === 'edsave' ? L('Séance enregistrée', 'Session saved') : L('Modifications annulées', 'Changes discarded'));
+    edReplay(pend);
+    return;
+  }
+  if(a === 'wdel'){ ui.edSnap = null; return; }
+  if(ui.edBypass || !edDirty() || ED_LEAVE.indexOf(a) < 0) return;
+  stop();
+  ui.edAsk = {a:a, nav:!!el.closest('.nav'), s:el.getAttribute('data-s'), id:el.getAttribute('data-id'), p:el.getAttribute('data-p'), pr:el.getAttribute('data-pr'), t:el.getAttribute('data-t')};
+  render();
+}, true);
+window.addEventListener('click', function(){ setTimeout(edSync, 0); });
+document.addEventListener('change', function(){ setTimeout(edSync, 0); });
+
 ssMigrate();
 /* 1.15 : renomme une seule fois les exercices dans les programmes, la séance en cours et l'historique */
 try{ if((S.settings.eqNames || 0) < 2){
