@@ -3835,10 +3835,17 @@ function exItems(list, action){
 function createBlock(q, action, idSuffix){
   return '<div class="box inv" style="display:flex;flex-direction:column;gap:8px"><label class="lbl" for="cn-' + idSuffix + '">CRÉER CET EXERCICE</label><input class="field" id="cn-' + idSuffix + '" value="' + esc(cap(q)) + '" autocomplete="off" style="border-color:var(--ground);color:var(--ground);background:var(--ink);font-weight:700;font-size:15px"><label class="lbl" for="cg-' + idSuffix + '">GROUPE MUSCULAIRE</label><select class="field" id="cg-' + idSuffix + '" style="border-color:var(--ground);color:var(--ground);background:var(--ink)">' + groupOptions('Autre') + '</select><button data-a="' + action + '" style="background:var(--ground);color:var(--ink);border:0">+ CRÉER ET AJOUTER</button></div>';
 }
+/* nom de l'exercice qu'on remplace : en séance (replace) ou dans l'éditeur de séance (edrep) */
+function repName(){
+  if(!ui.picker) return null;
+  if(ui.picker.ctx === 'replace') return cur() ? cur().name : null;
+  if(ui.picker.ctx === 'edrep'){ var w = prog(ui.edWk), e = w && w.ex[ui.picker.i]; return e ? e.name : null; }
+  return null;
+}
 function pickResults(q){
   q = q || '';
   var res = libSearch(q, null);
-  if(ui.picker && ui.picker.ctx === 'replace' && cur()){ var g0 = (libFind(cur().name) || {}).g, cn = fold(cur().name); res = res.filter(function(e){ return fold(e.n) !== cn; }); if(g0) res = res.filter(function(e){ return e.g === g0; }).concat(res.filter(function(e){ return e.g !== g0; })); }
+  if(repName()){ var g0 = (libFind(repName()) || {}).g, cn = fold(repName()); res = res.filter(function(e){ return fold(e.n) !== cn; }); if(g0) res = res.filter(function(e){ return e.g === g0; }).concat(res.filter(function(e){ return e.g !== g0; })); }
   var exact = res.some(function(e){ return fold(e.n) === fold(q); });
   var h = '';
   if(q.trim() && !res.length) h += '<div class="empty">Aucun exercice ne correspond à « ' + esc(q) + ' ». Tu peux le créer.</div>' + createBlock(q, 'pickcreate', 'p');
@@ -3849,9 +3856,9 @@ function pickResults(q){
 function vPicker(){
   var ctx = ui.picker.ctx === 'edit' ? 'À LA SÉANCE' : 'À LA SÉANCE EN COURS';
   return '<div class="pane" role="dialog" aria-label="Ajouter un exercice" style="height:88%"><div class="row" style="justify-content:center"><div style="width:56px;height:5px;background:var(--ink)"></div></div>' +
-    '<div class="row between"><div>' + (ui.picker.ctx === 'replace' ? '<span class="lbl">' + L('REMPLACER ', 'REPLACE ') + esc(exDisp(cur().name)).toUpperCase() + '</span><div class="disp" style="font-size:32px">' + L('Par quoi ?', 'With what?') + '</div>' : '<span class="lbl">AJOUTER ' + (ui.picker.ctx === 'hist' ? 'À LA SÉANCE' : ctx) + '</span><div class="disp" style="font-size:32px">Exercice</div>') + '</div><button data-a="closesheet" aria-label="Fermer" style="width:44px;flex:none;font-size:18px">✕</button></div>' +
+    '<div class="row between"><div>' + (repName() ? '<span class="lbl">' + L('REMPLACER ', 'REPLACE ') + esc(exDisp(repName())).toUpperCase() + '</span><div class="disp" style="font-size:32px">' + L('Par quoi ?', 'With what?') + '</div>' : '<span class="lbl">AJOUTER ' + (ui.picker.ctx === 'hist' ? 'À LA SÉANCE' : ctx) + '</span><div class="disp" style="font-size:32px">Exercice</div>') + '</div><button data-a="closesheet" aria-label="Fermer" style="width:44px;flex:none;font-size:18px">✕</button></div>' +
     '<label class="lbl" for="pick-q" style="position:absolute;width:1px;height:1px;overflow:hidden">Rechercher un exercice</label><input class="field" id="pick-q" data-q="pick" value="' + esc(ui.pickQ || '') + '" placeholder="Cherche : curl, squat, poulie, dos…" autocomplete="off" autocapitalize="off" style="font-size:16px;min-height:52px">' +
-    (ui.picker.ctx === 'replace' ? '<p class="m3s-note" style="margin:0">' + L('Même groupe musculaire en premier. Tes notes et tes séries restantes passent sur l\'exercice choisi.', 'Same muscle group first. Your notes and remaining sets move to the exercise you pick.') + '</p>' : '') + '<div id="pick-res" style="display:flex;flex-direction:column">' + pickResults(ui.pickQ) + '</div></div>';
+    (repName() ? '<p class="m3s-note" style="margin:0">' + (ui.picker.ctx === 'edrep' ? L('Même groupe musculaire en premier. Les séries, les repos et la note restent en place.', 'Same muscle group first. Sets, rests and note stay as they are.') : L('Même groupe musculaire en premier. Tes notes et tes séries restantes passent sur l\'exercice choisi.', 'Same muscle group first. Your notes and remaining sets move to the exercise you pick.')) + '</p>' : '') + '<div id="pick-res" style="display:flex;flex-direction:column">' + pickResults(ui.pickQ) + '</div></div>';
 }
 function gloResults(){
   var res = libSearch(ui.gloQ || '', ui.gloG || null), h = '';
@@ -3870,6 +3877,12 @@ function vGlo(){
 }
 function addPicked(name){
   if(ui.picker && ui.picker.ctx === 'replace'){ doReplace(name); return; }
+  if(ui.picker && ui.picker.ctx === 'edrep'){
+    var rw = prog(ui.edWk), re = rw && rw.ex[ui.picker.i];
+    if(re){ var was = re.name; re.name = name; if(re.v) re.v = re.v.filter(function(x){ return fold(x) !== fold(name); }); if(re.v && !re.v.length) re.v = null; ui.picker = null; save(); render(); toast(exDisp(was) + ' → ' + exDisp(name)); }
+    else { ui.picker = null; render(); }
+    return;
+  }
   if(ui.picker && ui.picker.ctx === 'hist'){ histAddEx(name); return; }
   var lib = libFind(name), comp = lib && lib.c;
   var lo = comp ? 6 : 8, hi = comp ? 10 : 12, rest = comp ? 120 : 90;
@@ -3908,7 +3921,7 @@ function vProgEditor(){
     if(!pw.free) h += '<div class="fl2"><label class="lbl" for="w-day">JOUR</label><select class="field" id="w-day" data-ed="wday">' + dayOptions(w.day == null ? null : w.day) + '</select></div>';
     else h += '<div class="grid2"><button class="solid" data-a="start" data-p="' + w.id + '">DÉMARRER</button><select class="field" data-ed="wmove" aria-label="Déplacer vers un programme"><option value="">Ranger dans un programme…</option>' + realProgs().filter(function(q){ return !q.demo; }).map(function(q){ return '<option value="' + q.id + '">' + esc(q.name) + '</option>'; }).join('') + '</select></div>';
     w.ex.forEach(function(e, i){
-      h += '<div class="box" style="display:flex;flex-direction:column;gap:8px"><div class="row between"><span class="lbl">EXERCICE ' + ('0'+(i+1)).slice(-2) + '</span><span class="row" style="gap:4px"><button class="chip" data-a="exmv" data-i="' + i + '" data-d="-1" aria-label="Monter"' + (i ? '' : ' disabled') + ' style="min-height:36px">↑</button><button class="chip" data-a="exmv" data-i="' + i + '" data-d="1" aria-label="Descendre"' + (i < w.ex.length - 1 ? '' : ' disabled') + ' style="min-height:36px">↓</button><button class="chip" data-a="exdel" data-i="' + i + '" aria-label="Supprimer l\'exercice" style="min-height:36px">✕</button></span></div>';
+      h += '<div class="box" style="display:flex;flex-direction:column;gap:8px"><div class="row between"><span class="lbl">EXERCICE ' + ('0'+(i+1)).slice(-2) + '</span><span class="row" style="gap:4px"><button class="chip" data-a="exmv" data-i="' + i + '" data-d="-1" aria-label="Monter"' + (i ? '' : ' disabled') + ' style="min-height:36px">↑</button><button class="chip" data-a="exmv" data-i="' + i + '" data-d="1" aria-label="Descendre"' + (i < w.ex.length - 1 ? '' : ' disabled') + ' style="min-height:36px">↓</button><button class="chip" data-a="exrep" data-i="' + i + '" aria-label="Remplacer l\'exercice" style="min-height:36px">⇄ ' + L('REMPLACER', 'SWAP') + '</button><button class="chip" data-a="exdel" data-i="' + i + '" aria-label="Supprimer l\'exercice" style="min-height:36px">✕</button></span></div>';
       h += '<input class="field disp" id="e-name-' + i + '" data-ed="exname" data-i="' + i + '" value="' + esc(exDisp(e.name)) + '" aria-label="Nom de l\'exercice" style="font-size:22px">';
       var cols = 'display:grid;grid-template-columns:44px minmax(0,1fr) 44px;gap:6px';
       h += '<div class="lbl" style="' + cols + '"><span>TYPE</span><span>REPS</span><span></span></div>';
@@ -3932,6 +3945,7 @@ function vProgEditor(){
     h += '<button class="solid" data-a="exadd" style="min-height:56px">+ AJOUTER UN EXERCICE</button>';
     if(isEN()) h += '<div class="empty" style="border-style:solid">Tap <b>01</b> or <b>W</b> to switch a set between warm-up and work set. Reps: <b>4-6</b> for a range, <b>8</b> for a fixed number, <b>6-10 (AMRAP drop set)</b> for a special technique. Rest: <b>1:30</b> or <b>90</b>. The rest on the last set is the one before the next exercise. Warm-ups don\'t count toward progression. Changes apply from the next session.</div>';
     else h += '<div class="empty" style="border-style:solid">Touche <b>01</b> ou <b>W</b> pour passer une série en échauffement ou en série de travail. Reps : <b>4-6</b> pour une fourchette, <b>8</b> pour un nombre fixe, <b>6-10 (dégressive AMRAP)</b> pour une technique spéciale. Repos : <b>1:30</b> ou <b>90</b>. Le repos de la dernière série est celui avant l\'exercice suivant. Les échauffements ne comptent pas dans la progression. Les changements s\'appliquent dès la prochaine séance.</div>';
+    h += '<button data-a="wdup">⧉ ' + L('DUPLIQUER CETTE SÉANCE', 'DUPLICATE THIS SESSION') + '</button>';
     if(ui.confirm === 'wdel') h += '<div class="grid2"><button data-a="noconfirm">ANNULER</button><button class="solid" data-a="wdel">SUPPRIMER</button></div>';
     else h += '<button data-a="askwdel" style="border-style:dashed">SUPPRIMER CETTE SÉANCE</button>';
     return h + nav('prog');
@@ -3949,6 +3963,7 @@ function vProgEditor(){
     if(!p.workouts.length) h += '<div class="empty">Aucune séance pour l\'instant. Ajoute la première ci-dessous.</div>';
     h += '<div style="display:flex;flex-direction:column;gap:6px">' + p.workouts.map(function(w){ return '<button class="box exrow" data-a="wedit" data-id="' + w.id + '"><span class="row between" style="width:100%"><span class="disp" style="font-size:26px">' + esc(w.name) + '</span><span class="lbl">' + (p.free ? 'MODIFIER' : w.day == null ? 'SANS JOUR' : DAYNAMES[w.day].toUpperCase()) + ' ▸</span></span><span class="lbl" style="line-height:1.6">' + w.ex.length + ' EXOS · ' + w.ex.map(function(e){ return esc(e.name); }).join(' · ') + '</span></button>'; }).join('') + '</div>';
     h += '<div class="box" style="display:flex;flex-direction:column;gap:8px"><span class="lbl">NOUVELLE SÉANCE</span><label class="lbl" for="nw-name" style="position:absolute;width:1px;height:1px;overflow:hidden">Nom de la séance</label><input class="field" id="nw-name" placeholder="Ex. Full body, Push, Jambes…" autocomplete="off">' + (p.free ? '' : '<label class="lbl" for="nw-day" style="position:absolute;width:1px;height:1px;overflow:hidden">Jour</label><select class="field" id="nw-day">' + dayOptions(null) + '</select>') + '<button class="solid" data-a="wadd">+ AJOUTER LA SÉANCE</button></div>';
+    if(!p.free) h += '<button data-a="pdup">⧉ ' + L('DUPLIQUER CE PROGRAMME', 'DUPLICATE THIS PROGRAM') + '</button>';
     if(!p.free && realProgs().length > 1){
       if(ui.confirm === 'pdel') h += '<div class="grid2"><button data-a="noconfirm">ANNULER</button><button class="solid" data-a="pdel">SUPPRIMER</button></div>';
       else h += '<button data-a="askpdel" style="border-style:dashed">SUPPRIMER CE PROGRAMME</button>';
@@ -4537,6 +4552,16 @@ document.addEventListener('click', function(ev){
       if(libFind(gn)){ toast('Cet exercice existe déjà'); ui.gloQ = gn; break; }
       createCustom(gn, document.getElementById('cg-g').value); ui.gloQ = cap(gn); toast('Exercice créé'); break;
     case 'exdel': prog(ui.edWk).ex.splice(+el.getAttribute('data-i'), 1); save(); break;
+    case 'exrep': ui.picker = {ctx:'edrep', i:+el.getAttribute('data-i')}; ui.pickQ = ''; ui.sheet = null; render(); return;
+    case 'wdup':
+      var ow = prog(ui.edWk), op = wkProg(ui.edWk), cw = JSON.parse(JSON.stringify(ow));
+      cw.id = uid(); cw.name = ow.name + L(' (copie)', ' (copy)'); cw.day = null;
+      op.workouts.splice(op.workouts.indexOf(ow) + 1, 0, cw); ui.edWk = cw.id; ui.confirm = null; save(); toast(L('Séance dupliquée, sans jour fixe', 'Session duplicated, no fixed day')); window.scrollTo(0,0); break;
+    case 'pdup':
+      var sp = progById(ui.edProg), cp = JSON.parse(JSON.stringify(sp));
+      cp.id = uid(); cp.name = sp.name + L(' (copie)', ' (copy)'); delete cp.libId; delete cp.demo;
+      cp.workouts.forEach(function(x){ x.id = uid(); });
+      S.programs.splice(S.programs.indexOf(sp) + 1, 0, cp); ui.edProg = cp.id; ui.confirm = null; save(); toast(L('Programme dupliqué', 'Program duplicated')); window.scrollTo(0,0); break;
     case 'settype':
       var ts = prog(ui.edWk).ex[+el.getAttribute('data-i')].s[+el.getAttribute('data-j')];
       ts.warm = !ts.warm; if(ts.warm){ ts.sp = null; if(ts.rest > 90) ts.rest = 60; } save(); break;
