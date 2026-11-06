@@ -1278,6 +1278,7 @@ html.hud .m5-prem,html.hud .m5-choices span,html.hud .m5-bub{border-radius:var(-
 body .fl-top button{border:0!important;min-height:44px!important;padding:0 4px!important;font-size:14px!important;font-weight:700!important;color:var(--m3-muted)!important}
 .fl-top b{font-size:14px;font-weight:700;color:var(--m3-muted);font-variant-numeric:tabular-nums}
 .fl-head{padding:14px 2px 16px}
+.fl-wrap.has-pill .fl-top{padding-top:82px;transition:padding-top .25s ease}
 .fl-head h1{margin:0;font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
 .fl-head p{margin:6px 0 10px;font-size:14px;font-weight:600;color:var(--m3-muted);font-variant-numeric:tabular-nums}
 .fl-list{display:flex;flex-direction:column;gap:10px}
@@ -7087,7 +7088,9 @@ function flRestOverlay(a, ri){
 function vFlow(){
   var a = S.active, ri = restInfo(), done = 0, tot = 0;
   a.exercises.forEach(function(e){ var c = flCount(e); done += c[0]; tot += c[1]; });
-  var h = '<div class="fl-wrap"><header class="fl-top"><button data-a="scr" data-s="home">← ' + L('Accueil', 'Home') + '</button><b id="clock">● ' + mmss((Date.now() - a.start) / 1000) + '</b></header>';
+  /* 06.11.2026 : quand le repos est réduit en pilule, elle reste collée en haut et la barre « ← Accueil » passe juste dessous */
+  var pill = ri && (ri.over || ui.restMin);
+  var h = '<div class="fl-wrap' + (pill ? ' has-pill' : '') + '"><header class="fl-top"><button data-a="scr" data-s="home">← ' + L('Accueil', 'Home') + '</button><b id="clock">● ' + mmss((Date.now() - a.start) / 1000) + '</b></header>';
   h += '<header class="fl-head"><h1>' + esc(trText(a.name)) + '</h1><p>' + done + ' / ' + tot + L(' séries', ' sets') + L(' · fin vers ', ' · ends around ') + etaTxt(a) + '</p><div class="m3-progress"><i style="width:' + Math.round(done / Math.max(1, tot) * 100) + '%"></i></div></header>';
   h += '<div class="fl-list" id="fl-list">' + a.exercises.map(function(e, i){ return flCard(e, i, ri); }).join('') + '</div>';
   h += '<button class="fl-addex" data-a="addex">' + FL_ICO.plus + ' ' + L('Ajouter un exercice', 'Add an exercise') + '</button>';
