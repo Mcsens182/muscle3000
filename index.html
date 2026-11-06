@@ -1168,6 +1168,14 @@ input.fx-note.fx-note-top{margin-top:6px!important;min-height:32px!important;tex
 .m4-r{font-size:11px;font-weight:700;color:var(--m3-muted);text-align:right;font-variant-numeric:tabular-nums}
 .m4-ss,.m4-link{font-size:9px;font-weight:800;letter-spacing:.1em;color:var(--m3-accent);margin-top:6px}
 .m4-link{text-align:center;margin:-2px 0 8px}
+/* pictos sur la fiche de séance */
+.m4-pk .m4-ex-head{gap:12px}
+.m4-thumb{flex:none;width:56px;height:56px;border-radius:14px;background:var(--m3-bg);border:1px solid var(--m3-line);color:var(--m3-ink);display:flex;align-items:center;justify-content:center;overflow:hidden;--ground:var(--m3-bg)}
+.m4-thumb svg{display:block;width:100%;height:100%}
+.m4-pkt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.m4-pkt small{font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--m3-muted)}
+.m4-pkt b{font-size:17px;letter-spacing:-.02em;line-height:1.2}
+.m4-pk .m4-cue{margin-left:68px}
 /* aperçu en séance */
 .m4-ov-top{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0}
 .m4-ov-top button{width:42px;min-height:42px!important;padding:0!important;border-radius:50%!important;border:1px solid var(--m3-line)!important;background:var(--m3-card)!important;color:var(--m3-ink)!important;display:flex!important;align-items:center;justify-content:center}
@@ -6481,6 +6489,10 @@ function m4ProgView(p){
   });
   return h + '</div>';
 }
+/* picto d'un exercice sur la fiche de séance : le mannequin en position d'arrivée */
+function m4Thumb(name){
+  try{ var parts = moveFrames(name).split('<svg'); return parts.length > 2 ? '<svg' + parts[2].split('</svg>')[0] + '</svg>' : ''; }catch(err){ return ''; }
+}
 function m4WkView(p, w){
   var lib = !!p.lib, h = '<button class="m4-back" data-a="pvwback">← ' + esc(p.free ? L('Séances libres', 'Free sessions') : trText(p.name)) + '</button>';
   h += '<header class="m3-page-head m4-head"><div><span class="m3-eyebrow">' + (w.day != null && !p.free ? dayName(w.day).toUpperCase() : L('SANS JOUR FIXE', 'NO FIXED DAY')) + '</span><h1>' + esc(trText(w.name)) + '</h1><p class="m4-meta">' + m4WkMeta(w) + '</p></div>' + (lib ? '' : '<button class="m3p-edit" data-a="wedit" data-id="' + esc(w.id) + '" aria-label="' + L('Modifier la séance', 'Edit session') + '">✎</button>') + '</header>';
@@ -6488,7 +6500,8 @@ function m4WkView(p, w){
   h += '<div class="m4-exlist">';
   w.ex.forEach(function(e, i){
     var k = 0;
-    h += '<section class="m4-ex"><div class="m4-ex-head"><i>' + ('0' + (i + 1)).slice(-2) + '</i><b>' + esc(exDisp(e.name)) + '</b><button class="m4-info" data-a="fiche" data-n="' + esc(e.name) + '" aria-label="' + esc(L('Fiche ', 'Info: ') + exDisp(e.name)) + '">ⓘ</button></div>';
+    var th = m4Thumb(e.name), gr = exGroup(e.name), grl = gr ? (isEN() ? (GRN[gr] || gr) : gr).toUpperCase() : '';
+    h += '<section class="m4-ex' + (th ? ' m4-pk' : '') + '"><div class="m4-ex-head">' + (th ? '<span class="m4-thumb" aria-hidden="true">' + th + '</span><span class="m4-pkt"><small>' + ('0' + (i + 1)).slice(-2) + (grl ? ' · ' + esc(grl) : '') + '</small><b>' + esc(exDisp(e.name)) + '</b></span>' : '<i>' + ('0' + (i + 1)).slice(-2) + '</i><b>' + esc(exDisp(e.name)) + '</b>') + '<button class="m4-info" data-a="fiche" data-n="' + esc(e.name) + '" aria-label="' + esc(L('Fiche ', 'Info: ') + exDisp(e.name)) + '">ⓘ</button></div>';
     if(e.cue) h += '<p class="m4-cue">' + esc(trText(e.cue)) + '</p>';
     h += '<div class="m4-sets"><div class="m4-set m4-set-h"><span></span><span>' + L('CIBLE', 'TARGET') + '</span><span>' + L('DERNIÈRE', 'LAST') + '</span><span>' + L('REPOS', 'REST') + '</span></div>';
     e.s.forEach(function(s, j){
