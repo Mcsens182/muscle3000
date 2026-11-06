@@ -7367,7 +7367,10 @@ render();
 
 <script>
 /* PWA : mode hors-ligne + stockage protégé */
-if('serviceWorker' in navigator){ window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); }); }
+if('serviceWorker' in navigator){ window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).then(function(reg){
+  /* 06.11.2026 : quand on revient sur l'appli, on vérifie s'il y a une mise à jour */
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'visible') reg.update().catch(function(){}); });
+}).catch(function(){}); }); }
 try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
 </script>
 </body></html>
