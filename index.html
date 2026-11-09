@@ -7149,10 +7149,7 @@ function flRestOverlay(a, ri){
   h += '<div class="fx-rest-adj"><button data-a="tadj" data-d="-15">−15 s</button><button data-a="tadj" data-d="15">+15 s</button></div>';
   var sup = ri.r.label === 'SUPERSET' ? 'SUPERSET · ' : '';
   h += '<div class="fx-rest-next"><div><span>' + L('ENSUITE · ', 'NEXT · ') + sup + (ns ? fxSetLabel(ex, nj).split(' · ')[0] + (a.idx !== ri.r.ex ? ' · ' + esc(exDisp(ex.name)).toUpperCase() : '') : L('FIN DE L\'EXERCICE', 'END OF EXERCISE')) + '</span><b>' + (ns ? tgtTxt(ex.name, nw, ns.lo, ns.hi) : esc(fxNextTxt(a, ex, null))) + '</b>' + (function(){ var lx = ns ? fxLast(ex, nj) : null; return lx ? '<small class="fx-rest-prev">' + L('Dernière fois : ', 'Last time: ') + fmtS(ex.name, lx.w, lx.r) + '</small>' : ''; })() + '</div><button data-a="skip">' + L('GO', 'GO') + ' →</button></div>';
-  h += '<div class="fl-strip" aria-label="' + L('La séance', 'The session') + '">' + a.exercises.map(function(e, i){
-    var sj = selIndex(e), now = i === a.idx;
-    return '<button class="' + (now ? 'now' : '') + '" data-a="flgo" data-i="' + i + '"><b>' + esc(exDisp(e.name)) + '</b><span class="fl-seg">' + e.sets.map(function(s, j){ return '<i class="' + (s.warm ? 'w ' : '') + (s.done ? 'ok' : now && j === sj ? 'nx' : '') + '"></i>'; }).join('') + '</span></button>';
-  }).join('') + '</div>';
+  /* 09.11.2026 : plus de bande des exercices de la séance en bas du repos (demande de Maxence) */
   return h + '</section>';
 }
 function vFlow(){
