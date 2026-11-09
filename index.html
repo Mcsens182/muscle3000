@@ -1316,6 +1316,9 @@ body .fl-note{width:100%;box-sizing:border-box;border:0!important;outline:0;back
 .fl-row{border:1.5px solid transparent;border-radius:12px;padding:4px}
 .fl-row.done{background:color-mix(in srgb,var(--m3-accent) 9%,var(--m3-card))}
 .fl-row.next{border:1.5px dashed var(--m3-accent)}
+.fl-row.fl-edit{border:1.5px solid var(--m3-accent)}
+.fl-edbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-2px 0 8px;padding:0 4px;font-size:12px;font-weight:700;color:var(--m3-muted)}
+body .fl-edbar button{min-height:40px!important;min-width:84px!important;border-radius:12px!important;background:var(--m3-accent)!important;color:var(--m3-card)!important;border:0!important;font-weight:800!important;font-size:14px!important}
 .fl-row.later{color:var(--m3-muted)}
 body .fl-n{width:42px;min-height:36px!important;padding:0!important;border:0!important;border-radius:10px!important;background:color-mix(in srgb,var(--m3-ink) 6%,transparent)!important;font-size:14px!important;font-weight:800!important}
 body .fl-row.done .fl-n{background:color-mix(in srgb,var(--m3-accent) 16%,transparent)!important}
@@ -2003,6 +2006,12 @@ function selIndex(ex){
   for(var j=0;j<ex.sets.length;j++) if(!ex.sets[j].done) return j;
   return null;
 }
+/* 09.11.2026 : série validée en cours de modification (poids / reps), sans la dévalider ni relancer le repos */
+function flEdJ(ex){
+  var f = ui.flEd; if(!f || !S.active || !ex || ex !== cur() || f.i !== S.active.idx) return null;
+  var s = ex.sets[f.j]; return s && s.done ? f.j : null;
+}
+function edIndex(ex){ var e = flEdJ(ex); return e != null ? e : selIndex(ex); }
 function validate(){
   var ex = cur(), j = selIndex(ex); if(j == null) return;
   var s = ex.sets[j];
@@ -4542,8 +4551,8 @@ document.addEventListener('click', function(ev){
     case 'pushtoggle': m3PushToggle(); return;
     case 'pushtest': m3PushTest(); return;
     case 'restshow': var rb = document.getElementById('rest-band'); if(rb) rb.scrollIntoView({behavior:'smooth', block:'center'}); return;
-    case 'w': j = selIndex(ex); if(j != null){ var s1 = ex.sets[j]; s1.w = Math.max(0, Math.round(((s1.w != null ? s1.w : (s1.sw || 0)) + d * inc())*100)/100); s1.trend = null; save(); } break;
-    case 'r': j = selIndex(ex); if(j != null){ var s2 = ex.sets[j]; s2.r = Math.max(0, (s2.r != null ? s2.r : (s2.sr || 0)) + d * (exType(ex.name) === 'time' ? 5 : 1)); s2.trend = null; save(); } break;
+    case 'w': j = edIndex(ex); if(j != null){ var s1 = ex.sets[j]; s1.w = Math.max(0, Math.round(((s1.w != null ? s1.w : (s1.sw || 0)) + d * inc())*100)/100); s1.trend = null; save(); } break;
+    case 'r': j = edIndex(ex); if(j != null){ var s2 = ex.sets[j]; s2.r = Math.max(0, (s2.r != null ? s2.r : (s2.sr || 0)) + d * (exType(ex.name) === 'time' ? 5 : 1)); s2.trend = null; save(); } break;
     case 'validate': validate(); return;
     case 'addex': openPicker('session'); return;
     case 'addcancel': ui.adding = false; break;
@@ -6186,7 +6195,7 @@ function doReplace(name){
 /* ---------- pavé numérique (remplace le clavier du téléphone en séance) ---------- */
 function vPad(){
   var p = ui.pad, ex = cur(); if(!ex){ ui.pad = null; return ''; }
-  var xt = exType(ex.name), isW = p.f === 'w', j = selIndex(ex), s = j != null ? ex.sets[j] : null;
+  var xt = exType(ex.name), isW = p.f === 'w', j = edIndex(ex), s = j != null ? ex.sets[j] : null;
   var title = isW ? wLab(ex.name) : rLab(ex.name), unit = isW ? 'kg' : (xt === 'time' ? 's' : 'reps');
   var ph = s ? (isW ? (s.w != null ? kg(s.w) : s.sw != null ? kg(s.sw) : (xt !== 'w' ? '0' : '')) : (s.r != null ? String(s.r) : s.sr != null ? String(s.sr) : '')) : '';
   var shown = p.v !== '' ? p.v : ph;
@@ -6206,7 +6215,7 @@ function padKey(k){
   p.v = v === '0' ? k : v + k;
 }
 function padOk(){
-  var p = ui.pad, ex = cur(), j = ex ? selIndex(ex) : null; ui.pad = null;
+  var p = ui.pad, ex = cur(), j = ex ? edIndex(ex) : null; ui.pad = null;
   if(j == null || p.v === '') return;
   var s = ex.sets[j], n = num(p.v); if(n == null) return;
   if(p.f === 'w') s.w = Math.round(n * 100) / 100; else s.r = Math.round(n);
@@ -6216,7 +6225,7 @@ function padOk(){
 /* ---------- appui long sur + et − : la valeur défile ---------- */
 var lp = null;
 function stepVal(a, d){
-  var ex = cur(), j = ex ? selIndex(ex) : null; if(j == null) return;
+  var ex = cur(), j = ex ? edIndex(ex) : null; if(j == null) return;
   var s = ex.sets[j];
   if(a === 'w'){ s.w = Math.max(0, Math.round(((s.w != null ? s.w : (s.sw || 0)) + d * inc()) * 100) / 100); var iw = document.getElementById('in-w'); if(iw){ iw.value = kg(s.w); iw.classList.remove('sug'); } var iw2 = document.getElementById('in-w2'); if(iw2){ var xw = exType(ex.name); iw2.innerHTML = (xw === 'w' ? kg(s.w) : (s.w ? '+' + kg(s.w) : '0')) + '<i>kg</i>'; iw2.className = ''; } }
   else { s.r = Math.max(0, (s.r != null ? s.r : (s.sr || 0)) + d * (exType(ex.name) === 'time' ? 5 : 1)); var ir = document.getElementById('in-r'); if(ir){ ir.value = s.r; ir.classList.remove('sug'); } var ir2 = document.getElementById('in-r2'); if(ir2){ ir2.innerHTML = s.r + (exType(ex.name) === 'time' ? '<i>s</i>' : ''); ir2.className = ''; } }
@@ -6402,6 +6411,16 @@ function m3fSettings(name){
   return h + '</section>';
 }
 
+/* 09.11.2026 : toute autre action ferme la modification d'une série validée */
+window.addEventListener('click', function(ev){
+  if(!ui.flEd) return;
+  var el = ev.target.closest && ev.target.closest('[data-a],[data-pad]'); if(!el) return;
+  if(el.hasAttribute('data-pad')) return;
+  var a = el.getAttribute('data-a');
+  if(/^(w|r|padk|padok|closesheet|fledit|fledok)$/.test(a)) return;
+  ui.flEd = null;
+}, true);
+
 /* ---------- actions de la 1.15 : écoutées avant le moteur principal ---------- */
 document.addEventListener('click', function(ev){
   var el = ev.target.closest && ev.target.closest('[data-a],[data-pad]'); if(!el) return;
@@ -6426,6 +6445,11 @@ document.addEventListener('click', function(ev){
       j = +el.getAttribute('data-j'); s = ex && ex.sets[j]; if(!s) return;
       s.done = false; s.redo = true; ex.sel = j; ui.fixLast = false; save(); return stop();
     case 'fixlast': ui.fixLast = true; return stop();
+    case 'fledit':
+      if(!S.active) return; j = +el.getAttribute('data-j'); s = ex && ex.sets[j]; if(!s || !s.done) return stop();
+      ui.flEd = {i:S.active.idx, j:j}; return stop();
+    case 'fledok':
+      ui.flEd = null; if(S.active) save(); toast(L('Série modifiée', 'Set updated')); return stop();
     case 'fixok': ui.fixLast = false; toast(L('Série corrigée', 'Set corrected')); return stop();
     case 'fxw': case 'fxr':
       rr = S.active && S.active.rest; s = rr && S.active.exercises[rr.ex] && S.active.exercises[rr.ex].sets[rr.set]; if(!s) return stop();
@@ -7007,7 +7031,8 @@ function flStepper(e, s){
   return h + '</div>';
 }
 function flRows(e, i, open, ri){
-  var a = S.active, sj = open ? selIndex(e) : null, k = 0, h = '', nextStep = '';
+  var a = S.active, sj = open ? selIndex(e) : null, k = 0, h = '', nextStep = '', ej = open ? flEdJ(e) : null;
+  if(ej != null) sj = null; /* une seule ligne éditable à la fois */
   h += '<div class="fl-cols" aria-hidden="true"><span>' + L('SÉRIE', 'SET') + '</span><span>' + L('PRÉC.', 'PREV.') + '</span><span>' + (exType(e.name) === 'w' ? 'KG' : L('LEST', 'EXTRA')) + '</span><span>' + (exType(e.name) === 'time' ? L('SEC', 'SEC') : 'REPS') + '</span><span></span></div>';
   e.sets.forEach(function(s, j){
     var lab = s.warm ? 'W' : String(++k), isNext = open && j === sj && !s.done, lx = fxLast(e, j);
@@ -7016,12 +7041,19 @@ function flRows(e, i, open, ri){
       if(live) h += '<div class="fl-sep live"><span id="fl-sep-t">' + mmss(ri.left) + '</span>' + L(' en cours', ' left') + '<span class="fl-tr"><i id="fl-sep-b" style="width:' + Math.min(100, ri.pct) + '%"></i></span></div>';
       else h += flRestSep(e, i, j - 1);
     }
-    var cls = 'fl-row' + (s.done ? ' done' : isNext ? ' next' : ' later');
+    var cls = 'fl-row' + (s.done ? ' done' : isNext ? ' next' : ' later') + (ej === j ? ' fl-edit' : '');
     h += '<div class="' + cls + '">';
     h += open ? '<button class="fl-n' + (s.warm ? ' w' : '') + '" data-a="flwarm" data-j="' + j + '" aria-label="' + (s.warm ? L('Repasser en série de travail', 'Make it a working set') : L('Passer en échauffement', 'Make it a warm-up')) + '">' + lab + '</button>' : '<span class="fl-n' + (s.warm ? ' w' : '') + '" style="display:flex;align-items:center;justify-content:center;min-height:36px">' + lab + '</span>';
     var prev = lx ? fmtS(e.name, lx.w, lx.r) : '—';
     var prevBtn = open && !s.done && lx ? '<button class="fl-prev fl-use" data-a="uselast" data-j="' + j + '" aria-label="' + L('Reprendre ', 'Reuse ') + prev + '">' + prev + '</button>' : '<span class="fl-prev">' + prev + '</span>';
-    if(isNext){
+    if(ej === j){
+      var xe = exType(e.name);
+      h += '<span class="fl-prev">' + prev + '</span>';
+      h += '<input class="fl-cell" id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + (s.w != null ? kg(s.w) : (xe !== 'w' ? '0' : '')) + '" aria-label="' + wLab(e.name) + '">';
+      h += '<input class="fl-cell" id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + (s.r != null ? s.r : '') + '" aria-label="' + rLab(e.name) + '">';
+      h += '<button class="fl-ck" data-a="fledok" aria-label="' + L('Fin de la modification', 'Done editing') + '">' + FL_ICO.check + '</button>';
+      nextStep = flStepper(e, s) + '<div class="fl-edbar"><span>' + L('Série validée · modification', 'Logged set · editing') + '</span><button data-a="fledok">' + L('OK', 'OK') + '</button></div>';
+    } else if(isNext){
       var xt = exType(e.name);
       h += prevBtn;
       h += '<input class="fl-cell' + (s.w == null ? ' sug' : '') + '" id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + (s.w != null ? kg(s.w) : '') + '" placeholder="' + (s.sw != null ? kg(s.sw) : xt !== 'w' ? '0' : '—') + '" aria-label="' + wLab(e.name) + '">';
@@ -7031,6 +7063,7 @@ function flRows(e, i, open, ri){
     } else {
       var vw = flVal(flW(e.name, s.w), s.done ? null : flW(e.name, s.sw)), vr = flVal(flR(e.name, s.r), s.done ? null : flR(e.name, s.sr));
       if(open && !s.done) h += prevBtn + '<button class="fl-mid fl-mid2" data-a="sel" data-j="' + j + '" aria-label="' + L('Choisir ', 'Pick ') + flSetName(e, j) + '"><span class="fl-v">' + vw + '</span><span class="fl-v">' + vr + '</span></button>';
+      else if(open && s.done) h += '<span class="fl-prev">' + prev + '</span><button class="fl-mid fl-mid2" data-a="fledit" data-j="' + j + '" aria-label="' + L('Modifier le poids et les reps de ', 'Edit weight and reps of ') + flSetName(e, j) + '"><span class="fl-v">' + vw + '</span><span class="fl-v">' + vr + '</span></button>';
       else h += '<span class="fl-prev">' + prev + '</span><span class="fl-v">' + vw + '</span><span class="fl-v">' + vr + '</span>';
       if(!open) h += '<span></span>';
       else if(s.done) h += '<button class="fl-ck" data-a="reopen" data-j="' + j + '" aria-label="' + L('Corriger ', 'Fix ') + flSetName(e, j) + '">' + FL_ICO.check + '</button>';
