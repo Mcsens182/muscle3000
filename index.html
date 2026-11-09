@@ -1838,17 +1838,44 @@ function library(){
   return out;
 }
 function libFind(n){ var k = fold(n), L = library(); for(var i=0;i<L.length;i++) if(fold(L[i].n) === k) return L[i]; for(var o in EQREN) if(fold(o) === k) return libFind(EQREN[o]); return null; }
+/* 09.11.2026 : la recherche comprend l'anglais, quelle que soit la langue de l'appli.
+   Chaque exercice est cherchable par son nom FR, son nom EN (EXN), son groupe FR/EN, son matériel FR/EN
+   et quelques mots courants de salle (EXALIAS). « pullup », « squats », « bench » fonctionnent. */
+var EXALIAS = {
+  'Dips':'dip','Pec deck':'pec fly chest fly machine butterfly','Reverse pec deck':'rear delt machine reverse fly',
+  'Deadlift barre':'conventional deadlift','Rack pull barre':'rack pull','Overhead press barre':'ohp shoulder press',
+  'Développé militaire barre':'ohp overhead press','Face pull poulie':'rope face pull','Upright row barre':'upright row',
+  'Dead hang':'hang bar hang','Squat barre high bar':'back squat barbell squat','Squat barre low bar':'back squat barbell squat',
+  'Squat barre':'back squat barbell squat','Front squat barre':'front squat','Goblet squat haltère':'goblet squat',
+  'Leg extension machine':'quad extension knee extension','Step-up haltères':'step up','Romanian deadlift barre':'rdl',
+  'Sumo deadlift barre':'sumo','Hip thrust barre':'glute thrust','Leg curl machine':'hamstring curl',
+  'Nordic curl':'nordic hamstring','Glute bridge':'hip bridge','Crunch':'sit up abs crunch','Ab wheel':'ab roller rollout',
+  'Sled push':'prowler','Assault bike':'air bike','Tractions':'pullup chinup','Pompes':'pushup press up',
+  'Gainage':'plank','Gainage latéral':'side plank','Presse à cuisses':'leg press','Rameur':'rowing machine erg',
+  'Vélo':'bike cycling','Tapis de course':'treadmill running','Corde à sauter':'jump rope skipping',
+  'Extensions lombaires':'back extension hyperextension','Barre au front':'skull crusher lying triceps extension'
+};
+function exHay(n, g){
+  var k = eqOf(n), eq = k && EQ_LBL[k] ? EQ_LBL[k][0] + ' ' + EQ_LBL[k][1] : '';
+  var h = fold(n + ' ' + (EXN[n] || '') + ' ' + (EXALIAS[n] || '') + ' ' + (g || '') + ' ' + (GRN[g] || '') + ' ' + eq);
+  return h + ' | ' + h.replace(/ /g, '');
+}
+/* chaque mot tapé doit se retrouver ; un « s » final est toléré (squats → squat, raises → raise) */
+function exMatch(hay, q){
+  return fold(q).split(' ').filter(Boolean).every(function(w){
+    return hay.indexOf(w) >= 0 || (w.length > 3 && w.slice(-1) === 's' && hay.indexOf(w.slice(0, -1)) >= 0);
+  });
+}
 function libSearch(q, group){
-  var words = fold(q).split(' ').filter(Boolean);
   var res = library().filter(function(e){
     if(group && e.g !== group) return false;
-    var hay = fold(e.n + ' ' + e.g + ' ' + eqLbl(eqOf(e.n)) + (isEN() ? ' ' + exDisp(e.n) + ' ' + (GRN[e.g] || '') : ''));
-    return words.every(function(w){ return hay.indexOf(w) >= 0; });
+    return exMatch(exHay(e.n, e.g), q);
   });
-  var f = fold(q);
+  var f = fold(q); if(f.length > 3 && f.slice(-1) === 's') f = f.slice(0, -1);
+  function pre(e){ var d = exDisp(e.n); return fold(d).indexOf(f) === 0 || fold(e.n).indexOf(f) === 0 || fold(EXN[e.n] || '').indexOf(f) === 0 ? 0 : 1; }
   res.sort(function(a, b){
-    var an = exDisp(a.n), bn = exDisp(b.n), sa = fold(an).indexOf(f) === 0 || fold(a.n).indexOf(f) === 0 ? 0 : 1, sb = fold(bn).indexOf(f) === 0 || fold(b.n).indexOf(f) === 0 ? 0 : 1;
-    return sa - sb || GROUPS.indexOf(a.g) - GROUPS.indexOf(b.g) || an.localeCompare(bn, isEN() ? 'en' : 'fr');
+    var an = exDisp(a.n), bn = exDisp(b.n);
+    return pre(a) - pre(b) || GROUPS.indexOf(a.g) - GROUPS.indexOf(b.g) || an.localeCompare(bn, isEN() ? 'en' : 'fr');
   });
   return res;
 }
@@ -6268,7 +6295,7 @@ function recRows(rd, list){
   return list.map(function(n){ var b = rd.best[n]; return '<button class="m3-record" data-a="fiche" data-n="' + esc(n) + '"><span>' + esc(exDisp(n)) + '<small>' + L('Record du ', 'Record on ') + fmtDate(b.d) + '</small></span><b>' + fmtS(n, b.w, b.r) + '</b></button>'; }).join('');
 }
 function m3RecSection(){
-  var rd = recData(), q = fold(ui.recQ || ''), list = q ? rd.names.filter(function(n){ return fold(exDisp(n) + ' ' + n).indexOf(q) >= 0; }) : rd.names;
+  var rd = recData(), q = fold(ui.recQ || ''), list = q ? rd.names.filter(function(n){ return exMatch(exHay(n, ''), q); }) : rd.names;
   var shown = ui.allRec || q ? list : list.slice(0, 8);
   var h = '<section class="m3-block"><div class="m3-section-head"><span>' + L('RECORDS · LES PLUS RÉCENTS D\'ABORD', 'RECORDS · MOST RECENT FIRST') + '</span><b>' + rd.names.length + '</b></div>';
   if(rd.names.length > 8 && (ui.allRec || q)) h += '<input class="field m3-recq" data-q="rec" value="' + esc(ui.recQ || '') + '" placeholder="' + L('Chercher un exercice…', 'Find an exercise…') + '" autocomplete="off" autocapitalize="off" aria-label="' + L('Chercher un record', 'Find a record') + '">';
@@ -6279,7 +6306,7 @@ function m3RecSection(){
 document.addEventListener('input', function(ev){
   if(!ev.target.getAttribute || ev.target.getAttribute('data-q') !== 'rec') return;
   ui.recQ = ev.target.value;
-  var rd = recData(), q = fold(ui.recQ), list = q ? rd.names.filter(function(n){ return fold(exDisp(n) + ' ' + n).indexOf(q) >= 0; }) : rd.names;
+  var rd = recData(), q = fold(ui.recQ), list = q ? rd.names.filter(function(n){ return exMatch(exHay(n, ''), q); }) : rd.names;
   var box = document.getElementById('rec-res'); if(box) box.innerHTML = trHTML(recRows(rd, list));
 });
 
