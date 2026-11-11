@@ -1112,6 +1112,18 @@ button.m3-opt{display:flex!important;flex-direction:column;align-items:flex-star
 button.m3-opt b{font-size:15px;font-weight:800}
 button.m3-opt small{font-size:12px;font-weight:500;line-height:1.45;color:var(--m3-muted)}
 button.m3-opt:first-of-type{border:2px solid var(--m3-ink)!important}
+/* 11.11.2026 : encart de fin de séance modifiée plus visible */
+body #m3-end{margin:10px 0 14px!important;border:2px solid var(--m3-accent)!important;background:color-mix(in srgb,var(--m3-accent) 9%,var(--m3-card))!important;box-shadow:0 8px 24px color-mix(in srgb,var(--m3-accent) 18%,transparent)!important;scroll-margin:90px}
+.m3-end-tag{align-self:flex-start;background:var(--m3-accent);color:var(--m3-card);font-size:11px;font-weight:900;letter-spacing:.1em;padding:5px 10px;border-radius:999px}
+body #m3-end button.m3-opt{display:grid!important;grid-template-columns:36px 1fr 14px;column-gap:12px;row-gap:2px;align-items:center;min-height:68px!important;border:2px solid var(--m3-line)!important}
+body #m3-end button.m3-opt::after{content:'→';grid-column:3;grid-row:1/3;font-weight:900;color:var(--m3-accent)}
+.m3-opt-ic{grid-column:1;grid-row:1/3;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:900;font-size:17px;background:color-mix(in srgb,var(--m3-accent) 16%,transparent);color:var(--m3-accent)}
+body #m3-end button.m3-opt b{grid-column:2;font-size:16px}
+body #m3-end button.m3-opt small{grid-column:2}
+body #m3-end button.m3-opt:active{border-color:var(--m3-accent)!important;transform:scale(.985)}
+#m3-end.pulse{animation:m3endPulse 1.1s ease 2}
+@keyframes m3endPulse{0%,100%{box-shadow:0 8px 24px color-mix(in srgb,var(--m3-accent) 18%,transparent)}50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--m3-accent) 45%,transparent)}}
+@media (prefers-reduced-motion:reduce){#m3-end.pulse{animation:none}}
 html.hud body button.m3-opt{border-radius:var(--h-r)!important}
 </style>
 <style id="m3k-v116">
@@ -2141,7 +2153,7 @@ function finish(endAt){
   });
   rec.prs = prs;
   if(rec.exercises.length){ S.history.push(rec); sortHist(); }
-  S.active = null; ui.last = rec; ui.screen = 'done'; ui.confirm = null; ui.staleOk = false; save(); releaseWake(); render();
+  S.active = null; ui.last = rec; ui.pendWarn = false; ui.screen = 'done'; ui.confirm = null; ui.staleOk = false; save(); releaseWake(); render();
 }
 function bestFor(name){
   var best = {e:0, w:null, r:null};
@@ -2526,11 +2538,10 @@ function vDone(){
   var h = '<div class="top"><span>SÉANCE TERMINÉE</span></div>';
   if(!r){ return h + '<div class="empty">Aucune série validée, rien n\'a été enregistré.</div><button class="go solid" data-a="scr" data-s="home">ACCUEIL <span>→</span></button>'; }
   h += '<div class="disp" style="font-size:72px">' + esc(r.name) + '</div>';
-  h += '<div class="stat"><div><span class="lbl">DURÉE</span><span class="disp tnum">' + mmss(r.dur) + '</span></div><div><span class="lbl">SÉRIES</span><span class="disp tnum">' + n + '</span></div><div><span class="lbl">VOLUME</span><span class="disp tnum">' + (vol >= 1000 ? kg(Math.round(vol/100)/10) + ' T' : kg(vol)) + '</span></div></div>';
-  h += m3BkBox();
+  /* 11.11.2026 : le choix modèle / nouvelle séance / juste enregistrer passe en tête, bien visible */
   if(ui.pending){
     var pd = ui.pending, form = pd.fresh || ui.saveAs, wn = esc(trText(pd.wname));
-    h += '<div class="box m3-end" style="display:flex;flex-direction:column;gap:10px">';
+    h += '<div class="box m3-end" id="m3-end" style="display:flex;flex-direction:column;gap:10px"><span class="m3-end-tag">' + L('⚑ À CHOISIR', '⚑ YOUR CALL') + '</span>';
     if(pd.fresh) h += '<span class="lbl">' + L('SÉANCE IMPROVISÉE', 'IMPROVISED SESSION') + '</span><span class="disp" style="font-size:28px">' + L('La garder pour la refaire ?', 'Keep it to do it again?') + '</span><span class="m3s-note" style="margin:0">' + L('Elle est déjà dans ton journal. Tu peux aussi en faire une séance réutilisable.', 'It is already in your log. You can also turn it into a reusable session.') + '</span>';
     else h += '<span class="lbl">' + L('SÉANCE MODIFIÉE · ', 'SESSION CHANGED · ') + wn.toUpperCase() + '</span><span class="disp" style="font-size:28px">' + L('Que faire de ces changements ?', 'What to do with these changes?') + '</span><div class="m3-changes">' + pd.changes.map(function(c){ return '<span>▸ ' + esc(trText(c)) + '</span>'; }).join('') + '</div>';
     if(form){
@@ -2539,12 +2550,14 @@ function vDone(){
       h += '<div class="fl2"><label class="lbl" for="sv-dest">' + L('RANGER DANS', 'PUT IT IN') + '</label><select class="field" id="sv-dest">' + [freeProg()].concat(realProgs().filter(function(p){ return !p.demo; })).map(function(p){ return '<option value="' + p.id + '"' + (p.id === dest ? ' selected' : '') + '>' + esc(p.free ? L('Séances libres (hors programme)', 'Free sessions (outside programs)') : L('Programme ', 'Program ') + trText(p.name)) + '</option>'; }).join('') + '</select></div>';
       h += '<div class="grid2"><button data-a="' + (pd.fresh ? 'keeporig' : 'saveascancel') + '">' + (pd.fresh ? L('Juste l\'enregistrer', 'Just save it') : L('← Retour', '← Back')) + '</button><button class="solid" data-a="savenew">' + L('Créer la séance', 'Create the session') + '</button></div>';
     } else {
-      h += '<button class="m3-opt" data-a="applytpl"><b>' + L('Écraser « ', 'Overwrite “') + wn + L(' »', '”') + '</b><small>' + L('Le modèle est remplacé par ce que tu viens de faire. Les prochaines séances partiront de là.', 'The template is replaced by what you just did. Next sessions start from there.') + '</small></button>';
-      h += '<button class="m3-opt" data-a="saveas"><b>' + L('Créer un nouveau workout', 'Create a new workout') + '</b><small>' + L('« ', '“') + wn + L(' » reste tel quel. Une nouvelle séance est créée avec ces modifications.', '” stays as it is. A new session is created with these changes.') + '</small></button>';
-      h += '<button class="m3-opt" data-a="keeporig"><b>' + L('Juste enregistrer la séance', 'Just save the session') + '</b><small>' + L('Elle est dans ton journal. Le modèle ne change pas.', 'It is in your log. The template does not change.') + '</small></button>';
+      h += '<button class="m3-opt" data-a="applytpl"><i class="m3-opt-ic" aria-hidden="true">↻</i><b>' + L('Écraser « ', 'Overwrite “') + wn + L(' »', '”') + '</b><small>' + L('Le modèle est remplacé par ce que tu viens de faire. Les prochaines séances partiront de là.', 'The template is replaced by what you just did. Next sessions start from there.') + '</small></button>';
+      h += '<button class="m3-opt" data-a="saveas"><i class="m3-opt-ic" aria-hidden="true">＋</i><b>' + L('Créer un nouveau workout', 'Create a new workout') + '</b><small>' + L('« ', '“') + wn + L(' » reste tel quel. Une nouvelle séance est créée avec ces modifications.', '” stays as it is. A new session is created with these changes.') + '</small></button>';
+      h += '<button class="m3-opt" data-a="keeporig"><i class="m3-opt-ic" aria-hidden="true">✓</i><b>' + L('Juste enregistrer la séance', 'Just save the session') + '</b><small>' + L('Elle est dans ton journal. Le modèle ne change pas.', 'It is in your log. The template does not change.') + '</small></button>';
     }
     h += '</div>';
   }
+  h += '<div class="stat"><div><span class="lbl">DURÉE</span><span class="disp tnum">' + mmss(r.dur) + '</span></div><div><span class="lbl">SÉRIES</span><span class="disp tnum">' + n + '</span></div><div><span class="lbl">VOLUME</span><span class="disp tnum">' + (vol >= 1000 ? kg(Math.round(vol/100)/10) + ' T' : kg(vol)) + '</span></div></div>';
+  h += m3BkBox();
   var fx = funFact(vol);
   if(fx) h += '<div class="box" style="display:flex;flex-direction:column;gap:2px"><span class="lbl">TU AS SOULEVÉ L\'ÉQUIVALENT DE</span><span class="disp" style="font-size:34px">' + esc(fx.count + ' ' + fx.name) + '</span><span class="lbl">' + esc(fx.unit).toUpperCase() + ' · TOTAL ' + esc(fmtT(vol)).toUpperCase() + '</span></div>';
   h += '<div class="box inv" style="display:flex;flex-direction:column;gap:6px"><span class="lbl">RECORDS</span>' + (r.prs.length ? r.prs.map(function(p){ return '<span class="disp" style="font-size:24px">▲ ' + esc(p) + '</span>'; }).join('') : '<span style="font-size:12px">Pas de nouveau record cette fois. La progression continue la prochaine séance.</span>') + '</div>';
@@ -2555,7 +2568,7 @@ function vDone(){
     '<input type="file" id="share-photo" accept="image/*" hidden>' +
     '<button class="go solid" data-a="savecard" id="savecard" hidden>ENREGISTRER L\'IMAGE <span>↓</span></button>' +
     '</div>';
-  h += '<button class="go solid" data-a="scr" data-s="home">ACCUEIL <span>→</span></button>';
+  h += '<button class="go solid" data-a="donehome">ACCUEIL <span>→</span></button>';
   return h;
 }
 
@@ -4687,6 +4700,17 @@ document.addEventListener('click', function(ev){
       ui.pending = null; break;
     case 'keeporig': var wasFresh = ui.pending && ui.pending.fresh; ui.pending = null; ui.saveAs = false; toast(wasFresh ? L('Séance enregistrée dans le journal', 'Session saved to your log') : L('Séance enregistrée · modèle inchangé', 'Session saved · template unchanged')); break;
     case 'saveas': ui.saveAs = true; break;
+    case 'donehome':
+      /* 11.11.2026 : séance modifiée sans choix → on ramène d'abord sur l'encart ; un 2e appui garde le modèle tel quel */
+      if(ui.pending && !ui.pendWarn){
+        ui.pendWarn = true;
+        var pe = document.getElementById('m3-end');
+        if(pe){ pe.scrollIntoView({behavior:'smooth', block:'center'}); pe.classList.remove('pulse'); void pe.offsetWidth; pe.classList.add('pulse'); }
+        toast(L('Choisis d\'abord quoi faire de tes changements', 'First choose what to do with your changes'));
+        return;
+      }
+      if(ui.pending){ ui.pending = null; ui.saveAs = false; toast(L('Séance enregistrée · modèle inchangé', 'Session saved · template unchanged')); }
+      ui.pendWarn = false; ui.screen = 'home'; ui.confirm = null; window.scrollTo(0,0); break;
     case 'saveascancel': ui.saveAs = false; break;
     case 'savenew':
       var nn = ((document.getElementById('sv-name') || {}).value || '').trim(), nd = (document.getElementById('sv-dest') || {}).value || 'libres';
