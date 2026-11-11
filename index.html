@@ -2164,12 +2164,12 @@ function restInfo(){
 }
 function flRestBand(a, ri, act){
   var ex = a.exercises[a.idx] || a.exercises[0];
-  return '<button class="restbar fl-rband' + (ri.over ? ' over' : '') + '" data-a="' + act + '" role="timer"><span class="row between lbl" style="width:100%"><span id="rb-t">⏱ ' + (ri.over ? 'REPOS FINI +' + mmss(-ri.left) : 'REPOS ' + mmss(ri.left)) + '</span><span>' + (ex ? esc(ex.name) : '') + ' →</span></span><span class="tr" style="display:block;width:100%"><span id="rb-f" class="fl" style="display:block;width:' + ri.pct + '%"></span></span></button>';
+  return '<button class="restbar fl-rband' + (ri.over ? ' over' : '') + '" data-a="' + act + '" role="timer"><span class="row between lbl" style="width:100%"><span id="rb-t">⏱ ' + (ri.over ? 'REPOS FINI +' + mmss(-ri.left) : 'REPOS ' + mmss(ri.left)) + '</span><span>' + (ex ? esc(ex.name) : '') + ' →</span></span><span class="tr" style="display:block;width:100%"><span id="rb-f" class="fl" style="display:block;width:' + (ri.over ? 0 : 100 - ri.pct) + '%"></span></span></button>';
 }
 function restBar(){
   var ri = restInfo(); if(!ri || ui.screen === 'ex') return '';
   var ex = S.active.exercises[S.active.idx];
-  return '<button class="restbar' + (ri.over ? ' over' : '') + '" data-a="goex"><span class="row between lbl" style="width:100%"><span id="rb-t">⏱ ' + (ri.over ? 'REPOS FINI +' + mmss(-ri.left) : 'REPOS ' + mmss(ri.left)) + '</span><span>' + esc(ex.name) + ' →</span></span><span class="tr" style="display:block;width:100%"><span id="rb-f" class="fl" style="display:block;width:' + ri.pct + '%"></span></span></button>';
+  return '<button class="restbar' + (ri.over ? ' over' : '') + '" data-a="goex"><span class="row between lbl" style="width:100%"><span id="rb-t">⏱ ' + (ri.over ? 'REPOS FINI +' + mmss(-ri.left) : 'REPOS ' + mmss(ri.left)) + '</span><span>' + esc(ex.name) + ' →</span></span><span class="tr" style="display:block;width:100%"><span id="rb-f" class="fl" style="display:block;width:' + (ri.over ? 0 : 100 - ri.pct) + '%"></span></span></button>';
 }
 function nav(on){
   return '<nav class="nav" aria-label="Navigation"><button class="' + (on==='home'?'on':'') + '" data-a="scr" data-s="home">AUJOURD\'HUI</button><button class="' + (on==='prog'?'on':'') + '" data-a="scr" data-s="prog">PROGRAMME</button><button class="' + (on==='glo'?'on':'') + '" data-a="scr" data-s="glo">EXERCICES</button><button class="' + (on==='hist'?'on':'') + '" data-a="scr" data-s="hist">JOURNAL</button><button class="' + (on==='set'?'on':'') + '" data-a="scr" data-s="set"' + (unreadLog() ? ' aria-label="Réglages, nouveauté à lire"' : '') + '>PROFIL' + (unreadLog() ? ' <span class="badge" aria-hidden="true">1</span>' : '') + '</button></nav>';
@@ -2460,7 +2460,7 @@ function vEx(){
     var tex = S.active.exercises[ri.r.ex];
     h += '<div class="timer' + (ri.over ? ' over' : '') + '" id="timer"><div class="row between lbl"><span id="t-lbl">' + (ri.over ? 'REPOS TERMINÉ · GO' : 'T-MINUS → ' + (ri.r.label || esc(tex.name).toUpperCase())) + '</span><span>CIBLE ' + restLbl(ri.r.total) + '</span></div>' +
       '<div class="row between"><span class="big tnum" id="t-big">' + (ri.over ? '+' + mmss(-ri.left) : mmss(ri.left)) + '</span><span style="display:flex;flex-direction:column;gap:6px"><button data-a="tadj" data-d="15">+15 S</button><button data-a="tadj" data-d="-15">−15 S</button></span></div>' +
-      '<div class="bar"><div id="t-bar" style="width:' + ri.pct + '%"></div></div><button data-a="skip" style="width:100%;border-color:var(--ground);color:var(--ground);min-height:36px">TERMINER LE REPOS</button></div>';
+      '<div class="bar"><div id="t-bar" style="width:' + (ri.over ? 0 : 100 - ri.pct) + '%"></div></div><button data-a="skip" style="width:100%;border-color:var(--ground);color:var(--ground);min-height:36px">TERMINER LE REPOS</button></div>';
   }
   if(sj != null){
     var s0 = ex.sets[sj];
@@ -4522,14 +4522,14 @@ setInterval(function(){
   if(ri.over && !wasOver){ wasOver = true; if(Date.now() - lastBeep > 3000){ lastBeep = Date.now(); beep(); } render(); return; }
   if(!ri.over) wasOver = false;
   var b = document.getElementById('t-big'); if(b) b.textContent = ri.over ? '+' + mmss(-ri.left) : mmss(ri.left);
-  var f = document.getElementById('t-bar'); if(f) f.style.width = ri.pct + '%';
+  var f = document.getElementById('t-bar'); if(f) f.style.width = (ri.over ? 0 : 100 - ri.pct) + '%';
   var tl = document.getElementById('t-left'); if(tl) tl.style.width = (ri.over ? 0 : 100 - ri.pct) + '%';
   var to = document.getElementById('t-over'); if(to) to.textContent = '+' + mmss(-ri.left);
   var tp = document.getElementById('t-pin'); if(tp) tp.textContent = ri.over ? '+' + mmss(-ri.left) : mmss(ri.left);
   var tpb = document.getElementById('t-pinbar'); if(tpb) tpb.style.width = (ri.over ? 0 : 100 - ri.pct) + '%';
   m3PinCheck();
   var rt = document.getElementById('rb-t'); if(rt) rt.textContent = trText('⏱ ' + (ri.over ? 'REPOS FINI +' + mmss(-ri.left) : 'REPOS ' + mmss(ri.left)));
-  var rf = document.getElementById('rb-f'); if(rf) rf.style.width = ri.pct + '%';
+  var rf = document.getElementById('rb-f'); if(rf) rf.style.width = (ri.over ? 0 : 100 - ri.pct) + '%';
 }, 250);
 
 /* a tap on a message dismisses it right away */
@@ -7081,7 +7081,7 @@ function flRows(e, i, open, ri){
     var lab = s.warm ? 'W' : String(++k), isNext = open && j === sj && !s.done, lx = fxLast(e, j);
     if(j > 0){
       var p = e.sets[j - 1], live = ri && !ri.over && ri.r.ex === i && ri.r.set === j - 1;
-      if(live) h += '<div class="fl-sep live"><span id="fl-sep-t">' + mmss(ri.left) + '</span>' + L(' en cours', ' left') + '<span class="fl-tr"><i id="fl-sep-b" style="width:' + Math.min(100, ri.pct) + '%"></i></span></div>';
+      if(live) h += '<div class="fl-sep live"><span id="fl-sep-t">' + mmss(ri.left) + '</span>' + L(' en cours', ' left') + '<span class="fl-tr"><i id="fl-sep-b" style="width:' + Math.max(0, 100 - ri.pct) + '%"></i></span></div>';
       else h += flRestSep(e, i, j - 1);
     }
     var cls = 'fl-row' + (s.done ? ' done' : isNext ? ' next' : ' later') + (ej === j ? ' fl-edit' : '');
@@ -7435,7 +7435,7 @@ document.addEventListener('pointercancel', flDragEnd);
 setInterval(function(){
   var ri = restInfo(); if(!ri) return;
   var t = document.getElementById('fl-sep-t'); if(t) t.textContent = mmss(ri.left);
-  var b = document.getElementById('fl-sep-b'); if(b) b.style.width = Math.min(100, ri.pct) + '%';
+  var b = document.getElementById('fl-sep-b'); if(b) b.style.width = Math.max(0, 100 - ri.pct) + '%'; /* 11.11.2026 : les barres de repos se vident */
   var p = document.getElementById('fl-pring'); if(p) p.setAttribute('stroke-dashoffset', (100.5 * ri.pct / 100).toFixed(1));
 }, 250);
 
