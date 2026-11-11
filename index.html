@@ -1298,6 +1298,9 @@ body .fl-ico{flex:none;width:38px;min-height:40px!important;padding:0!important;
 .fl-ex.open .fl-ico.i{color:var(--m3-accent)!important}
 .fl-cnt{flex:none;font-size:13px;font-weight:800;color:var(--m3-muted);padding:0 2px 0 4px;white-space:nowrap;font-variant-numeric:tabular-nums}
 .fl-ex.open .fl-cnt,.fl-ex.done .fl-cnt{color:var(--m3-accent)}
+/* 11.11.2026 : exercice terminé (toutes les séries cochées) grisé tant qu'il est fermé */
+.fl-ex{transition:border-color .35s ease,box-shadow .2s ease,transform .2s ease,opacity .35s ease,filter .35s ease}
+.fl-ex.done:not(.open):not(.fl-lift){opacity:.5;filter:grayscale(1)}
 .fl-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .42s cubic-bezier(.2,.8,.2,1)}
 .fl-ex.open .fl-body{grid-template-rows:1fr}
 .fl-in{min-height:0;overflow:hidden;opacity:0;transition:opacity .3s ease}
