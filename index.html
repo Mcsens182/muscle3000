@@ -1317,6 +1317,18 @@ body .fl-note{width:100%;box-sizing:border-box;border:0!important;outline:0;back
 .fl-row.done{background:color-mix(in srgb,var(--m3-accent) 9%,var(--m3-card))}
 .fl-row.next{border:1.5px dashed var(--m3-accent)}
 .fl-row.fl-edit{border:1.5px solid var(--m3-accent)}
+/* 11.11.2026 : glisser une série vers la gauche pour la supprimer */
+.fl-sw{position:relative;border-radius:12px;overflow:hidden;touch-action:pan-y}
+.fl-sw>.fl-row{position:relative;z-index:1;will-change:transform}
+.fl-sw.sw>.fl-row:not(.done){background:var(--m3-card)}
+.fl-sw.snap>.fl-row{transition:transform .22s cubic-bezier(.2,.8,.2,1)}
+html body .fl-sw>.fl-swbg{position:absolute!important;inset:0!important;z-index:0;width:auto!important;min-height:0!important;margin:0!important;padding:0 18px!important;border:0!important;border-radius:12px!important;box-shadow:none!important;background:#E5484D!important;color:#fff!important;display:flex!important;align-items:center;justify-content:flex-end;gap:8px;font-size:14px!important;font-weight:800!important;letter-spacing:.02em;opacity:0;transition:opacity .15s}
+html body .fl-sw.sw>.fl-swbg,html body .fl-sw.opn>.fl-swbg{opacity:1}
+html body .fl-sw.far>.fl-swbg{background:#C8242A!important}
+.fl-swbg svg{transition:transform .15s}
+.fl-sw.far>.fl-swbg svg{transform:scale(1.25)}
+.fl-sw.gone{transition:height .2s ease,opacity .2s ease;opacity:0}
+@media (prefers-reduced-motion:reduce){.fl-sw.snap>.fl-row,.fl-sw.gone{transition:none}}
 .fl-edbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-2px 0 8px;padding:0 4px;font-size:12px;font-weight:700;color:var(--m3-muted)}
 body .fl-edbar button{min-height:40px!important;min-width:84px!important;border-radius:12px!important;background:var(--m3-accent)!important;color:var(--m3-card)!important;border:0!important;font-weight:800!important;font-size:14px!important}
 .fl-row.later{color:var(--m3-muted)}
@@ -4873,7 +4885,7 @@ document.addEventListener('keydown', function(ev){
 var sx = null, sy = null;
 document.addEventListener('touchstart', function(ev){
   if(ui.screen !== 'ex' || ui.sheet) return;
-  if(ev.target.closest('.dock') || ev.target.closest('input')) { sx = null; return; }
+  if(ev.target.closest('.dock') || ev.target.closest('input') || ev.target.closest('.fl-sw')) { sx = null; return; }
   sx = ev.touches[0].clientX; sy = ev.touches[0].clientY;
 }, {passive:true});
 document.addEventListener('touchend', function(ev){
@@ -7036,7 +7048,8 @@ var FL_ICO = {
   check:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>',
   swap:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg>',
   up:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>',
-  plus:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'
+  plus:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+  trash:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/></svg>'
 };
 function flCount(e){ var d = 0, t = 0; e.sets.forEach(function(s){ if(!s.warm){ t++; if(s.done) d++; } }); return [d, t]; }
 function flW(name, w){ var xt = exType(name); if(w == null) return null; return xt === 'w' ? kg(w) : (w ? '+' + kg(w) : L('PC', 'BW')); }
@@ -7069,6 +7082,8 @@ function flRows(e, i, open, ri){
       else h += flRestSep(e, i, j - 1);
     }
     var cls = 'fl-row' + (s.done ? ' done' : isNext ? ' next' : ' later') + (ej === j ? ' fl-edit' : '');
+    /* 11.11.2026 : glisser une série vers la gauche pour la supprimer (comme Spotify) */
+    if(open) h += '<div class="fl-sw" data-swi="' + i + '" data-swj="' + j + '"><button class="fl-swbg" data-a="flswdel" data-i="' + i + '" data-j="' + j + '" tabindex="-1" aria-label="' + L('Supprimer ', 'Delete ') + flSetName(e, j) + '">' + FL_ICO.trash + '<span>' + L('Supprimer', 'Delete') + '</span></button>';
     h += '<div class="' + cls + '">';
     h += open ? '<button class="fl-n' + (s.warm ? ' w' : '') + '" data-a="flwarm" data-j="' + j + '" aria-label="' + (s.warm ? L('Repasser en série de travail', 'Make it a working set') : L('Passer en échauffement', 'Make it a warm-up')) + '">' + lab + '</button>' : '<span class="fl-n' + (s.warm ? ' w' : '') + '" style="display:flex;align-items:center;justify-content:center;min-height:36px">' + lab + '</span>';
     var prev = lx ? fmtS(e.name, lx.w, lx.r) : '—';
@@ -7097,6 +7112,7 @@ function flRows(e, i, open, ri){
       else h += '<button class="fl-ck" data-a="flcheck" data-j="' + j + '" aria-label="' + L('Valider ', 'Log ') + flSetName(e, j) + '"></button>';
     }
     h += '</div>';
+    if(open) h += '</div>';
     if(nextStep){ h += nextStep; nextStep = ''; }
   });
   /* repos après la dernière série, avant l'exercice suivant */
@@ -7173,7 +7189,7 @@ function vFlow(){
   } else if(a.exercises.some(function(e){ return selIndex(e) != null; })){
     h += '<div class="fl-cta"><button data-a="flopen" data-i="' + a.exercises.map(function(e){ return selIndex(e) != null; }).indexOf(true) + '">' + L('Exercice suivant', 'Next exercise') + ' →</button></div>';
   } else if(ui.confirm !== 'finish') h += '<div class="fl-cta"><button data-a="askfinish">' + L('Terminer la séance', 'Finish the session') + ' ✓</button></div>';
-  if(ui.flUndo) h += '<div class="fl-undo" role="status"><span>' + esc(exDisp(ui.flUndo.ex.name)) + L(' supprimé', ' removed') + '</span><button data-a="flundo">' + L('Annuler', 'Undo') + '</button></div>';
+  if(ui.flUndo) h += '<div class="fl-undo" role="status"><span>' + (ui.flUndo.set ? ui.flUndo.lab : esc(exDisp(ui.flUndo.ex.name)) + L(' supprimé', ' removed')) + '</span><button data-a="flundo">' + L('Annuler', 'Undo') + '</button></div>';
   /* repos : plein écran, ou pilule une fois réduit */
   if(ri && !ri.over && !ui.restMin) h += flRestOverlay(a, ri);
   else if(ri && !ri.over){
@@ -7220,8 +7236,29 @@ function flRemove(i){
   clearTimeout(ui.flUndoT); ui.flUndoT = setTimeout(function(){ ui.flUndo = null; render(); }, 5000);
   save();
 }
+/* 11.11.2026 : suppression d'une série par glissement, annulable quelques secondes */
+function flDelSet(i, j){
+  var a = S.active, e = a && a.exercises[i]; if(!e || !e.sets[j]) return;
+  var lab = e.sets[j].warm ? L('Échauffement supprimé', 'Warm-up deleted') : L('Série ', 'Set ') + (workIndex(e, j) + 1) + L(' supprimée', ' deleted');
+  var s = e.sets.splice(j, 1)[0], r = a.rest, hadRest = false;
+  if(r && r.ex === i){ if(r.set === j){ hadRest = r; a.rest = null; } else if(r.set > j) r.set--; }
+  e.sel = null; ui.flEd = null; ui.flRest = null; ui.gapEdit = null;
+  fillSuggestions(e);
+  ui.flUndo = {set:s, ex:e, j:j, lab:lab, rest:hadRest};
+  clearTimeout(ui.flUndoT); ui.flUndoT = setTimeout(function(){ ui.flUndo = null; render(); }, 5000);
+  save();
+}
 function flUndoRm(){
   var u = ui.flUndo, a = S.active; if(!u || !a) return;
+  if(u.set){
+    var ei = a.exercises.indexOf(u.ex); ui.flUndo = null; clearTimeout(ui.flUndoT);
+    if(ei < 0){ save(); return; }
+    var at = Math.min(u.j, u.ex.sets.length);
+    u.ex.sets.splice(at, 0, u.set);
+    if(a.rest && a.rest.ex === ei && a.rest.set >= at) a.rest.set++;
+    if(u.rest && !a.rest){ u.rest.set = at; a.rest = u.rest; }
+    u.ex.sel = null; fillSuggestions(u.ex); save(); return;
+  }
   var x = a.exercises, curEx = x[a.idx], restEx = a.rest ? x[a.rest.ex] : null, at = Math.min(u.i, x.length);
   x.splice(at, 0, u.ex);
   if(at > 0 && u.prevSs) x[at - 1].ss = true;
@@ -7280,6 +7317,7 @@ document.addEventListener('click', function(ev){
       ui.picker = {ctx:'replace'}; ui.pickQ = ''; ui.sheet = null; render(); return;
     case 'flrm': stop(); ui.flMenu = null; flRemove(i); render(); return;
     case 'flundo': stop(); flUndoRm(); render(); return;
+    case 'flswdel': stop(); if(isNaN(i) || isNaN(j)) return; flDelSet(i, j); render(); return;
     case 'flrest': stop(); ui.flRest = {i:i, j:j}; render(); return;
     case 'flrestok': stop(); ui.flRest = null; render(); return;
     case 'flrestadj':
@@ -7290,6 +7328,65 @@ document.addEventListener('click', function(ev){
       ui.flRest = {i:i, j:j}; save(); render(); return;
   }
 }, true);
+
+/* 11.11.2026 : glisser une série vers la gauche (comme Spotify).
+   Un petit glissement découvre le bouton rouge « Supprimer » ; un grand glissement supprime directement.
+   Dans les deux cas, « Annuler » reste affiché quelques secondes. */
+var flSw = null, flSwOpen = null, FL_SW_BTN = 132;
+function flSwClose(w, now){
+  if(!w) return; var r = w.querySelector('.fl-row');
+  w.classList.remove('opn', 'far'); if(now) w.classList.remove('snap'); else w.classList.add('snap');
+  if(r) r.style.transform = '';
+  setTimeout(function(){ w.classList.remove('sw', 'snap'); }, now ? 0 : 230);
+  if(flSwOpen === w) flSwOpen = null;
+}
+function flSwKill(w){
+  var i = +w.getAttribute('data-swi'), j = +w.getAttribute('data-swj'), r = w.querySelector('.fl-row');
+  var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var go = function(){ flSwOpen = null; flDelSet(i, j); render(); };
+  if(calm || !r){ go(); return; }
+  w.classList.add('snap'); r.style.transform = 'translateX(-110%)';
+  setTimeout(function(){ w.style.height = w.offsetHeight + 'px'; void w.offsetHeight; w.classList.add('gone'); w.style.height = '0px'; setTimeout(go, 190); }, 180);
+}
+document.addEventListener('touchstart', function(ev){
+  var w = ev.target.closest && ev.target.closest('.fl-sw');
+  if(flSwOpen && flSwOpen !== w) flSwClose(flSwOpen);
+  if(!w || !S.active || ev.touches.length > 1 || ev.target.closest('.fl-swbg')) { flSw = null; return; }
+  var r = w.querySelector('.fl-row'); if(!r) return;
+  flSw = {w:w, r:r, x0:ev.touches[0].clientX, y0:ev.touches[0].clientY, base:w.classList.contains('opn') ? -FL_SW_BTN : 0, dx:0, lock:null, width:w.offsetWidth || 320, far:false};
+}, {passive:true});
+document.addEventListener('touchmove', function(ev){
+  var d = flSw; if(!d) return;
+  var mx = ev.touches[0].clientX - d.x0, my = ev.touches[0].clientY - d.y0;
+  if(!d.lock){
+    if(Math.abs(mx) < 8 && Math.abs(my) < 8) return;
+    d.lock = Math.abs(mx) > Math.abs(my) * 1.2 ? 'x' : 'y';
+    if(d.lock === 'y'){ flSw = null; return; }
+    d.w.classList.remove('snap'); d.w.classList.add('sw');
+  }
+  if(ev.cancelable) ev.preventDefault();
+  var x = Math.min(0, d.base + mx);
+  if(x > -4 && d.base === 0) x = Math.min(0, x);
+  d.dx = x; d.r.style.transform = 'translateX(' + x + 'px)';
+  var far = -x > d.width * 0.5;
+  if(far !== d.far){ d.far = far; d.w.classList.toggle('far', far); if(far && navigator.vibrate) try{ navigator.vibrate(10); }catch(e){} }
+}, {passive:false});
+var flSwEat = 0;
+/* le doigt a glissé (ou a refermé une ligne ouverte) : on ne déclenche pas le bouton qui se trouvait dessous */
+window.addEventListener('click', function(ev){ if(Date.now() - flSwEat < 450){ flSwEat = 0; ev.stopImmediatePropagation(); ev.preventDefault(); } }, true);
+function flSwEnd(){
+  var d = flSw; flSw = null; if(!d) return;
+  if(d.lock !== 'x'){ if(d.base && !d.lock){ flSwEat = Date.now(); flSwClose(d.w); } return; }
+  flSwEat = Date.now();
+  if(!document.body.contains(d.w)) return;
+  if(d.far){ flSwKill(d.w); return; }
+  if(-d.dx > FL_SW_BTN * 0.6){
+    d.w.classList.add('snap', 'opn'); d.r.style.transform = 'translateX(-' + FL_SW_BTN + 'px)'; flSwOpen = d.w;
+    setTimeout(function(){ d.w.classList.remove('snap'); }, 230);
+  } else flSwClose(d.w);
+}
+document.addEventListener('touchend', flSwEnd, {passive:true});
+document.addEventListener('touchcancel', function(){ var d = flSw; flSw = null; if(d && d.lock === 'x' && document.body.contains(d.w)) flSwClose(d.w); }, {passive:true});
 
 /* glisser une poignée ⋮⋮ pour réordonner les exercices */
 var flDrag = null;
