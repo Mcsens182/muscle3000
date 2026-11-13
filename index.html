@@ -1570,6 +1570,24 @@ html.club body .m3-band.over .m3-band-n,html.club body .m3-pin.over .m3-pin-go s
 html.club body .m4-ex{border:2px solid var(--c-tan)!important;border-radius:16px!important;background:var(--m3-card)!important}
 html.club body .m4-ovex.cur{border-color:var(--c-brown)!important;box-shadow:4px 4px 0 var(--c-mus)!important}
 html.club body .m4-finish{border:2px solid var(--c-brown)!important;color:var(--c-brown)!important;background:transparent!important}
+/* 13.11.2026 : clavier numérique posé en bas pendant la séance */
+.fl-kb{position:fixed;left:0;right:0;bottom:0;z-index:60;background:color-mix(in srgb,var(--m3-ink) 7%,var(--m3-bg));border-top:1px solid var(--m3-line);box-shadow:0 -8px 24px color-mix(in srgb,var(--m3-ink) 12%,transparent);padding:8px 8px calc(env(safe-area-inset-bottom,0px) + 8px);animation:flKbUp .18s ease-out}
+@keyframes flKbUp{from{transform:translateY(100%)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){.fl-kb{animation:none}}
+.fl-kb-top{display:flex;align-items:center;gap:6px;margin:0 2px 8px}
+html body .fl-kb-f{min-height:34px!important;min-width:64px!important;padding:0 12px!important;border-radius:10px!important;border:1px solid var(--m3-line)!important;background:transparent!important;color:var(--m3-muted)!important;font-size:12px!important;font-weight:800!important;letter-spacing:.08em}
+html body .fl-kb-f.on{background:var(--m3-accent)!important;border-color:var(--m3-accent)!important;color:var(--m3-card)!important}
+html body .fl-kb-hide{margin-left:auto;min-height:34px!important;padding:0 12px!important;border-radius:10px!important;border:0!important;background:color-mix(in srgb,var(--m3-ink) 8%,transparent)!important;color:var(--m3-ink)!important;font-size:13px!important;font-weight:800!important}
+.fl-kb-hide span{font-size:16px;line-height:1;position:relative;top:-3px}
+.fl-kb-keys{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+html body .fl-kb-keys button{min-height:50px!important;padding:0!important;border-radius:12px!important;border:0!important;background:var(--m3-card)!important;color:var(--m3-ink)!important;font-size:24px!important;font-weight:700!important;box-shadow:0 1px 0 color-mix(in srgb,var(--m3-ink) 18%,transparent)!important}
+html body .fl-kb-keys button:active{background:var(--m3-tint)!important}
+.fl-kb-space{height:300px}
+body .fl-cell.kb{outline:2px solid var(--m3-accent)!important;outline-offset:-2px;background:color-mix(in srgb,var(--m3-accent) 12%,var(--m3-card))!important;color:var(--m3-ink)!important}
+html.hud body .fl-kb-keys button,html.hud body .fl-kb-f,html.hud body .fl-kb-hide{border-radius:var(--h-r)!important;font-family:'Space Mono',ui-monospace,monospace!important}
+html.hud body .fl-kb-f.on{background:var(--h-fill)!important;border-color:var(--h-fill)!important;color:var(--h-on)!important}
+html.club body .fl-kb-f.on{background:var(--c-mus)!important;border-color:var(--c-brown)!important;color:var(--c-brown)!important}
+html.club body .fl-kb-keys button{font-family:'Fraunces',Georgia,serif;font-variation-settings:"SOFT" 100}
 html.club body .m3pad-val b{font-family:'Fraunces',Georgia,serif;font-variation-settings:"SOFT" 100;font-weight:800}
 html.club body button.m3pad-ok,html.club body button.fx-fix-ok,html.club body .fl-cta button{background:var(--c-mus)!important;color:var(--c-brown)!important}
 
@@ -4512,8 +4530,9 @@ function render(){
   ui.lastScr = ui.screen;
   var sh = document.getElementById('sheet');
   if(ui.screen === 'done') buildShare();
-  sh.innerHTML = trHTML(hardify(staleOn() ? '<div class="sheet">' + vStale() + '</div>' : ui.pad ? '<div class="sheet" data-a="closesheet">' + vPad() + '</div>' : ui.addPast ? '<div class="sheet" data-a="closesheet">' + vAddPast() + '</div>' : ui.welcome ? vWelcome() : ui.storyId ? '<div class="sheet" data-a="closesheet">' + vStory(ui.storyId) + '</div>' : ui.newsDay != null ? '<div class="sheet" data-a="closesheet">' + vNewsDay(ui.newsDay) + '</div>' : ui.wSheet ? '<div class="sheet" data-a="closesheet">' + vWidgetSheet() + '</div>' : ui.otherSheet ? '<div class="sheet" data-a="closesheet">' + m6OtherSheet() + '</div>' : ui.histSheet ? '<div class="sheet" data-a="closesheet">' + m6HistSheet() + '</div>' : ui.daySheet ? '<div class="sheet" data-a="closesheet">' + vDay(ui.daySheet) + '</div>' : ui.picker ? '<div class="sheet" data-a="closesheet">' + vPicker() + '</div>' : ui.sheet ? '<div class="sheet" data-a="closesheet">' + vFiche(ui.sheet) + '</div>' : ''));
+  sh.innerHTML = trHTML(hardify(staleOn() ? '<div class="sheet">' + vStale() + '</div>' : ui.pad ? (kbOn() ? vKb() : '<div class="sheet" data-a="closesheet">' + vPad() + '</div>') : ui.addPast ? '<div class="sheet" data-a="closesheet">' + vAddPast() + '</div>' : ui.welcome ? vWelcome() : ui.storyId ? '<div class="sheet" data-a="closesheet">' + vStory(ui.storyId) + '</div>' : ui.newsDay != null ? '<div class="sheet" data-a="closesheet">' + vNewsDay(ui.newsDay) + '</div>' : ui.wSheet ? '<div class="sheet" data-a="closesheet">' + vWidgetSheet() + '</div>' : ui.otherSheet ? '<div class="sheet" data-a="closesheet">' + m6OtherSheet() + '</div>' : ui.histSheet ? '<div class="sheet" data-a="closesheet">' + m6HistSheet() + '</div>' : ui.daySheet ? '<div class="sheet" data-a="closesheet">' + vDay(ui.daySheet) + '</div>' : ui.picker ? '<div class="sheet" data-a="closesheet">' + vPicker() + '</div>' : ui.sheet ? '<div class="sheet" data-a="closesheet">' + vFiche(ui.sheet) + '</div>' : ''));
   if(ui.storyId) buildStory();
+  if(ui.pad && kbOn()) kbReveal();
   if(typeof m3PinCheck === 'function') m3PinCheck();
 }
 function openPicker(ctx){
@@ -6300,6 +6319,38 @@ function padOk(){
   s.trend = null; save();
 }
 
+/* 13.11.2026 : en séance, le pavé numérique devient un clavier posé en bas de l'écran (comme celui du téléphone).
+   La ligne reste visible, la valeur change en direct dans la case, et « Masquer » le range une fois fini. */
+function kbOn(){ return ui.screen === 'ex' && !!S.active; }
+function kbSet(){ var ex = cur(), j = ex ? edIndex(ex) : null; return j != null ? {ex:ex, s:ex.sets[j]} : null; }
+function kbApply(){
+  var p = ui.pad, t = kbSet(); if(!p || !t) return;
+  var s = t.s, f = p.f;
+  if(p.orig === undefined) p.orig = s[f];
+  if(p.v === ''){ s[f] = p.orig; }
+  else { var n = num(p.v); if(n == null) return; s[f] = f === 'w' ? Math.round(n * 100) / 100 : Math.round(n); }
+  s.trend = null; save();
+}
+function kbOnCls(f){ return ui.pad && kbOn() && ui.pad.f === f ? ' kb' : ''; }
+function kbCell(f, fallback){ var p = ui.pad; return p && kbOn() && p.f === f && p.v !== '' ? esc(p.v) : fallback; }
+function vKb(){
+  var p = ui.pad, t = kbSet(); if(!t){ ui.pad = null; return ''; }
+  var ex = t.ex, xt = exType(ex.name), isW = p.f === 'w';
+  var h = '<div class="fl-kb" role="group" aria-label="' + L('Clavier numérique', 'Number pad') + '"><div class="fl-kb-top">';
+  h += '<button class="fl-kb-f' + (isW ? ' on' : '') + '" data-a="kbf" data-f="w">' + (xt === 'w' ? 'KG' : L('LEST', 'EXTRA')) + '</button>';
+  h += '<button class="fl-kb-f' + (!isW ? ' on' : '') + '" data-a="kbf" data-f="r">' + (xt === 'time' ? L('SEC', 'SEC') : 'REPS') + '</button>';
+  h += '<button class="fl-kb-hide" data-a="kbhide" aria-label="' + L('Masquer le clavier', 'Hide the keypad') + '">' + L('Masquer', 'Hide') + ' <span aria-hidden="true">⌄</span></button></div>';
+  var keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', isW ? (isEN() ? '.' : ',') : '', '0', '⌫'];
+  h += '<div class="fl-kb-keys">' + keys.map(function(k){ return k ? '<button data-a="padk" data-k="' + k + '"' + (k === '⌫' ? ' aria-label="' + L('Effacer', 'Delete') + '"' : '') + '>' + k + '</button>' : '<span></span>'; }).join('') + '</div>';
+  return h + '</div>';
+}
+function kbReveal(){
+  var kb = document.querySelector('.fl-kb'), c = document.getElementById(ui.pad.f === 'w' ? 'in-w' : 'in-r'); if(!kb || !c) return;
+  var row = c.closest('.fl-row') || c, r = row.getBoundingClientRect(), top = kb.getBoundingClientRect().top;
+  if(r.bottom > top - 12) window.scrollBy({top:r.bottom - top + 24, behavior:'smooth'});
+  else if(r.top < 70) window.scrollBy({top:r.top - 90, behavior:'smooth'});
+}
+
 /* ---------- appui long sur + et − : la valeur défile ---------- */
 var lp = null;
 function stepVal(a, d){
@@ -6506,7 +6557,15 @@ document.addEventListener('click', function(ev){
   var stop = function(){ ev.stopPropagation(); ev.preventDefault(); render(); };
   var pd = el.getAttribute('data-pad');
   if(pd && S.active){ ui.pad = {f:pd, v:''}; return stop(); }
-  var a = el.getAttribute('data-a'), ex = cur(), d = +el.getAttribute('data-d') || 0, j, s, rec, rr;
+  var a = el.getAttribute('data-a');
+  /* 13.11.2026 : clavier posé en bas en séance — toute autre action le range (les valeurs sont déjà enregistrées) */
+  if(ui.pad && kbOn()){
+    if(a === 'kbhide'){ ui.pad = null; return stop(); }
+    if(a === 'kbf'){ ui.pad = {f:el.getAttribute('data-f') === 'r' ? 'r' : 'w', v:''}; return stop(); }
+    if(a === 'padk'){ padKey(el.getAttribute('data-k')); kbApply(); return stop(); }
+    ui.pad = null;
+  }
+  a = el.getAttribute('data-a'); var ex = cur(), d = +el.getAttribute('data-d') || 0, j, s, rec, rr;
   switch(a){
     case 'closesheet':
       if(el.classList.contains('sheet') && ev.target !== el) return;
@@ -7130,15 +7189,15 @@ function flRows(e, i, open, ri){
     if(ej === j){
       var xe = exType(e.name);
       h += '<span class="fl-prev">' + prev + '</span>';
-      h += '<input class="fl-cell" id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + (s.w != null ? kg(s.w) : (xe !== 'w' ? '0' : '')) + '" aria-label="' + wLab(e.name) + '">';
-      h += '<input class="fl-cell" id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + (s.r != null ? s.r : '') + '" aria-label="' + rLab(e.name) + '">';
+      h += '<input class="fl-cell' + kbOnCls('w') + '" id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + kbCell('w', s.w != null ? kg(s.w) : (xe !== 'w' ? '0' : '')) + '" aria-label="' + wLab(e.name) + '">';
+      h += '<input class="fl-cell' + kbOnCls('r') + '" id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + kbCell('r', s.r != null ? s.r : '') + '" aria-label="' + rLab(e.name) + '">';
       h += '<button class="fl-ck" data-a="fledok" aria-label="' + L('Fin de la modification', 'Done editing') + '">' + FL_ICO.check + '</button>';
       nextStep = flStepper(e, s) + '<div class="fl-edbar"><span>' + L('Série validée · modification', 'Logged set · editing') + '</span><button data-a="fledok">' + L('OK', 'OK') + '</button></div>';
     } else if(isNext){
       var xt = exType(e.name);
       h += prevBtn;
-      h += '<input class="fl-cell' + (s.w == null ? ' sug' : '') + '" id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + (s.w != null ? kg(s.w) : '') + '" placeholder="' + (s.sw != null ? kg(s.sw) : xt !== 'w' ? '0' : '—') + '" aria-label="' + wLab(e.name) + '">';
-      h += '<input class="fl-cell' + (s.r == null ? ' sug' : '') + '" id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + (s.r != null ? s.r : '') + '" placeholder="' + (s.sr != null ? s.sr : '—') + '" aria-label="' + rLab(e.name) + '">';
+      h += '<input class="fl-cell' + (s.w == null ? ' sug' : '') + kbOnCls('w') + '" id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + kbCell('w', s.w != null ? kg(s.w) : '') + '" placeholder="' + (s.sw != null ? kg(s.sw) : xt !== 'w' ? '0' : '—') + '" aria-label="' + wLab(e.name) + '">';
+      h += '<input class="fl-cell' + (s.r == null ? ' sug' : '') + kbOnCls('r') + '" id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + kbCell('r', s.r != null ? s.r : '') + '" placeholder="' + (s.sr != null ? s.sr : '—') + '" aria-label="' + rLab(e.name) + '">';
       h += '<button class="fl-ck" data-a="validate" aria-label="' + L('Valider ', 'Log ') + flSetName(e, j) + '"></button>';
       nextStep = flStepper(e, s);
     } else {
@@ -7243,6 +7302,7 @@ function vFlow(){
     var me = a.exercises[ui.flMenu];
     h += '<div class="fl-menu"><button class="fl-scrim" data-a="flclose" aria-label="' + L('Fermer', 'Close') + '"></button><div class="fl-acts"><div class="fl-box"><span>' + esc(exDisp(me.name)) + '</span><button data-a="flrepl" data-i="' + ui.flMenu + '">' + L('Remplacer l\'exercice', 'Replace the exercise') + '<small>' + L('Note et séries gardées, pour cette séance', 'Note and sets kept, for this session') + '</small></button><button class="danger" data-a="flrm" data-i="' + ui.flMenu + '">' + L('Supprimer de la séance', 'Remove from the session') + '</button></div><button class="fl-cancel" data-a="flclose">' + L('Annuler', 'Cancel') + '</button></div></div>';
   }
+  if(ui.pad) h += '<div class="fl-kb-space" aria-hidden="true"></div>'; /* 13.11.2026 : place pour le clavier posé en bas */
   if(ui.flIn || ui.flPop) setTimeout(function(){ ui.flIn = false; ui.flPop = false; }, 0);
   return h;
 }
