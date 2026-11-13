@@ -1344,6 +1344,15 @@ html body .fl-sw.far>.fl-swbg{background:#C8242A!important}
 .fl-sw.far>.fl-swbg svg{transform:scale(1.25)}
 .fl-sw.gone{transition:height .2s ease,opacity .2s ease;opacity:0}
 @media (prefers-reduced-motion:reduce){.fl-sw.snap>.fl-row,.fl-sw.gone{transition:none}}
+/* 13.11.2026 : glisser un exercice entier vers la gauche pour le retirer de la séance */
+.fl-sw.fl-xsw{border-radius:18px;overflow:visible}
+.fl-sw.fl-xsw.sw,.fl-sw.fl-xsw.opn,.fl-sw.fl-xsw.gone{overflow:hidden}
+.fl-xsw>.fl-ex{z-index:1}
+.fl-xsw.sw:not(.snap)>.fl-ex{transition:none!important}
+.fl-xsw.snap>.fl-ex{transition:transform .22s cubic-bezier(.2,.8,.2,1)!important}
+.fl-xsw.sw>.fl-ex,.fl-xsw.opn>.fl-ex{opacity:1!important;filter:none!important}
+html body .fl-sw.fl-xsw>.fl-swbg{border-radius:18px!important;padding:0 22px!important}
+@media (prefers-reduced-motion:reduce){.fl-xsw.snap>.fl-ex{transition:none!important}}
 .fl-edbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-2px 0 8px;padding:0 4px;font-size:12px;font-weight:700;color:var(--m3-muted)}
 body .fl-edbar button{min-height:40px!important;min-width:84px!important;border-radius:12px!important;background:var(--m3-accent)!important;color:var(--m3-card)!important;border:0!important;font-weight:800!important;font-size:14px!important}
 .fl-row.later{color:var(--m3-muted)}
@@ -7155,7 +7164,9 @@ function flRestSep(e, i, j, last){
 }
 function flCard(e, i, ri){
   var a = S.active, open = i === a.idx, c = flCount(e), all = e.sets.length && e.sets.every(function(s){ return s.done; });
-  var h = '<div class="fl-ex' + (open ? ' open' : '') + (all ? ' done' : '') + '" id="fl-ex-' + i + '" data-i="' + i + '">';
+  /* 13.11.2026 : la carte est posée sur un fond rouge « Supprimer » qu'on découvre en la glissant vers la gauche */
+  var h = '<div class="fl-sw fl-xsw" data-swi="' + i + '" data-swx="1"><button class="fl-swbg" data-a="flrm" data-i="' + i + '" tabindex="-1" aria-label="' + L('Retirer ', 'Remove ') + esc(exDisp(e.name)) + L(' de la séance', ' from the session') + '">' + FL_ICO.trash + '<span>' + L('Supprimer', 'Delete') + '</span></button>';
+  h += '<div class="fl-ex' + (open ? ' open' : '') + (all ? ' done' : '') + '" id="fl-ex-' + i + '" data-i="' + i + '">';
   h += '<div class="fl-exh"><button class="fl-grip" data-flgrip="' + i + '" aria-label="' + L('Déplacer ', 'Move ') + esc(exDisp(e.name)) + '">' + FL_ICO.grip + '</button>';
   h += open ? '<button class="fl-title" data-a="fiche" data-n="' + esc(e.name) + '">' + esc(exDisp(e.name)) + '</button>' : '<button class="fl-title" data-a="flopen" data-i="' + i + '">' + esc(exDisp(e.name)) + '</button>';
   h += '<button class="fl-ico i" data-a="fiche" data-n="' + esc(e.name) + '" aria-label="' + L('Infos de l\'exercice', 'Exercise info') + '">' + FL_ICO.info + '</button>';
@@ -7167,7 +7178,7 @@ function flCard(e, i, ri){
   if(e.cue) h += '<p class="fl-cue">' + esc(trText(e.cue)) + '</p>';
   h += flRows(e, i, open, ri);
   if(open) h += '<div class="fl-adds"><button data-a="addset">' + L('+ Série', '+ Set') + '</button><button class="w" data-a="addwarm">' + L('+ Échauffement', '+ Warm-up') + '</button></div>';
-  h += '</div></div></div></div>';
+  h += '</div></div></div></div></div>';
   if(i < a.exercises.length - 1 && e.ss) h += '<div class="m4-link">⇄ SUPERSET</div>';
   return h;
 }
@@ -7360,17 +7371,20 @@ document.addEventListener('click', function(ev){
    Un petit glissement découvre le bouton rouge « Supprimer » ; un grand glissement supprime directement.
    Dans les deux cas, « Annuler » reste affiché quelques secondes. */
 var flSw = null, flSwOpen = null, FL_SW_BTN = 132;
+/* 13.11.2026 : même geste sur un exercice entier (enveloppe .fl-xsw autour de la carte) */
+function flSwR(w){ var c = w.children; for(var k = 0; k < c.length; k++) if(c[k].classList.contains('fl-row') || c[k].classList.contains('fl-ex')) return c[k]; return null; }
 function flSwClose(w, now){
-  if(!w) return; var r = w.querySelector('.fl-row');
+  if(!w) return; var r = flSwR(w);
   w.classList.remove('opn', 'far'); if(now) w.classList.remove('snap'); else w.classList.add('snap');
   if(r) r.style.transform = '';
   setTimeout(function(){ w.classList.remove('sw', 'snap'); }, now ? 0 : 230);
   if(flSwOpen === w) flSwOpen = null;
 }
 function flSwKill(w){
-  var i = +w.getAttribute('data-swi'), j = +w.getAttribute('data-swj'), r = w.querySelector('.fl-row');
+  var i = +w.getAttribute('data-swi'), j = +w.getAttribute('data-swj'), r = flSwR(w), isEx = w.hasAttribute('data-swx');
+  if(isEx && S.active && S.active.exercises.length < 2){ flSwClose(w); toast(L('Une séance garde au moins un exercice', 'A session keeps at least one exercise')); return; }
   var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var go = function(){ flSwOpen = null; flDelSet(i, j); render(); };
+  var go = function(){ flSwOpen = null; if(isEx) flRemove(i); else flDelSet(i, j); render(); };
   if(calm || !r){ go(); return; }
   w.classList.add('snap'); r.style.transform = 'translateX(-110%)';
   setTimeout(function(){ w.style.height = w.offsetHeight + 'px'; void w.offsetHeight; w.classList.add('gone'); w.style.height = '0px'; setTimeout(go, 190); }, 180);
@@ -7378,8 +7392,8 @@ function flSwKill(w){
 document.addEventListener('touchstart', function(ev){
   var w = ev.target.closest && ev.target.closest('.fl-sw');
   if(flSwOpen && flSwOpen !== w) flSwClose(flSwOpen);
-  if(!w || !S.active || ev.touches.length > 1 || ev.target.closest('.fl-swbg')) { flSw = null; return; }
-  var r = w.querySelector('.fl-row'); if(!r) return;
+  if(!w || !S.active || ev.touches.length > 1 || ev.target.closest('.fl-swbg') || ev.target.closest('.fl-grip') || document.querySelector('.fl-dragging')) { flSw = null; return; }
+  var r = flSwR(w); if(!r){ flSw = null; return; }
   flSw = {w:w, r:r, x0:ev.touches[0].clientX, y0:ev.touches[0].clientY, base:w.classList.contains('opn') ? -FL_SW_BTN : 0, dx:0, lock:null, width:w.offsetWidth || 320, far:false};
 }, {passive:true});
 document.addEventListener('touchmove', function(ev){
