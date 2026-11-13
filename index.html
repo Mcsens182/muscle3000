@@ -2194,9 +2194,21 @@ function bestFor(name){
 /* ---------- audio / wake ---------- */
 function unlockAudio(){ try{ if(!audio){ var C = window.AudioContext || window.webkitAudioContext; if(C) audio = new C(); } if(audio && audio.state === 'suspended') audio.resume(); }catch(e){} }
 function beep(){ m3Haptic(); m3Ding(); }
-function askWake(){ try{ if(navigator.wakeLock && !wake) navigator.wakeLock.request('screen').then(function(w){ wake = w; w.addEventListener('release', function(){ wake = null; }); }).catch(function(){}); }catch(e){} }
-function releaseWake(){ try{ if(wake) wake.release(); }catch(e){} wake = null; }
-document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'visible' && S.active) askWake(); });
+/* 13.11.2026 : l'écran reste allumé tant que l'appli est ouverte et visible (plus seulement pendant une séance).
+   Le téléphone peut à nouveau se verrouiller dès qu'on quitte l'appli. iPhone : iOS 16.4 ou plus récent. */
+var wakeAsk = false;
+function askWake(){
+  try{
+    if(!navigator.wakeLock || wake || wakeAsk || document.visibilityState !== 'visible') return;
+    wakeAsk = true;
+    navigator.wakeLock.request('screen').then(function(w){ wake = w; wakeAsk = false; w.addEventListener('release', function(){ wake = null; }); }).catch(function(){ wakeAsk = false; });
+  }catch(e){ wakeAsk = false; }
+}
+function releaseWake(){ /* l'écran reste allumé dans toute l'appli, même hors séance */ }
+document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'visible') askWake(); });
+/* certains navigateurs (Safari) n'accordent le verrou qu'après un toucher : on redemande à chaque geste s'il a sauté */
+['touchend', 'click'].forEach(function(t){ document.addEventListener(t, function(){ if(!wake) askWake(); }, {passive:true, capture:true}); });
+askWake();
 
 /* ---------- views ---------- */
 function restInfo(){
