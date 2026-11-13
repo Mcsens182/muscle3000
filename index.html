@@ -1306,6 +1306,9 @@ body .restbar.fl-rband{position:fixed!important;top:env(safe-area-inset-top,0px)
 body .fl-grip{flex:none;width:38px;min-height:48px!important;padding:0!important;border:0!important;color:var(--m3-muted)!important;opacity:.7;touch-action:none;cursor:grab;display:flex;align-items:center;justify-content:center}
 body .fl-title{flex:1;min-width:0;min-height:48px!important;padding:0!important;border:0!important;text-align:left;font-size:17px!important;font-weight:700!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fl-ex.open .fl-title{font-weight:800!important}
+/* 13.11.2026 : le nom complet de l'exercice s'affiche toujours (retour à la ligne au lieu de « … ») */
+body .fl-title{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;overflow-wrap:anywhere;line-height:1.2!important;padding:8px 0!important}
+.fl-exh{align-items:center}
 body .fl-ico{flex:none;width:38px;min-height:40px!important;padding:0!important;border:0!important;color:var(--m3-muted)!important;display:flex;align-items:center;justify-content:center}
 .fl-ex.open .fl-ico.i{color:var(--m3-accent)!important}
 .fl-cnt{flex:none;font-size:13px;font-weight:800;color:var(--m3-muted);padding:0 2px 0 4px;white-space:nowrap;font-variant-numeric:tabular-nums}
