@@ -7192,14 +7192,15 @@ function flRows(e, i, open, ri){
       h += '<input class="fl-cell' + kbOnCls('w') + '" id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + kbCell('w', s.w != null ? kg(s.w) : (xe !== 'w' ? '0' : '')) + '" aria-label="' + wLab(e.name) + '">';
       h += '<input class="fl-cell' + kbOnCls('r') + '" id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + kbCell('r', s.r != null ? s.r : '') + '" aria-label="' + rLab(e.name) + '">';
       h += '<button class="fl-ck" data-a="fledok" aria-label="' + L('Fin de la modification', 'Done editing') + '">' + FL_ICO.check + '</button>';
-      nextStep = flStepper(e, s) + '<div class="fl-edbar"><span>' + L('Série validée · modification', 'Logged set · editing') + '</span><button data-a="fledok">' + L('OK', 'OK') + '</button></div>';
+      /* 13.11.2026 : plus de panneau −/+ (flStepper) sous la série */
+      nextStep = '<div class="fl-edbar"><span>' + L('Série validée · modification', 'Logged set · editing') + '</span><button data-a="fledok">' + L('OK', 'OK') + '</button></div>';
     } else if(isNext){
       var xt = exType(e.name);
       h += prevBtn;
       h += '<input class="fl-cell' + (s.w == null ? ' sug' : '') + kbOnCls('w') + '" id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + kbCell('w', s.w != null ? kg(s.w) : '') + '" placeholder="' + (s.sw != null ? kg(s.sw) : xt !== 'w' ? '0' : '—') + '" aria-label="' + wLab(e.name) + '">';
       h += '<input class="fl-cell' + (s.r == null ? ' sug' : '') + kbOnCls('r') + '" id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + kbCell('r', s.r != null ? s.r : '') + '" placeholder="' + (s.sr != null ? s.sr : '—') + '" aria-label="' + rLab(e.name) + '">';
       h += '<button class="fl-ck" data-a="validate" aria-label="' + L('Valider ', 'Log ') + flSetName(e, j) + '"></button>';
-      nextStep = flStepper(e, s);
+      /* 13.11.2026 : plus de panneau −/+ sous la série, le clavier en bas suffit (demande de Maxence) */
     } else {
       var vw = flVal(flW(e.name, s.w), s.done ? null : flW(e.name, s.sw)), vr = flVal(flR(e.name, s.r), s.done ? null : flR(e.name, s.sr));
       if(open && !s.done) h += prevBtn + '<button class="fl-mid fl-mid2" data-a="sel" data-j="' + j + '" aria-label="' + L('Choisir ', 'Pick ') + flSetName(e, j) + '"><span class="fl-v">' + vw + '</span><span class="fl-v">' + vr + '</span></button>';
