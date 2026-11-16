@@ -2167,8 +2167,14 @@ function finish(endAt){
   closeRest();
   /* une série rouverte pour être corrigée et laissée telle quelle reste comptée */
   S.active.exercises.forEach(function(e){ e.sets.forEach(function(s){ if(s.redo){ s.done = true; delete s.redo; } }); });
-  ui.pending = diffSession(S.active);
-  var kept = S.active.exercises.filter(function(e){ return e.sets.some(function(s){ return s.done; }); });
+  /* 16.11.2026 : seules les séries cochées comptent. Une série non cochée n'est enregistrée nulle part (journal, modèle écrasé,
+     nouveau workout), et un exercice sans aucune série cochée disparaît de la séance enregistrée. */
+  var doneOnly = {pid:S.active.pid, exercises:S.active.exercises.map(function(e){
+    var c = {}; for(var k in e) c[k] = e[k];
+    c.sets = e.sets.filter(function(s){ return s.done; }); return c;
+  }).filter(function(e){ return e.sets.length || (e.pre && e.pre.length); })};
+  ui.pending = diffSession(doneOnly);
+  var kept = doneOnly.exercises.filter(function(e){ return e.sets.length; });
   if(!ui.pending && (!S.active.pid || !prog(S.active.pid)) && kept.length) ui.pending = {fresh:true, wname:S.active.name, ex:kept.map(function(e){ return {name:e.name, s:e.sets.filter(function(x){ return !x.auto; }).map(setTpl), rest:e.rest, cue:e.cue || ''}; })};
   if(ui.pending && S.active.redo){ ui.pending.redo = true; ui.pending.redoDate = S.active.redoDate; }
   if(ui.pending) ui.pending.saveName = ui.pending.fresh ? (isEN() ? 'Free session ' : 'Séance libre du ') + fmtDate(Date.now()) : trText(ui.pending.wname) + (isEN() ? ' (variant)' : ' (variante)');
