@@ -152,6 +152,8 @@ button.m3s-sw.on{color:var(--m3-ink)!important}
 .m6-sheet .m4-cta{margin-top:18px}
 .m6-x{background:transparent!important;border:0!important;font-size:16px!important;color:var(--m3-muted)!important;min-height:0!important;padding:4px 8px!important}
 .m6-hint{font-size:12px;color:var(--m3-muted);margin:-4px 0 6px}
+.m6-sheet .m3s-list + .m6-hint{margin:12px 2px 10px;line-height:1.4}
+.m6-sheet .m6-tpl{margin-top:10px;width:100%}
 .m6-group{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--m3-muted);margin:18px 0 4px}
 .m6-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--m3-line)}
 .m6-row .m3s-row{border-bottom:0!important;flex:1}
@@ -2168,6 +2170,7 @@ function finish(endAt){
   ui.pending = diffSession(S.active);
   var kept = S.active.exercises.filter(function(e){ return e.sets.some(function(s){ return s.done; }); });
   if(!ui.pending && (!S.active.pid || !prog(S.active.pid)) && kept.length) ui.pending = {fresh:true, wname:S.active.name, ex:kept.map(function(e){ return {name:e.name, s:e.sets.filter(function(x){ return !x.auto; }).map(setTpl), rest:e.rest, cue:e.cue || ''}; })};
+  if(ui.pending && S.active.redo){ ui.pending.redo = true; ui.pending.redoDate = S.active.redoDate; }
   if(ui.pending) ui.pending.saveName = ui.pending.fresh ? (isEN() ? 'Free session ' : 'Séance libre du ') + fmtDate(Date.now()) : trText(ui.pending.wname) + (isEN() ? ' (variant)' : ' (variante)');
   ui.saveAs = false; ui.saveDest = null;
   var a = S.active, prevBest = {};
@@ -2583,8 +2586,10 @@ function vDone(){
   /* 11.11.2026 : le choix modèle / nouvelle séance / juste enregistrer passe en tête, bien visible */
   if(ui.pending){
     var pd = ui.pending, form = pd.fresh || ui.saveAs, wn = esc(trText(pd.wname));
-    h += '<div class="box m3-end" id="m3-end" style="display:flex;flex-direction:column;gap:10px"><span class="m3-end-tag">' + L('⚑ À CHOISIR', '⚑ YOUR CALL') + '</span>';
-    if(pd.fresh) h += '<span class="lbl">' + L('SÉANCE IMPROVISÉE', 'IMPROVISED SESSION') + '</span><span class="disp" style="font-size:28px">' + L('La garder pour la refaire ?', 'Keep it to do it again?') + '</span><span class="m3s-note" style="margin:0">' + L('Elle est déjà dans ton journal. Tu peux aussi en faire une séance réutilisable.', 'It is already in your log. You can also turn it into a reusable session.') + '</span>';
+    h += '<div class="box m3-end" id="m3-end" style="display:flex;flex-direction:column;gap:10px"><span class="m3-end-tag">' + (pd.redo ? L('FACULTATIF', 'OPTIONAL') : L('⚑ À CHOISIR', '⚑ YOUR CALL')) + '</span>';
+    /* 16.11.2026 : séance refaite depuis « Dernières séances » : déjà au journal, modèle intact ; on peut quand même en faire la nouvelle base */
+    if(pd.redo && !pd.fresh) h += '<span class="lbl">' + L('SÉANCE REFAITE · ', 'SESSION REDONE · ') + wn.toUpperCase() + '</span><span class="disp" style="font-size:28px">' + L('Ton modèle n\'a pas bougé', 'Your template is untouched') + '</span><span class="m3s-note" style="margin:0">' + L('Séance enregistrée au journal. Elle diffère du modèle sur ces points ; tu peux en faire la nouvelle base si tu veux.', 'Session saved to your log. It differs from the template on these points; you can make it the new base if you want.') + '</span><div class="m3-changes">' + pd.changes.map(function(c){ return '<span>▸ ' + esc(trText(c)) + '</span>'; }).join('') + '</div>';
+    else if(pd.fresh) h += '<span class="lbl">' + L('SÉANCE IMPROVISÉE', 'IMPROVISED SESSION') + '</span><span class="disp" style="font-size:28px">' + L('La garder pour la refaire ?', 'Keep it to do it again?') + '</span><span class="m3s-note" style="margin:0">' + L('Elle est déjà dans ton journal. Tu peux aussi en faire une séance réutilisable.', 'It is already in your log. You can also turn it into a reusable session.') + '</span>';
     else h += '<span class="lbl">' + L('SÉANCE MODIFIÉE · ', 'SESSION CHANGED · ') + wn.toUpperCase() + '</span><span class="disp" style="font-size:28px">' + L('Que faire de ces changements ?', 'What to do with these changes?') + '</span><div class="m3-changes">' + pd.changes.map(function(c){ return '<span>▸ ' + esc(trText(c)) + '</span>'; }).join('') + '</div>';
     if(form){
       var dest = ui.saveDest || (!pd.fresh && wkProg(pd.pid) && !wkProg(pd.pid).demo ? wkProg(pd.pid).id : 'libres');
@@ -4745,7 +4750,7 @@ document.addEventListener('click', function(ev){
     case 'saveas': ui.saveAs = true; break;
     case 'donehome':
       /* 11.11.2026 : séance modifiée sans choix → on ramène d'abord sur l'encart ; un 2e appui garde le modèle tel quel */
-      if(ui.pending && !ui.pendWarn){
+      if(ui.pending && !ui.pending.redo && !ui.pendWarn){
         ui.pendWarn = true;
         var pe = document.getElementById('m3-end');
         if(pe){ pe.scrollIntoView({behavior:'smooth', block:'center'}); pe.classList.remove('pulse'); void pe.offsetWidth; pe.classList.add('pulse'); }
@@ -6798,17 +6803,16 @@ function m6Title(x){
 }
 function m6Recent(){
   var seen = {}, out = [];
+  /* 16.11.2026 : chaque séance réellement faite (plus de regroupement par modèle) ; on l'ouvre telle qu'elle a été faite */
   for(var i = S.history.length - 1; i >= 0 && out.length < 10; i--){
-    var x = S.history[i]; if(x.demo) continue;
-    var key = x.pid || ('n:' + x.name); if(seen[key]) continue; seen[key] = 1; out.push(x);
+    var x = S.history[i]; if(x.demo || seen[x.id]) continue; seen[x.id] = 1; out.push(x);
   }
   if(!out.length) return '';
   var h = '<section class="m3-block m6-recent"><div class="m3-section-head"><span>' + L('DERNIÈRES SÉANCES', 'RECENT SESSIONS') + '</span></div><div class="m6-scroll">';
   out.forEach(function(x){
-    var w = x.pid ? prog(x.pid) : null, pp = x.pid ? wkProg(x.pid) : null, v = sessVol(x);
-    var tag = progLabel(x);
-    var attrs = w && pp ? ' data-a="m6open" data-p="' + esc(pp.id) + '" data-id="' + esc(w.id) + '"' : ' data-a="m6hist" data-id="' + esc(x.id) + '"';
-    h += '<button class="m6-card"' + attrs + '><small>' + m6Ago(x.date) + '</small><b>' + esc(m6Title(x)) + '</b>' + (tag ? '<em>' + esc(tag) + '</em>' : '') + '<span>' + x.exercises.length + L(' exos · ', ' ex. · ') + fmtT(v) + '</span>' + (!S.active ? '<i>' + L('Voir', 'View') + ' →</i>' : '') + '</button>';
+    var v = sessVol(x), tag = progLabel(x);
+    var attrs = ' data-a="m6hist" data-id="' + esc(x.id) + '"';
+    h += '<button class="m6-card"' + attrs + '><small>' + m6Ago(x.date) + '</small><b>' + esc(m6Title(x)) + '</b>' + (tag ? '<em>' + esc(tag) + '</em>' : '') + '<span>' + x.exercises.length + L(' exos · ', ' ex. · ') + fmtT(v) + '</span>' + (!S.active ? '<i>' + L('Voir · refaire', 'View · redo') + ' →</i>' : '') + '</button>';
   });
   return h + '</div></section>';
 }
@@ -6839,32 +6843,57 @@ function m6LibAdd(id){
   S.settings.activeProg = keepAct; S.settings.cycleStart = keepCs;
   return p;
 }
-/* séance faite sans modèle (improvisée) : le détail de ce qui a été fait, et on peut la refaire telle quelle */
+/* une séance passée : le détail de ce qui a été fait, et on peut la refaire telle quelle (16.11.2026 : aussi pour les séances d'un programme) */
 function m6HistSheet(){
   var x = S.history.filter(function(r){ return r.id === ui.histSheet; })[0];
   if(!x){ ui.histSheet = null; return ''; }
   var h = '<div class="pane m3-wsheet m6-sheet" role="dialog" aria-label="' + esc(m6Title(x)) + '"><div class="m3-ws-grip"></div><div class="m3-section-head"><span>' + m6Ago(x.date).toUpperCase() + ' · ' + mmss(x.dur) + '</span><button data-a="closesheet" class="m6-x" aria-label="' + L('Fermer', 'Close') + '">✕</button></div>';
   h += '<h2 class="m6-h">' + esc(m6Title(x)) + '</h2><div class="m3s-list">';
   x.exercises.forEach(function(e){
-    var sets = e.sets.filter(function(t){ return !t.warm && t.r != null; });
-    h += '<div class="m3s-row m6-static m7-row">' + m7Th(e.name) + '<span>' + esc(exDisp(e.name)) + '<small>' + (sets.length ? sets.map(function(t){ return fmtS(e.name, t.w, t.r); }).join(' · ') : '—') + '</small></span></div>';
+    var sets = e.sets.filter(function(t){ return !t.warm && t.r != null; }), nw = e.sets.filter(function(t){ return t.warm; }).length;
+    h += '<div class="m3s-row m6-static m7-row">' + m7Th(e.name) + '<span>' + esc(exDisp(e.name)) + '<small>' + (nw ? nw + ' W · ' : '') + (sets.length ? sets.map(function(t){ return fmtS(e.name, t.w, t.r); }).join(' · ') : '—') + '</small></span></div>';
   });
   h += '</div>';
-  if(!S.active) h += '<button class="m3-primary m4-cta" data-a="m6redo" data-id="' + esc(x.id) + '">' + L('REFAIRE CETTE SÉANCE', 'DO THIS SESSION AGAIN') + ' <span>→</span></button>';
+  var tw = x.pid ? prog(x.pid) : null, tp = x.pid ? wkProg(x.pid) : null;
+  if(!S.active){
+    h += '<p class="m6-hint">' + (tw ? L('Mêmes exercices, mêmes séries, charges proposées à partir de cette séance. Le modèle « ', 'Same exercises, same sets, weights suggested from this session. The “') + esc(trText(tw.name)) + L(' » ne change pas.', '” template does not change.') : L('Mêmes exercices, mêmes séries, charges proposées à partir de cette séance.', 'Same exercises, same sets, weights suggested from this session.')) + '</p>';
+    h += '<button class="m3-primary m4-cta" data-a="m6redo" data-id="' + esc(x.id) + '">' + L('REFAIRE CETTE SÉANCE', 'DO THIS SESSION AGAIN') + ' <span>→</span></button>';
+    if(tw && tp) h += '<button class="m3s-row m6-tpl" data-a="m6open" data-p="' + esc(tp.id) + '" data-id="' + esc(tw.id) + '"><span>' + L('Voir le modèle « ', 'See the “') + esc(trText(tw.name)) + L(' »', '” template') + '<small>' + L('La séance telle qu\'elle est prévue dans ton programme', 'The session as planned in your program') + '</small></span><b>›</b></button>';
+  }
   return h + '</div>';
 }
+/* 16.11.2026 : refaire une séance passée à l'identique (exercices, ordre, séries, échauffements, remplacements).
+   Si elle venait d'un modèle, on garde le lien (journal, notes, rotation) mais le modèle n'est jamais modifié sans le demander. */
 function m6StartHist(x){
-  S.active = {pid:null, name:x.name, start:Date.now(), idx:0, rest:null, exercises:x.exercises.map(function(e){
-    var work = e.sets.filter(function(t){ return !t.warm; }), warm = e.sets.filter(function(t){ return t.warm; });
-    var rest = (work[0] && work[0].rest) || e.rest || 90;
-    var rs = work.map(function(t){ return t.r || 8; }), lo = rs.length ? Math.min.apply(null, rs) : 8, hi = rs.length ? Math.max.apply(null, rs) : 12;
-    if(hi === lo) hi = lo + 2;
-    var ex = {name:e.name, variants:null, rest:rest, cue:'', note:lastNote(e.name, null), sel:null, sets:[]};
-    warm.forEach(function(t){ ex.sets.push({lo:t.r || 8, hi:t.r || 8, special:null, warm:true, rest:60, done:false, w:null, r:t.r || 8}); });
-    (work.length ? work : [0, 1, 2]).forEach(function(){ ex.sets.push({lo:lo, hi:hi, special:null, warm:false, rest:rest, done:false, w:null, r:null}); });
+  ssMigrate(); ui.staleOk = false;
+  var w = x.pid ? prog(x.pid) : null, used = {};
+  if(w && !w.ex) w = null;
+  function slot(name){
+    if(!w) return -1;
+    for(var i = 0; i < w.ex.length; i++){ var t = w.ex[i]; if(!used[i] && (t.name === name || (t.v && t.v.indexOf(name) >= 0))) return i; }
+    return -1;
+  }
+  var pid = w ? x.pid : null;
+  S.active = {pid:pid, name:x.name, redo:x.id, redoDate:x.date, start:Date.now(), idx:0, rest:null, exercises:x.exercises.map(function(e){
+    var ti = slot(e.name); if(ti >= 0) used[ti] = 1;
+    var t = ti >= 0 ? w.ex[ti] : null;
+    var vars = t && t.v && t.v.length > 1 ? (t.v.indexOf(t.name) < 0 ? [t.name].concat(t.v) : t.v) : null;
+    var work = e.sets.filter(function(s){ return !s.warm; });
+    var tWork = t ? t.s.filter(function(s){ return !s.warm; }) : [];
+    var rest = (t && (tWork.length ? tWork[tWork.length - 1].rest : t.rest)) || (work[0] && work[0].rest) || e.rest || 90;
+    var rs = work.map(function(s){ return s.r || 8; }), flo = rs.length ? Math.min.apply(null, rs) : 8, fhi = rs.length ? Math.max.apply(null, rs) : 12;
+    if(fhi === flo) fhi = flo + 2;
+    var k = 0, ex = {tpl:ti >= 0 ? ti : null, name:e.name, variants:vars, rest:rest, cue:t ? (t.cue || '') : '', note:e.note || lastNote(vars || e.name, pid), sel:null, ss:t ? !!t.ss : false, sets:[]};
+    e.sets.forEach(function(s){
+      if(s.warm){ ex.sets.push({lo:s.lo || s.r || 8, hi:s.hi || s.r || 8, special:null, warm:true, rest:60, done:false, w:null, r:s.r || s.lo || 8}); return; }
+      var ts = tWork[k++];
+      ex.sets.push({lo:s.lo || (ts && ts.lo) || flo, hi:s.hi || (ts && ts.hi) || fhi, special:s.special || null, warm:false, rest:(ts && ts.rest) || rest, done:false, w:null, r:null});
+    });
+    if(!ex.sets.length) [0, 1, 2].forEach(function(){ ex.sets.push({lo:flo, hi:fhi, special:null, warm:false, rest:rest, done:false, w:null, r:null}); });
     fillSuggestions(ex); return ex;
   })};
   save(); ui.histSheet = null; ui.screen = 'ov'; ui.confirm = null; window.scrollTo(0, 0); askWake(); render();
+  toast(L('Séance du ', 'Session from ') + fmtDate(x.date) + L(' relancée', ' restarted'));
 }
 function m6Activate(id){ S.settings.activeProg = id; S.settings.cycleStart = S.settings.cycleStart || {}; if(!S.settings.cycleStart[id]) S.settings.cycleStart[id] = Date.now(); }
 function m6Open(pid, wid){ ui.otherSheet = null; ui.screen = 'prog'; ui.pvP = pid; ui.pvW = wid; ui.edProg = null; ui.edWk = null; ui.confirm = null; window.scrollTo(0, 0); }
