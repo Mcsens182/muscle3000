@@ -311,7 +311,40 @@ body .m3-pin .m3-pin-skip{font-size:10px!important;font-weight:800!important;let
 .m3-ws-save{width:100%;min-height:54px!important;margin-top:8px;border:0!important;border-radius:17px!important;background:var(--m3-ink)!important;color:#fff!important;font-weight:800!important;font-size:12px}
 .m3-ws-del{width:100%;min-height:46px!important;border:0!important;color:#B4472B!important;font-size:11px;font-weight:800!important}
 @media(max-width:390px){.m3w-m{font-size:20px}.m3w.z-l .m3w-m{font-size:30px}}
-</style></head><body>
+</style><style id="dn-v74">
+/* 17.11.2026 : fin de séance sur un seul écran */
+#app:has(> .dn){padding-bottom:0!important;gap:0!important}
+.dn{min-height:100dvh;box-sizing:border-box;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 14px) 0 calc(env(safe-area-inset-bottom,0px) + 14px)}
+.dn .dn-top{display:flex!important;justify-content:space-between;gap:10px;font-size:12px!important;font-weight:700;color:var(--m3-muted)!important;margin:0!important;padding:0!important;border:0!important;letter-spacing:0!important;text-transform:none!important}
+.dn-mid{flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(10px,2.2vh,18px);min-height:0;padding:10px 0}
+.dn-count{text-align:center;display:flex;flex-direction:column;align-items:center}
+.dn-count b{font-size:clamp(58px,11vh,88px);line-height:1;font-weight:900;letter-spacing:-.04em;color:var(--m3-ink)}
+.dn-count small{font-size:13px;color:var(--m3-muted);margin-top:4px}
+.dn-hero{display:flex;align-items:center;gap:12px;border-radius:16px;padding:12px 14px;border:2px solid var(--m3-line);background:var(--m3-card);color:var(--m3-ink)}
+.dn-hero i{font-style:normal;font-size:22px;flex:none}
+.dn-hero div{display:flex;flex-direction:column;min-width:0}
+.dn-hero small{font-size:12px;font-weight:700;color:var(--m3-muted)}
+.dn-hero b{font-size:16px;font-weight:800;line-height:1.25}
+.dn-hero.pr{border-color:var(--m3-accent);background:color-mix(in srgb,var(--m3-accent) 12%,var(--m3-card))}
+.dn-hero.pr small{color:var(--m3-accent)}
+.dn-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dn-stats>div{background:var(--m3-card);border:1px solid var(--m3-line);border-radius:14px;padding:10px 12px;min-width:0;display:flex;flex-direction:column}
+.dn-stats small{font-size:11px;font-weight:700;color:var(--m3-muted)}
+.dn-stats b{font-size:20px;font-weight:800;color:var(--m3-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dn-stats em{font-style:normal;font-size:11px;color:var(--m3-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dn-stats em.up{color:var(--m3-accent);font-weight:700}
+.dn-note{margin:0 0 8px!important;font-size:12px;color:var(--m3-muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dn-btns{display:flex;flex-direction:column;gap:8px}
+.dn-btns .fl2{margin:0}
+.dn-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px}
+body .dn button.dn-go{width:100%;min-height:56px!important;border:0!important;border-radius:16px!important;background:var(--m3-ink)!important;color:var(--m3-card)!important;font-size:16px!important;font-weight:800!important;letter-spacing:0!important;text-transform:none!important}
+body .dn button.dn-sec{min-height:58px!important;border:2px solid var(--m3-line)!important;border-radius:16px!important;background:var(--m3-card)!important;color:var(--m3-ink)!important;font-size:13px!important;font-weight:700!important;line-height:1.2;letter-spacing:0!important;text-transform:none!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px 8px!important}
+.dn-sec svg{width:20px;height:20px;fill:none;stroke:var(--m3-accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+body .dn button:active{transform:scale(.98)}
+html.hud body .dn-hero,html.hud body .dn-stats>div,html.hud body .dn button.dn-go,html.hud body .dn button.dn-sec{border-radius:var(--h-r)!important}
+html.hud body .dn button.dn-go{background:var(--h-fill)!important;color:var(--h-on)!important}
+</style>
+</head><body>
 
 <style>
 /* Layout: one-thumb phone app, max 480px column, heavy 3px borders, controls pinned at the bottom of the exercise screen */
@@ -2583,45 +2616,94 @@ function m3BkBox(){
   if(!m3BkDue()) return '';
   return '<div class="box m3bk"><span class="lbl">' + L('SAUVEGARDE', 'BACKUP') + '</span><b>' + (function(n){ return L(n + (n > 1 ? ' séances' : ' séance') + ' depuis ta dernière sauvegarde', n + (n > 1 ? ' sessions' : ' session') + ' since your last backup'); })(m3BkSince()) + '</b><p>' + L('Envoie le fichier dans Fichiers, Drive ou par mail : en cas de souci avec le téléphone, tu récupères tout.', 'Send the file to Files, Drive or email: if anything happens to your phone, you get everything back.') + '</p><div class="grid2"><button data-a="bklater">' + L('Plus tard', 'Later') + '</button><button class="solid" data-a="bknow">' + L('Sauvegarder', 'Back up') + '</button></div></div>';
 }
-function vDone(){
-  var r = ui.last, vol = 0, n = 0;
-  if(r) r.exercises.forEach(function(e){ e.sets.forEach(function(s){ if(!s.warm){ n++; vol += s.w*s.r; } }); });
-  var h = '<div class="top"><span>SÉANCE TERMINÉE</span></div>';
-  if(!r){ return h + '<div class="empty">Aucune série validée, rien n\'a été enregistré.</div><button class="go solid" data-a="scr" data-s="home">ACCUEIL <span>→</span></button>'; }
-  h += '<div class="disp" style="font-size:72px">' + esc(r.name) + '</div>';
-  /* 11.11.2026 : le choix modèle / nouvelle séance / juste enregistrer passe en tête, bien visible */
-  if(ui.pending){
-    var pd = ui.pending, form = pd.fresh || ui.saveAs, wn = esc(trText(pd.wname));
-    h += '<div class="box m3-end" id="m3-end" style="display:flex;flex-direction:column;gap:10px"><span class="m3-end-tag">' + (pd.redo ? L('FACULTATIF', 'OPTIONAL') : L('⚑ À CHOISIR', '⚑ YOUR CALL')) + '</span>';
-    /* 16.11.2026 : séance refaite depuis « Dernières séances » : déjà au journal, modèle intact ; on peut quand même en faire la nouvelle base */
-    if(pd.redo && !pd.fresh) h += '<span class="lbl">' + L('SÉANCE REFAITE · ', 'SESSION REDONE · ') + wn.toUpperCase() + '</span><span class="disp" style="font-size:28px">' + L('Ton modèle n\'a pas bougé', 'Your template is untouched') + '</span><span class="m3s-note" style="margin:0">' + L('Séance enregistrée au journal. Elle diffère du modèle sur ces points ; tu peux en faire la nouvelle base si tu veux.', 'Session saved to your log. It differs from the template on these points; you can make it the new base if you want.') + '</span><div class="m3-changes">' + pd.changes.map(function(c){ return '<span>▸ ' + esc(trText(c)) + '</span>'; }).join('') + '</div>';
-    else if(pd.fresh) h += '<span class="lbl">' + L('SÉANCE IMPROVISÉE', 'IMPROVISED SESSION') + '</span><span class="disp" style="font-size:28px">' + L('La garder pour la refaire ?', 'Keep it to do it again?') + '</span><span class="m3s-note" style="margin:0">' + L('Elle est déjà dans ton journal. Tu peux aussi en faire une séance réutilisable.', 'It is already in your log. You can also turn it into a reusable session.') + '</span>';
-    else h += '<span class="lbl">' + L('SÉANCE MODIFIÉE · ', 'SESSION CHANGED · ') + wn.toUpperCase() + '</span><span class="disp" style="font-size:28px">' + L('Que faire de ces changements ?', 'What to do with these changes?') + '</span><div class="m3-changes">' + pd.changes.map(function(c){ return '<span>▸ ' + esc(trText(c)) + '</span>'; }).join('') + '</div>';
-    if(form){
-      var dest = ui.saveDest || (!pd.fresh && wkProg(pd.pid) && !wkProg(pd.pid).demo ? wkProg(pd.pid).id : 'libres');
-      h += '<div class="fl2"><label class="lbl" for="sv-name">' + L('NOM DE LA NOUVELLE SÉANCE', 'NAME OF THE NEW SESSION') + '</label><input class="field" id="sv-name" value="' + esc(pd.saveName) + '" autocomplete="off"></div>';
-      h += '<div class="fl2"><label class="lbl" for="sv-dest">' + L('RANGER DANS', 'PUT IT IN') + '</label><select class="field" id="sv-dest">' + [freeProg()].concat(realProgs().filter(function(p){ return !p.demo; })).map(function(p){ return '<option value="' + p.id + '"' + (p.id === dest ? ' selected' : '') + '>' + esc(p.free ? L('Séances libres (hors programme)', 'Free sessions (outside programs)') : L('Programme ', 'Program ') + trText(p.name)) + '</option>'; }).join('') + '</select></div>';
-      h += '<div class="grid2"><button data-a="' + (pd.fresh ? 'keeporig' : 'saveascancel') + '">' + (pd.fresh ? L('Juste l\'enregistrer', 'Just save it') : L('← Retour', '← Back')) + '</button><button class="solid" data-a="savenew">' + L('Créer la séance', 'Create the session') + '</button></div>';
-    } else {
-      h += '<button class="m3-opt" data-a="applytpl"><i class="m3-opt-ic" aria-hidden="true">↻</i><b>' + L('Écraser « ', 'Overwrite “') + wn + L(' »', '”') + '</b><small>' + L('Le modèle est remplacé par ce que tu viens de faire. Les prochaines séances partiront de là.', 'The template is replaced by what you just did. Next sessions start from there.') + '</small></button>';
-      h += '<button class="m3-opt" data-a="saveas"><i class="m3-opt-ic" aria-hidden="true">＋</i><b>' + L('Créer un nouveau workout', 'Create a new workout') + '</b><small>' + L('« ', '“') + wn + L(' » reste tel quel. Une nouvelle séance est créée avec ces modifications.', '” stays as it is. A new session is created with these changes.') + '</small></button>';
-      h += '<button class="m3-opt" data-a="keeporig"><i class="m3-opt-ic" aria-hidden="true">✓</i><b>' + L('Juste enregistrer la séance', 'Just save the session') + '</b><small>' + L('Elle est dans ton journal. Le modèle ne change pas.', 'It is in your log. The template does not change.') + '</small></button>';
-    }
-    h += '</div>';
+/* 17.11.2026 : fin de séance sur un seul écran (sans défilement) : compteur, un grand bloc (record / meilleure série / cumul),
+   2 stats qui changent d'une séance à l'autre, puis Enregistrer (+ Mettre à jour le modèle / Nouveau modèle si la séance a été modifiée). */
+var DN_IC_UPD = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>';
+var DN_IC_NEW = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>';
+function dnReal(){ return S.history.filter(function(h){ return !h.demo; }); }
+function dnWork(h){ var v = 0, n = 0, w = 0, rs = 0, rn = 0; h.exercises.forEach(function(e){ e.sets.forEach(function(s){ if(s.warm){ w++; return; } n++; v += (s.w || 0) * (s.r || 0); if(s.rest){ rs += s.rest; rn++; } }); }); var reps = 0; h.exercises.forEach(function(e){ e.sets.forEach(function(s){ if(!s.warm) reps += s.r || 0; }); }); return {vol:v, n:n, warm:w, reps:reps, rest:rn ? rs / rn : 0}; }
+function dnBest(e){ var b = null; e.sets.forEach(function(s){ if(s.warm) return; var v = score(e.name, s.w, s.r); if(!b || v > b.v) b = {v:v, w:s.w, r:s.r}; }); return b; }
+function dnSet(name, b){ return exType(name) === 'w' ? kg(b.w) + ' kg × ' + b.r : fmtS(name, b.w, b.r); }
+function dnWeekStart(t){ var d = new Date(t); d.setHours(0,0,0,0); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return d.getTime(); }
+function dnCalc(r){
+  var all = dnReal(), hist = all.filter(function(h){ return h.id !== r.id; });
+  var same = hist.filter(function(h){ return r.pid ? h.pid === r.pid : h.name === r.name; }), prev = same[same.length - 1] || null;
+  var cur = dnWork(r), pw = prev ? dnWork(prev) : null, wk = 7 * 864e5;
+  var out = {total:all.length, week:all.filter(function(h){ return h.date >= dnWeekStart(r.date); }).length, hero:null, stats:[]};
+  /* grand bloc */
+  if(r.prs && r.prs.length){
+    var pe = r.exercises.filter(function(e){ return e.name === r.prs[0]; })[0], pb = pe && dnBest(pe);
+    if(pb) out.hero = {k:'pr', l:L('Nouveau record', 'New record') + (r.prs.length > 1 ? ' · +' + (r.prs.length - 1) : ''), v:trText(pe.name) + ' · ' + dnSet(pe.name, pb)};
   }
-  h += '<div class="stat"><div><span class="lbl">DURÉE</span><span class="disp tnum">' + mmss(r.dur) + '</span></div><div><span class="lbl">SÉRIES</span><span class="disp tnum">' + n + '</span></div><div><span class="lbl">VOLUME</span><span class="disp tnum">' + (vol >= 1000 ? kg(Math.round(vol/100)/10) + ' T' : kg(vol)) + '</span></div></div>';
-  h += m3BkBox();
-  var fx = funFact(vol);
-  if(fx) h += '<div class="box" style="display:flex;flex-direction:column;gap:2px"><span class="lbl">TU AS SOULEVÉ L\'ÉQUIVALENT DE</span><span class="disp" style="font-size:34px">' + esc(fx.count + ' ' + fx.name) + '</span><span class="lbl">' + esc(fx.unit).toUpperCase() + ' · TOTAL ' + esc(fmtT(vol)).toUpperCase() + '</span></div>';
-  h += '<div class="box inv" style="display:flex;flex-direction:column;gap:6px"><span class="lbl">RECORDS</span>' + (r.prs.length ? r.prs.map(function(p){ return '<span class="disp" style="font-size:24px">▲ ' + esc(p) + '</span>'; }).join('') : '<span style="font-size:12px">Pas de nouveau record cette fois. La progression continue la prochaine séance.</span>') + '</div>';
-  h += '<div class="box" style="display:flex;flex-direction:column;gap:8px"><div class="row between"><span class="lbl">PARTAGER TA SÉANCE</span><span class="lbl">FORMAT STORY</span></div>' +
-    '<div id="share-prev" style="border:3px solid var(--ink);aspect-ratio:9/16;max-width:100%;background:var(--ink);display:flex;align-items:center;justify-content:center;color:var(--ground)"><span class="lbl">PRÉPARATION…</span></div>' +
-    '<div class="' + (ui.photo ? 'grid2' : '') + '" style="display:' + (ui.photo ? 'grid' : 'flex') + ';flex-direction:column"><label class="chip" for="share-photo" style="min-height:48px;justify-content:center;cursor:pointer;border-width:3px">' + (ui.photo ? 'CHANGER LA PHOTO' : '+ AJOUTER UNE PHOTO') + '</label>' + (ui.photo ? '<button data-a="rmphoto">SANS PHOTO</button>' : '') + '</div>' +
-    '<label class="lbl" for="share-caption">UN MOT POUR TA STORY</label><input class="field" id="share-caption" data-cap="last" maxlength="70" value="' + esc(r.caption || '') + '" placeholder="Ex. Squat à 100 kg, enfin !" autocomplete="off">' +
-    '<input type="file" id="share-photo" accept="image/*" hidden>' +
-    '<button class="go solid" data-a="savecard" id="savecard" hidden>ENREGISTRER L\'IMAGE <span>↓</span></button>' +
-    '</div>';
-  h += '<button class="go solid" data-a="donehome">ACCUEIL <span>→</span></button>';
+  if(!out.hero && prev){
+    var top = null;
+    r.exercises.forEach(function(e){
+      var b = dnBest(e), pe2 = prev.exercises.filter(function(x){ return x.name === e.name; })[0], b2 = pe2 && dnBest(pe2);
+      if(b && b2 && b2.v > 0 && b.v >= b2.v){ var q = b.v / b2.v; if(!top || q > top.q) top = {q:q, e:e, b:b}; }
+    });
+    if(top) out.hero = {k:'best', l:L('Meilleure série du jour', 'Best set of the day'), v:trText(top.e.name) + ' · ' + dnSet(top.e.name, top.b)};
+  }
+  if(!out.hero){ var tot = 0; all.forEach(function(h){ tot += dnWork(h).vol; }); out.hero = {k:'tot', l:L('Total soulevé depuis le début', 'Total lifted so far'), v:fmtT(tot)}; }
+  /* réserve de stats : chacune a un poids ; on garde les 2 plus parlantes, en évitant celles de la dernière fois */
+  var c = [];
+  if(pw && pw.vol > 0 && cur.vol > 0){ var dv = Math.round((cur.vol - pw.vol) / pw.vol * 100); c.push({k:'vol', l:L('Volume', 'Volume'), v:fmtT(cur.vol), s:(dv >= 0 ? '+' : '−') + Math.abs(dv) + L(' % vs dernière', ' % vs last'), up:dv > 0, neg:dv < 0, w:dv > 0 ? 40 + dv : 10}); }
+  else c.push({k:'vol', l:L('Volume', 'Volume'), v:fmtT(cur.vol), s:L('cette séance', 'this session'), w:6});
+  if(pw && cur.reps){ var dr = cur.reps - pw.reps; c.push({k:'reps', l:L('Répétitions', 'Reps'), v:'' + cur.reps, s:(dr >= 0 ? '+' : '−') + Math.abs(dr) + L(' vs dernière', ' vs last'), up:dr > 0, neg:dr < 0, w:dr > 0 ? 34 + dr / 2 : 8}); }
+  if(cur.rest && pw && pw.rest){ var dt = Math.round(pw.rest - cur.rest); c.push({k:'rest', l:L('Repos moyen', 'Avg rest'), v:mmss(cur.rest).replace(':', ' min ').replace(/ min 0?(\d+)$/, ' min $1'), s:(dt >= 0 ? '−' : '+') + Math.abs(dt) + L(' s vs dernière', ' s vs last'), up:dt >= 10, neg:dt <= -10, w:dt >= 10 ? 45 : 7}); }
+  var ws = dnWeekStart(r.date), st = 0; while(all.some(function(h){ return h.date >= ws - st * wk && h.date < ws - (st - 1) * wk; })) st++;
+  if(st >= 3) c.push({k:'streak', l:L('Régularité', 'Consistency'), v:st + L(' sem.', ' wk'), s:L('d\'affilée', 'in a row'), w:28 + st * 2});
+  var bestP = null;
+  r.exercises.forEach(function(e){
+    var b = dnBest(e); if(!b || !b.v) return;
+    var old = hist.filter(function(h){ return h.date >= r.date - 42 * 864e5 && h.date <= r.date - 14 * 864e5 && h.exercises.some(function(x){ return x.name === e.name; }); })[0];
+    if(!old) return;
+    var ob = dnBest(old.exercises.filter(function(x){ return x.name === e.name; })[0]); if(!ob || !ob.v) return;
+    var p = Math.round((b.v - ob.v) / ob.v * 100);
+    if(p >= 3 && (!bestP || p > bestP.p)) bestP = {p:p, e:e, wks:Math.max(2, Math.round((r.date - old.date) / wk))};
+  });
+  if(bestP) c.push({k:'prog', l:L('Plus forte progression', 'Biggest gain'), v:'+' + bestP.p + ' %', s:trText(bestP.e.name) + L(' · ' + bestP.wks + ' sem.', ' · ' + bestP.wks + ' wk'), up:true, w:40 + bestP.p * 2});
+  var caps = [10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500];
+  if(caps.indexOf(out.total) >= 0 || (out.total > 500 && out.total % 100 === 0)) c.push({k:'cap', l:L('Cap franchi', 'Milestone'), v:out.total + L(' séances', ' sessions'), s:all.length ? L('depuis le ', 'since ') + fmtDate(all[0].date) : '', w:90});
+  if(same.length >= 3 && r.dur > 0 && same.every(function(h){ return !h.dur || h.dur > r.dur; })) c.push({k:'fast', l:L('Séance la plus rapide', 'Fastest session'), v:Math.round(r.dur / 60) + ' min', s:L('sur tes ', 'of your ') + trText(r.name), w:50});
+  c.push({k:'sets', l:L('Séries', 'Sets'), v:'' + cur.n, s:cur.warm ? L('dont ' + cur.warm + ' W', 'plus ' + cur.warm + ' W') : L('validées', 'done'), w:4});
+  c.push({k:'dur', l:L('Durée', 'Duration'), v:Math.round(r.dur / 60) + ' min', s:trText(r.name), w:3});
+  var last = []; try{ last = JSON.parse(localStorage.getItem('m3000.donestats') || '[]'); }catch(e){}
+  c.forEach(function(x){ if(last.indexOf(x.k) >= 0) x.w *= 0.4; });
+  c.sort(function(a, b){ return b.w - a.w; });
+  var pick = c.slice(0, 2);
+  if(pick.length === 2 && pick[0].neg && pick[1].neg){ var alt = c.filter(function(x){ return !x.neg; })[0]; if(alt) pick[1] = alt; }
+  out.stats = pick;
+  try{ localStorage.setItem('m3000.donestats', JSON.stringify(pick.map(function(x){ return x.k; }))); }catch(e){}
+  return out;
+}
+function vDone(){
+  var r = ui.last;
+  if(!r){ return '<div class="top"><span>' + L('SÉANCE TERMINÉE', 'SESSION DONE') + '</span></div><div class="empty">' + L('Aucune série validée, rien n\'a été enregistré.', 'No set done, nothing was saved.') + '</div><button class="go solid" data-a="scr" data-s="home">' + L('ACCUEIL', 'HOME') + ' <span>→</span></button>'; }
+  if(!ui.dn || ui.dn.id !== r.id) ui.dn = {id:r.id, d:dnCalc(r)};
+  var d = ui.dn.d, pd = ui.pending, form = pd && (ui.saveAs), hc = d.hero.k === 'pr' ? 'pr' : d.hero.k === 'best' ? 'best' : 'tot';
+  var dt = new Date(r.date), day = dt.toLocaleDateString(isEN() ? 'en-GB' : 'fr-FR', {weekday:'short', day:'numeric', month:'short'});
+  var h = '<div class="dn">';
+  h += '<div class="top dn-top"><span>' + esc(trText(r.name)) + ' · ' + Math.max(1, Math.round(r.dur / 60)) + ' min</span><span>' + esc(day) + '</span></div>';
+  h += '<div class="dn-mid">';
+  h += '<div class="dn-count"><span class="lbl">' + L('SÉANCE TERMINÉE', 'SESSION DONE') + '</span><b class="tnum">' + d.total + '</b><small>' + L('entraînements · ' + d.week + ' cette semaine', 'workouts · ' + d.week + ' this week') + '</small></div>';
+  h += '<div class="dn-hero ' + hc + '"><i aria-hidden="true">' + (hc === 'pr' ? '🏆' : hc === 'best' ? '🔥' : '⚖') + '</i><div><small>' + esc(d.hero.l) + '</small><b>' + esc(d.hero.v) + '</b></div></div>';
+  if(!form) h += '<div class="dn-stats">' + d.stats.map(function(s){ return '<div><small>' + esc(s.l) + '</small><b class="tnum">' + esc(s.v) + '</b><em class="' + (s.up ? 'up' : '') + '">' + esc(s.s || '') + '</em></div>'; }).join('') + '</div>';
+  h += '</div>';
+  if(pd){
+    var note = pd.fresh ? L('Séance improvisée', 'Improvised session') : (pd.redo ? L('Refaite · modèle intact', 'Redone · template untouched') : L('Modifiée', 'Changed')) + (pd.changes && pd.changes.length ? ' : ' + trText(pd.changes[0]) + (pd.changes.length > 1 ? ' · +' + (pd.changes.length - 1) : '') : '');
+    h += '<p class="dn-note">✎ ' + esc(note) + '</p>';
+  }
+  h += '<div class="dn-btns">';
+  if(form){
+    var dest = ui.saveDest || (!pd.fresh && wkProg(pd.pid) && !wkProg(pd.pid).demo ? wkProg(pd.pid).id : 'libres');
+    h += '<div class="fl2"><label class="lbl" for="sv-name">' + L('NOM DU NOUVEAU MODÈLE', 'NAME OF THE NEW TEMPLATE') + '</label><input class="field" id="sv-name" value="' + esc(pd.saveName) + '" autocomplete="off"></div>';
+    h += '<div class="fl2"><label class="lbl" for="sv-dest">' + L('RANGER DANS', 'PUT IT IN') + '</label><select class="field" id="sv-dest">' + [freeProg()].concat(realProgs().filter(function(p){ return !p.demo; })).map(function(p){ return '<option value="' + p.id + '"' + (p.id === dest ? ' selected' : '') + '>' + esc(p.free ? L('Séances libres (hors programme)', 'Free sessions (outside programs)') : L('Programme ', 'Program ') + trText(p.name)) + '</option>'; }).join('') + '</select></div>';
+    h += '<div class="dn-row"><button class="dn-sec" data-a="saveascancel">' + L('← Retour', '← Back') + '</button><button class="dn-go" data-a="savenew">' + L('Créer le modèle', 'Create template') + '</button></div>';
+  } else {
+    h += '<button class="dn-go" data-a="' + (pd ? 'keeporig' : 'donehome') + '">' + L('Enregistrer la séance', 'Save the session') + '</button>';
+    if(pd) h += '<div class="dn-row">' + (pd.fresh ? '' : '<button class="dn-sec" data-a="applytpl">' + DN_IC_UPD + '<span>' + L('Mettre à jour le modèle', 'Update the template') + '</span></button>') + '<button class="dn-sec" data-a="saveas">' + DN_IC_NEW + '<span>' + (pd.fresh ? L('Garder comme modèle', 'Keep as template') : L('Nouveau modèle', 'New template')) + '</span></button></div>';
+  }
+  h += '</div></div>';
   return h;
 }
 
@@ -4751,8 +4833,8 @@ document.addEventListener('click', function(ev){
     case 'applytpl':
       var tw2 = ui.pending && prog(ui.pending.pid);
       if(tw2){ tw2.ex = ui.pending.ex; save(); toast(L('« ', '“') + trText(tw2.name) + L(' » écrasée avec tes changements', '” overwritten with your changes')); }
-      ui.pending = null; break;
-    case 'keeporig': var wasFresh = ui.pending && ui.pending.fresh; ui.pending = null; ui.saveAs = false; toast(wasFresh ? L('Séance enregistrée dans le journal', 'Session saved to your log') : L('Séance enregistrée · modèle inchangé', 'Session saved · template unchanged')); break;
+      ui.pending = null; if(ui.screen === 'done'){ ui.screen = 'home'; window.scrollTo(0,0); } break;
+    case 'keeporig': var wasFresh = ui.pending && ui.pending.fresh; ui.pending = null; ui.saveAs = false; toast(wasFresh ? L('Séance enregistrée dans le journal', 'Session saved to your log') : L('Séance enregistrée · modèle inchangé', 'Session saved · template unchanged'));  if(ui.screen === 'done'){ ui.screen = 'home'; window.scrollTo(0,0); } break;
     case 'saveas': ui.saveAs = true; break;
     case 'donehome':
       /* 11.11.2026 : séance modifiée sans choix → on ramène d'abord sur l'encart ; un 2e appui garde le modèle tel quel */
@@ -4771,7 +4853,7 @@ document.addEventListener('click', function(ev){
       if(!nn){ toast('Donne un nom à la séance'); return; }
       var tp = progById(nd) || freeProg();
       tp.workouts.push({id:uid(), name:nn, day:null, ex:JSON.parse(JSON.stringify(ui.pending.ex))});
-      ui.pending = null; ui.saveAs = false; save(); toast(tp.free ? 'Rangée dans tes séances libres' : 'Ajoutée au programme ' + tp.name); break;
+      ui.pending = null; ui.saveAs = false; save(); toast(tp.free ? 'Rangée dans tes séances libres' : 'Ajoutée au programme ' + tp.name);  if(ui.screen === 'done'){ ui.screen = 'home'; window.scrollTo(0,0); } break;
     case 'tip': toast(el.getAttribute('data-t')); return;
     case 'piemode': ui.pieMode = el.getAttribute('data-m'); break;
     case 'news': S.settings.seenLog = CHANGELOG[0].v; save(); ui.screen = 'news'; window.scrollTo(0,0); break;
