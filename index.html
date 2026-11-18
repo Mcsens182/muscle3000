@@ -1618,6 +1618,31 @@ html body .fl-kb-hide{margin-left:auto;min-height:34px!important;padding:0 12px!
 html body .fl-kb-keys button{min-height:50px!important;padding:0!important;border-radius:12px!important;border:0!important;background:var(--m3-card)!important;color:var(--m3-ink)!important;font-size:24px!important;font-weight:700!important;box-shadow:0 1px 0 color-mix(in srgb,var(--m3-ink) 18%,transparent)!important}
 html body .fl-kb-keys button:active{background:var(--m3-tint)!important}
 .fl-kb-space{height:300px}
+.bm{--bm:var(--m3-accent);background:var(--m3-card);border-radius:18px;padding:14px 14px 12px;margin:12px 0}
+html.hud body .bm{--bm:var(--h-fill);border-radius:var(--h-r)}
+html.club body .bm{--bm:var(--c-brown)}
+.bm-hd{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--m3-muted)}
+.bm-hd small{font-size:12px;letter-spacing:0;font-weight:600}
+.bm-svg{display:block;width:100%;margin-top:6px}
+.bm-svg text{font-size:11px;fill:var(--m3-muted)}
+.bm-h,.bm-l0{fill:var(--m3-line)}
+.bm-m{stroke:var(--m3-card);stroke-width:1.5;cursor:pointer;transition:fill .2s}
+.bm-l1{fill:color-mix(in srgb,var(--bm) 22%,var(--m3-line))}
+.bm-l2{fill:color-mix(in srgb,var(--bm) 45%,var(--m3-line))}
+.bm-l3{fill:color-mix(in srgb,var(--bm) 72%,var(--m3-line))}
+.bm-l4{fill:var(--bm)}
+.bm-m.on{stroke:var(--m3-ink);stroke-width:2.5}
+.bm-lg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--m3-muted);margin:2px 0 10px}
+.bm-lg i{width:18px;height:8px;border-radius:3px;display:block}
+.bm-lg i.bm-l0{background:var(--m3-line)}.bm-lg i.bm-l1{background:color-mix(in srgb,var(--bm) 22%,var(--m3-line))}.bm-lg i.bm-l2{background:color-mix(in srgb,var(--bm) 45%,var(--m3-line))}.bm-lg i.bm-l3{background:color-mix(in srgb,var(--bm) 72%,var(--m3-line))}.bm-lg i.bm-l4{background:var(--bm)}
+.bm-in{background:color-mix(in srgb,var(--m3-ink) 5%,transparent);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.bm-in b{font-size:16px}.bm-in small{font-size:13px;color:var(--m3-muted);line-height:1.5}
+.bm-list{display:flex;flex-direction:column;gap:2px}
+html body .bm-list button{display:grid!important;grid-template-columns:118px 1fr 34px;align-items:center;gap:8px;min-height:32px!important;padding:0!important;border:0!important;background:transparent!important;color:var(--m3-ink)!important;font-size:13px!important;font-weight:600!important;text-align:left}
+.bm-list i{height:6px;border-radius:3px;background:var(--m3-line);display:block;overflow:hidden}
+.bm-list em{display:block;height:100%;background:var(--bm);border-radius:3px}
+.bm-list b{text-align:right;font-variant-numeric:tabular-nums}
+html body .bm-x{margin-top:8px;min-height:40px!important;width:100%;border:0!important;border-radius:10px!important;background:transparent!important;color:var(--m3-muted)!important;font-size:13px!important;font-weight:700!important}
 .fl-cf-bg{position:fixed;inset:0;z-index:70;background:color-mix(in srgb,var(--m3-ink) 45%,transparent);animation:flCfIn .15s ease-out}
 .fl-cf{position:fixed;left:10px;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);z-index:71;background:var(--m3-card);color:var(--m3-ink);border-radius:20px;padding:22px 18px 14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 12px 40px color-mix(in srgb,var(--m3-ink) 30%,transparent);animation:flKbUp .2s ease-out}
 .fl-cf b{font-size:22px;line-height:1.15}
@@ -4934,6 +4959,7 @@ document.addEventListener('click', function(ev){
     case 'askabandon': ui.confirm = 'abandon'; break;
     case 'askreset': ui.confirm = 'reset'; break;
     case 'noconfirm': ui.confirm = null; break;
+    case 'bm': ui.bmSel = el.getAttribute('data-g'); break;
     case 'finish': finish(); return;
     case 'abandon': S.active = null; ui.confirm = null; ui.screen = 'home'; save(); releaseWake(); break;
     case 'reset': S = {v:1, settings:S.settings, history:[], active:null, programs:S.programs}; ui.confirm = null; save(); toast('Données effacées'); break;
@@ -5195,6 +5221,7 @@ function vEx(){
 function vHist(){
   var h=restBar()+'<header class="m3-page-head"><span class="m3-eyebrow">'+L('JOURNAL','LOG')+'</span><h1>'+L('Ce que tu as','What you have')+'<br><em>'+L('accompli.','achieved.')+'</em></h1></header>';
   h+=m3jCal();
+  h+=m3Body(); /* 18.11.2026 : carte du corps du mois affiché */
   h+='<button class="m3-addpast-btn" data-a="addpast">'+L('+ Ajouter une séance oubliée','+ Add a missed session')+'</button>';
   if(!S.history.length) return h+'<div class="m3-empty">'+L('Aucune séance pour le moment. Termine ta première séance et ton journal commencera ici.','No sessions yet. Finish your first session and your log will start here.')+'</div>'+nav('hist');
   var names={}; S.history.forEach(function(s){s.exercises.forEach(function(e){names[e.name]=1;});});
@@ -5731,6 +5758,51 @@ function m3wRerender(){ var p = document.querySelector('.sheet .pane'), t = p ? 
 })();
 
 /* ================= JOURNAL: month calendar + progress toward the month's planned sessions ================= */
+/* 18.11.2026 : carte du corps du mois (Journal). Purement factuelle : séries de travail par groupe musculaire
+   sur le mois affiché par le calendrier (ui.calOff), silhouettes face + dos, toucher un muscle → détail. */
+var BM_G = ['Pectoraux','Dos','Épaules','Biceps','Triceps','Avant-bras','Abdos','Quadriceps','Ischios & fessiers','Mollets'];
+var BM_EN = {'Pectoraux':'Chest','Dos':'Back','Épaules':'Shoulders','Biceps':'Biceps','Triceps':'Triceps','Avant-bras':'Forearms','Abdos':'Abs','Quadriceps':'Quads','Ischios & fessiers':'Hamstrings & glutes','Mollets':'Calves'};
+function bmName(g){ return isEN() ? (BM_EN[g] || g) : g; }
+function m3Body(){
+  var off = ui.calOff || 0, now = new Date(), b = new Date(now.getFullYear(), now.getMonth() + off, 1);
+  var m0 = b.getTime(), m1 = new Date(b.getFullYear(), b.getMonth() + 1, 1).getTime(), c = {}, ex = {}, tot = 0;
+  BM_G.forEach(function(g){ c[g] = 0; ex[g] = {}; });
+  S.history.forEach(function(h){ if(h.date < m0 || h.date >= m1) return; h.exercises.forEach(function(e){
+    var g = exGroup(e.name); if(c[g] == null) return;
+    var n = e.sets.filter(function(s){ return !s.warm; }).length; if(!n) return;
+    c[g] += n; tot += n; ex[g][e.name] = (ex[g][e.name] || 0) + n;
+  }); });
+  var mx = 0; BM_G.forEach(function(g){ if(c[g] > mx) mx = c[g]; });
+  var lv = function(g){ var v = c[g]; return !v ? 0 : Math.min(4, Math.max(1, Math.ceil(v / mx * 4))); };
+  var sel = BM_G.indexOf(ui.bmSel) >= 0 ? ui.bmSel : null;
+  var P = function(g, tag){ return '<' + tag + ' class="bm-m bm-l' + lv(g) + (sel === g ? ' on' : '') + '" data-a="bm" data-g="' + esc(g) + '"'; };
+  var arms = function(g){ return P(g, 'ellipse') + ' cx="27" cy="70" rx="7" ry="13"/>' + P(g, 'ellipse') + ' cx="93" cy="70" rx="7" ry="13"/>'; };
+  var fa = P('Avant-bras', 'ellipse') + ' cx="21" cy="98" rx="6" ry="13"/>' + P('Avant-bras', 'ellipse') + ' cx="99" cy="98" rx="6" ry="13"/>';
+  var sh = P('Épaules', 'ellipse') + ' cx="34" cy="46" rx="10" ry="9"/>' + P('Épaules', 'ellipse') + ' cx="86" cy="46" rx="10" ry="9"/>';
+  var calf = function(y){ return P('Mollets', 'rect') + ' x="42" y="' + y + '" width="15" height="' + (200 - y) + '" rx="7"/>' + P('Mollets', 'rect') + ' x="63" y="' + y + '" width="15" height="' + (200 - y) + '" rx="7"/>'; };
+  var head = '<circle class="bm-h" cx="60" cy="16" r="11"/>';
+  var front = head + '<rect class="bm-h" x="55" y="27" width="10" height="9" rx="3"/>' + sh +
+    P('Pectoraux', 'rect') + ' x="40" y="39" width="19" height="21" rx="6"/>' + P('Pectoraux', 'rect') + ' x="61" y="39" width="19" height="21" rx="6"/>' +
+    arms('Biceps') + fa + P('Abdos', 'rect') + ' x="47" y="63" width="26" height="38" rx="7"/>' +
+    P('Quadriceps', 'rect') + ' x="40" y="106" width="19" height="48" rx="8"/>' + P('Quadriceps', 'rect') + ' x="61" y="106" width="19" height="48" rx="8"/>' + calf(160);
+  var back = head + P('Dos', 'path') + ' d="M44 38 Q60 22 76 38 L72 48 Q60 44 48 48 Z"/>' + sh +
+    P('Dos', 'rect') + ' x="40" y="50" width="18" height="36" rx="7"/>' + P('Dos', 'rect') + ' x="62" y="50" width="18" height="36" rx="7"/>' + P('Dos', 'rect') + ' x="50" y="88" width="20" height="16" rx="5"/>' +
+    arms('Triceps') + fa +
+    P('Ischios & fessiers', 'rect') + ' x="40" y="106" width="19" height="20" rx="8"/>' + P('Ischios & fessiers', 'rect') + ' x="61" y="106" width="19" height="20" rx="8"/>' +
+    P('Ischios & fessiers', 'rect') + ' x="41" y="128" width="17" height="30" rx="7"/>' + P('Ischios & fessiers', 'rect') + ' x="62" y="128" width="17" height="30" rx="7"/>' + calf(162);
+  var h = '<section class="bm" aria-label="' + L('Séries par muscle ce mois-ci', 'Sets per muscle this month') + '"><div class="bm-hd"><span>' + L('TON CORPS CE MOIS-CI', 'YOUR BODY THIS MONTH') + '</span><small>' + tot + L(' séries', ' sets') + '</small></div>';
+  h += '<svg viewBox="0 0 270 220" class="bm-svg" role="img" aria-label="' + L('Silhouettes face et dos', 'Front and back figures') + '"><g transform="translate(10,4)">' + front + '<text x="60" y="214" text-anchor="middle">' + L('Face', 'Front') + '</text></g><g transform="translate(140,4)">' + back + '<text x="60" y="214" text-anchor="middle">' + L('Dos', 'Back') + '</text></g></svg>';
+  h += '<div class="bm-lg"><span>0</span><i class="bm-l0"></i><i class="bm-l1"></i><i class="bm-l2"></i><i class="bm-l3"></i><i class="bm-l4"></i><span>' + mx + L(' séries', ' sets') + '</span></div>';
+  if(sel){
+    var top = Object.keys(ex[sel]).sort(function(a, z){ return ex[sel][z] - ex[sel][a]; });
+    h += '<div class="bm-in"><b>' + esc(bmName(sel)) + ' · ' + c[sel] + L(' série', ' set') + (c[sel] > 1 ? 's' : '') + '</b>' + (top.length ? '<small>' + top.map(function(n){ return esc(exDisp(n)) + ' · ' + ex[sel][n]; }).join('<br>') + '</small>' : '<small>' + L('Aucune série ce mois-ci.', 'No sets this month.') + '</small>') + '</div>';
+  } else {
+    var rows = BM_G.slice().sort(function(a, z){ return c[z] - c[a]; });
+    h += '<div class="bm-list">' + rows.map(function(g){ return '<button data-a="bm" data-g="' + esc(g) + '"><span>' + esc(bmName(g)) + '</span><i><em style="width:' + (mx ? Math.round(c[g] / mx * 100) : 0) + '%"></em></i><b>' + c[g] + '</b></button>'; }).join('') + '</div>';
+  }
+  if(sel) h += '<button class="bm-x" data-a="bm" data-g="">' + L('Voir tous les muscles', 'See all muscles') + '</button>';
+  return h + '</section>';
+}
 function m3jCal(){
   var off = ui.calOff || 0, now = new Date(), base = new Date(now.getFullYear(), now.getMonth() + off, 1);
   var y = base.getFullYear(), m = base.getMonth(), nDays = new Date(y, m + 1, 0).getDate(), today = dayKey(Date.now());
