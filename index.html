@@ -7455,7 +7455,7 @@ function vFlow(){
     /* 06.11.2026 : plus de barre « Valider » fixe en bas, la case à cocher de chaque ligne suffit */
   } else if(a.exercises.some(function(e){ return selIndex(e) != null; })){
     h += '<div class="fl-cta"><button data-a="flopen" data-i="' + a.exercises.map(function(e){ return selIndex(e) != null; }).indexOf(true) + '">' + L('Exercice suivant', 'Next exercise') + ' →</button></div>';
-  } else if(ui.confirm !== 'finish') h += '<div class="fl-cta"><button data-a="askfinish">' + L('Terminer la séance', 'Finish the session') + ' ✓</button></div>';
+  } /* 18.11.2026 : plus de barre fixe « Terminer la séance », le bouton en bas de liste suffit (demande de Maxence) */
   if(ui.confirm === 'finish') h += flFinishSheet(a, done, tot);
   if(ui.flUndo) h += '<div class="fl-undo" role="status"><span>' + (ui.flUndo.set ? ui.flUndo.lab : esc(exDisp(ui.flUndo.ex.name)) + L(' supprimé', ' removed')) + '</span><button data-a="flundo">' + L('Annuler', 'Undo') + '</button></div>';
   /* repos : plein écran, ou pilule une fois réduit */
