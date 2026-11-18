@@ -1618,6 +1618,11 @@ html body .fl-kb-hide{margin-left:auto;min-height:34px!important;padding:0 12px!
 html body .fl-kb-keys button{min-height:50px!important;padding:0!important;border-radius:12px!important;border:0!important;background:var(--m3-card)!important;color:var(--m3-ink)!important;font-size:24px!important;font-weight:700!important;box-shadow:0 1px 0 color-mix(in srgb,var(--m3-ink) 18%,transparent)!important}
 html body .fl-kb-keys button:active{background:var(--m3-tint)!important}
 .fl-kb-space{height:300px}
+.fl-kb-keys.pm{grid-template-columns:repeat(3,minmax(0,1fr)) 68px}
+html body .fl-kb-keys .fl-kb-pm{grid-row:span 2;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:var(--m3-accent)!important;color:var(--m3-card)!important;font-size:30px!important;line-height:1}
+.fl-kb-pm small{font-size:11px;font-weight:800;opacity:.85;letter-spacing:.02em}
+html.hud body .fl-kb-keys .fl-kb-pm{background:var(--h-fill)!important;color:var(--h-on)!important}
+html.club body .fl-kb-keys .fl-kb-pm{background:var(--c-mus)!important;color:var(--c-brown)!important}
 body .fl-cell.kb{outline:2px solid var(--m3-accent)!important;outline-offset:-2px;background:color-mix(in srgb,var(--m3-accent) 12%,var(--m3-card))!important;color:var(--m3-ink)!important}
 html.hud body .fl-kb-keys button,html.hud body .fl-kb-f,html.hud body .fl-kb-hide{border-radius:var(--h-r)!important;font-family:'Space Mono',ui-monospace,monospace!important}
 html.hud body .fl-kb-f.on{background:var(--h-fill)!important;border-color:var(--h-fill)!important;color:var(--h-on)!important}
@@ -6446,7 +6451,10 @@ function vKb(){
   h += '<button class="fl-kb-f' + (!isW ? ' on' : '') + '" data-a="kbf" data-f="r">' + (xt === 'time' ? L('SEC', 'SEC') : 'REPS') + '</button>';
   h += '<button class="fl-kb-hide" data-a="kbhide" aria-label="' + L('Masquer le clavier', 'Hide the keypad') + '">' + L('Masquer', 'Hide') + ' <span aria-hidden="true">⌄</span></button></div>';
   var keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', isW ? (isEN() ? '.' : ',') : '', '0', '⌫'];
-  h += '<div class="fl-kb-keys">' + keys.map(function(k){ return k ? '<button data-a="padk" data-k="' + k + '"' + (k === '⌫' ? ' aria-label="' + L('Effacer', 'Delete') + '"' : '') + '>' + k + '</button>' : '<span></span>'; }).join('') + '</div>';
+  /* 18.11.2026 : grands + et − à droite des chiffres (même pas que les −/+ de la série, appui long = défilement) */
+  var fa = isW ? 'w' : 'r', stp = isW ? kg(inc()) : (xt === 'time' ? '5' : '1'), un = isW ? ' kg' : (xt === 'time' ? ' s' : '');
+  var pm = function(d){ return '<button class="fl-kb-pm" data-a="' + fa + '" data-d="' + d + '" data-kb="1" aria-label="' + (d > 0 ? L('Plus ', 'Plus ') : L('Moins ', 'Minus ')) + stp + un + '">' + (d > 0 ? '+' : '−') + '<small>' + stp + '</small></button>'; };
+  h += '<div class="fl-kb-keys pm">' + keys.map(function(k, n){ var b = k ? '<button data-a="padk" data-k="' + k + '"' + (k === '⌫' ? ' aria-label="' + L('Effacer', 'Delete') + '"' : '') + '>' + k + '</button>' : '<span></span>'; return b + (n === 2 ? pm(1) : n === 8 ? pm(-1) : ''); }).join('') + '</div>';
   return h + '</div>';
 }
 function kbReveal(){
@@ -6668,6 +6676,7 @@ document.addEventListener('click', function(ev){
     if(a === 'kbhide'){ ui.pad = null; return stop(); }
     if(a === 'kbf'){ ui.pad = {f:el.getAttribute('data-f') === 'r' ? 'r' : 'w', v:''}; return stop(); }
     if(a === 'padk'){ padKey(el.getAttribute('data-k')); kbApply(); return stop(); }
+    if(el.hasAttribute('data-kb') && (a === 'w' || a === 'r')){ stepVal(a, +el.getAttribute('data-d') || 0); save(); ui.pad.v = ''; ui.pad.orig = undefined; return stop(); }
     ui.pad = null;
   }
   a = el.getAttribute('data-a'); var ex = cur(), d = +el.getAttribute('data-d') || 0, j, s, rec, rr;
