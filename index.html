@@ -1618,6 +1618,18 @@ html body .fl-kb-hide{margin-left:auto;min-height:34px!important;padding:0 12px!
 html body .fl-kb-keys button{min-height:50px!important;padding:0!important;border-radius:12px!important;border:0!important;background:var(--m3-card)!important;color:var(--m3-ink)!important;font-size:24px!important;font-weight:700!important;box-shadow:0 1px 0 color-mix(in srgb,var(--m3-ink) 18%,transparent)!important}
 html body .fl-kb-keys button:active{background:var(--m3-tint)!important}
 .fl-kb-space{height:300px}
+.fl-cf-bg{position:fixed;inset:0;z-index:70;background:color-mix(in srgb,var(--m3-ink) 45%,transparent);animation:flCfIn .15s ease-out}
+.fl-cf{position:fixed;left:10px;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);z-index:71;background:var(--m3-card);color:var(--m3-ink);border-radius:20px;padding:22px 18px 14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 12px 40px color-mix(in srgb,var(--m3-ink) 30%,transparent);animation:flKbUp .2s ease-out}
+.fl-cf b{font-size:22px;line-height:1.15}
+.fl-cf p{margin:0;color:var(--m3-muted);font-size:15px}
+.fl-cf p.warn{color:var(--m3-ink);background:color-mix(in srgb,var(--m3-accent) 10%,transparent);border-radius:10px;padding:8px 10px;font-size:14px}
+html body .fl-cf-ok{margin-top:6px;min-height:58px!important;border:0!important;border-radius:14px!important;background:var(--m3-accent)!important;color:var(--m3-card)!important;font-size:17px!important;font-weight:800!important}
+html.hud body .fl-cf-ok{background:var(--h-fill)!important;color:var(--h-on)!important;border-radius:var(--h-r)!important}
+html.club body .fl-cf-ok{background:var(--c-mus)!important;color:var(--c-brown)!important;border:2px solid var(--c-brown)!important}
+html body .fl-cf-no{min-height:48px!important;border:0!important;background:transparent!important;color:var(--m3-ink)!important;font-weight:700!important;font-size:15px!important}
+@keyframes flCfIn{from{opacity:0}to{opacity:1}}
+html.hud body .fl-cf{border-radius:var(--h-r);border:1px solid var(--h-fill)}
+html.club body .fl-cf{border:2px solid var(--c-brown)}
 .fl-kb-keys.pm{grid-template-columns:repeat(3,minmax(0,1fr)) 68px}
 html body .fl-kb-keys .fl-kb-pm{grid-row:span 2;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:var(--m3-accent)!important;color:var(--m3-card)!important;font-size:30px!important;line-height:1}
 .fl-kb-pm small{font-size:11px;font-weight:800;opacity:.85;letter-spacing:.02em}
@@ -7414,6 +7426,15 @@ function flRestOverlay(a, ri){
   /* 09.11.2026 : plus de bande des exercices de la séance en bas du repos (demande de Maxence) */
   return h + '</section>';
 }
+function flFinishSheet(a, done, tot){
+  var left = tot - done, min = Math.max(1, Math.round((Date.now() - a.start) / 60000));
+  var h = '<div class="fl-cf-bg" data-a="noconfirm" aria-hidden="true"></div><div class="fl-cf" role="dialog" aria-modal="true" aria-labelledby="fl-cf-t">';
+  h += '<b id="fl-cf-t">' + L('Terminer la séance ?', 'Finish the session?') + '</b>';
+  h += '<p>' + done + ' / ' + tot + L(' séries validées · ', ' sets done · ') + min + ' min</p>';
+  if(left > 0) h += '<p class="warn">' + left + (left > 1 ? L(' séries non cochées ne seront pas enregistrées.', ' unchecked sets won\'t be saved.') : L(' série non cochée ne sera pas enregistrée.', ' unchecked set won\'t be saved.')) + '</p>';
+  h += '<button class="fl-cf-ok" data-a="finish">' + L('Valider et terminer', 'Confirm and finish') + ' ✓</button>';
+  return h + '<button class="fl-cf-no" data-a="noconfirm">' + L('Continuer la séance', 'Keep training') + '</button></div>';
+}
 function vFlow(){
   var a = S.active, ri = restInfo(), done = 0, tot = 0;
   a.exercises.forEach(function(e){ var c = flCount(e); done += c[0]; tot += c[1]; });
@@ -7424,8 +7445,8 @@ function vFlow(){
   h += '<div class="fl-list" id="fl-list">' + a.exercises.map(function(e, i){ return flCard(e, i, ri); }).join('') + '</div>';
   h += '<button class="fl-addex" data-a="addex">' + FL_ICO.plus + ' ' + L('Ajouter un exercice', 'Add an exercise') + '</button>';
   h += '<div class="fl-end">';
-  if(ui.confirm === 'finish') h += m3sConfirm(L('Terminer et enregistrer la séance ?', 'Finish and save the session?'), 'finish', L('Terminer', 'Finish'));
-  else if(ui.confirm === 'abandon') h += m3sConfirm(L('Abandonner la séance ? Rien ne sera enregistré.', 'Abandon the session? Nothing will be saved.'), 'abandon', L('Abandonner', 'Abandon'));
+  /* 18.11.2026 : « Terminer » ouvre une fenêtre de confirmation visible où qu'on soit dans la liste (flFinishSheet) */
+  if(ui.confirm === 'abandon') h += m3sConfirm(L('Abandonner la séance ? Rien ne sera enregistré.', 'Abandon the session? Nothing will be saved.'), 'abandon', L('Abandonner', 'Abandon'));
   else h += '<button class="m4-finish" data-a="askfinish">' + L('TERMINER LA SÉANCE', 'FINISH THE SESSION') + ' ✓</button><button class="m4-abandon" data-a="askabandon">' + L('Abandonner la séance', 'Abandon the session') + '</button>';
   h += '</div></div>';
   /* bouton principal, toujours à portée de pouce */
@@ -7435,6 +7456,7 @@ function vFlow(){
   } else if(a.exercises.some(function(e){ return selIndex(e) != null; })){
     h += '<div class="fl-cta"><button data-a="flopen" data-i="' + a.exercises.map(function(e){ return selIndex(e) != null; }).indexOf(true) + '">' + L('Exercice suivant', 'Next exercise') + ' →</button></div>';
   } else if(ui.confirm !== 'finish') h += '<div class="fl-cta"><button data-a="askfinish">' + L('Terminer la séance', 'Finish the session') + ' ✓</button></div>';
+  if(ui.confirm === 'finish') h += flFinishSheet(a, done, tot);
   if(ui.flUndo) h += '<div class="fl-undo" role="status"><span>' + (ui.flUndo.set ? ui.flUndo.lab : esc(exDisp(ui.flUndo.ex.name)) + L(' supprimé', ' removed')) + '</span><button data-a="flundo">' + L('Annuler', 'Undo') + '</button></div>';
   /* repos : plein écran, ou pilule une fois réduit */
   if(ri && !ri.over && !ui.restMin) h += flRestOverlay(a, ri);
