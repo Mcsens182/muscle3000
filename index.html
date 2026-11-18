@@ -1375,6 +1375,7 @@ body .fl-note{width:100%;box-sizing:border-box;border:0!important;outline:0;back
 .fl-sw>.fl-row{position:relative;z-index:1;will-change:transform}
 .fl-sw.sw>.fl-row:not(.done){background:var(--m3-card)}
 .fl-sw.snap>.fl-row,.fl-sw.snap>.fl-ex{transition:transform .34s cubic-bezier(.22,1,.36,1)!important}
+.fl-appear{transition:height .34s cubic-bezier(.22,1,.36,1),margin .34s cubic-bezier(.22,1,.36,1),opacity .3s ease .1s,transform .38s cubic-bezier(.22,1,.36,1) .06s!important}
 .fl-coll{transition:height .32s cubic-bezier(.4,0,.2,1),opacity .24s ease,margin .32s cubic-bezier(.4,0,.2,1),padding .32s cubic-bezier(.4,0,.2,1)!important}
 html body .fl-sw.kill>.fl-swbg{transition:opacity .26s ease .08s!important;opacity:0!important}
 html body .fl-sw>.fl-swbg{position:absolute!important;inset:0!important;z-index:0;width:auto!important;min-height:0!important;margin:0!important;padding:0 18px!important;border:0!important;border-radius:12px!important;box-shadow:none!important;background:#E5484D!important;color:#fff!important;display:flex!important;align-items:center;justify-content:flex-end;gap:8px;font-size:14px!important;font-weight:800!important;letter-spacing:.02em;opacity:0;transition:opacity .15s}
@@ -4184,6 +4185,7 @@ function addPicked(name){
     var nex = {name:name, variants:null, rest:rest, cue:'', note:lastNote(name, S.active.pid), sel:null, sets:[]};
     for(var q=0;q<3;q++) nex.sets.push({lo:lo, hi:hi, special:null, warm:false, rest:rest, done:false, w:null, r:null});
     fillSuggestions(nex); S.active.exercises.push(nex); S.active.idx = S.active.exercises.length - 1;
+    ui.flNew = {i:S.active.idx, x:1};
     ui.picker = null; ui.screen = 'ex'; save(); render(); window.scrollTo(0,0);
     if(exView() === 'flow') setTimeout(function(){ flScrollTo(S.active.idx); }, 60);
   }
@@ -4686,6 +4688,25 @@ function render(){
   if(ui.storyId) buildStory();
   if(ui.pad && kbOn()) kbReveal();
   if(typeof m3PinCheck === 'function') m3PinCheck();
+  if(ui.flNew){ var fn = ui.flNew; ui.flNew = null; flAppear(fn); }
+}
+/* 18.11.2026 : une série (échauffement ou non) ou un exercice ajouté en séance apparaît en douceur :
+   sa place s'ouvre (hauteur, écart de la liste) puis la ligne glisse et se révèle, comme l'inverse de la suppression */
+function flAppear(fn){
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var w = fn.x ? document.querySelector('.fl-xsw[data-swi="' + fn.i + '"]') : document.querySelector('.fl-sw[data-swi="' + fn.i + '"][data-swj="' + fn.j + '"]');
+  if(!w) return;
+  var els = [w];
+  if(!fn.x){ var sp = fn.j > 0 ? w.previousElementSibling : w.nextElementSibling; if(sp && sp.classList.contains('fl-sep')) els.push(sp); }
+  els.forEach(function(el){
+    var h = el.offsetHeight, gap = parseFloat(getComputedStyle(el.parentNode).rowGap) || 0, side = el.nextElementSibling ? 'marginBottom' : 'marginTop';
+    el.style.height = '0px'; el.style.overflow = 'hidden'; el.style.opacity = '0'; if(gap) el.style[side] = (-gap) + 'px';
+    if(el === w) el.style.transform = 'translateY(-8px) scale(.98)';
+    void el.offsetHeight;
+    el.classList.add('fl-appear');
+    el.style.height = h + 'px'; el.style.opacity = '1'; el.style[side] = ''; el.style.transform = '';
+    setTimeout(function(){ el.classList.remove('fl-appear'); el.style.height = el.style.overflow = el.style.opacity = el.style.transform = ''; }, 460);
+  });
 }
 function openPicker(ctx){
   ui.picker = {ctx:ctx}; ui.pickQ = ''; ui.sheet = null; render();
@@ -4761,12 +4782,12 @@ document.addEventListener('click', function(ev){
     case 'variant': ex.name = el.getAttribute('data-v'); ex.sets.forEach(function(s){ if(!s.done){ s.w = null; s.r = null; } }); fillSuggestions(ex); save(); break;
     case 'addset':
       var last = ex.sets.filter(function(s){ return !s.warm; }).slice(-1)[0] || {lo:8, hi:12};
-      ex.sets.push({lo:last.lo, hi:last.hi, special:null, warm:false, rest:last.rest || ex.rest, done:false, w:null, r:null, sw:last.w != null ? last.w : (last.sw != null ? last.sw : null), sr:last.lo}); fillSuggestions(ex); save(); break;
+      ex.sets.push({lo:last.lo, hi:last.hi, special:null, warm:false, rest:last.rest || ex.rest, done:false, w:null, r:null, sw:last.w != null ? last.w : (last.sw != null ? last.sw : null), sr:last.lo}); fillSuggestions(ex); ui.flNew = {i:S.active.exercises.indexOf(ex), j:ex.sets.length - 1}; save(); break;
     case 'addwarm':
       ui.gapEdit = null;
       var firstWork = ex.sets.filter(function(s){ return !s.warm; })[0];
       var pos = 0; while(pos < ex.sets.length && ex.sets[pos].warm) pos++;
-      ex.sets.splice(pos, 0, {lo:0, hi:0, warm:true, rest:60, done:false, w:firstWork && firstWork.w ? roundInc(firstWork.w * (pos === 0 ? .5 : .7), ex.name) : null, r:pos === 0 ? 8 : 4}); save(); break;
+      ex.sets.splice(pos, 0, {lo:0, hi:0, warm:true, rest:60, done:false, w:firstWork && firstWork.w ? roundInc(firstWork.w * (pos === 0 ? .5 : .7), ex.name) : null, r:pos === 0 ? 8 : 4}); ui.flNew = {i:S.active.exercises.indexOf(ex), j:pos}; save(); break;
     case 'delset':
       ui.gapEdit = null;
       for(j = ex.sets.length - 1; j >= 0; j--){ if(!ex.sets[j].done){ ex.sets.splice(j, 1); ex.sel = null; break; } }
@@ -4803,7 +4824,7 @@ document.addEventListener('click', function(ev){
       var rs = Math.max(15, parseInt(document.getElementById('new-rest').value, 10) || 90);
       var nex = {name:nm, variants:null, rest:rs, cue:'', note:lastNote(nm, S.active.pid), sel:null, sets:[]};
       for(var q=0;q<ns;q++) nex.sets.push({lo:lo, hi:hi, special:null, warm:false, done:false, w:null, r:null});
-      fillSuggestions(nex); S.active.exercises.push(nex); ui.adding = false; save(); toast('Exercice ajouté'); break;
+      fillSuggestions(nex); S.active.exercises.push(nex); ui.flNew = {i:S.active.exercises.length - 1, x:1}; ui.adding = false; save(); toast('Exercice ajouté'); break;
     case 'pedit': ui.edProg = el.getAttribute('data-id'); ui.edWk = null; ui.confirm = null; window.scrollTo(0,0); break;
     case 'pback': ui.edProg = null; ui.confirm = null; window.scrollTo(0,0); break;
     case 'pact': S.settings.activeProg = el.getAttribute('data-id'); S.settings.cycleStart = S.settings.cycleStart || {}; if(!S.settings.cycleStart[S.settings.activeProg]) S.settings.cycleStart[S.settings.activeProg] = Date.now(); save(); toast('Programme activé'); break;
