@@ -1404,6 +1404,20 @@ body .fl-n.w{background:#FBEBD3!important;color:#8A5300!important}
 .fl-v{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fl-row.next .fl-v{font-weight:800}
 .fl-v i{font-style:normal;color:var(--m3-muted);font-weight:600}
+/* 26.11.2026 : cible de reps et exercices alternatifs en séance */
+.fl-sub{display:block;margin-top:3px;font-size:13px;font-weight:600;line-height:1.3;color:var(--m3-muted);letter-spacing:0;text-transform:none}
+.fl-sub b{font-weight:800;color:var(--m3-ink)}
+.fl-rc{position:relative;display:block;min-width:0}
+body .fl-rc>.fl-cell{padding-bottom:11px!important}
+.fl-tgt{display:block;font-size:10px;font-weight:700;line-height:1;color:var(--m3-muted);letter-spacing:0;font-variant-numeric:tabular-nums}
+.fl-rc>.fl-tgt{position:absolute;left:0;right:0;bottom:5px;text-align:center;pointer-events:none}
+.fl-v.fl-vt{display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1.1}
+.fl-alts{display:flex;flex-wrap:wrap;gap:6px;margin:0 6px 4px}
+body .fl-alt{display:inline-flex!important;align-items:center;gap:6px;width:auto!important;min-height:38px!important;padding:0 13px!important;border:1.5px dashed var(--m3-accent)!important;border-radius:999px!important;background:transparent!important;color:var(--m3-accent)!important;font-size:13px!important;font-weight:700!important;text-transform:none!important;letter-spacing:0!important}
+body .fl-alt.back{border-style:solid!important;background:color-mix(in srgb,var(--m3-accent) 10%,transparent)!important}
+.fl-alt i{font-style:normal;font-size:14px}
+body .ed-alt button{border:0!important;background:transparent!important;box-shadow:none!important;min-height:28px!important;width:28px!important;padding:0!important}
+.fl-tag.fl-tag-alt{background:color-mix(in srgb,var(--m3-accent) 14%,transparent);color:var(--m3-ink)}
 body .fl-cell{width:100%;min-height:38px!important;padding:0 4px!important;border:0!important;border-radius:10px!important;background:color-mix(in srgb,var(--m3-ink) 5%,transparent)!important;text-align:center;font-size:15px!important;font-weight:800!important;font-variant-numeric:tabular-nums;box-sizing:border-box;outline:0}
 body .fl-cell::placeholder{color:var(--m3-muted);opacity:1}
 body .fl-cell.sug{color:var(--m3-muted)!important}
@@ -3373,6 +3387,12 @@ function vHist(){
    anything added then removed the same day is left out. Hidden extras (double tap on a coloris,
    the shape button) stay out on purpose: they are meant to be found. */
 var CHANGELOG = [
+  {v:'1.18', d:'26.11.26', t:'Cible de reps et alternatives',
+   summary:['En séance, chaque exercice affiche sa cible de répétitions, sous son nom et sous la case REPS de chaque série.','Un exercice peut avoir plusieurs alternatives : un tap pour passer de l\'une à l\'autre, la cible et la note restent.'],
+   sections:[
+    {t:'Cible de répétitions', items:['Sous le nom de l\'exercice ouvert : « Cible 10–15 reps · 3 séries », ou la cible de chaque série quand elles diffèrent.','Sous la case REPS de chaque série, la fourchette visée en petit.','Exercices fermés : un rappel sous le nom, par exemple « 3 × 8–12 reps ».']},
+    {t:'Alternatives', items:['Dans l\'éditeur de séance, « + Alternative » ajoute un exercice à faire à la place, choisi dans la bibliothèque. Tu peux en mettre plusieurs, et les retirer avec ✕.','En séance, les alternatives s\'affichent sous le nom de l\'exercice. Un tap bascule, ↩ ramène à l\'exercice principal.','La cible, les séries, les repos et la note sont gardés. La colonne PRÉC. et les charges proposées suivent l\'exercice choisi.','Si des séries sont déjà faites, elles restent sur l\'exercice d\'avant et seules les séries restantes basculent.','Changer d\'alternative ne compte pas comme une modification de la séance : le modèle reste intact.']}
+   ]},
   {v:'1.17', d:'16.10.26', t:'Un troisième style : Club 78',
    summary:['Profil › Style propose Club 78, à côté d\'Édito et HUD : l\'esprit d\'une salle de culture physique des années 70, avec des titres ronds et lisibles.','En séance, de gros boutons + et − pour la charge et les reps, et touche PRÉC. pour recopier ta dernière perf.','Sur Aujourd\'hui, « Autre séance » devient un simple lien et le nom du programme s\'affiche sur les séances.'],
    sections:[
@@ -3461,6 +3481,12 @@ var CHANGELOG = [
     {t:'Et aussi', items:['L\'appli a un nom : Muscle 3000.','Une pastille te signale chaque nouveauté dans les Réglages.']}
    ]}
 ];
+CHANGELOG.filter(function(c){ return c.v === '1.18'; })[0].en = {t:'Rep targets and alternatives',
+  summary:['In a session, every exercise shows its rep target, under its name and under the REPS box of each set.','An exercise can have several alternatives: one tap switches between them, target and note stay.'],
+  sections:[
+    {t:'Rep target', items:['Under the open exercise\'s name: “Target 10–15 reps · 3 sets”, or each set\'s target when they differ.','Under the REPS box of each set, the target range in small.','Closed exercises: a reminder under the name, for example “3 × 8–12 reps”.']},
+    {t:'Alternatives', items:['In the session editor, “+ Alternative” adds an exercise to do instead, picked from the library. Add as many as you like, remove them with ✕.','In a session, alternatives show under the exercise name. One tap switches, ↩ goes back to the main exercise.','Target, sets, rests and note are kept. The PREV. column and suggested weights follow the exercise you pick.','Sets already done stay on the previous exercise; only the remaining sets switch.','Switching alternatives doesn\'t count as changing the session: the template stays as it is.']}
+  ]};
 CHANGELOG.filter(function(c){ return c.v === '1.11'; })[0].en = {t:'Readable, import and English',
   summary:['A new style in Settings: Readable. Dark background, a single color for what matters, and numbers you read at a glance.','Coming from another app? Import your whole history from its CSV export.','During a session, tap a rest time to adjust it on the spot.','The app speaks English too: pick your language in Settings.'],
   sections:[
@@ -4129,7 +4155,7 @@ function createBlock(q, action, idSuffix){
 function repName(){
   if(!ui.picker) return null;
   if(ui.picker.ctx === 'replace') return cur() ? cur().name : null;
-  if(ui.picker.ctx === 'edrep'){ var w = prog(ui.edWk), e = w && w.ex[ui.picker.i]; return e ? e.name : null; }
+  if(ui.picker.ctx === 'edrep' || ui.picker.ctx === 'edalt'){ var w = prog(ui.edWk), e = w && w.ex[ui.picker.i]; return e ? e.name : null; }
   return null;
 }
 function pickResults(q){
@@ -4146,9 +4172,9 @@ function pickResults(q){
 function vPicker(){
   var ctx = ui.picker.ctx === 'edit' ? 'À LA SÉANCE' : 'À LA SÉANCE EN COURS';
   return '<div class="pane" role="dialog" aria-label="Ajouter un exercice" style="height:88%"><div class="row" style="justify-content:center"><div style="width:56px;height:5px;background:var(--ink)"></div></div>' +
-    '<div class="row between"><div>' + (repName() ? '<span class="lbl">' + L('REMPLACER ', 'REPLACE ') + esc(exDisp(repName())).toUpperCase() + '</span><div class="disp" style="font-size:32px">' + L('Par quoi ?', 'With what?') + '</div>' : '<span class="lbl">AJOUTER ' + (ui.picker.ctx === 'hist' ? 'À LA SÉANCE' : ctx) + '</span><div class="disp" style="font-size:32px">Exercice</div>') + '</div><button data-a="closesheet" aria-label="Fermer" style="width:44px;flex:none;font-size:18px">✕</button></div>' +
+    '<div class="row between"><div>' + (repName() ? '<span class="lbl">' + (ui.picker.ctx === 'edalt' ? L('ALTERNATIVE À ', 'ALTERNATIVE TO ') : L('REMPLACER ', 'REPLACE ')) + esc(exDisp(repName())).toUpperCase() + '</span><div class="disp" style="font-size:32px">' + (ui.picker.ctx === 'edalt' ? L('Quel exercice ?', 'Which exercise?') : L('Par quoi ?', 'With what?')) + '</div>' : '<span class="lbl">AJOUTER ' + (ui.picker.ctx === 'hist' ? 'À LA SÉANCE' : ctx) + '</span><div class="disp" style="font-size:32px">Exercice</div>') + '</div><button data-a="closesheet" aria-label="Fermer" style="width:44px;flex:none;font-size:18px">✕</button></div>' +
     '<label class="lbl" for="pick-q" style="position:absolute;width:1px;height:1px;overflow:hidden">Rechercher un exercice</label><input class="field" id="pick-q" data-q="pick" value="' + esc(ui.pickQ || '') + '" placeholder="Cherche : curl, squat, poulie, dos…" autocomplete="off" autocapitalize="off" style="font-size:16px;min-height:52px">' +
-    (repName() ? '<p class="m3s-note" style="margin:0">' + (ui.picker.ctx === 'edrep' ? L('Même groupe musculaire en premier. Les séries, les repos et la note restent en place.', 'Same muscle group first. Sets, rests and note stay as they are.') : L('Même groupe musculaire en premier. Tes notes et tes séries restantes passent sur l\'exercice choisi.', 'Same muscle group first. Your notes and remaining sets move to the exercise you pick.')) + '</p>' : '') + '<div id="pick-res" style="display:flex;flex-direction:column">' + pickResults(ui.pickQ) + '</div></div>';
+    (repName() ? '<p class="m3s-note" style="margin:0">' + (ui.picker.ctx === 'edalt' ? L('Même groupe musculaire en premier. En séance, tu passes de l\'un à l\'autre d\'un tap : la cible, les séries et la note restent.', 'Same muscle group first. In a session, one tap switches between them: target, sets and note stay.') : ui.picker.ctx === 'edrep' ? L('Même groupe musculaire en premier. Les séries, les repos et la note restent en place.', 'Same muscle group first. Sets, rests and note stay as they are.') : L('Même groupe musculaire en premier. Tes notes et tes séries restantes passent sur l\'exercice choisi.', 'Same muscle group first. Your notes and remaining sets move to the exercise you pick.')) + '</p>' : '') + '<div id="pick-res" style="display:flex;flex-direction:column">' + pickResults(ui.pickQ) + '</div></div>';
 }
 function gloResults(){
   var res = libSearch(ui.gloQ || '', ui.gloG || null), h = '';
@@ -4172,6 +4198,15 @@ function addPicked(name){
     if(re){ var was = re.name; re.name = name; if(re.v) re.v = re.v.filter(function(x){ return fold(x) !== fold(name); }); if(re.v && !re.v.length) re.v = null; ui.picker = null; save(); render(); toast(exDisp(was) + ' → ' + exDisp(name)); }
     else { ui.picker = null; render(); }
     return;
+  }
+  if(ui.picker && ui.picker.ctx === 'edalt'){
+    var aw = prog(ui.edWk), ae = aw && aw.ex[ui.picker.i]; ui.picker = null;
+    if(ae && fold(name) !== fold(ae.name)){
+      var av = (ae.v || []).filter(function(x){ return fold(x) !== fold(ae.name); });
+      if(!av.some(function(x){ return fold(x) === fold(name); })) av.push(name);
+      ae.v = [ae.name].concat(av); save(); toast(L('Alternative ajoutée : ', 'Alternative added: ') + exDisp(name));
+    }
+    render(); return;
   }
   if(ui.picker && ui.picker.ctx === 'hist'){ histAddEx(name); return; }
   var lib = libFind(name), comp = lib && lib.c;
@@ -4229,7 +4264,9 @@ function vProgEditor(){
           '<button class="chip" data-a="srest" data-i="' + i + '" data-j="' + j + '" data-d="15" aria-label="Ajouter 15 secondes" style="min-height:40px;min-width:48px;justify-content:center">+15</button></div>';
       });
       h += '<div class="grid2"><button data-a="setadd" data-i="' + i + '">+ SÉRIE</button><button data-a="setaddw" data-i="' + i + '" style="border-style:dashed">+ ÉCHAUFFEMENT</button></div>';
-      h += '<div class="fl2"><label class="lbl" for="e-var-' + i + '">VARIANTES</label><input class="field" id="e-var-' + i + '" data-ed="exvar" data-i="' + i + '" value="' + esc((e.v || []).map(exDisp).join(' / ')) + '" placeholder="Squat / Deadlift"></div>';
+      /* 26.11.2026 : alternatives (plusieurs possibles), choisies dans la bibliothèque ; en séance, on bascule de l'une à l'autre d'un tap */
+      var alts = (e.v || []).filter(function(x){ return fold(x) !== fold(e.name); });
+      h += '<div class="fl2 ed-alts"><span class="lbl">' + L('ALTERNATIVES', 'ALTERNATIVES') + '</span><div class="row" style="flex-wrap:wrap;gap:6px">' + alts.map(function(x){ return '<span class="chip ed-alt" style="min-height:40px;gap:8px;text-transform:none;letter-spacing:0">⇄ ' + esc(exDisp(x)) + '<button data-a="exaltdel" data-i="' + i + '" data-v="' + esc(x) + '" aria-label="' + L('Retirer l\'alternative ', 'Remove alternative ') + esc(exDisp(x)) + '" style="min-height:28px;width:28px;padding:0;border:0;background:transparent;font-size:14px">✕</button></span>'; }).join('') + '<button class="chip" data-a="exaltadd" data-i="' + i + '" style="min-height:40px;border-style:dashed">+ ' + L('ALTERNATIVE', 'ALTERNATIVE') + '</button></div>' + (alts.length ? '' : '<span class="lbl" style="opacity:.7;text-transform:none;letter-spacing:0;font-weight:600">' + L('Un exercice à faire à la place si la machine est prise. Même cible, même note.', 'An exercise to do instead if the machine is taken. Same target, same note.') + '</span>') + '</div>';
       h += '<div class="fl2"><label class="lbl" for="e-cue-' + i + '">NOTE</label><input class="field" id="e-cue-' + i + '" data-ed="excue" data-i="' + i + '" value="' + esc(trText(e.cue || '')) + '" placeholder="Ex. Tempo 3-1-1-0"></div>' + (i < w.ex.length - 1 ? '<button class="chip' + (e.ss ? ' on' : '') + '" data-a="exss" data-i="' + i + '" style="align-self:flex-start;min-height:40px">⇄ ' + (e.ss ? L('EN SUPERSET AVEC LE SUIVANT · TOUCHER POUR DÉLIER', 'SUPERSET WITH THE NEXT ONE · TAP TO UNLINK') : L('METTRE EN SUPERSET AVEC LE SUIVANT', 'SUPERSET WITH THE NEXT ONE')) + '</button>' : '') + '</div>';
     });
     if(!w.ex.length) h += '<div class="empty">Aucun exercice dans cette séance. Ajoute le premier ci-dessous.</div>';
@@ -4779,6 +4816,7 @@ document.addEventListener('click', function(ev){
         : pl.sets.filter(function(x){ return !x.warm; })[el.hasAttribute('data-k') ? +el.getAttribute('data-k') : workIndex(ex, jj)];
       if(!src) break;
       tgt.w = src.w; tgt.r = src.r; tgt.trend = null; ex.sel = jj; save(); break;
+    case 'flvar': doVariant(el.getAttribute('data-v')); return;
     case 'variant': ex.name = el.getAttribute('data-v'); ex.sets.forEach(function(s){ if(!s.done){ s.w = null; s.r = null; } }); fillSuggestions(ex); save(); break;
     case 'addset':
       var last = ex.sets.filter(function(s){ return !s.warm; }).slice(-1)[0] || {lo:8, hi:12};
@@ -4864,6 +4902,11 @@ document.addEventListener('click', function(ev){
       createCustom(gn, document.getElementById('cg-g').value); ui.gloQ = cap(gn); toast('Exercice créé'); break;
     case 'exdel': prog(ui.edWk).ex.splice(+el.getAttribute('data-i'), 1); save(); break;
     case 'exrep': ui.picker = {ctx:'edrep', i:+el.getAttribute('data-i')}; ui.pickQ = ''; ui.sheet = null; render(); return;
+    case 'exaltadd': ui.picker = {ctx:'edalt', i:+el.getAttribute('data-i')}; ui.pickQ = ''; ui.sheet = null; render(); return;
+    case 'exaltdel':
+      var adw = prog(ui.edWk), ade = adw && adw.ex[+el.getAttribute('data-i')], adv = el.getAttribute('data-v');
+      if(ade && ade.v){ ade.v = ade.v.filter(function(x){ return fold(x) !== fold(adv); }); if(ade.v.length < 2) ade.v = undefined; save(); }
+      render(); return;
     case 'wdup':
       var ow = prog(ui.edWk), op = wkProg(ui.edWk), cw = JSON.parse(JSON.stringify(ow));
       cw.id = uid(); cw.name = ow.name + L(' (copie)', ' (copy)'); cw.day = null;
@@ -7420,6 +7463,43 @@ function flStepper(e, s){
   h += '<button class="fl-pm up" data-a="r" data-d="1" aria-label="' + (tm ? L('5 secondes de plus', '5 seconds more') : L('Une rep de plus', 'One rep more')) + '">+</button></div>';
   return h + '</div>';
 }
+/* 26.11.2026 : cible de répétitions visible en séance, et exercices alternatifs (plusieurs possibles) qu'on bascule d'un tap */
+function flTgtR(s){ return s.lo == null ? '' : s.lo + (s.hi != null && s.hi !== s.lo ? '–' + s.hi : ''); }
+function flRT(s){ var t = s.warm ? '' : flTgtR(s); return t ? '<small class="fl-tgt">' + t + '</small>' : ''; }
+function flTgtLine(e, open){
+  var ws = e.sets.filter(function(s){ return !s.warm && s.lo != null; }); if(!ws.length) return '';
+  var rs = ws.map(flTgtR), same = rs.every(function(r){ return r === rs[0]; }), u = exType(e.name) === 'time' ? ' s' : ' reps';
+  if(!open) return same ? ws.length + ' × ' + rs[0] + u : rs.join(' · ') + u;
+  return L('Cible ', 'Target ') + '<b>' + (same ? rs[0] : rs.join(' · ')) + u + '</b>' + (same ? ' · ' + ws.length + (ws.length > 1 ? L(' séries', ' sets') : L(' série', ' set')) : '');
+}
+/* exercice principal de l'emplacement (celui du modèle), et les autres options de l'emplacement */
+function flMain(e){
+  var a = S.active, w = a && a.pid ? prog(a.pid) : null, t = w && e.tpl != null ? w.ex[e.tpl] : null;
+  return t ? t.name : (e.variants ? e.variants[0] : e.name);
+}
+function flAlts(e){ return (e.variants || []).filter(function(n){ return fold(n) !== fold(e.name); }); }
+function doVariant(name){
+  var a = S.active, i = a && a.idx, ex = a && a.exercises[i]; if(!ex || !name) return;
+  var old = ex.name; if(fold(name) === fold(old)) return;
+  if(ex.sets.some(function(s){ return s.done; })){
+    var left = ex.sets.filter(function(s){ return !s.done && !s.warm; });
+    if(!left.length){ toast(L('Cet exercice est déjà terminé', 'This exercise is already done')); return; }
+    /* séries faites : elles restent sur l'exercice d'avant ; les séries restantes passent sur l'alternative, même emplacement du modèle */
+    var nex = {tpl:ex.tpl, name:name, variants:ex.variants, rest:ex.rest, cue:ex.cue, note:ex.note || '', sel:null, ss:ex.ss, sets:left.map(cleanSet),
+      pre:(ex.pre || []).concat(ex.sets.filter(function(s){ return s.done && !s.auto; }).map(function(s){ return {lo:s.lo, hi:s.hi, special:s.special, warm:s.warm, rest:s.rest, r:s.r}; }))};
+    ex.sets = ex.sets.filter(function(s){ return s.done; }); ex.partial = true; ex.tpl = null; ex.ss = false; ex.sel = null; ex.variants = null;
+    a.exercises.splice(i + 1, 0, nex); a.idx = i + 1;
+    if(a.rest && a.rest.ex > i) a.rest.ex++;
+    fillSuggestions(nex); if(autoWarmOn(name)) genWarm(nex, true);
+  } else {
+    ex.name = name; ex.sel = null;
+    ex.sets = ex.sets.filter(function(s){ return !s.auto; }).map(cleanSet);
+    fillSuggestions(ex); if(autoWarmOn(name)) genWarm(ex, true);
+  }
+  save(); render();
+  setTimeout(function(){ flScrollTo(a.idx); }, 60);
+  toast(exDisp(old) + ' → ' + exDisp(name));
+}
 function flRows(e, i, open, ri){
   var a = S.active, sj = open ? selIndex(e) : null, k = 0, h = '', nextStep = '', ej = open ? flEdJ(e) : null;
   if(ej != null) sj = null; /* une seule ligne éditable à la fois */
@@ -7442,7 +7522,7 @@ function flRows(e, i, open, ri){
       var xe = exType(e.name);
       h += '<span class="fl-prev">' + prev + '</span>';
       h += '<input class="fl-cell' + kbOnCls('w') + '" id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + kbCell('w', s.w != null ? kg(s.w) : (xe !== 'w' ? '0' : '')) + '" aria-label="' + wLab(e.name) + '">';
-      h += '<input class="fl-cell' + kbOnCls('r') + '" id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + kbCell('r', s.r != null ? s.r : '') + '" aria-label="' + rLab(e.name) + '">';
+      h += '<span class="fl-rc"><input class="fl-cell' + kbOnCls('r') + '" id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + kbCell('r', s.r != null ? s.r : '') + '" aria-label="' + rLab(e.name) + '">' + flRT(s) + '</span>';
       h += '<button class="fl-ck" data-a="fledok" aria-label="' + L('Fin de la modification', 'Done editing') + '">' + FL_ICO.check + '</button>';
       /* 13.11.2026 : plus de panneau −/+ (flStepper) sous la série */
       nextStep = '<div class="fl-edbar"><span>' + L('Série validée · modification', 'Logged set · editing') + '</span><button data-a="fledok">' + L('OK', 'OK') + '</button></div>';
@@ -7450,14 +7530,14 @@ function flRows(e, i, open, ri){
       var xt = exType(e.name);
       h += prevBtn;
       h += '<input class="fl-cell' + (s.w == null ? ' sug' : '') + kbOnCls('w') + '" id="in-w" data-f="w" readonly data-pad="w" inputmode="none" value="' + kbCell('w', s.w != null ? kg(s.w) : '') + '" placeholder="' + (s.sw != null ? kg(s.sw) : xt !== 'w' ? '0' : '—') + '" aria-label="' + wLab(e.name) + '">';
-      h += '<input class="fl-cell' + (s.r == null ? ' sug' : '') + kbOnCls('r') + '" id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + kbCell('r', s.r != null ? s.r : '') + '" placeholder="' + (s.sr != null ? s.sr : '—') + '" aria-label="' + rLab(e.name) + '">';
+      h += '<span class="fl-rc"><input class="fl-cell' + (s.r == null ? ' sug' : '') + kbOnCls('r') + '" id="in-r" data-f="r" readonly data-pad="r" inputmode="none" value="' + kbCell('r', s.r != null ? s.r : '') + '" placeholder="' + (s.sr != null ? s.sr : '—') + '" aria-label="' + rLab(e.name) + '">' + flRT(s) + '</span>';
       h += '<button class="fl-ck" data-a="validate" aria-label="' + L('Valider ', 'Log ') + flSetName(e, j) + '"></button>';
       /* 13.11.2026 : plus de panneau −/+ sous la série, le clavier en bas suffit (demande de Maxence) */
     } else {
-      var vw = flVal(flW(e.name, s.w), s.done ? null : flW(e.name, s.sw)), vr = flVal(flR(e.name, s.r), s.done ? null : flR(e.name, s.sr));
-      if(open && !s.done) h += prevBtn + '<button class="fl-mid fl-mid2" data-a="sel" data-j="' + j + '" aria-label="' + L('Choisir ', 'Pick ') + flSetName(e, j) + '"><span class="fl-v">' + vw + '</span><span class="fl-v">' + vr + '</span></button>';
-      else if(open && s.done) h += '<span class="fl-prev">' + prev + '</span><button class="fl-mid fl-mid2" data-a="fledit" data-j="' + j + '" aria-label="' + L('Modifier le poids et les reps de ', 'Edit weight and reps of ') + flSetName(e, j) + '"><span class="fl-v">' + vw + '</span><span class="fl-v">' + vr + '</span></button>';
-      else h += '<span class="fl-prev">' + prev + '</span><span class="fl-v">' + vw + '</span><span class="fl-v">' + vr + '</span>';
+      var vw = flVal(flW(e.name, s.w), s.done ? null : flW(e.name, s.sw)), vr = flVal(flR(e.name, s.r), s.done ? null : flR(e.name, s.sr)), rt = flRT(s), vrH = '<span class="fl-v' + (rt ? ' fl-vt' : '') + '">' + vr + rt + '</span>';
+      if(open && !s.done) h += prevBtn + '<button class="fl-mid fl-mid2" data-a="sel" data-j="' + j + '" aria-label="' + L('Choisir ', 'Pick ') + flSetName(e, j) + '"><span class="fl-v">' + vw + '</span>' + vrH + '</button>';
+      else if(open && s.done) h += '<span class="fl-prev">' + prev + '</span><button class="fl-mid fl-mid2" data-a="fledit" data-j="' + j + '" aria-label="' + L('Modifier le poids et les reps de ', 'Edit weight and reps of ') + flSetName(e, j) + '"><span class="fl-v">' + vw + '</span>' + vrH + '</button>';
+      else h += '<span class="fl-prev">' + prev + '</span><span class="fl-v">' + vw + '</span>' + vrH + '';
       if(!open) h += '<span></span>';
       else if(s.done) h += '<button class="fl-ck" data-a="reopen" data-j="' + j + '" aria-label="' + L('Corriger ', 'Fix ') + flSetName(e, j) + '">' + FL_ICO.check + '</button>';
       else h += '<button class="fl-ck" data-a="flcheck" data-j="' + j + '" aria-label="' + L('Valider ', 'Log ') + flSetName(e, j) + '"></button>';
@@ -7483,12 +7563,16 @@ function flCard(e, i, ri){
   var h = '<div class="fl-sw fl-xsw" data-swi="' + i + '" data-swx="1"><button class="fl-swbg" data-a="flrm" data-i="' + i + '" tabindex="-1" aria-label="' + L('Retirer ', 'Remove ') + esc(exDisp(e.name)) + L(' de la séance', ' from the session') + '">' + FL_ICO.trash + '<span>' + L('Supprimer', 'Delete') + '</span></button>';
   h += '<div class="fl-ex' + (open ? ' open' : '') + (all ? ' done' : '') + '" id="fl-ex-' + i + '" data-i="' + i + '">';
   h += '<div class="fl-exh"><button class="fl-grip" data-flgrip="' + i + '" aria-label="' + L('Déplacer ', 'Move ') + esc(exDisp(e.name)) + '">' + FL_ICO.grip + '</button>';
-  h += open ? '<button class="fl-title" data-a="fiche" data-n="' + esc(e.name) + '">' + esc(exDisp(e.name)) + '</button>' : '<button class="fl-title" data-a="flopen" data-i="' + i + '">' + esc(exDisp(e.name)) + '</button>';
+  var tl = flTgtLine(e, open), sub = tl ? '<span class="fl-sub">' + tl + '</span>' : '';
+  h += open ? '<button class="fl-title" data-a="fiche" data-n="' + esc(e.name) + '">' + esc(exDisp(e.name)) + sub + '</button>' : '<button class="fl-title" data-a="flopen" data-i="' + i + '">' + esc(exDisp(e.name)) + sub + '</button>';
   h += '<button class="fl-ico i" data-a="fiche" data-n="' + esc(e.name) + '" aria-label="' + L('Infos de l\'exercice', 'Exercise info') + '">' + FL_ICO.info + '</button>';
   h += '<button class="fl-ico" data-a="flmenu" data-i="' + i + '" aria-label="' + L('Options de l\'exercice', 'Exercise options') + '">' + FL_ICO.more + '</button>';
   h += '<span class="fl-cnt">' + (all ? '✓ ' : '') + c[0] + ' / ' + c[1] + '</span></div>';
   h += '<div class="fl-body"' + (open ? '' : ' inert') + '><div class="fl-in"><div class="fl-pad">';
   if(e.replaced) h += '<span class="fl-tag">' + FL_ICO.swap + L('Remplace ', 'Replaces ') + esc(exDisp(e.replaced)) + L(' · cette séance', ' · this session') + '</span>';
+  var fmain = flMain(e), falts = flAlts(e);
+  if(e.variants && fold(e.name) !== fold(fmain)) h += '<span class="fl-tag fl-tag-alt">' + FL_ICO.swap + L('Alternative à ', 'Alternative to ') + esc(exDisp(fmain)) + '</span>';
+  if(open && falts.length && e.sets.some(function(s){ return !s.done && !s.warm; })) h += '<div class="fl-alts" role="group" aria-label="' + L('Changer d\'exercice', 'Switch exercise') + '">' + falts.map(function(n){ var back = fold(n) === fold(fmain); return '<button class="fl-alt' + (back ? ' back' : '') + '" data-a="flvar" data-v="' + esc(n) + '" aria-label="' + (back ? L('Revenir à ', 'Back to ') : L('Passer à ', 'Switch to ')) + esc(exDisp(n)) + '">' + (back ? '<i aria-hidden="true">↩</i>' : FL_ICO.swap) + '<span>' + esc(exDisp(n)) + '</span></button>'; }).join('') + '</div>';
   h += open ? '<input class="fl-note" data-f="note" value="' + esc(e.note || '') + '" placeholder="' + L('+ Ajouter une note', '+ Add a note') + '" aria-label="' + L('Note sur l\'exercice', 'Exercise note') + '" autocomplete="off">' : (e.note ? '<div class="fl-note-t">' + esc(e.note) + '</div>' : '');
   if(e.cue) h += '<p class="fl-cue">' + esc(trText(e.cue)) + '</p>';
   h += flRows(e, i, open, ri);
